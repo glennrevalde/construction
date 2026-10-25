@@ -1,0 +1,26 @@
+# Apache settings (XAMPP / WAMP / shared hosting). For nginx, see README.md.
+Options -Indexes
+DirectoryIndex index.php
+
+# Only index.php, login.php and assets/ are meant to be opened from a browser.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule (^|/)(app|config|database|modules|storage|tools|views)(/|$) - [F,L]
+    RewriteRule (^|/)\.(?!well-known) - [F,L]
+</IfModule>
+
+<FilesMatch "\.(sql|md|log|ini|sh)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "same-origin"
+</IfModule>

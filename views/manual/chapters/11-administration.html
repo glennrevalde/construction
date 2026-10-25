@@ -1,0 +1,2404 @@
+<p>The System Administration module is where you decide who may use GSMaRT Construction System and what each person may do. It also holds the company's details and security rules, the closing date, the data checks and repairs, the spreadsheet import, backup and restore, the one-time multi-company setup, and the audit reports that show who did what.</p>
+<p>Most of these pages are meant for the system administrator. Two standard roles use a part of them: the Auditor reads the audit reports, and the Accountant can run the data checks on <strong>Utilities: Verify &amp; Rebuild Data</strong>.</p>
+<p>In the sidebar, <strong>System Administration</strong> holds three groups:</p>
+<ul>
+<li><strong>Setup</strong>: User Accounts, User Role Configuration, Page Access Configuration, Effective Access (View as User), Company, Security &amp; Closing Date, Utilities: Verify &amp; Rebuild Data, and Multi-Company Setup.</li>
+<li><strong>Utilities</strong>: Import from CSV and Backup &amp; Restore.</li>
+<li><strong>Reports</strong>: the audit reports, under the heading <strong>Audit Reports</strong>. They are also listed in the <a href="manual.php?c=home-and-reports#pg-home-reports">Report Center</a>.</li>
+</ul>
+<h2 id="s-how-access-works">How access works<a class="man-hash" href="#s-how-access-works" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every page of the program is protected. Before you create users, it helps to know the pieces that decide what a user can do.</p>
+<ul>
+<li><em>Roles.</em> A role is a named set of permissions that matches a job, such as A/R Clerk or Cashier. You set the permissions once on the role, then give the role to users. Changing a role changes the access of every user who has it. A user can have several roles: their permissions add together.</li>
+<li><em>Page access.</em> The <strong>View</strong> right decides whether a page appears in the menu and can be opened at all. A denied page is hidden from the menu, the Home screen, the search box and report drill-downs. If someone opens it another way (an old bookmark, a link in an e-mail), the program shows <strong>Access denied</strong> and records the attempt in the audit trail.</li>
+<li><em>Action rights.</em> On each page a role may open, it may also be given <strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Print/Export</strong> and <strong>Approve</strong>.</li>
+<li><em>Sensitive permissions.</em> Limits and yes/no rights that are not tied to one page, such as the largest discount a user may give without a supervisor.</li>
+<li><em>Sites and POS terminals.</em> Which inventory sites a user may record transactions for, and at which POS counters the user may sell.</li>
+<li><em>User overrides.</em> An exception for one user on one page, which always wins over the user's roles.</li>
+<li><em>The Administrator role.</em> A role marked <strong>Administrator (full access to everything)</strong> opens every page with every right and every sensitive permission.</li>
+<li><em>Company Owner and Super Admin.</em> When several companies run on the platform, the Company Owner and the Super Admin working inside a company have full authority in it, and no role or override can lock them out. See <a href="manual.php?c=company-owner">Company Owner</a> and <a href="manual.php?c=super-admin">Super Admin</a>.</li>
+</ul>
+<h4 id="s-the-rights-on-a-page">The rights on a page<a class="man-hash" href="#s-the-rights-on-a-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Right</th>
+<th>What it allows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>View</strong></td>
+<td>Open the page. It appears in the menu. Without View, the other rights on that page do nothing.</td>
+</tr>
+<tr>
+<td><strong>Create</strong></td>
+<td>Add new records or transactions on the page, including <strong>Save &amp; New</strong> and copying.</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Change saved records. On some setup pages it also runs the page's main action, such as saving settings or rebuilding data.</td>
+</tr>
+<tr>
+<td><strong>Delete/Void</strong></td>
+<td>Delete or void records and transactions.</td>
+</tr>
+<tr>
+<td><strong>Print/Export</strong></td>
+<td>Print, save as PDF, export to a spreadsheet, and download files such as import templates and backups.</td>
+</tr>
+<tr>
+<td><strong>Approve</strong></td>
+<td>Approve actions that need a supervisor on this page: voids, refunds, price overrides, large discounts and amounts over a user's limit.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A user who has <strong>Approve</strong> on a page approves their own action there. Anyone else is stopped with a message that begins "Supervisor approval is required", and a supervisor who has <strong>Approve</strong> on that page types their own username and password in the <strong>Supervisor approval</strong> box of the same form. Nobody can approve their own transaction by typing their own name there.</p>
+<h4 id="s-sensitive-permissions">Sensitive permissions<a class="man-hash" href="#s-sensitive-permissions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>These are set on the role, in the <strong>Sensitive permissions (set separately from the grid)</strong> box.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Permission</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>View costs and margins</strong></td>
+<td>Shows item costs, cost of sales and margins. Without it, costs are hidden from the user, and the item import refuses cost columns.</td>
+</tr>
+<tr>
+<td><strong>View bank balances outside Banking</strong></td>
+<td>Shows bank balances on the Home dashboard, the Chart of Accounts, reports and fund transfers.</td>
+</tr>
+<tr>
+<td><strong>Max discount % without approval</strong></td>
+<td>The largest discount the user may give on sales forms and at the POS before a supervisor must approve.</td>
+</tr>
+<tr>
+<td><strong>Max price change % without approval</strong></td>
+<td>The largest change from an item's price the user may make on a sales form before approval is needed.</td>
+</tr>
+<tr>
+<td><strong>Max check / bill payment / adjustment amount without approval</strong></td>
+<td>Checks, bill payments, refunds, cash vouchers, inventory adjustments and similar amounts above this need approval.</td>
+</tr>
+<tr>
+<td><strong>Can exceed customer credit limits</strong></td>
+<td>Lets the user save an invoice that takes a customer over the credit limit, after typing a reason. Without it, such an invoice is refused.</td>
+</tr>
+<tr>
+<td><strong>Can change the Chart of Accounts and default accounts</strong></td>
+<td>Needed to add or change accounts and to change Module Default Accounts.</td>
+</tr>
+<tr>
+<td><strong>Can change transactions on/before the closing date or already reconciled</strong></td>
+<td>Lets the user record, change, void or delete transactions dated on or before the closing date, and change transactions already cleared in a bank reconciliation.</td>
+</tr>
+<tr>
+<td><strong>Can design report layouts (fonts, headings and footers, columns and rows) and save or share them</strong></td>
+<td>Lets the user change how a report looks and which columns and fields it prints with <strong>Modify Report</strong>, and save or share the layout.</td>
+</tr>
+</tbody>
+</table></div>
+<p>For the three number limits, a blank box means no limit, and 0 means that every discount, price change or amount needs approval. When a user has several roles, a yes/no permission is yes if any role says yes, and a limit is the highest of the roles (a blank on any role means no limit). A role that does not set a limit at all counts as 0.</p>
+<h4 id="s-the-standard-roles">The standard roles<a class="man-hash" href="#s-the-standard-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A new company comes with nine standard roles. You can change them, and you can copy one to make a custom role.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Role</th>
+<th>What the role can do</th>
+<th>Main limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Administrator</td>
+<td>Everything in every module, including users, roles, page access, the closing date and the audit trail.</td>
+<td>None</td>
+</tr>
+<tr>
+<td>A/P Clerk</td>
+<td>Vendors module transactions, Pay Bills, and the Vendors and Payables reports.</td>
+<td>Views costs; amounts up to ₱100,000.00</td>
+</tr>
+<tr>
+<td>A/R Clerk</td>
+<td>Customers module transactions and the Customer and Receivables reports.</td>
+<td>Discount 10%, price change 5%, amounts up to ₱50,000.00</td>
+</tr>
+<tr>
+<td>Accountant</td>
+<td>Chart of Accounts, Fixed Assets, Banking and reconciliation, all module reports and the financial statements.</td>
+<td>Views costs and bank balances; may change the Chart of Accounts; no amount limit</td>
+</tr>
+<tr>
+<td>Auditor</td>
+<td>View-only access to all transactions, reports and the audit trail. Cannot create or change anything.</td>
+<td>Views costs and bank balances</td>
+</tr>
+<tr>
+<td>Cashier</td>
+<td>POS sales, returns and cash drops at the assigned terminal only.</td>
+<td>Discount 5%, no price change, every approval amount needs a supervisor</td>
+</tr>
+<tr>
+<td>Inventory Clerk</td>
+<td>Items, sites, receiving, adjustments, builds, processing orders, stock counts and quantity reports.</td>
+<td>Amounts up to ₱20,000.00</td>
+</tr>
+<tr>
+<td>POS Supervisor</td>
+<td>Everything a cashier can do, plus approving voids, refunds, price overrides and large discounts, and X- and Z-readings.</td>
+<td>Discount 30%, price change 20%, amounts up to ₱20,000.00</td>
+</tr>
+<tr>
+<td>Sales Representative</td>
+<td>Estimates, sales orders, invoices and the Sales reports.</td>
+<td>Discount 5%, no price change</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-duties-that-should-be-kept-apart">Duties that should be kept apart<a class="man-hash" href="#s-duties-that-should-be-kept-apart" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The program warns when one person would be able to handle both sides of a task that is normally split between two people. The pairs it checks are:</p>
+<ul>
+<li>creating vendors and paying bills (<strong>Vendor Center</strong> and <strong>Pay Bills</strong>);</li>
+<li>receiving customer payments and reconciling the bank account (<strong>Receive Payments</strong> and <strong>Reconcile</strong>);</li>
+<li>adjusting inventory and counting it (<strong>Adjust Quantity/Value on Hand</strong> and <strong>Physical Inventory Count</strong>);</li>
+<li>entering bills and writing checks (<strong>Enter Bills</strong> and <strong>Write Checks</strong>);</li>
+<li>selling at the POS and depositing the cash (<strong>POS Register</strong> and <strong>Make Deposits</strong>).</li>
+</ul>
+<p>A pair counts only when both pages are allowed with <strong>Create</strong> or <strong>Edit</strong>. When you save a role or a user that combines such duties, the save stops with a <em>segregation of duties</em> warning. You may still save by ticking the box under the warning; the decision is recorded in the audit trail as a <strong>Sod Override</strong> entry.</p>
+<h2 id="pg-admin-users">User Accounts<a class="man-hash" href="#pg-admin-users" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page lists everyone who can log in to the company, and it is where you add a new employee, change their roles, reset a forgotten password, unlock a locked account and deactivate someone who has left.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; User Accounts</p>
+<h4 id="s-the-list">The list<a class="man-hash" href="#s-the-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>The user's full name. Click it to open the user.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>The name the user logs in with.</td>
+</tr>
+<tr>
+<td><strong>Employee no.</strong></td>
+<td>Your own employee number, if entered.</td>
+</tr>
+<tr>
+<td><strong>Roles</strong></td>
+<td>The roles the user has.</td>
+</tr>
+<tr>
+<td><strong>Sites</strong></td>
+<td>The inventory sites the user is limited to (codes such as ST1), or "all".</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, <strong>Inactive</strong> or <strong>Locked</strong>. A user who joined with the Company Code shows <strong>Waiting for approval</strong> or <strong>Rejected</strong> instead. <strong>Company Owner</strong> and <strong>temp password</strong> may also appear here.</td>
+</tr>
+<tr>
+<td><strong>Last login</strong></td>
+<td>Date and time of the last successful log-in.</td>
+</tr>
+<tr>
+<td><strong>Overrides</strong></td>
+<td>How many page overrides the user has (see <a href="#pg-admin-page_access">Page Access Configuration</a>).</td>
+</tr>
+</tbody>
+</table></div>
+<p>The drop-down above the list (<strong>All statuses</strong>) shows only <strong>Active</strong>, <strong>Inactive</strong> or <strong>Locked</strong> users. The list is sorted by name.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click <strong>New user</strong> to open a blank form, or click a name to edit that user.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Username</strong></td>
+<td>3 to 50 characters: letters, numbers, dot, dash or underscore. It is saved in lower case and must be unique. When several companies share the platform, it must be unique across all of them.</td>
+</tr>
+<tr>
+<td><strong>Full name</strong></td>
+<td>Required. This name appears on the records and audit entries the user creates.</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>Employee no.</strong></td>
+<td>Optional, for your own reference.</td>
+</tr>
+<tr>
+<td><strong>Temporary password</strong> (new user)</td>
+<td>Required. It must follow the password rules shown under the fields.</td>
+</tr>
+<tr>
+<td><strong>New password (optional)</strong> (existing user)</td>
+<td>Leave blank to keep the current password. Type one to replace it.</td>
+</tr>
+<tr>
+<td><strong>Roles</strong></td>
+<td>Tick at least one. <strong>Administrator</strong> shows "(full access)". Permissions from several roles add together.</td>
+</tr>
+<tr>
+<td><strong>Inventory sites the user may work at</strong></td>
+<td>Tick sites to limit the user to them. None ticked means all the sites the user's roles allow.</td>
+</tr>
+<tr>
+<td><strong>POS terminals</strong></td>
+<td>Tick the counters the user may sell at. None ticked means any active terminal at the sites the user may work at.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The line under the password fields repeats the company's password rules, for example "Password rules: at least 8 characters, upper- and lower-case, a number, a symbol. The user must replace it at first login." A password may also not contain the username.</p>
+<p>When a user's roles limit them to some sites and you also tick sites on the user, the user may work only at sites that are in both lists. In the demo company, the Cashier role allows the Makati Store and the Cebu Store, and Ella Ramos is ticked for the Makati Store only, so she works at the Makati Store.</p>
+<h4 id="s-step-by-step-add-a-user">Step by step: add a user<a class="man-hash" href="#s-step-by-step-add-a-user" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New user</strong>.</li>
+<li>Type the <strong>Username</strong>, <strong>Full name</strong> and, if you keep them, the <strong>Email</strong> and <strong>Employee no.</strong></li>
+<li>Type a <strong>Temporary password</strong> that follows the rules shown.</li>
+<li>Tick the user's <strong>Roles</strong>.</li>
+<li>If the user should work only at certain sites or counters, tick them under <strong>Inventory sites the user may work at</strong> and <strong>POS terminals</strong>.</li>
+<li>Click <strong>Save user</strong>, or <strong>Save user &amp; New</strong> to start the next user at once.</li>
+<li>Give the username and temporary password to the employee. At the first log-in the program makes them choose their own password (see <a href="manual.php?c=getting-started">Getting Started</a>).</li>
+</ol>
+<p>If the roles combine duties that should be kept apart, the save stops with a <strong>Segregation of duties</strong> warning. Tick <strong>I understand; save anyway (the decision is recorded in the audit trail)</strong> and click <strong>Save user</strong> again, or change the roles.</p>
+<h4 id="s-the-users-page">The user's page<a class="man-hash" href="#s-the-users-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When you open an existing user, the page shows the same form plus two boxes on the right.</p>
+<p>The first box shows <strong>Status</strong>, <strong>Last login</strong> (with the computer's IP address), <strong>Failed attempts</strong> (wrong passwords since the last good log-in), <strong>Password changed</strong> (with ", must change at next login" when a temporary password is waiting) and <strong>Created</strong>.</p>
+<p>The second box holds the account actions. It appears only if you have <strong>Edit</strong> on this page.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unlock account</strong></td>
+<td>Shown only when the account is locked. Sets it back to active and clears the failed attempts. Type a <strong>Reason</strong> first if you want one recorded.</td>
+</tr>
+<tr>
+<td><strong>Deactivate (employee left)</strong></td>
+<td>The user can no longer log in. Type a reason such as "resigned" in the box above it. The program asks you to confirm.</td>
+</tr>
+<tr>
+<td><strong>Reactivate</strong></td>
+<td>Shown instead of Deactivate for an inactive user. Lets them log in again.</td>
+</tr>
+<tr>
+<td><strong>Reset password</strong></td>
+<td>Sets the <strong>Temporary password</strong> typed above it. The user must change it at the next log-in. A locked account is unlocked at the same time.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Across the top, <strong>Effective access</strong> shows exactly what the user can open (see <a href="#pg-admin-effective_access">Effective Access (View as User)</a>), <strong>Activity</strong> opens the <a href="#pg-rpt-user_activity">User Activity</a> report for this user, and <strong>Back</strong> returns to the list.</p>
+<h4 id="s-step-by-step-change-a-users-roles">Step by step: change a user's roles<a class="man-hash" href="#s-step-by-step-change-a-users-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the user's name.</li>
+<li>Tick or clear the roles, sites and terminals.</li>
+<li>Leave <strong>New password (optional)</strong> blank unless you also want to set a new password.</li>
+<li>Click <strong>Save user</strong>.</li>
+</ol>
+<p>The change applies from the next page the user opens.</p>
+<h4 id="s-step-by-step-help-a-user-who-forgot-the-password-or-is-locke">Step by step: help a user who forgot the password or is locked out<a class="man-hash" href="#s-step-by-step-help-a-user-who-forgot-the-password-or-is-locke" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the user's name.</li>
+<li>Type a temporary password in the <strong>Temporary password</strong> box of the right-hand panel.</li>
+<li>Click <strong>Reset password</strong>.</li>
+<li>Give the temporary password to the user. At the next log-in they must choose a new one.</li>
+</ol>
+<p>If the user remembers the password and was only locked out after too many wrong tries, click <strong>Unlock account</strong> instead.</p>
+<h4 id="s-step-by-step-an-employee-leaves">Step by step: an employee leaves<a class="man-hash" href="#s-step-by-step-an-employee-leaves" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the user's name.</li>
+<li>Type the reason in <strong>Reason (e.g. resigned)</strong>.</li>
+<li>Click <strong>Deactivate (employee left)</strong> and confirm.</li>
+</ol>
+<h4 id="sec-two-companies">A user who works in two companies<a class="man-hash" href="#sec-two-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When several companies share the platform, one person can work in two (or more) of them with one log-in, without being made a Super Admin: a group accountant who keeps the books of two companies, a purchasing officer who buys for both. The person stays a user of their own company. The other company gives them access with <strong>Add user from another company</strong> on its User Accounts page (the button is also on <a href="manual.php?c=company-owner#pg-company-users">Employees &amp; Users</a>), and decides there what they may do.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Their username</strong></td>
+<td>The username the person logs in with at their own company. They keep that one log-in and password.</td>
+</tr>
+<tr>
+<td><strong>Roles in this company</strong></td>
+<td>Tick at least one. They decide what the person may do in this company only.</td>
+</tr>
+<tr>
+<td><strong>Inventory sites</strong>, <strong>POS terminals</strong></td>
+<td>As for any user: tick to limit the person to them.</td>
+</tr>
+<tr>
+<td><strong>Reason (recorded in the audit trail)</strong></td>
+<td>Why the person gets access, for example "Accountant of the group".</td>
+</tr>
+</tbody>
+</table></div>
+<h5 id="s-step-by-step-let-a-user-of-another-company-work-here">Step by step: let a user of another company work here</h5>
+<ol>
+<li>Log in to the company the person should also work in (with an account that may add users), and go to <strong>System Administration &gt; User Accounts</strong>.</li>
+<li>Click <strong>Add user from another company</strong>.</li>
+<li>Type <strong>Their username</strong>, as they log in at their own company.</li>
+<li>Tick their <strong>Roles in this company</strong>, and sites or POS terminals if they should be limited.</li>
+<li>Type the reason and click <strong>Give access to this company</strong>.</li>
+</ol>
+<p>The person's page opens. The person now sees the company name at the top of the screen as a switch with both companies, and moves between them without logging in again (see <a href="manual.php?c=company-owner#sec-switch-company">Working in two companies</a>).</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Ana Cruz (<strong>accountant</strong>) is the accountant of Sample Trading Company and also keeps the books of ABC Distribution Corp. John Doe, the owner of ABC, opens <strong>User Accounts</strong> in ABC, clicks <strong>Add user from another company</strong>, types <strong>accountant</strong>, ticks the <strong>Accountant</strong> role and the reason "Group accountant", and clicks <strong>Give access to this company</strong>. Ana logs in at Sample Trading as always; the top bar now offers <strong>ABC Distribution Corp.</strong> too. In ABC she can do only what the Accountant role of ABC allows.</p></div>
+<p>What the other company sees:</p>
+<ul>
+<li>The person is listed in its User Accounts and Employees &amp; Users with "User of" and their own company under the name. They have the same username and name, but no password here: there are no password fields and no <strong>Reset password</strong> for them. Their password is changed at their own company.</li>
+<li>Their page has a <strong>User of another company</strong> box with their own company, when access was given and by whom, and when they last switched here.</li>
+<li>What they do here is recorded in this company's audit trail under their username; each switch is recorded too ("Company Switch").</li>
+<li>A supervisor approval they give here is checked against the password of their own company.</li>
+</ul>
+<p>What their own company sees: their user page has an <strong>Also works in</strong> box with the other companies, and the list shows "Also works in" under their name.</p>
+<h5 id="s-ending-the-access">Ending the access</h5>
+<ul>
+<li>In the company they work in: open the user and click <strong>Remove access to this company</strong> (with a reason). The account there is switched off, so their name stays on what they entered, and <strong>Give access back</strong> turns it on again later. The same is <strong>Remove access to this company</strong> under <strong>Manage</strong> on Employees &amp; Users.</li>
+<li>In their own company: <strong>Remove</strong> beside the other company in the <strong>Also works in</strong> box.</li>
+<li>It also ends by itself when their account in their own company is deactivated or locked.</li>
+</ul>
+<p>If the person is working in the other company when the access ends, the next page they open takes them back to their own company with the message "Your access to ... has ended. You are back in your own company."</p>
+<p>Messages: "No active user of another company logs in with that username. Check the spelling with the person.", "... is already a user of this company. Change their roles in User Accounts instead.", "... already has access to this company.", "Give at least one role in this company.", "You cannot remove your own access."</p>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Users are never deleted, so their names stay on the transactions and audit entries they created. Deactivate them instead.</li>
+<li>An account is locked after the number of wrong passwords set under <strong>Failed logins before lockout</strong> on <a href="#pg-admin-settings">Company, Security &amp; Closing Date</a>. The user sees "Too many failed attempts. The account is now locked." and then "This account is locked. Only an administrator can unlock it." An inactive user sees "This account is inactive. Contact your administrator."</li>
+<li>You cannot deactivate your own account, remove the Administrator role from your own account, or deactivate the last active administrator ("This is the last active administrator.").</li>
+<li>With several companies: only the Company Owner (or the Super Admin) can change the Company Owner's account, and the Company Owner cannot be deactivated. A user who registered with the Company Code and is still <strong>Waiting for approval</strong> cannot be reactivated here; approve them under <strong>Company &gt; Join Requests</strong> (see <a href="manual.php?c=company-owner">Company Owner</a>).</li>
+<li>Messages you may see when saving: "That username is taken.", "That username is already used on this platform. Choose another.", "Assign at least one role.", "Enter the full name." and "The temporary password must have ..." followed by the rules it missed.</li>
+<li>Every save, reset, unlock, deactivation and reactivation is recorded in the audit trail, with the reason you typed.</li>
+</ul>
+<h2 id="pg-admin-roles">User Role Configuration<a class="man-hash" href="#pg-admin-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use this page to set up the roles: which pages each role may open, what it may do there, its sensitive permissions and its sites. Set up roles before you add users, and change a role instead of changing many users one by one.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; User Role Configuration. The <strong>Role permissions</strong> button on Page Access Configuration also opens it.</p>
+<h4 id="s-the-list_1">The list<a class="man-hash" href="#s-the-list_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>The role's name. <strong>full access</strong> marks an administrator role; <strong>standard</strong> marks the roles that came with the program. Click the name to edit the role.</td>
+</tr>
+<tr>
+<td><strong>What the role can do</strong></td>
+<td>The description you gave the role.</td>
+</tr>
+<tr>
+<td><strong>Pages</strong></td>
+<td>How many pages the role may open, out of all the pages of the program (for example 25 / 168).</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>How many users have the role.</td>
+</tr>
+<tr>
+<td><strong>Sites</strong></td>
+<td><strong>All</strong>, or the codes of the sites the role is limited to.</td>
+</tr>
+<tr>
+<td>(links)</td>
+<td><strong>Copy</strong> starts a new role with the same settings. <strong>Delete</strong> appears only for a custom role that no user has.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click <strong>New role</strong> to start from an empty role, or <strong>Copy</strong> beside a role to start from a copy of it.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role name</strong></td>
+<td>Required, and different from every other role. A copy starts as the old name plus "(copy)".</td>
+</tr>
+<tr>
+<td><strong>What the role can do</strong></td>
+<td>A short description shown in the list, for example "Customers module transactions and the Customer and Receivables reports."</td>
+</tr>
+<tr>
+<td><strong>Administrator (full access to everything)</strong></td>
+<td>Tick only for a role that must open everything. The grid below is then ignored.</td>
+</tr>
+<tr>
+<td><strong>Sites</strong></td>
+<td><strong>All sites</strong>, or <strong>Only:</strong> with the sites ticked. If you choose <strong>Only:</strong>, tick at least one site, or users of the role can work at none.</td>
+</tr>
+<tr>
+<td><strong>Sensitive permissions (set separately from the grid)</strong></td>
+<td>The nine permissions described in <a href="manual.php?c=administration">How access works</a>. Number boxes show "blank = no limit".</td>
+</tr>
+<tr>
+<td><strong>Permissions by page</strong></td>
+<td>One row per page, grouped by module, with the columns <strong>View</strong>, <strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Print/Export</strong> and <strong>Approve</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>In the grid, each page name is followed by its kind in brackets: (center), (list), (setup), (transaction), (report) or (admin). The grey row of each module has a tick box in every column: ticking it ticks that column for every page of the module, for example <strong>View</strong> for all of Customers.</p>
+<p>The rights on a row count only when <strong>View</strong> is ticked on that row. A page with <strong>Create</strong> ticked but not <strong>View</strong> is not saved.</p>
+<h4 id="s-step-by-step-create-a-role-for-a-new-job">Step by step: create a role for a new job<a class="man-hash" href="#s-step-by-step-create-a-role-for-a-new-job" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Copy</strong> beside the role closest to the new job (or <strong>New role</strong> to start empty).</li>
+<li>Change the <strong>Role name</strong> and <strong>What the role can do</strong>.</li>
+<li>Choose the <strong>Sites</strong>.</li>
+<li>Set the <strong>Sensitive permissions</strong>. Leave a limit blank for no limit, or type 0 to make every case go to a supervisor.</li>
+<li>In <strong>Permissions by page</strong>, tick <strong>View</strong> for every page the job needs, then the other rights on those pages.</li>
+<li>Click <strong>Save role</strong>. The bar with <strong>Save role</strong>, <strong>Save role &amp; New</strong> and <strong>Cancel</strong> stays at the bottom of the window while you scroll.</li>
+<li>Give the role to users on <a href="#pg-admin-users">User Accounts</a>.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The demo A/R Clerk has <strong>View</strong>, <strong>Create</strong>, <strong>Edit</strong> and <strong>Print/Export</strong> on the Customers pages other than reports, <strong>View</strong> and <strong>Print/Export</strong> on the Home pages and the Customer and Receivables reports, and <strong>View</strong> only on the Item List. It has no <strong>Delete/Void</strong>, so voids go to someone else. Its limits are a 10% discount, a 5% price change and ₱50,000.00.</p></div>
+<h4 id="s-step-by-step-change-a-role">Step by step: change a role<a class="man-hash" href="#s-step-by-step-change-a-role" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the role's name.</li>
+<li>Change the ticks and limits.</li>
+<li>Click <strong>Save role</strong>.</li>
+</ol>
+<p>The message "Role saved. Every user with this role is updated at once." confirms the change. At the bottom of the page, <strong>Users with this role</strong> lists the users affected.</p>
+<p>The <strong>Page access view</strong> button at the top of an existing role opens the same role on <a href="#pg-admin-page_access">Page Access Configuration</a>, which is quicker when you only want to allow or deny whole pages.</p>
+<h4 id="s-step-by-step-delete-a-custom-role">Step by step: delete a custom role<a class="man-hash" href="#s-step-by-step-delete-a-custom-role" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Make sure no user has the role (the <strong>Users</strong> column shows 0).</li>
+<li>Click <strong>Delete</strong> beside it and confirm.</li>
+</ol>
+<p>Standard roles and roles with users cannot be deleted ("Only custom roles with no users can be deleted.").</p>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>At least one role must keep full administrator access. Clearing the Administrator box on the last such role is refused ("At least one role must keep full administrator access.").</li>
+<li>A number box that holds text is refused: ""Max discount % without approval" must be a number or blank."</li>
+<li>If the role combines duties that should be kept apart, a <strong>Segregation of duties</strong> warning appears. Tick <strong>Save anyway (the warning and the decision are recorded in the audit trail)</strong> and save again, or change the grid. Administrator roles are not checked.</li>
+<li>Every role change is recorded in the audit trail with the rights before and after, so an auditor can see who widened a role and when.</li>
+</ul>
+<h2 id="pg-admin-page_access">Page Access Configuration<a class="man-hash" href="#pg-admin-page_access" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page decides which pages each role or user can open, without the detail of the action rights. It is the quickest place to allow or deny a whole page or module, to give one user an exception, and to compare all roles side by side.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Page Access Configuration. The <strong>Page access view</strong> button on a role also opens it.</p>
+<p>The page has three tabs: <strong>By role</strong>, <strong>By user (overrides)</strong> and <strong>Matrix (all roles)</strong>. At the top, <strong>Effective access</strong> opens <a href="#pg-admin-effective_access">Effective Access (View as User)</a> and <strong>Role permissions</strong> opens <a href="#pg-admin-roles">User Role Configuration</a>.</p>
+<h4 id="s-by-role">By role<a class="man-hash" href="#s-by-role" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Choose a role in the drop-down. The pages are listed by module. The heading of each module shows how many of its pages are allowed (for example "Home 7 / 7 allowed"), and modules with at least one allowed page open by themselves. Each page shows its kind (center, list, transaction screen, setup screen or report, plus the report group) and a drop-down set to <strong>Allowed</strong> or <strong>Denied</strong>.</p>
+<ol>
+<li>Choose the role.</li>
+<li>Set each page to <strong>Allowed</strong> or <strong>Denied</strong>, or use <strong>Allow module</strong> and <strong>Deny module</strong> on a module's heading.</li>
+<li>Type a <strong>Reason for the change (recorded in the audit trail)</strong>.</li>
+<li>Click <strong>Save page access</strong>.</li>
+</ol>
+<p>The message tells you how many page settings changed, for example "2 page setting(s) changed for A/P Clerk. Changes apply the next time users open a page."</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>A page you allow here gets only <strong>View</strong>, plus <strong>Print/Export</strong> if the role never had the page before. Set <strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Approve</strong> (and <strong>Print/Export</strong> where it is missing) on <a href="#pg-admin-roles">User Role Configuration</a>. Denying a page removes all its rights from the role.</p></div>
+<p>An administrator role cannot be changed here: the page shows "The Administrator role has full access to every page." and the drop-downs are greyed out.</p>
+<h4 id="s-by-user-overrides">By user (overrides)<a class="man-hash" href="#s-by-user-overrides" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>An override is an exception for one user on one page. It always wins over the user's roles, including the Administrator role. Use it for a short-term need or a single exception, so you do not have to create a new role.</p>
+<p>Choose the user in the drop-down (you can type part of the name). A line shows the user's roles and how many overrides they have. For each page you see:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Page</strong></td>
+<td>The page name. Rows with an override are highlighted.</td>
+</tr>
+<tr>
+<td><strong>From roles</strong></td>
+<td><strong>Allowed</strong> (with the roles that allow it) or <strong>Denied</strong>, as the roles alone decide.</td>
+</tr>
+<tr>
+<td><strong>Setting for this user</strong></td>
+<td><strong>Inherit from role</strong>, <strong>Override: allow</strong> or <strong>Override: deny</strong>.</td>
+</tr>
+<tr>
+<td><strong>Actions when allowed by override</strong></td>
+<td>Tick boxes <strong>C</strong> (Create), <strong>E</strong> (Edit), <strong>D</strong> (Delete/Void), <strong>P</strong> (Print/Export) and <strong>A</strong> (Approve), used only with <strong>Override: allow</strong>.</td>
+</tr>
+<tr>
+<td><strong>Set by</strong></td>
+<td>Who set the override, when, and the reason.</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Choose the user.</li>
+<li>Open the module and find the page.</li>
+<li>Choose <strong>Override: allow</strong> and tick the actions, or <strong>Override: deny</strong>.</li>
+<li>Type a <strong>Reason for the override</strong>.</li>
+<li>Click <strong>Save overrides</strong>. <strong>Check effective access</strong> beside it shows the result.</li>
+</ol>
+<p>To remove an override, set the page back to <strong>Inherit from role</strong> and save.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>In the demo company, Ben Garcia (arclerk) has <strong>Override: deny</strong> on <strong>Assess Finance Charges</strong> with the reason "Finance charges are assessed by the accountant", and Maria Santos (salesrep) has <strong>Override: allow</strong> with <strong>P</strong> on <strong>Customer Balance Summary</strong> because she "Needs balances for account visits".</p></div>
+<p>You cannot deny yourself <strong>User Accounts</strong>, <strong>User Role Configuration</strong> or <strong>Page Access Configuration</strong> ("You cannot deny yourself access to the administration pages."), so you cannot lock yourself out by mistake.</p>
+<h4 id="s-matrix-all-roles">Matrix (all roles)<a class="man-hash" href="#s-matrix-all-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The matrix shows every page down the side and every role across the top, with <strong>Allowed</strong> in green or <strong>Denied</strong> in red. Administrator roles show <strong>Allowed</strong> everywhere. The matrix shows page access only, not the action rights, and it cannot be changed here.</p>
+<p>The links above it are <strong>Key pages only</strong> (eleven sensitive pages such as Chart of Accounts, Receive Payments, Pay Bills, Adjust Quantity/Value on Hand, POS Register, Reconcile, Audit Trail and User Role Configuration), <strong>All pages</strong> and <strong>Print</strong>.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Saving on this page needs <strong>Edit</strong> on it. Without it, you can look but the drop-downs are greyed out.</li>
+<li>Every change is recorded in the audit trail with each page's old and new setting and your reason. The <a href="#pg-rpt-user_access">User Access and Permission Changes</a> report lists them.</li>
+<li>The Company Owner and the Super Admin are never locked out by an override.</li>
+</ul>
+<h2 id="pg-admin-effective_access">Effective Access (View as User)<a class="man-hash" href="#pg-admin-effective_access" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page shows what one user can really do once all their roles, overrides and sensitive permissions are combined. Use it to answer "why can't Ella open this page?" or to check an account before an audit.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Effective Access (View as User). You can also click <strong>Effective access</strong> on a user's page, <strong>Check effective access</strong> on the By user tab of Page Access Configuration, or a figure in the <strong>Pages allowed</strong> column of the <a href="#pg-rpt-user_access">User Access and Permission Changes</a> report.</p>
+<p>Choose the user in the drop-down. Tick <strong>Show denied pages too</strong> to list every page, not only the allowed ones. <strong>Print</strong> prints the page.</p>
+<h4 id="s-what-the-page-shows">What the page shows<a class="man-hash" href="#s-what-the-page-shows" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The user box: the name, username and status, <strong>Roles</strong>, <strong>Sites</strong> ("all", or the site names), <strong>POS terminals</strong> ("any at allowed sites" when none is assigned) and <strong>Pages allowed</strong> (for example 4 of 168).</li>
+<li><strong>Sensitive permissions</strong>: each of the nine permissions with <strong>Yes</strong>, <strong>No</strong>, a number or <strong>No limit</strong>.</li>
+<li>The page table: <strong>Module</strong>, <strong>Page</strong>, <strong>Access</strong> (<strong>Allowed</strong> or <strong>Denied</strong>), a tick under each right the user has (<strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Print/Export</strong>, <strong>Approve</strong>), and <strong>Comes from</strong>.</li>
+</ul>
+<p><strong>Comes from</strong> names the role or roles that grant the page, "User override (allowed)" or "User override (denied)", "Administrator role", "Company Owner" or "Super Admin", or "No role grants it" for a denied page. Rows with an override are highlighted.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Looking up a user is itself recorded in the audit trail (action <strong>View Access</strong>).</li>
+<li>To change what you see here, change the user's roles on <a href="#pg-admin-users">User Accounts</a>, the roles on <a href="#pg-admin-roles">User Role Configuration</a>, or the overrides on <a href="#pg-admin-page_access">Page Access Configuration</a>.</li>
+</ul>
+<h2 id="pg-admin-settings">Company, Security &amp; Closing Date<a class="man-hash" href="#pg-admin-settings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page holds the company-wide settings: the company's name and TIN as printed on reports and vouchers, the password and log-in rules, the closing date, finance charge rates, POS receipt wording, the Bluetooth receipt printer, how items are listed in the transaction forms, default POS sites and classes, and the company logo.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Company, Security &amp; Closing Date</p>
+<p>All the boxes belong to one form. Change what you need anywhere on the page, then use the bar at the bottom of the window: type a <strong>Reason for the change (recorded in the audit trail)</strong> and click <strong>Save settings</strong>. The message tells you how many settings changed. Only users with <strong>Edit</strong> on this page can save; others see the settings greyed out.</p>
+<h4 id="s-company">Company<a class="man-hash" href="#s-company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company name</strong></td>
+<td>Printed at the top of every report and document, and shown in the top bar. With several companies, two companies cannot share a name.</td>
+</tr>
+<tr>
+<td><strong>Address</strong></td>
+<td>The company's address.</td>
+</tr>
+<tr>
+<td><strong>TIN</strong></td>
+<td>The company's Tax Identification Number, for example 000-123-456-000.</td>
+</tr>
+<tr>
+<td><strong>Phone</strong></td>
+<td>The company's phone number.</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>The company's e-mail address.</td>
+</tr>
+<tr>
+<td><strong>Fiscal year starts (month 1-12)</strong></td>
+<td>The month the fiscal year begins: 1 for January, 7 for July. Report date choices such as <strong>This fiscal year</strong> and <strong>Fiscal year to date</strong>, and the budget year of Set Up Budgets, follow it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>With several companies, the platform's record of the company follows the name, address, phone, e-mail and TIN saved here.</p>
+<h4 id="s-closing-date">Closing date<a class="man-hash" href="#s-closing-date" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Books closed through (blank = open)</strong></td>
+<td>The last day of the closed period, for example 07/09/2026. Leave blank to keep every period open.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Once the books are closed through a date, users without the sensitive permission <strong>Can change transactions on/before the closing date or already reconciled</strong> cannot record, change, void or delete a transaction dated on or before that date. They see "The books are closed through 07/09/2026. You do not have permission to record transactions dated on or before the closing date." or "This transaction is dated on or before the closing date (07/09/2026) and cannot be changed." The Home dashboard shows "Books closed through" with the date.</p>
+<p>There is no separate closing password: who may still work in a closed period is decided only by that sensitive permission on the user's roles. Every change of the closing date is recorded in the audit trail as a <strong>Closing Date Change</strong>, with the reason you typed.</p>
+<h4 id="s-step-by-step-close-a-month">Step by step: close a month<a class="man-hash" href="#s-step-by-step-close-a-month" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Make sure all the month's transactions are entered and the bank accounts are reconciled.</li>
+<li>Make a backup on <a href="#pg-admin-backup">Backup &amp; Restore</a>.</li>
+<li>Open <strong>Company, Security &amp; Closing Date</strong>.</li>
+<li>Enter the month's last day in <strong>Books closed through (blank = open)</strong>.</li>
+<li>Type the reason, for example "June 2026 closed", and click <strong>Save settings</strong>.</li>
+</ol>
+<h4 id="s-security-policy">Security policy<a class="man-hash" href="#s-security-policy" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Minimum password length</strong></td>
+<td>At least 6. The standard is 8.</td>
+</tr>
+<tr>
+<td><strong>Require upper- and lower-case letters</strong></td>
+<td>Ticked: a password needs both.</td>
+</tr>
+<tr>
+<td><strong>Require a number</strong></td>
+<td>Ticked: a password needs a digit.</td>
+</tr>
+<tr>
+<td><strong>Require a symbol</strong></td>
+<td>Ticked: a password needs a character that is not a letter or digit.</td>
+</tr>
+<tr>
+<td><strong>Passwords expire after (days, 0 = never)</strong></td>
+<td>After this many days since the last change, the user must choose a new password at the next page they open ("Your password has expired. Please choose a new one."). The standard is 90.</td>
+</tr>
+<tr>
+<td><strong>Failed logins before lockout</strong></td>
+<td>Wrong passwords in a row that lock the account. At least 1; the standard is 5. The log-in page tells the user how many attempts are left.</td>
+</tr>
+<tr>
+<td><strong>Log out after inactivity (minutes)</strong></td>
+<td>A user who opens no page for this long is logged out ("You were logged out after a period of inactivity."). At least 1; the standard is 30.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The password rules apply whenever a password is set or changed, by the user or on User Accounts. Existing passwords are not checked again until they are changed.</p>
+<h4 id="s-audit-trail">Audit trail<a class="man-hash" href="#s-audit-trail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Keep audit trail entries for at least (years)</strong></td>
+<td>Your company's retention period, 10 by default.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The note under it says what the program does: audit trail entries are read-only and cannot be switched off, edited or deleted, and database triggers block changes even outside the application. The program never removes audit entries, so this number records your policy; keep entries at least as long as tax and accounting regulations require.</p>
+<h4 id="s-finance-charges">Finance charges<a class="man-hash" href="#s-finance-charges" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Annual interest rate %</strong></td>
+<td>The yearly rate for overdue customer balances, 12 by default.</td>
+</tr>
+<tr>
+<td><strong>Minimum finance charge</strong></td>
+<td>The smallest charge assessed, ₱50.00 by default.</td>
+</tr>
+<tr>
+<td><strong>Grace period (days)</strong></td>
+<td>Days after the due date before a charge is assessed.</td>
+</tr>
+<tr>
+<td><strong>Charge interest on earlier finance charges</strong></td>
+<td>Ticked: earlier finance charges also earn interest.</td>
+</tr>
+</tbody>
+</table></div>
+<p>These are used by <a href="manual.php?c=customers#pg-cust-finance_charges">Assess Finance Charges</a>.</p>
+<h4 id="s-inventory-and-pos">Inventory and POS<a class="man-hash" href="#s-inventory-and-pos" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Track Item Group Sales transactions</strong></td>
+<td>Ticked (the standard): every item group sold is recorded in a table of its own, as a group (how many groups, at what price, for how much), for <a href="manual.php?c=customers#pg-rpt-sales_item_group">Sales by Item Group</a> and <a href="manual.php?c=point-of-sale#pg-rpt-pos_sales_item_group">POS Sales by Item Group</a>. Cleared: groups sold are not recorded there (their items are still recorded as always).</td>
+</tr>
+<tr>
+<td><strong>Adopt the Group Price in the Item Group</strong></td>
+<td>Ticked (the standard): the <strong>Group price</strong> of an item group is its price on estimates, sales orders, sales receipts, invoices and POS sales; the difference from the prices of its items goes to its price variance account. Cleared (or a group without a group price): a group is sold at its consolidated price, the sum of the prices of its items. See <a href="manual.php?c=inventory#sec-item-groups">Item groups: group price and price variance</a>.</td>
+</tr>
+<tr>
+<td><strong>Allow selling or moving stock below zero (with warning)</strong></td>
+<td>Ticked (the standard): a document that takes an item below zero at a site is saved, with a yellow message naming the items now below zero. Cleared: such a document is refused with "Not enough stock: …", whether it is an invoice, a sales receipt, a POS sale, a transfer, an adjustment or any other document that takes stock out; and a processing order on <a href="manual.php?c=inventory#pg-inv-process">Disassemble / Process Items</a> whose outputs were already used cannot be voided or deleted.</td>
+</tr>
+<tr>
+<td><strong>Block sales of items with no unit cost (inventory parts and the items of item groups)</strong></td>
+<td>Ticked (the standard): an invoice, sales receipt, statement charge or POS sale is refused when it sells an inventory part or assembly that has neither a <strong>Unit cost</strong> on its item form nor an average unit cost, because its cost of goods sold would be zero and its profit overstated. An item group is sold as its items, so the items of the group are checked too. The message names the items and the group they are in. Cleared: such sales are saved as before. See <a href="manual.php?c=customers#sec-no-cost-sales">Items with no unit cost</a>.</td>
+</tr>
+<tr>
+<td><strong>Block posting processing orders with no unit cost (inputs, co-products and by-products)</strong></td>
+<td>Ticked (the standard): <strong>Save and post</strong> and <strong>Complete and post</strong> on <a href="manual.php?c=inventory#pg-inv-process">Disassemble / Process Items</a> are refused when an input has no unit cost or average unit cost, or a co-product or by-product would be received at no cost (scrap may be). <strong>Save as pending</strong> is still allowed. Cleared: such orders are posted as before.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only a save that lowers the quantity is checked, so older documents can still be corrected while an item is below zero. The <strong>No negative quantities on hand</strong> check on <a href="#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a> and the <a href="manual.php?c=inventory#pg-rpt-negative_inventory">Negative Inventory Listing</a> show the items below zero.</p>
+<h4 id="s-pos-receipt-wording">POS receipt wording<a class="man-hash" href="#s-pos-receipt-wording" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>Standard wording</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Receipt title for sales</strong></td>
+<td>OFFICIAL RECEIPT</td>
+</tr>
+<tr>
+<td><strong>Receipt title for returns and refunds</strong></td>
+<td>RETURN / REFUND</td>
+</tr>
+<tr>
+<td><strong>Receipt title for sales charged to an account</strong></td>
+<td>CHARGE INVOICE</td>
+</tr>
+<tr>
+<td><strong>Receipt title for payments on account</strong></td>
+<td>ACKNOWLEDGEMENT RECEIPT</td>
+</tr>
+<tr>
+<td><strong>Text at the bottom of the receipt (one line of text per line)</strong></td>
+<td>"Thank you for shopping!" and "This serves as your official receipt." (up to 600 characters)</td>
+</tr>
+<tr>
+<td><strong>Print "Walk-in customer" when the sale has no customer name</strong></td>
+<td>Ticked</td>
+</tr>
+</tbody>
+</table></div>
+<p>A title left blank goes back to the standard wording. The customer's name is printed under the date whenever the sale has one.</p>
+<h4 id="s-bluetooth-receipt-printer">Bluetooth receipt printer<a class="man-hash" href="#s-bluetooth-receipt-printer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A POS receipt can be sent straight from the browser to a small Bluetooth roll printer, such as the Officom OC-PT210, with nothing installed on the phone or the till.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Offer a Bluetooth printer on every receipt</strong></td>
+<td>Ticked: every receipt shows a <strong>Bluetooth printer</strong> button.</td>
+</tr>
+<tr>
+<td><strong>Paper width</strong></td>
+<td><strong>58 mm roll (32 characters per line)</strong>, <strong>80 mm roll, small type (42 characters per line)</strong> or <strong>80 mm roll (48 characters per line)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Only offer printers whose name starts with (blank = offer every device found)</strong></td>
+<td>The start of your printer's name, to keep other Bluetooth devices out of the list.</td>
+</tr>
+<tr>
+<td><strong>Blank lines fed after each receipt</strong></td>
+<td>Paper fed at the end so the receipt can be torn off; 4 by default.</td>
+</tr>
+<tr>
+<td><strong>Cut the paper at the end (printers with a cutter only)</strong></td>
+<td>Tick only if the printer has a cutter.</td>
+</tr>
+<tr>
+<td><strong>Print as soon as a receipt opens, when the printer is already connected</strong></td>
+<td>Ticked: no need to tap the button for each sale.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Test print</strong> prints a short sample so you can check the paper width. The printer is paired once from a receipt: tap <strong>Bluetooth printer</strong>, pick it from the list the browser shows, and it is remembered for the next sale.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Bluetooth printing works only in Chrome, Edge, Opera or Samsung Internet on Android, or Chrome or Edge on a computer. Firefox, iPhones and iPads, and the browsers inside Facebook and Messenger cannot use Bluetooth. The program must also be opened on an https:// address or on http://localhost/. On a plain address such as http://192.168.1.10/ the browser refuses Bluetooth, and the receipt says so.</p></div>
+<h4 id="s-searching-for-items">Searching for items<a class="man-hash" href="#s-searching-for-items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>This box decides how items are listed in the item drop-downs of the transaction forms: <strong>Item name/code + Display name</strong> (for example "LAP-001 - Laptop 14-inch i5 16GB") or <strong>Display name + Item name/code</strong> ("Laptop 14-inch i5 16GB - LAP-001"). Typing any part of either the code or the display name finds the item, whichever order you choose.</p>
+<ul>
+<li><strong>All transactions, unless one is set differently below</strong> is the choice for every form.</li>
+<li>The two buttons <strong>Set every transaction to Item name/code + Display name</strong> and <strong>Set every transaction to Display name + Item name/code</strong> set all the forms at once.</li>
+<li>The table lists the 22 forms that have item boxes (Create Estimates, Create Invoices, Enter Bills, POS Register, Write Checks and the others), each with a choice of its own. A form set differently from the overall choice is marked. Receipt Management lists supplier documents, not items; the bill it opens follows Enter Bills.</li>
+</ul>
+<p>A form on the same choice as the overall box follows it when you change that box.</p>
+<h4 id="s-default-site-class-for-pos-transactions">Default site &amp; class for POS transactions<a class="man-hash" href="#s-default-site-class-for-pos-transactions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>This box appears when there are users who can be given a default. It is optional and set for one user at a time. Use <strong>Find a user</strong> to find a row.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to choose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User name</strong></td>
+<td>The user (with username and roles).</td>
+</tr>
+<tr>
+<td><strong>Default site</strong></td>
+<td>The site whose counter the user's <strong>POS Register</strong> opens on, or <strong>No default</strong>.</td>
+</tr>
+<tr>
+<td><strong>Default class</strong></td>
+<td>The class every new sale of the user starts with, or <strong>No default</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Anyone left blank works as before: the counter is the first one they may use, and the class comes from the counter or from the previous sale. The cashier can still change either one on the sale in front of them.</p>
+<h4 id="s-company-logo">Company logo<a class="man-hash" href="#s-company-logo" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Upload the logo</strong> (or <strong>Replace the logo</strong>)</td>
+<td>Choose a JPG, JPEG, PNG, GIF, WEBP or BMP file of up to 2 MB. A wide logo on a white or transparent background prints best. The preview shows it before you save.</td>
+</tr>
+<tr>
+<td><strong>Remove the logo</strong></td>
+<td>Tick and save to remove the current logo.</td>
+</tr>
+<tr>
+<td><strong>Show the logo on</strong></td>
+<td>Tick each report and voucher that should carry the logo.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The list under <strong>Show the logo on</strong> has a group for <strong>Vouchers and documents</strong> (such as Check Voucher, Cash Voucher, Journal Voucher, Deposit Voucher, POS Receipt (register) and Customer Statement) and a group of reports for each module. Ticking a group's box ticks the whole group. <strong>Find a report or voucher</strong> narrows the list, <strong>Tick all</strong> and <strong>Clear all</strong> work on the entries shown, and the count beside the heading says how many are ticked. The logo is printed beside the company name on the reports and vouchers ticked, on screen, on Print / PDF and on paper.</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Messages when saving: "Passwords must be at least 6 characters.", "Allow at least one failed login.", "The session timeout must be at least one minute.", "Books closed through (blank = open): enter a valid date." and, for the logo, "The logo file is larger than 2 MB. Save a smaller copy and upload that." or "That file is not a picture the system can show. Use a JPG or PNG file."</li>
+<li>Every save is recorded in the audit trail as a <strong>Settings Change</strong> listing each setting's old and new value.</li>
+</ul>
+<h2 id="pg-admin-utilities">Utilities: Verify &amp; Rebuild Data<a class="man-hash" href="#pg-admin-utilities" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Verify Data checks that the books, the customer and vendor balances, and inventory agree with each other. Rebuild Data repairs what it can: it replays inventory transactions in date order, on each date the stock received before the stock used or sold, so costs and cost of sales match the dates, and it refreshes document balances. Run the checks at every month-end before you close the books.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Utilities: Verify &amp; Rebuild Data. The <strong>Verify &amp; Rebuild Data</strong> button on Backup &amp; Restore also opens it.</p>
+<h4 id="s-verify-data">Verify data<a class="man-hash" href="#s-verify-data" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The checks run every time you open the page. <strong>Run the checks again</strong> repeats them. The heading shows <strong>No problems</strong> or the number of problems, and the number of warnings. Each check has a green tick (in order), a yellow triangle (warning) or a red cross (problem), with the <strong>Result</strong> and <strong>What to do</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Check</th>
+<th>What it compares</th>
+<th>If it fails</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>General ledger balances</strong></td>
+<td>All debits less all credits in the ledger; it must be 0.00.</td>
+<td>Contact support: a posting did not balance.</td>
+</tr>
+<tr>
+<td><strong>Every transaction balances</strong></td>
+<td>The debits and credits of each transaction.</td>
+<td>The screen suggests Rebuild data.</td>
+</tr>
+<tr>
+<td><strong>Accounts receivable matches the customer balances</strong></td>
+<td>The A/R accounts (1100 Accounts Receivable) against the total of the customers' balances.</td>
+<td>Rebuild data refreshes document balances.</td>
+</tr>
+<tr>
+<td><strong>Accounts payable matches the vendor balances</strong></td>
+<td>The A/P accounts (2000 Accounts Payable) against the total of the vendors' balances.</td>
+<td>Rebuild data refreshes document balances.</td>
+</tr>
+<tr>
+<td><strong>Inventory ledger matches the inventory movements</strong></td>
+<td>The inventory asset accounts (1200 Inventory) against the value of all stock movements.</td>
+<td>Rebuild data recalculates inventory costs.</td>
+</tr>
+<tr>
+<td><strong>Quantities on hand match the movements</strong></td>
+<td>Each item's quantity at each site against the movements that make it up, including a site that has movements but no quantity row.</td>
+<td>Rebuild data recalculates quantities. Since version 31 the average cost is always worked out on the movements, and an item whose quantities differ is put right the next time it moves.</td>
+</tr>
+<tr>
+<td><strong>Average cost matches the value on hand</strong> (warning)</td>
+<td>Each item's average cost against its value and quantity on hand.</td>
+<td>Rebuild data recalculates inventory costs.</td>
+</tr>
+<tr>
+<td><strong>Inventory entered in date order</strong> (warning)</td>
+<td>Items with movements recorded after later-dated ones, such as a purchase entered late but dated early, or, on one date, stock used or sold before that day's receipt was entered (a processing order typed before the bill of the same day).</td>
+<td>Rebuild data replays them in date order.</td>
+</tr>
+<tr>
+<td><strong>No negative quantities on hand</strong> (warning)</td>
+<td>Items below zero at a site.</td>
+<td>Record the missing purchase, transfer or adjustment. See <a href="manual.php?c=inventory#pg-rpt-negative_inventory">Negative Inventory Listing</a>.</td>
+</tr>
+<tr>
+<td><strong>No orphan transaction lines</strong></td>
+<td>Lines left without their transaction.</td>
+<td>Contact support.</td>
+</tr>
+<tr>
+<td><strong>No document is over-applied</strong></td>
+<td>Payments, discounts and withholding applied to a document beyond its total.</td>
+<td>Open the payment or credit memo and correct the applied amounts.</td>
+</tr>
+<tr>
+<td><strong>Document statuses match their balances</strong></td>
+<td>Invoices, bills, statement charges and finance charges whose Open, Partial or Paid status does not match the balance.</td>
+<td>Rebuild data refreshes document balances.</td>
+</tr>
+<tr>
+<td><strong>Module default accounts are set</strong></td>
+<td>Every entry of Module Default Accounts has an account.</td>
+<td>Set them under <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>In the screenshot, <strong>Inventory entered in date order</strong> warns that 9 items (BAG-001, CAB-HDMI, KEY-001, LAP-001 and others) have movements recorded out of date order. A rebuild re-costs them so the cost of sales on each sale matches its date.</p></div>
+<h4 id="s-rebuild-data">Rebuild data<a class="man-hash" href="#s-rebuild-data" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recalculate inventory costs</strong></td>
+<td>Replays every inventory transaction in date order: by date; on one date, first the transactions that only bring stock in (bills, item receipts, returns, adjustments up), then those that take some out and put some in (processing orders, builds, transfers), then those that only take it out (sales, adjustments down); then in the order entered. Average costs, item values and the cost of sales on past sales are restated. The sales amounts, quantities and the rest of the ledger are untouched.</td>
+</tr>
+<tr>
+<td><strong>Refresh document balances and statuses</strong></td>
+<td>Recalculates the open balances of invoices, bills, statement and finance charges, credit memos, payments, supplier credits and sales receipts, and the status of estimates, sales orders and purchase orders.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-rebuild-data">Step by step: rebuild data<a class="man-hash" href="#s-step-by-step-rebuild-data" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Make a backup on <a href="#pg-admin-backup">Backup &amp; Restore</a>.</li>
+<li>Ask everyone else to stop entering transactions until you finish.</li>
+<li>Tick one or both options.</li>
+<li>Type a <strong>Reason (kept in the audit trail)</strong>, for example "month-end check".</li>
+<li>Click <strong>Rebuild data</strong> and confirm ("Rebuild now? Cost of sales on past sales may change. Make a backup first.").</li>
+<li>Read the <strong>Rebuild result</strong>, then look at the checks again.</li>
+</ol>
+<p>The <strong>Rebuild result</strong> says how many inventory transactions were replayed over how many items, how many document balances were refreshed and how long it took. Users who may view costs also see the total cost of sales before and after, the difference, and a table of the first 100 transactions whose cost changed (<strong>Date</strong>, <strong>Type</strong>, <strong>Number</strong>, <strong>Cost before</strong>, <strong>Cost after</strong>, <strong>Difference</strong>). If nothing changed, it says "No cost of sales amount changed: every transaction was already costed in date order."</p>
+<h4 id="s-what-it-changes">What it changes<a class="man-hash" href="#s-what-it-changes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A cost rebuild changes the amounts posted to the cost of sales account (5000 Cost of Goods Sold) and the inventory account (1200 Inventory) on transactions that move stock. Transactions dated on or before the closing date are re-costed as well; their sales totals do not change. The rebuild runs as one piece of work: if it fails part-way, nothing is changed. It is recorded in the audit trail as <strong>Rebuild Data</strong>, with the cost of sales before and after.</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Anyone who can open the page can run the checks. <strong>Rebuild data</strong> needs <strong>Edit</strong> on this page; without it the box says "You can run the checks above. Rebuilding data needs the edit permission on this page." The standard Accountant role can run the checks but not rebuild.</li>
+<li>A rebuild re-posts only the transactions that move inventory. If <strong>General ledger balances</strong> or <strong>Every transaction balances</strong> still fails after a rebuild, contact support.</li>
+<li>The page does not change any transaction's date, quantity or selling price.</li>
+</ul>
+<h2 id="pg-admin-import">Import from CSV<a class="man-hash" href="#pg-admin-import" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use this page to load records from a spreadsheet instead of typing them: the chart of accounts, inventory items with their opening stock, customers, vendors, fixed assets, and whole transactions such as invoices, bills, checks, journal entries and POS sales. It is most useful when you start using the program and bring over lists and balances from another system.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Import from CSV. The page has a <strong>Backup &amp; Restore</strong> button at the top, because you should back up before every import.</p>
+<h4 id="s-how-an-import-is-safe">How an import is safe<a class="man-hash" href="#s-how-an-import-is-safe" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Nothing is written until every line of the file has been read and checked. A file with even one bad line changes nothing.</li>
+<li><strong>Check the file</strong> reads the whole file and reports every problem without writing anything.</li>
+<li>The writing runs as one piece of work, so a problem found while writing also leaves the books exactly as they were.</li>
+<li>A document number that is already in the books stops a transaction import, so the same file is not posted twice by mistake (checks are recognised by their check number).</li>
+</ul>
+<h4 id="s-what-you-can-import">What you can import<a class="man-hash" href="#s-what-you-can-import" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The drop-down <strong>What are you importing?</strong> groups the kinds of records like this:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Group</th>
+<th>What are you importing?</th>
+<th>One line of the file is</th>
+<th>An existing record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lists</td>
+<td><strong>Chart of accounts</strong></td>
+<td>one account</td>
+<td>same code: updated</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td><strong>Inventory items</strong></td>
+<td>one item</td>
+<td>same code: updated</td>
+</tr>
+<tr>
+<td>Names</td>
+<td><strong>Customers</strong></td>
+<td>one customer or job</td>
+<td>same name: updated</td>
+</tr>
+<tr>
+<td>Names</td>
+<td><strong>Vendors (suppliers)</strong></td>
+<td>one supplier</td>
+<td>same name: updated</td>
+</tr>
+<tr>
+<td>Names</td>
+<td><strong>Fixed assets</strong></td>
+<td>one asset</td>
+<td>always added</td>
+</tr>
+<tr>
+<td>Customer transactions</td>
+<td><strong>Invoices</strong>, <strong>Sales receipts</strong>, <strong>Sales orders</strong></td>
+<td>one item line</td>
+<td>same number: refused</td>
+</tr>
+<tr>
+<td>Supplier transactions</td>
+<td><strong>Purchase orders</strong>, <strong>Receive items and enter bills</strong></td>
+<td>one item line</td>
+<td>same number: refused</td>
+</tr>
+<tr>
+<td>Banking</td>
+<td><strong>Write checks</strong>, <strong>Cash vouchers</strong>, <strong>Journal entries</strong></td>
+<td>one line of the document</td>
+<td>same number: refused</td>
+</tr>
+<tr>
+<td>Point of sale</td>
+<td><strong>POS transactions</strong></td>
+<td>one item line</td>
+<td>same receipt no.: refused</td>
+</tr>
+</tbody>
+</table></div>
+<p>For transactions, the lines that carry the same <strong>Document no.</strong> (or <strong>Receipt no.</strong> for POS) make one document; its header details (date, customer, memo and so on) are taken from its first line.</p>
+<h4 id="s-preparing-the-file">Preparing the file<a class="man-hash" href="#s-preparing-the-file" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Save the sheet as CSV in Excel: <strong>File &gt; Save As &gt; CSV (Comma delimited)</strong>. The file name must end in <code>.csv</code> or <code>.txt</code>. A file that uses semicolons instead of commas is read as well. Any of the ways Excel saves a CSV is read correctly: <strong>CSV (Comma delimited)</strong> in Windows' own encoding, <strong>CSV UTF-8</strong> and <strong>Unicode Text</strong> (UTF-16, with tabs). Curly quotes (“Mismo” brand), dashes, the peso sign and accented letters in a name or a description come through as typed; they used to stop the import with an "Incorrect string value" error.</li>
+<li>The first line holds the column names, such as <code>code</code>, <code>name</code> and <code>opening_qty</code>. The order does not matter, capitals do not matter, and a space may stand for the underscore (<code>Sales Price</code> is read as <code>sales_price</code>). A column you do not need can be left out. A column the program does not know is ignored. Blank lines are skipped.</li>
+<li>Dates may be written as 2026-09-30, 09/30/2026, Sep 30, 2026 and in other common ways. A date such as 03/04/2026 is read month first, as March 4.</li>
+<li>Numbers may have comma separators (12,500.00). Do not type a peso sign or other text in a number column.</li>
+<li>Yes/no columns accept Yes, Y, 1, True, Oo or Opo for yes. Anything else counts as no.</li>
+<li>A column that names a list entry (a term, a tax code, an account, a site, a customer) must match the list exactly. Accounts may be given by code or name (6040 or Office Supplies Expense), tax codes by code (VAT12), sites by code or name (WH or Main Warehouse), items by code, display name or barcode.</li>
+<li>The template's second line is an example. Replace it with your own data or delete it before importing.</li>
+</ul>
+<h4 id="s-step-by-step-check-a-file-then-import-it">Step by step: check a file, then import it<a class="man-hash" href="#s-step-by-step-check-a-file-then-import-it" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose the kind of record in <strong>What are you importing?</strong> The page shows a note on how that kind is read, a <strong>Download the blank template</strong> button, and on the right a table of its columns with the ones that are needed.</li>
+<li>Click <strong>Download the blank template</strong> and open it in Excel.</li>
+<li>Fill in one line per record (or per document line). Save it as CSV.</li>
+<li>Under <strong>CSV file</strong>, click <strong>Choose File</strong> and pick the file.</li>
+<li>Click <strong>Check the file</strong>.</li>
+<li>If the result says <strong>The file was not imported</strong>, correct the listed lines in the spreadsheet, save, choose the file again and check again.</li>
+<li>When the result says <strong>The file was checked</strong> and "The file is in order: nothing was written yet", look the lines over.</li>
+<li>Click <strong>Import these N item(s)</strong> (or <strong>Import these N record(s)</strong>) and confirm. The file you checked is imported without being chosen again.</li>
+</ol>
+<p><strong>Check and import in one step</strong> checks the file and, if it is in order, imports it at once. The program asks you to confirm ("Check and import this file in one step? Records are added to the books."). Use it only for files you have checked before.</p>
+<h4 id="s-the-result-of-a-check">The result of a check<a class="man-hash" href="#s-the-result-of-a-check" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When the file has problems, the result lists them by line number of the file (line 1 is the column names), up to 200 of them. Nothing was written.</p>
+<p>In this example, line 4 names the site "XX", which does not exist, so the program reports that "XX" is not in the sites list and asks for the site of the opening quantity. Changing it to WH or Main Warehouse fixes both lines of the message.</p>
+<p>When the file is in order, the result shows a preview.</p>
+<ul>
+<li>For <strong>Inventory items</strong>: the number of new items, items to update, items with opening stock (and its value, if you may view costs) and any new categories, then a table with <strong>Line</strong>, <strong>Item</strong>, <strong>Type</strong>, <strong>Category</strong>, <strong>Unit</strong>, <strong>Cost</strong> (only if you may view costs), <strong>Price</strong>, <strong>Opening stock</strong> and <strong>Will be</strong> ("Added", or "Updated" with the number of columns that will change).</li>
+<li>For accounts, customers, vendors and fixed assets: <strong>Line</strong>, <strong>Name</strong> and <strong>Details</strong>.</li>
+<li>For transactions: <strong>Document</strong>, <strong>Date</strong>, <strong>Lines</strong> and <strong>Total</strong>.</li>
+</ul>
+<p>A file that passed the check is kept on the server for one day for the <strong>Import these</strong> button. If it is gone ("The checked file is no longer here. Choose the file and check it again."), check the file again.</p>
+<h4 id="s-after-the-import">After the import<a class="man-hash" href="#s-after-the-import" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The result then shows <strong>Imported</strong>, how many records were written, and <strong>What was created</strong>, with a link to each item or transaction (updated records say "(updated)").</p>
+<p>The <strong>Recent imports</strong> table at the bottom lists the last 15 imports: <strong>When</strong>, <strong>What</strong>, <strong>File</strong>, <strong>Records</strong>, <strong>Written</strong> (0 when the file was refused), <strong>By</strong> and <strong>Notes</strong> (the first problems). A check alone is not listed. Every record added or updated by an import is recorded in the audit trail as <strong>Import Create</strong> or <strong>Import Update</strong>.</p>
+<h4 id="s-inventory-items-the-columns">Inventory items: the columns<a class="man-hash" href="#s-inventory-items-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The price level columns depend on your price levels: there is one <code>price_level_</code> column for every active price level, numbered by the level. The template always has the right ones. In the demo company they are <code>price_level_1</code> Wholesale, <code>price_level_2</code> VIP, <code>price_level_3</code> Retail Plus, <code>price_level_4</code> Price Level 4 and <code>price_level_5</code> Price Level 5.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td>Item name / code, unique, up to 40 characters (LAP-001).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Display name, up to 120 characters.</td>
+<td>For a new item</td>
+</tr>
+<tr>
+<td><code>item_type</code></td>
+<td>Inventory part, Non-inventory part, Service, Inventory assembly, Other charge, Group, Discount, Subtotal or Payment. Blank = Inventory part.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>barcode</code></td>
+<td>Barcode, unique.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Sales description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>purchase_description</code></td>
+<td>Purchase description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Category. A new one is added to the Category list.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>Unit such as pc, box or kg. Blank = pc. Ignored when a U/M set is named.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>uom_set</code></td>
+<td>U/M set as named in Units of Measure. Blank = single unit.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sales_unit</code></td>
+<td>Unit of the U/M set offered first on sales (code or name).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>purchase_unit</code></td>
+<td>Unit of the U/M set offered first on purchases.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cost</code></td>
+<td>Purchase cost per unit.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sales_price</code></td>
+<td>Sales price. For a discount item, the fixed discount amount.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>price_level_1</code> and the others</td>
+<td>Price for that price level. Blank = the level's own percentage.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>discount_pct</code></td>
+<td>Discount items: the discount %, or 0 for the fixed amount in <code>sales_price</code>.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tax_code</code></td>
+<td>Tax code (VAT12, ZR, EX, NT).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>income_account</code></td>
+<td>Income account, code or name. Blank = the module default (4000 Sales).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cogs_account</code></td>
+<td>Cost of goods sold account, inventory parts and assemblies only. Blank = 5000.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>asset_account</code></td>
+<td>Inventory asset account, inventory parts and assemblies only. Blank = 1200.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expense_account</code></td>
+<td>Expense or purchase account for non-inventory parts, services and other charges.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>preferred_vendor</code></td>
+<td>Preferred supplier, as named in the vendor list.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>reorder_point</code></td>
+<td>Reorder point (minimum).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>max_stock</code></td>
+<td>Maximum stock.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>build_point</code></td>
+<td>Build point, for assemblies.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>components</code></td>
+<td>Assemblies and groups: CODE x quantity; CODE x quantity.</td>
+<td>For a new assembly or group</td>
+</tr>
+<tr>
+<td><code>opening_qty</code></td>
+<td>Opening quantity on hand, new inventory parts and assemblies only.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>opening_cost</code></td>
+<td>Opening cost per unit. Blank = the <code>cost</code> column.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>opening_site</code></td>
+<td>Site of the opening quantity, code or name. Blank = the only site, if there is one.</td>
+<td>With <code>opening_qty</code></td>
+</tr>
+<tr>
+<td><code>opening_date</code></td>
+<td>Date of the opening quantity. Blank = today.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>Yes for an active item. Blank counts as yes.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-inventory-items-how-the-import-treats-them">Inventory items: how the import treats them<a class="man-hash" href="#s-inventory-items-how-the-import-treats-them" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>An item whose <code>code</code> is already on the Item List is updated, not added again, and only the columns that are in the file change. A blank cell in a column that is in the file clears that field (for example a blank <code>barcode</code> removes the barcode). A blank <code>income_account</code>, <code>cogs_account</code> or <code>asset_account</code> keeps what the item has.</li>
+<li>The type of an existing item cannot be changed by an import.</li>
+<li>Components may be written as <code>BOLT x 4; NUT x 4</code>, and also with <code>*</code>, <code>=</code> or <code>:</code> instead of <code>x</code>, or one per line. A component with no quantity counts as 1. A component must already exist or appear earlier in the file, and it must be an inventory part, assembly, service, non-inventory part or other charge. Components in the file replace the item's components.</li>
+<li>Opening quantities are only for new inventory parts and assemblies. Change the stock of an existing item with <a href="manual.php?c=inventory#pg-inv-adjust">Adjust Quantity/Value on Hand</a>.</li>
+<li>A price level column with a price sets a special price for that level; a blank cell removes the special price so the level's own percentage applies again.</li>
+<li>A U/M set cannot be changed on an item that was already entered in units of its present set.</li>
+<li>If your roles do not let you view costs, the file may not fill <code>cost</code>, <code>opening_cost</code> or <code>opening_qty</code>.</li>
+</ul>
+<h4 id="s-inventory-items-what-it-records">Inventory items: what it records<a class="man-hash" href="#s-inventory-items-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The items are added to the <a href="manual.php?c=inventory#pg-inv-items">Item List</a>. For the opening quantities, the program posts one inventory adjustment for each site and date, with the memo "Opening stock of N imported item(s)":</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory (the item's asset account)</td>
+<td>quantity x opening cost</td>
+<td></td>
+</tr>
+<tr>
+<td>3900 Opening Balance Equity</td>
+<td></td>
+<td>same amount</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The checked file above adds PRN-001 Inkjet Printer with 5 at WH - Main Warehouse at ₱4,500.00 (₱22,500.00) and CAB-USB USB Cable 2m with 10 at ₱80.00 (₱800.00), both as of 09/01/2026. Both lines share a site and date, so one adjustment of ₱23,300.00 is posted: Inventory debited and Opening Balance Equity credited.</p></div>
+<p>An opening date on or before the closing date is refused unless you may change closed periods.</p>
+<h4 id="s-chart-of-accounts-the-columns">Chart of accounts: the columns<a class="man-hash" href="#s-chart-of-accounts-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td>Account code (6075).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Account name.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>account_type</code></td>
+<td>Account type, exactly as the Chart of Accounts lists it (see below).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>parent_code</code></td>
+<td>For a sub-account, the code of its parent.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>normal_balance</code></td>
+<td>Debit or Credit. Blank = from the account type (right for all but contra accounts).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>bank_account_no</code></td>
+<td>Bank account number, for bank accounts.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>with_sl</code></td>
+<td>Yes when the account keeps a subsidiary ledger ("With SL").</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>Yes for an active account. Blank counts as yes.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The account types are Bank, Accounts Receivable, Other Current Asset, Fixed Asset, Other Asset, Accounts Payable, Credit Card, Other Current Liability, Long Term Liability, Equity, Income, Other Income, Cost of Goods Sold, Expense and Other Expense.</p>
+<p>The parent must already exist or appear earlier in the file, and it must be of the same category (asset, liability, equity, income or expense). An account whose code already exists is updated with the file's values; it cannot move to another category if the modules post to it or it already has transactions. See <a href="manual.php?c=chart-of-accounts">Chart of Accounts</a>.</p>
+<h4 id="s-customers-the-columns">Customers: the columns<a class="man-hash" href="#s-customers-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Customer name, or Customer:Job for a job (ABC Trading Corp.:Office Fit-out).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>company_name</code>, <code>contact_person</code>, <code>phone</code>, <code>mobile</code>, <code>email</code></td>
+<td>Contact details.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>billing_address</code>, <code>shipping_address</code>, <code>tin</code></td>
+<td>Addresses and TIN.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>terms</code></td>
+<td>Payment terms as named in the Terms list (Net 30).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>credit_limit</code></td>
+<td>Credit limit.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>price_level</code>, <code>tax_code</code>, <code>customer_type</code>, <code>sales_rep</code></td>
+<td>Entries of those lists.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>allow_pos_charge</code></td>
+<td>Yes if the customer can charge at the POS.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>Notes.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>For a job, the customer must already exist or appear earlier in the file.</p>
+<p>When a customer with the same name (or the same job under the same customer) is already on the list, the import updates it, and only the cells of its line that have something in them are changed. A column the file does not have, or a blank cell, keeps what is saved, and an inactive customer stays inactive. So a file with just <code>name</code> and <code>phone</code> updates the phone numbers and nothing else. To clear a field, change it on the customer's own form. Every change is recorded in the audit trail with the value before and after.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>ABC Trading Corp. has terms Net 30 and a credit limit of ₱250,000.00. A file with the line <code>ABC Trading Corp.,0917 555 0101,,</code> under the columns <code>name,mobile,terms,credit_limit</code> changes the mobile number only: the terms and the credit limit stay as they were.</p></div>
+<h4 id="s-vendors-suppliers-the-columns">Vendors (suppliers): the columns<a class="man-hash" href="#s-vendors-suppliers-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Supplier name (TechDistributors Inc.).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>company_name</code>, <code>contact_person</code>, <code>phone</code>, <code>fax</code>, <code>email</code>, <code>address</code>, <code>tin</code></td>
+<td>Contact details and TIN.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>terms</code></td>
+<td>Payment terms.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>credit_limit</code></td>
+<td>Credit limit.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>default_expense_account</code></td>
+<td>Account the purchases usually go to, code or name (6040).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>account_no</code></td>
+<td>Your account number with the supplier.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>Notes.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>A supplier with the same name that is already on the list is updated the same way as a customer: only the filled cells change, and blank cells keep what is saved.</p>
+<h4 id="s-fixed-assets-the-columns">Fixed assets: the columns<a class="man-hash" href="#s-fixed-assets-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>description</code></td>
+<td>Description of the asset.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Asset category as named in Asset Categories.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>asset_no</code></td>
+<td>Asset number. Blank = the next number. Must not be used already.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>Location. A new one is added to the Location list.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>serial_no</code></td>
+<td>Serial or plate number.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>vendor</code>, <code>class</code></td>
+<td>Supplier it was bought from; default class.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>acquisition_date</code></td>
+<td>Date acquired.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>cost</code></td>
+<td>Cost.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>salvage_value</code></td>
+<td>Salvage (residual) value.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>useful_life_years</code></td>
+<td>Useful life in years, more than zero.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>straight_line, declining_balance, syd or units_of_production. Blank = straight line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>opening_accum_dep</code>, <code>opening_through</code></td>
+<td>Accumulated depreciation to date, and the date it runs through.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>post_opening</code></td>
+<td>Yes to post an opening-balance entry.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>Notes.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>An asset is added to the <a href="manual.php?c=fixed-assets#pg-fa-register">Fixed Asset Register</a> without an accounting entry, so you can load a register beside an opening trial balance that already carries the assets. Put Yes in <code>post_opening</code> for assets that are not on the books yet: the program then debits the category's asset account with the cost, credits its accumulated depreciation account with <code>opening_accum_dep</code>, and credits 3900 Opening Balance Equity with the difference. An asset with accumulated depreciation needs <code>opening_through</code>.</p>
+<h4 id="s-invoices-sales-receipts-and-sales-orders-the-columns">Invoices, sales receipts and sales orders: the columns<a class="man-hash" href="#s-invoices-sales-receipts-and-sales-orders-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_no</code></td>
+<td>Your own reference. Lines with the same one make one document.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date. All lines of a document must carry the same date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>customer</code></td>
+<td>Customer, or Customer:Job.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>terms</code></td>
+<td>Payment terms.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>item</code></td>
+<td>Item code, display name or barcode.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>qty</code>, <code>rate</code></td>
+<td>Quantity and price per unit.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>discount_pct</code></td>
+<td>Discount %.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tax_code</code>, <code>site</code>, <code>class</code></td>
+<td>Tax code, inventory site and class of the line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>memo</code></td>
+<td>Memo (header).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>deposit_to</code></td>
+<td>Sales receipts only: the bank or cash account. Blank = 1050 Undeposited Funds.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Each invoice goes to 1100 Accounts Receivable with a due date from the terms. Each document posts exactly as one entered on <a href="manual.php?c=customers#pg-cust-invoices">Create Invoices</a> or <a href="manual.php?c=customers#pg-cust-sales_receipts">Enter Sales Receipts</a> would. Sales orders are saved as open orders and do not post until invoiced (see <a href="manual.php?c=customers#pg-cust-sales_orders">Create Sales Orders</a>). The <code>doc_no</code> is kept as the document's reference number; the program gives the document its own next number.</p>
+<h4 id="s-purchase-orders-and-receive-items-and-enter-bills-the-column">Purchase orders and receive items and enter bills: the columns<a class="man-hash" href="#s-purchase-orders-and-receive-items-and-enter-bills-the-column" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_no</code></td>
+<td>Your own reference. Lines with the same one make one document.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>vendor</code></td>
+<td>Supplier.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>ref_no</code></td>
+<td>Bills: the supplier's invoice number. Purchase orders: a reference number.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>item</code></td>
+<td>Item code, display name or barcode.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>qty</code>, <code>rate</code></td>
+<td>Quantity and cost per unit.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>tax_code</code>, <code>site</code>, <code>class</code></td>
+<td>Tax code, inventory site and class.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>memo</code></td>
+<td>Memo (header).</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Each <strong>Receive items and enter bills</strong> document becomes a bill with the vendor's terms: the items come into stock and 2000 Accounts Payable is credited, as on <a href="manual.php?c=vendors#pg-vend-receive_bill">Receive Items and Enter Bills</a>. A bill is refused as a duplicate when the supplier's invoice number (or the <code>doc_no</code>, if <code>ref_no</code> is blank) is already on a bill. Purchase orders are saved as open orders and do not post (see <a href="manual.php?c=vendors#pg-vend-purchase_orders">Create Purchase Orders</a>).</p>
+<h4 id="s-write-checks-the-columns">Write checks: the columns<a class="man-hash" href="#s-write-checks-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_no</code></td>
+<td>Your own reference. Lines with the same one make one check.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>bank_account</code></td>
+<td>Bank account, code or name (1010).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>payee</code></td>
+<td>A supplier's name, or any name.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>check_no</code></td>
+<td>Check number. A check number already used on a check is refused.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>account</code></td>
+<td>Account charged, code or name (6020).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Description of the line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>Amount.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>tax_code</code>, <code>class</code></td>
+<td>Tax code and class.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>memo</code></td>
+<td>Memo.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Each check credits the bank account and debits the accounts charged, as on <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a>. When the payee matches a supplier's name, the check is linked to that supplier. A check without a <code>check_no</code> cannot be recognised as a duplicate, so never import the same checks file twice.</p>
+<h4 id="s-cash-vouchers-the-columns">Cash vouchers: the columns<a class="man-hash" href="#s-cash-vouchers-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_no</code></td>
+<td>Lines with the same one make one voucher.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>cash_account</code></td>
+<td>Cash account paid from, code or name (1005 Petty Cash Fund).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>paid_to</code></td>
+<td>Employee, customer, supplier or any name.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>account</code></td>
+<td>Account of the line, code or name.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>debit</code>, <code>credit</code></td>
+<td>Amount of the line on one side.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>memo</code></td>
+<td>Memo of the line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>particulars</code></td>
+<td>Particulars (header).</td>
+<td></td>
+</tr>
+<tr>
+<td><code>ref_no</code></td>
+<td>Reference number.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The cash account is credited with the debits less the credits, which must be more than zero. See <a href="manual.php?c=banking#pg-bank-cash_voucher">Cash Voucher</a>.</p>
+<h4 id="s-journal-entries-the-columns">Journal entries: the columns<a class="man-hash" href="#s-journal-entries-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_no</code></td>
+<td>Lines with the same one make one entry.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>account</code></td>
+<td>Account, code or name.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>debit</code>, <code>credit</code></td>
+<td>Amount of the line on one side.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Memo of the line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Customer, supplier, employee or other name on the line.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>memo</code>, <code>ref_no</code></td>
+<td>Memo and reference number of the entry.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The debits and the credits of each entry must be equal. See <a href="manual.php?c=chart-of-accounts#pg-coa-journal">Make Journal Entries</a>.</p>
+<h4 id="s-pos-transactions-the-columns">POS transactions: the columns<a class="man-hash" href="#s-pos-transactions-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What goes in it</th>
+<th>Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>receipt_no</code></td>
+<td>Receipt number. Lines with the same one make one sale.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Date.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>terminal</code></td>
+<td>POS terminal, code or name (POS-01).</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>customer</code></td>
+<td>Customer. Blank = walk-in.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>item</code></td>
+<td>Item code, display name or barcode.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Description.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>qty</code>, <code>price</code></td>
+<td>Quantity and price per unit.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>discount_pct</code></td>
+<td>Discount %.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tax_code</code></td>
+<td>Tax code.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>Cash, GCash, P.O. Card and so on. Blank = Cash.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>Each receipt becomes a completed POS sale at the terminal's site, paid in full with the payment method given. If the terminal has no open shift, one is opened for it. See <a href="manual.php?c=point-of-sale">Point of Sale</a>.</p>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Checking and importing need <strong>Create</strong> on this page. Downloading a template needs <strong>Print/Export</strong>.</li>
+<li>Transactions are saved as if entered by hand, so the closing date applies. A transaction dated on or before it is refused unless you may change closed periods; such a problem is found while writing and shown at the top of the page, and nothing is written.</li>
+<li>Messages about the file itself: "Choose a CSV file (.csv). In Excel: File &gt; Save As &gt; CSV (Comma delimited).", "The file is empty.", "The file holds no data lines." and "The first line of the file must hold the column names. Download the template for "Inventory items" to see them."</li>
+<li>Typical line messages: "Line 5: "Net 45" is not in the terms list (column "terms").", "Line 7: the code LAP-001 is already on line 3 of the file.", "Document INV-IMP-001 is already in the books as INV-00012. Take it out of the file, or change its document number." and "Document JE-IMP-001: the debits (25,000.00) and the credits (24,000.00) are not equal."</li>
+</ul>
+<h2 id="pg-admin-backup">Backup &amp; Restore<a class="man-hash" href="#pg-admin-backup" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A backup is one <code>.sql</code> file that holds every table and every row of the company's database. Make one before every month-end close, before a large price change, before every import and before a rebuild, and keep copies off the server. Restoring replaces what is in the database now with what is in the file.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Backup &amp; Restore. The <strong>Backup &amp; Restore</strong> button on Import from CSV also opens it.</p>
+<h4 id="s-make-a-backup">Make a backup<a class="man-hash" href="#s-make-a-backup" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The box shows the <strong>Database</strong> (in the demo, gsmart; for a company added later on a multi-company platform, the company's name), the number of <strong>Tables</strong>, the <strong>Size on disk</strong> and the <strong>Backups kept here</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to choose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What is this backup for? (optional)</strong></td>
+<td>A note, such as "Before the month-end close". It is kept in the backup history and the audit trail.</td>
+</tr>
+<tr>
+<td><strong>What to save</strong></td>
+<td><strong>Everything: structure and data</strong> for a real backup, or <strong>Structure only (no rows)</strong> for empty tables.</td>
+</tr>
+<tr>
+<td><strong>Backups to keep on the server</strong></td>
+<td><strong>Keep them all</strong>, <strong>The newest 5</strong>, <strong>The newest 10</strong> (the standard) or <strong>The newest 20</strong>. After the backup, older files beyond this number are deleted from the server.</td>
+</tr>
+<tr>
+<td><strong>Compress the file (.sql.gz, much smaller)</strong></td>
+<td>Ticked: the file is compressed. Shown only when the server can compress.</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Type what the backup is for.</li>
+<li>Leave <strong>What to save</strong> on <strong>Everything: structure and data</strong>.</li>
+<li>Choose how many backups to keep.</li>
+<li>Click <strong>Make the backup now</strong> and leave the page open until it finishes.</li>
+</ol>
+<p>The message says "Backup written:" with the file name and size, and how many older backups were removed. The file is named after the database and the date and time, for example <code>gsmart_20260927_141929.sql.gz</code>. A structure-only backup ends in <code>_structure</code>.</p>
+<h4 id="s-backups-on-the-server">Backups on the server<a class="man-hash" href="#s-backups-on-the-server" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The table lists the files in the backups folder (shown beside the heading, for example storage/backups), newest first, with <strong>File</strong>, <strong>Made</strong> and <strong>Size</strong>.</p>
+<ul>
+<li><strong>Download</strong> saves a copy to your computer. Do this at least weekly and keep the copy somewhere other than the server.</li>
+<li>The trash button deletes a file. In the box that opens, type the <strong>Reason (required, recorded in the audit trail)</strong> and click <strong>Delete this backup</strong>.</li>
+<li>Files whose name starts with <code>before_restore_</code> are the automatic backups made before a restore. Files marked <strong>uploaded</strong> came from <strong>From a file on my computer</strong>.</li>
+</ul>
+<p><strong>Backup history</strong> lists the last 20 backups, restores and deletions: <strong>When</strong>, <strong>What</strong> (<strong>Backup</strong>, <strong>Restore</strong> or <strong>Deleted</strong>), <strong>File</strong>, <strong>Tables</strong>, <strong>Rows</strong>, <strong>By</strong> and <strong>Note</strong>.</p>
+<h4 id="s-restore-from-a-backup">Restore from a backup<a class="man-hash" href="#s-restore-from-a-backup" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>A restore replaces every table of the database with what the file holds. Anything entered since that backup was made is lost. Ask everyone else to log out first.</p></div>
+<ol>
+<li>Open the tab <strong>From a backup kept here</strong> (or <strong>From a file on my computer</strong> to upload a <code>.sql</code> or <code>.sql.gz</code> file).</li>
+<li>Choose the <strong>Backup to restore</strong> (or choose the file).</li>
+<li>Type the <strong>Reason (recorded in the audit trail)</strong>.</li>
+<li>Type RESTORE in <strong>Type RESTORE to confirm</strong>.</li>
+<li>Click <strong>Restore</strong> (or <strong>Upload and restore</strong>) and confirm.</li>
+</ol>
+<p>The message says how many statements were run. If some could not be run, a card <strong>Statements that could not be run</strong> lists them; check them before working in the books again.</p>
+<p>The upload tab tells you the largest file this server accepts. Copy a larger file into the backups folder instead and restore it from <strong>From a backup kept here</strong>.</p>
+<h4 id="s-the-safeguards">The safeguards<a class="man-hash" href="#s-the-safeguards" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Before it changes anything, the restore makes a fresh backup of what is there now (<code>before_restore_...</code>), so a restore can itself be undone by restoring that file.</li>
+<li>You must type RESTORE; otherwise "Type RESTORE in the box to confirm. Nothing has been changed."</li>
+<li>Only an administrator can restore (a user with the Administrator role, the Company Owner or the Super Admin), and only with <strong>Edit</strong> on this page. Others see "Only an administrator can restore the database."</li>
+<li>After the restore, the audit trail's protection is put back in place. With several companies, the list of users on the platform is brought in line with the restored users; a username that belongs to another company is reported, and that user cannot log in until the username is changed.</li>
+<li>If more than 25 statements fail, the restore stops.</li>
+</ul>
+<h4 id="s-what-is-refused">What is refused<a class="man-hash" href="#s-what-is-refused" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A file that does not end in <code>.sql</code> or <code>.sql.gz</code> ("A backup file ends in .sql or .sql.gz.").</li>
+<li>A single statement larger than 32 MB. Restore such a file with phpMyAdmin or Navicat.</li>
+<li>With several companies, only statements that rebuild the company's own tables are run (such as CREATE TABLE, DROP TABLE, INSERT INTO and SET). A statement that changes server settings or passwords, creates something other than a table, reads other data or names another database is listed as "not run".</li>
+</ul>
+<h4 id="s-good-to-know_7">Good to know<a class="man-hash" href="#s-good-to-know_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Making a backup needs <strong>Create</strong>, downloading needs <strong>Print/Export</strong>, and deleting needs <strong>Delete/Void</strong> on this page.</li>
+<li>The program does not make backups on a schedule. Make them yourself at the times listed above.</li>
+<li>A restore also brings back the audit trail and the backup history as they were in the file. Entries made after that backup remain in the automatic <code>before_restore_</code> file.</li>
+<li><strong>Backups to keep on the server</strong> also counts the <code>before_restore_</code> and uploaded files, so a low number may remove them. Download any file you want to keep.</li>
+<li>A backup made here can be read back with phpMyAdmin (Import) or Navicat (Execute SQL File), and a file those programs wrote can be restored here. Compressed files are read back here directly.</li>
+<li>The backup file holds the tables and rows but not the two triggers that protect the audit trail. A restore on this page puts them back by itself. If you read a backup back with phpMyAdmin or Navicat instead, also run the program's <code>database/triggers.sql</code> file the same way, so the audit trail is protected again.</li>
+<li>If the backups folder cannot be written to, the page says so and <strong>Make the backup now</strong> is greyed out. Ask whoever manages the server to give the web server write permission on the <code>storage</code> folder.</li>
+<li>Backups, restores, downloads and deletions are all recorded in the audit trail.</li>
+</ul>
+<h2 id="pg-admin-multi_company">Multi-Company Setup<a class="man-hash" href="#pg-admin-multi_company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This one-time step turns a single-company installation into a platform that can hold several companies, each in a database of its own. The present company is kept exactly as it is and becomes <strong>Company 1</strong>. The step creates the platform (master) database, the first <strong>Super Admin</strong> account that manages every company, and the <strong>Company Code</strong> that new employees of Company 1 use to join.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Multi-Company Setup. The menu entry disappears once multi-company is running.</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company name</strong></td>
+<td>Required. Filled in from Company, Security &amp; Closing Date.</td>
+</tr>
+<tr>
+<td><strong>TIN</strong>, <strong>Phone</strong>, <strong>Address</strong>, <strong>E-mail</strong></td>
+<td>Filled in from the settings; correct them if needed.</td>
+</tr>
+<tr>
+<td><strong>Contact person</strong></td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>Company Owner</strong></td>
+<td>An active user of this company who will manage its employees, join requests and Company Code. Administrators are listed first.</td>
+</tr>
+<tr>
+<td><strong>Employees who join with the Company Code wait for the Company Owner's approval</strong></td>
+<td>Ticked by default. Clear it to let new employees in without approval.</td>
+</tr>
+<tr>
+<td><strong>Username</strong> (Super Admin)</td>
+<td>3 to 50 characters, different from every username of this company. Filled with superadmin.</td>
+</tr>
+<tr>
+<td><strong>Full name</strong> (Super Admin)</td>
+<td>Filled with Platform Administrator.</td>
+</tr>
+<tr>
+<td><strong>E-mail</strong> (Super Admin)</td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>Password</strong> and <strong>Password again</strong></td>
+<td>At least 10 characters (or the company's minimum, if longer) with upper- and lower-case letters, a number and a symbol.</td>
+</tr>
+<tr>
+<td><strong>A backup of this database was made (System Administration &gt; Backup &amp; Restore)</strong></td>
+<td>Tick after you have made the backup.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>What happens</strong> box lists the five things the step does: the platform database is created on the same MySQL server with the same user as <code>config/config.php</code>; this database is registered as Company 1 without any record being moved, changed or deleted, and nobody's password changes; every user of the company is listed in the platform database so the log-in page knows where they belong; Company 1 gets its Company Code and owner; and the Super Admin account is created.</p>
+<h4 id="s-step-by-step-set-up-several-companies">Step by step: set up several companies<a class="man-hash" href="#s-step-by-step-set-up-several-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Make a backup on <a href="#pg-admin-backup">Backup &amp; Restore</a> and download it.</li>
+<li>Read <strong>Before you start</strong>. The <code>storage</code> folder must be writable, and the MySQL user needs the right to create databases, tables, triggers and foreign keys. On shared hosting, create the platform database in the control panel first.</li>
+<li>Check the Company 1 details and choose the <strong>Company Owner</strong>.</li>
+<li>Fill in the Super Admin's username, full name and password twice.</li>
+<li>Tick the backup box.</li>
+<li>Click <strong>Set up</strong> and confirm.</li>
+</ol>
+<p>The result shows the <strong>Company Code</strong> (for example STC-B8TJC), the <strong>Super Admin</strong> username and the number of <strong>Company users registered</strong>. Everyone keeps logging in with the same username and password. From then on this page only says that multi-company is running, and names the company and its number.</p>
+<h4 id="s-good-to-know_8">Good to know<a class="man-hash" href="#s-good-to-know_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Only an administrator can run the setup, even if the page is allowed to other roles. <strong>Set up</strong> is greyed out when the <code>storage</code> folder cannot be written to.</li>
+<li>Messages you may see: "Tick the box to confirm that a backup of the database was made.", "The two Super Admin passwords do not match.", "The Super Admin needs a username of its own: admin is already a user of this company.", "Choose an active user of this company as its Company Owner." and "The master database gsmart_master already belongs to other companies."</li>
+<li>A company added later gets its own copy of this company's set-up (chart of accounts, tax codes, terms, roles and the other lists), never its customers, suppliers, items, users or transactions.</li>
+<li>Companies are created, switched on and off and given owners by the Super Admin; see <a href="manual.php?c=super-admin">Super Admin</a>. The Company Code and the employees are managed under <strong>Company &gt; Company Profile &amp; Code</strong>; see <a href="manual.php?c=company-owner">Company Owner</a>.</li>
+</ul>
+<h2 id="s-audit-reports">Audit reports<a class="man-hash" href="#s-audit-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The audit trail is a permanent log of every action that creates, changes or removes information, and of every log-in, failed log-in and denied page. The audit reports read it in different ways.</p>
+<p><strong>What is recorded.</strong> Each entry holds the date and time, the user and their roles at the time, the computer's IP address and browser, the POS terminal and site where there is one, the module and page, the action, the record (with its number), the amount, the fields that changed (before and after), a full copy of the record where useful, the reason typed and the supervisor who approved. Among the actions recorded are: create, edit, delete and void of every transaction; print, reprint, export and e-mail of documents and reports; log-in, log-out, session timeout, failed log-ins, account locks and unlocks, password changes and resets; denied pages and failed supervisor approvals; changes to users, roles, page access, overrides, settings and the closing date; segregation of duties and credit limit overrides; imports, backups, restores and data rebuilds; POS shifts, cash drops and readings; bank reconciliations; memorized transactions entered automatically.</p>
+<p><strong>It cannot be changed.</strong> Nobody, not even an administrator, can edit or delete an audit entry. Two database triggers refuse any change or deletion, even when someone works on the database directly with another program. The audit trail cannot be switched off. The only way older entries are replaced is by restoring a backup, which brings back the audit trail as it was in the backup file.</p>
+<p>The last five reports below (Voided and Deleted Transactions Summary and Detail, User Activity, Login History, and User Access and Permission Changes) use the common report tools (dates, <strong>Refresh</strong>, <strong>Columns</strong>, <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong>, <strong>Memorize</strong> and drill-down), explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>.</p>
+<h3 id="pg-admin-audit_trail">Audit Trail<a class="man-hash" href="#pg-admin-audit_trail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The Audit Trail lists every entry, newest first, and lets you filter them by date, user, module, page, action, record type and text. Use it to answer "who changed this, when, and what was it before?"</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; Audit Trail, or Home &gt; Report Center.</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong> and <strong>To</strong></td>
+<td>The dates of the entries. The page opens from seven days ago to today.</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>One user's entries.</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>One module, or <strong>Security</strong> for log-ins, lock-outs and denied pages.</td>
+</tr>
+<tr>
+<td><strong>Page</strong></td>
+<td>One page of the program.</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td>One kind of action, such as Void, Delete, Login Failed or Settings Change.</td>
+</tr>
+<tr>
+<td><strong>Record type</strong></td>
+<td>One kind of record, such as transaction, user, role or item.</td>
+</tr>
+<tr>
+<td><strong>Record / text</strong></td>
+<td>Words found in the record's name or number, the reason, the changes or the username.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Filter</strong> to apply them. The number of entries found is shown above the table. The table shows 100 entries per page, with page numbers underneath.</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date / time</strong></td>
+<td>When it happened, to the second.</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>Username, with the user's roles underneath.</td>
+</tr>
+<tr>
+<td><strong>Where</strong></td>
+<td>IP address, and the POS terminal and site when there is one.</td>
+</tr>
+<tr>
+<td><strong>Module / page</strong></td>
+<td>The module, with the page underneath.</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td>What was done: Create, Edit, Print, Void, Login and so on.</td>
+</tr>
+<tr>
+<td><strong>Record</strong></td>
+<td>The record. A transaction is a link to it (or marked <strong>deleted</strong>); the clock icon opens its <a href="#pg-admin-txn_history">Transaction History</a>; <strong>[copy]</strong> opens the full copy saved with the entry.</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The amount, when the action has one.</td>
+</tr>
+<tr>
+<td><strong>Changes (before → after)</strong></td>
+<td>Up to eight changed fields with old and new values, then "+N more".</td>
+</tr>
+<tr>
+<td><strong>Reason / approval</strong></td>
+<td>The reason typed and, if a supervisor approved, "Approved by" with their username.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rows for deletions, voids, failed log-ins, locked accounts, denied pages, failed approvals, segregation of duties overrides and credit limit overrides are highlighted.</p>
+<p>The terminal under <strong>Where</strong> is the POS counter the user last opened in the POS Register during that log-in session. It therefore also appears on entries the user made on other pages afterwards, as on the Banking prints in the screenshot.</p>
+<p><strong>Export</strong> downloads the filtered entries (up to 50,000) as a CSV file for a spreadsheet; it needs <strong>Print/Export</strong> and is itself recorded in the audit trail. <strong>Print</strong> prints the page.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>To see everything one clerk did yesterday, set <strong>From</strong> and <strong>To</strong> to yesterday, choose the clerk in <strong>User</strong> and click <strong>Filter</strong>. To find every change to one invoice, type its number in <strong>Record / text</strong>.</p></div>
+<h3 id="pg-admin-txn_history">Transaction History<a class="man-hash" href="#pg-admin-txn_history" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Transaction History shows every recorded version of one transaction, oldest first: who created it, each edit with the fields that changed, prints, voids and deletions, with the reasons and approvals. It works even for a transaction that was deleted, because the audit trail kept a copy.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; Transaction History. You can also click <strong>History</strong> on a transaction form, the clock icon beside a transaction in the Audit Trail, or a number in the <a href="#pg-rpt-voided_deleted_summary">Voided and Deleted Transactions Summary</a>.</p>
+<ol>
+<li>Type the document number, for example INV-00012, in the box.</li>
+<li>Click <strong>Find</strong>.</li>
+</ol>
+<p>The program opens the history of the latest transaction whose name contains what you typed, so type the whole number.</p>
+<p>The heading shows the transaction and its present status (such as <strong>Partial</strong>, <strong>Paid</strong> or <strong>Void</strong>), or <strong>deleted</strong>. <strong>Open current version</strong> at the top opens the transaction itself. Each entry is a card with:</p>
+<ul>
+<li>the action and, for saves, the version number ("Create, version 1"), the user and their roles, the date and time and the IP address;</li>
+<li>the <strong>Reason</strong> and <strong>Approved by</strong>, when there are any;</li>
+<li>a <strong>Field</strong> / <strong>Before</strong> / <strong>After</strong> table of what changed;</li>
+<li><strong>Content after this action</strong> (or <strong>Content before this action</strong> for a void or delete), which opens the full header and lines as they were.</li>
+</ul>
+<p>A card for a void or a deletion has a red border.</p>
+<h4 id="s-good-to-know_9">Good to know<a class="man-hash" href="#s-good-to-know_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Someone who may not open the transaction's own page, and may not open the Audit Trail either, is refused the history of that transaction.</p>
+<h3 id="pg-rpt-voided_deleted_summary">Voided and Deleted Transactions Summary<a class="man-hash" href="#pg-rpt-voided_deleted_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>This report lists every transaction voided or deleted in the period, with who did it, why and who approved. Voids and deletions are a common way to hide errors or theft, so review them regularly.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; Voided and Deleted Transactions Summary, or Home &gt; Report Center.</p>
+<p>The filters are <strong>Dates</strong> (the date of the void or deletion; the report opens on <strong>This month</strong>), <strong>User</strong> and <strong>Module</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Voided / deleted</strong></td>
+<td>When the transaction was voided or deleted.</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td><strong>Voided</strong> or <strong>Deleted</strong>.</td>
+</tr>
+<tr>
+<td><strong>Type</strong> and <strong>Num</strong></td>
+<td>The kind of transaction and its number. Click the number for its <a href="#pg-admin-txn_history">Transaction History</a>.</td>
+</tr>
+<tr>
+<td><strong>Txn date</strong></td>
+<td>The transaction's own date.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The customer, vendor or payee.</td>
+</tr>
+<tr>
+<td><strong>Original amount</strong></td>
+<td>The transaction's total before it was voided or deleted.</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>Who voided or deleted it.</td>
+</tr>
+<tr>
+<td><strong>Reason</strong></td>
+<td>The reason typed.</td>
+</tr>
+<tr>
+<td><strong>Approved by</strong></td>
+<td>The supervisor who approved, if any.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The last line gives the number of transactions and the total of the original amounts.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>In September 2026 the demo shows check 1010 to Office Snacks Co. (₱2,500.00) voided because it was "printed with wrong payee", estimate EST-00002 for Cebu Tech Hub deleted as a "Duplicate of an existing quotation", and POS sale POS-000004 (₱10,068.80) voided by the supervisor.</p></div>
+<h3 id="pg-rpt-voided_deleted_detail">Voided and Deleted Transactions Detail<a class="man-hash" href="#pg-rpt-voided_deleted_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same transactions as the summary, with the full content of each as it was just before it was voided or deleted: its date, name, memo and total, every line, and the documents it had been applied to.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; Voided and Deleted Transactions Detail, or Home &gt; Report Center.</p>
+<p>The filters are the same as the summary: <strong>Dates</strong>, <strong>User</strong> and <strong>Module</strong>. Each transaction starts with a shaded line that gives VOIDED or DELETED, the type and number, when and by whom, the approver if any, and the reason (for example VOIDED Check 1010 by admin, reason: Check printed with wrong payee). It is followed by a line with the date, name, memo and total, then its lines with <strong>Transaction / item</strong> (item code or account), <strong>Description</strong>, <strong>Qty</strong>, <strong>Rate</strong> and <strong>Amount</strong>. "Was applied to" lines show payments or credits it had been applied to. The rows cannot be sorted.</p>
+<h3 id="pg-rpt-user_activity">User Activity<a class="man-hash" href="#pg-rpt-user_activity" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>User Activity counts what each user did in the period, by module and action, and flags work done outside business hours. Use it to spot unusual activity, such as voids late at night or a clerk working in a module outside their job.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; User Activity, or Home &gt; Report Center. The <strong>Activity</strong> button on a user's page opens it for that user.</p>
+<p>The filters are <strong>Dates</strong> (the report opens on <strong>This week</strong>), <strong>User</strong> and <strong>Module</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User / module</strong></td>
+<td>A shaded line per user with the number of log-ins in the period, then one line per module.</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td>The action, such as Create, Print, Void or Closing Date Change.</td>
+</tr>
+<tr>
+<td><strong>Count</strong></td>
+<td>How many times. Click it to open the Audit Trail filtered to those entries.</td>
+</tr>
+<tr>
+<td><strong>First</strong> and <strong>Last</strong></td>
+<td>The first and last time in the period.</td>
+</tr>
+<tr>
+<td><strong>Outside business hours</strong></td>
+<td>How many of them happened outside business hours.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Business hours are taken as 7:00 AM to 7:00 PM, Monday to Saturday. Lines with activity outside these hours are highlighted. A <strong>Total</strong> line closes each user.</p>
+<h3 id="pg-rpt-login_history">Login History<a class="man-hash" href="#pg-rpt-login_history" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Login History lists log-ins, log-outs, timeouts, failed log-ins, locked and unlocked accounts, password resets and denied pages. Check it for repeated failed log-ins, which can mean someone is guessing a password.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; Login History, or Home &gt; Report Center.</p>
+<p>The filters are <strong>Dates</strong> (the report opens on <strong>This week</strong>) and <strong>User</strong>. The user filter finds both what the user did and what was done to their account, such as an unlock.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date / time</strong></td>
+<td>When it happened, newest first.</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>The username.</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>Login, Logout, Session Timeout, Login Failed, Account Locked, Account Unlocked, Password Change, Password Reset, Access Denied, Approval Failed and so on.</td>
+</tr>
+<tr>
+<td><strong>Detail</strong></td>
+<td>The reason, such as "Wrong password (attempt 2 of 5)", or the page and action for a denied page, such as "User Role Configuration (open)".</td>
+</tr>
+<tr>
+<td><strong>IP address</strong></td>
+<td>The computer's address.</td>
+</tr>
+<tr>
+<td><strong>Workstation</strong></td>
+<td>The browser and system used.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The note above the table counts the failed log-ins and denied page access attempts in the period. Failed log-ins, locks, denied pages and failed approvals are highlighted. The report shows up to 5,000 events.</p>
+<h3 id="pg-rpt-user_access">User Access and Permission Changes<a class="man-hash" href="#pg-rpt-user_access" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>This report is made for periodic access reviews. The first part shows each user's current access; the second lists every change to users, roles, page access and security settings in the period.</p>
+<p><strong>Where to find it:</strong> System Administration &gt; Reports &gt; User Access and Permission Changes, or Home &gt; Report Center.</p>
+<p>The only filter is <strong>Dates</strong> (the report opens on <strong>This month</strong>); it applies to the second part.</p>
+<p><strong>Current access by user</strong> has one line per user:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User / when</strong></td>
+<td>Full name and username.</td>
+</tr>
+<tr>
+<td><strong>Status / change</strong></td>
+<td>active, inactive or locked.</td>
+</tr>
+<tr>
+<td><strong>Roles / record</strong></td>
+<td>The user's roles.</td>
+</tr>
+<tr>
+<td><strong>Pages allowed / details</strong></td>
+<td>Pages the user may open out of all pages (for example 31 / 168). Click it for <a href="#pg-admin-effective_access">Effective Access</a>.</td>
+</tr>
+<tr>
+<td><strong>Overrides</strong></td>
+<td>Number of page overrides.</td>
+</tr>
+<tr>
+<td><strong>Last login / reason</strong></td>
+<td>Last successful log-in.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Active users who have not logged in for 90 days are highlighted: confirm that departing employees were deactivated. A user who has never logged in is not highlighted, so look at blank <strong>Last login / reason</strong> cells as well.</p>
+<p><strong>Changes to users, roles and page access</strong> lists, in order, each user created or edited, deactivated or activated, role created, edited or deleted, page access change and override, segregation of duties override, password reset, account lock and unlock, settings change and closing date change. Each line shows when and by whom, the change, the record, the details (old → new, up to six fields) and the reason.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Run this report every quarter, print it, and have the owner or the auditor sign it after checking that each person's access still fits their job.</p></div>

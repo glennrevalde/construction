@@ -1,0 +1,767 @@
+<p>This chapter is for the <strong>Super Admin</strong>, the person who runs the platform: the set of companies that share one installation of GSMaRT Construction System. The Super Admin creates companies, gives each one its Company Owner, hands out and changes Company Codes, switches companies off and on, brings every company's database up to date after a program update, and can open any company to work inside it. The Company Owner's side of things (the Company Code, approving employees, managing users) is in <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>.</p>
+<h2 id="s-how-the-platform-works">How the platform works<a class="man-hash" href="#s-how-the-platform-works" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Read this once before you create the first company. It explains the words used on every platform page.</p>
+<ul>
+<li><strong>One database per company.</strong> A <em>database</em> is the store where the program keeps its records. Each company has a database of its own, holding all of its customers, suppliers, items, transactions, users and audit trail. The database the program was installed with is <strong>Company 1</strong>; every company you add gets a new database, made and named by the program (in the pictures, <code>gsmart_company_002</code> for the second company). Nobody ever types a database name.</li>
+<li><strong>The platform database.</strong> One more database, the <em>platform database</em> (in the pictures <code>gsmart_master</code>), holds the list of companies, which database each one uses, the Company Codes, which company every username belongs to, the Super Admin accounts and the platform audit log. It holds no accounting records.</li>
+<li><strong>Nobody can see another company's records.</strong> A company user only ever works in their own company's database. The company is decided on the server when they log in, from the platform database, and is checked again on every click. Nothing in the address bar, a form or a cookie can move a session to another company. Each company's logo, pictures, receipts and backups are also kept in a folder of its own.</li>
+<li><strong>The Super Admin belongs to no company.</strong> Your account lives in the platform database only. The platform pages never open a company's records. To work inside a company, you <strong>Open</strong> it: you then work through an account of your own in that company, and everything you do there is written in that company's audit trail.</li>
+<li><strong>One log-in page, unique usernames.</strong> Company users, Company Owners and Super Admins all log in on the same page. The page finds where a username belongs, so a username can exist only once on the whole platform, across every company and the Super Admins.</li>
+<li><strong>The Company Code is only for joining.</strong> Each company has a code, for example <strong>AD-UW92E</strong>, that its new employees type once on the join page. It says which company they are joining; it is not a password and opens nothing. See <a href="manual.php?c=company-owner#pg-company-profile">Company Profile &amp; Code</a>.</li>
+<li><strong>The Company Owner.</strong> Each company has one owner, chosen by you. The owner has full authority inside the company, approves the employees who join, and manages its users and its Company Code.</li>
+<li><strong>Inactive companies.</strong> A company you switch off keeps its database, users and records, but its users are logged out at their next click, nobody can log in to it or join it, and its scheduled report e-mails stop. You can still open it, and switch it on again at any time.</li>
+</ul>
+<h3 id="s-turning-on-several-companies">Turning on several companies<a class="man-hash" href="#s-turning-on-several-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Several companies are switched on once, by an administrator of the existing company, on <a href="manual.php?c=administration#pg-admin-multi_company">Multi-Company Setup</a> (System Administration). That page:</p>
+<ul>
+<li>creates the platform database;</li>
+<li>registers the existing database as <strong>Company 1</strong>, without moving, changing or deleting any record in it;</li>
+<li>lists every existing user on the platform, so all of them keep logging in with the same username and password;</li>
+<li>gives Company 1 its Company Code and the Company Owner chosen from its users;</li>
+<li>creates the first Super Admin with the username and password typed on that page. There is no default Super Admin password.</li>
+</ul>
+<p>After the set-up, Multi-Company Setup leaves the menu, and the Super Admin logs in as described below.</p>
+<h2 id="sec-sa-login">Logging in as the Super Admin<a class="man-hash" href="#sec-sa-login" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Super Admin logs in on the ordinary log-in page, which reads <strong>Log in to your company</strong> once several companies are running.</p>
+<ol>
+<li>Open the log-in page of the program.</li>
+<li>Type your Super Admin username (for example <code>superadmin</code>) in <strong>Username</strong> and your password in <strong>Password</strong>.</li>
+<li>Click <strong>Log in</strong>. The <strong>Companies</strong> page of the platform opens. If your password is a temporary one, <strong>My account</strong> opens first and asks you to replace it.</li>
+</ol>
+<p>The platform pages have a sidebar of their own, in two groups:</p>
+<ul>
+<li><strong>Companies</strong>: <strong>Companies</strong>, <strong>New company</strong>, <strong>Database updates</strong>;</li>
+<li><strong>Platform</strong>: <strong>Super Admins</strong>, <strong>Platform settings</strong>, <strong>Platform audit log</strong>, <strong>My account</strong>.</li>
+</ul>
+<p>The top bar reads <strong>Platform administration</strong>. The button at the top right shows your full name; it opens a menu with <strong>Change password</strong> and <strong>Log out</strong>.</p>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A wrong password gives "Invalid username or password." with the number of attempts left. After 5 wrong passwords in a row (see <a href="#pf-settings">Platform settings</a>) the account locks: "Too many failed attempts. The account is now locked." A locked account answers "This account is locked. Another Super Admin can unlock it (or run tools/platform.php)." and an inactive one "This account is inactive." See "When something goes wrong" at the end of this chapter.</li>
+<li>Your session ends after 30 minutes without activity (see <a href="#pf-settings">Platform settings</a>): "You were logged out after a period of inactivity." Working inside a company keeps it alive.</li>
+<li>After 30 failed log-ins with unknown usernames (or wrong Super Admin passwords) from one computer within 15 minutes, that computer is stopped for 15 minutes: "Too many failed log-in attempts from this computer. Please wait 15 minutes and try again."</li>
+<li>Every log-in, failed log-in and log-out of a Super Admin is in the <a href="#pf-audit">Platform audit log</a>.</li>
+</ul>
+<h2 id="pf-companies">Companies<a class="man-hash" href="#pf-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The list of every company on the platform, with its Company Code, owner, status, number of users and database. It is the page you see after logging in and the place where you <strong>Open</strong> a company to work inside it.</p>
+<p><strong>Where to find it:</strong> Companies &gt; Companies. It opens after you log in, and the program name at the top left leads back to it.</p>
+<p>Right after multi-company is switched on, the list has one company (Sample Builders &amp; Development Corp. in the sample data), whose owner is the System Administrator (<strong>admin</strong>):</p>
+<p>With a second company, ABC Distribution Corp., created:</p>
+<h4 id="s-the-figures-at-the-top">The figures at the top<a class="man-hash" href="#s-the-figures-at-the-top" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Figure</th>
+<th>What it counts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Active companies</strong></td>
+<td>Companies that are switched on. The line under it gives the number of companies in all.</td>
+</tr>
+<tr>
+<td><strong>Inactive</strong></td>
+<td>Companies that are switched off. Their users cannot log in.</td>
+</tr>
+<tr>
+<td><strong>Company users</strong></td>
+<td>Every user account listed on the platform, across every company, including those waiting for approval.</td>
+</tr>
+<tr>
+<td><strong>Waiting for approval</strong></td>
+<td>Employees who joined with a Company Code and wait for their Company Owner. Each owner approves their own.</td>
+</tr>
+</tbody>
+</table></div>
+<p>When a company's set-up failed or is still running, a yellow notice says so, for example "1 company set-up failed. Open the company to see the steps and set it up again."</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>#</strong></td>
+<td>The company's number on the platform. Company 1 is the original database.</td>
+</tr>
+<tr>
+<td><strong>Company</strong></td>
+<td>The name (click it to open the company's details page), and under it the contact person and e-mail.</td>
+</tr>
+<tr>
+<td><strong>Company Code</strong></td>
+<td>The current code. <strong>joining off</strong> under it means the code is switched off.</td>
+</tr>
+<tr>
+<td><strong>Company Owner</strong></td>
+<td>The owner's full name and username, or <strong>Not assigned</strong>.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, <strong>Inactive</strong>, <strong>Being set up</strong> or <strong>Set-up failed</strong>.</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>How many accounts the company has, and how many are waiting (for example <strong>2 waiting</strong>).</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>The company's database, and under it <strong>original database</strong> for Company 1 or <strong>since</strong> and the date it was created.</td>
+</tr>
+<tr>
+<td>Last column</td>
+<td><strong>Open</strong> for an active or inactive company; <strong>Details</strong> for a company that is being set up or whose set-up failed.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New company</strong>: opens <a href="#pf-new">New company</a>.</li>
+<li><strong>Database updates</strong>: opens <a href="#pf-updates">Database updates</a>.</li>
+<li><strong>Open</strong>: works inside the company as the Super Admin (see "Working inside a company" below).</li>
+</ul>
+<h2 id="pf-new">New company<a class="man-hash" href="#pf-new" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Creates a company with a database of its own, copies the set-up lists of an existing company into it, and (if you wish) creates the owner's account, all in one step.</p>
+<p><strong>Where to find it:</strong> Companies &gt; New company, or the <strong>New company</strong> button on the Companies page.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The <strong>Company</strong> box:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company name</strong></td>
+<td>The company's name, as it will appear on its reports and vouchers. Required. Two companies cannot have the same name.</td>
+</tr>
+<tr>
+<td><strong>TIN</strong></td>
+<td>The company's Tax Identification Number.</td>
+</tr>
+<tr>
+<td><strong>Address</strong></td>
+<td>The company's address.</td>
+</tr>
+<tr>
+<td><strong>Contact person</strong></td>
+<td>The person to contact about the company. Shown on the platform and on the company's profile.</td>
+</tr>
+<tr>
+<td><strong>Phone</strong></td>
+<td>The company's phone number.</td>
+</tr>
+<tr>
+<td><strong>E-mail</strong></td>
+<td>The company's e-mail address.</td>
+</tr>
+<tr>
+<td><strong>Notes (platform only)</strong></td>
+<td>Your own notes. Only Super Admins see them.</td>
+</tr>
+<tr>
+<td><strong>Copy the set-up of</strong></td>
+<td>The company whose set-up lists are copied (the active companies are listed; Company 1 is chosen at first).</td>
+</tr>
+<tr>
+<td><strong>Employees who join wait for the owner's approval</strong></td>
+<td>Ticked: employees who join with the Company Code wait for the owner's approval. The starting value comes from <a href="#pf-settings">Platform settings</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Company Owner</strong> box:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Create the owner's account now (otherwise assign one later)</strong></td>
+<td>Ticked: the owner's account is made with the company. Cleared: the fields below are hidden and you assign an owner later on the company's page.</td>
+</tr>
+<tr>
+<td><strong>Full name</strong></td>
+<td>The owner's full name. Required when the box is ticked.</td>
+</tr>
+<tr>
+<td><strong>E-mail</strong></td>
+<td>The owner's e-mail address. Optional.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>The owner's log-in name: 3 to 50 characters, letters, numbers, dot, dash or underscore, saved in small letters. It must be free across every company and the Super Admins.</td>
+</tr>
+<tr>
+<td><strong>Temporary password</strong></td>
+<td>A password the owner will replace at the first log-in. It must follow the password rules of the company whose set-up is copied, and must not contain the username.</td>
+</tr>
+<tr>
+<td><strong>Password again</strong></td>
+<td>The same temporary password.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>What is set up</strong> box on the right lists the steps, the set-up lists that are copied and what is never copied. It is a summary of what happens when you press <strong>Create company</strong>; you do not fill anything in there.</p>
+<h4 id="s-step-by-step">Step by step<a class="man-hash" href="#s-step-by-step" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New company</strong>.</li>
+<li>Type the <strong>Company name</strong> and the other details of the company.</li>
+<li>Check <strong>Copy the set-up of</strong>. Choose the company whose chart of accounts, tax codes, roles and other lists are closest to what the new company needs.</li>
+<li>Tick or clear <strong>Employees who join wait for the owner's approval</strong>.</li>
+<li>Leave <strong>Create the owner's account now</strong> ticked and fill in the owner's <strong>Full name</strong>, <strong>E-mail</strong>, <strong>Username</strong>, <strong>Temporary password</strong> and <strong>Password again</strong>; or clear it to assign the owner later.</li>
+<li>Click <strong>Create company</strong> and confirm the question "Create the company and its database now?". It takes a few moments.</li>
+<li>The company's page opens with the result. Give the owner their username and temporary password, and tell them to change the password at the first log-in.</li>
+</ol>
+<h4 id="s-what-happens-when-you-press-create-company">What happens when you press Create company<a class="man-hash" href="#s-what-happens-when-you-press-create-company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>The company gets a Company Code, unique on the platform (for ABC Distribution Corp., <strong>AD-UW92E</strong>).</li>
+<li>A database name is chosen: the prefix from <a href="#pf-settings">Platform settings</a> followed by the company number in three digits, for example <code>gsmart_company_002</code>. A database that already exists on the server is never used or touched: the program adds a letter instead (<code>gsmart_company_002_b</code>, <code>_c</code> ...).</li>
+<li>The database is created, with the same character set as the copied company's.</li>
+<li>Every table is created exactly as the copied company has it today, with all its columns, keys, indexes and links between tables, and every counter starting from 1.</li>
+<li>The set-up lists are copied: the company settings (with the new company's name, address, phone, e-mail and TIN; no logo and no closing date), the modules, the pages, the roles with their page access and special permissions (every role allowed on every site), the document numbering (starting again from 1), the chart of accounts (bank account numbers left blank, no balances), the module default accounts, terms, tax codes, payment methods, price level names, customer types, billing groups, item categories, units of measure, and fixed asset categories with their accounts. One inventory site, <strong>Main</strong>, is added.</li>
+<li>The <em>audit trail protection</em> is put in place: database triggers that stop anybody from changing or deleting audit trail entries, even directly in the database.</li>
+<li>The owner's account is created with the company's full-access role (<strong>Administrator</strong>), and must change the temporary password at the first log-in.</li>
+<li>The new database is checked: every table is there, its structure matches the program, and no customer, supplier, item or transaction is in it.</li>
+<li>The company, its database and its users are registered on the platform, its file folder is made (<code>storage/companies/c002/</code> for company 2), and the first line of its audit trail is written. Only then is the company switched on.</li>
+</ol>
+<p>Nothing else is copied: no customers, suppliers, items, employees or other names, no users, transactions, sales, payments, bills, journals, balances, budgets, fixed assets, POS records, audit trail or other history.</p>
+<p>When everything worked, the message reads, for example, "ABC Distribution Corp. is set up with a database of its own. Company Code: AD-UW92E. The owner logs in as johndoe and must change the temporary password." The company's page shows each step with a green tick under <strong>Set-up steps</strong>:</p>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>If a step fails</strong>, the company is marked <strong>Set-up failed</strong>, the database that attempt made is removed again, and nobody can log in to the company or join it. The message reads "The set-up of ... did not finish:" followed by the step and the reason, and "Nothing half-made was left behind." The company's page shows where it stopped and lets you set it up again or delete the failed record (see <a href="#pf-company">Company Details</a>).</li>
+<li><strong>Bring the copied company up to date first.</strong> If the company whose set-up is copied still needs a program update (see <a href="#pf-updates">Database updates</a>), the check in step 8 fails with "The new database does not match the program: ... (bring the template company up to date first)."</li>
+<li><strong>Audit trail protection.</strong> On some servers the triggers cannot be created. The set-up then carries on (the company works), the <strong>Triggers</strong> step shows a red cross with the reason, and the company's page shows <strong>Missing</strong> beside <strong>Audit trail protection</strong>, with a button to try again.</li>
+<li><strong>Messages before anything is created:</strong> "Enter the company name.", "There is already a company named ...", "The company e-mail address does not look right.", "Choose the company whose set-up is copied.", "The two owner passwords do not match.", "The owner's username: 3 to 50 characters, letters, numbers, dot, dash or underscore.", "The username ... is already taken on this platform.", "Enter the owner's full name.", "The owner's e-mail address does not look right." and "The owner's temporary password must have ..." followed by what is missing. Nothing is created until all of these are right.</li>
+<li><strong>The database user needs rights.</strong> The program creates the database with the MySQL user in <code>config/config.php</code>, which needs the right to create and drop databases and to create tables, keys and triggers in them. XAMPP's <code>root</code> user has them. On shared hosting, set the <strong>Name of new company databases: prefix</strong> in <a href="#pf-settings">Platform settings</a> to the prefix the host requires (for example <code>cpuser_company_</code>). The MySQL user must still be allowed to create databases with that prefix, because the program never uses a database that already exists.</li>
+<li>What the new owner sees at the first log-in, and what to do first in a new company, is in <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>.</li>
+</ul>
+<h2 id="pf-company">Company Details<a class="man-hash" href="#pf-company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Everything about one company on a single page: its details, owner, users, Company Code, joining rules, database, status, set-up steps and recent activity. From here you change the owner, regenerate the code, switch the company off or on, and repair a failed set-up.</p>
+<p><strong>Where to find it:</strong> Companies &gt; Companies, then click the company's name (or <strong>Details</strong> for a company whose set-up did not finish). The page opens by itself after <strong>Create company</strong>.</p>
+<p>The page's title is the company's name; under it are the status and "Company #1, created ..." (with "set-up copied from ..." for a company made on the platform).</p>
+<h4 id="s-the-parts-of-the-page">The parts of the page<a class="man-hash" href="#s-the-parts-of-the-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company information</strong></td>
+<td><strong>Company name</strong>, <strong>TIN</strong>, <strong>Address</strong>, <strong>Contact person</strong>, <strong>Phone</strong>, <strong>E-mail</strong>, <strong>Notes (platform only)</strong> and <strong>Save</strong>.</td>
+</tr>
+<tr>
+<td><strong>Company Owner</strong></td>
+<td>The current owner with e-mail and last log-in (or "This company has no Company Owner yet."), and the form to set a new owner.</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>Every user of the company with <strong>Name</strong>, <strong>Username</strong>, <strong>Roles</strong>, <strong>Status</strong>, <strong>Account made</strong> and <strong>Last log-in</strong>, and the <strong>Sync user list</strong> button.</td>
+</tr>
+<tr>
+<td><strong>Company Code</strong></td>
+<td>The code, whether joining is on, <strong>Regenerate</strong>, the switch <strong>Employees can join with the code</strong> with a date, and <strong>New employees wait for the owner's approval</strong> with a starting role.</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td><strong>Database</strong>, <strong>Origin</strong>, <strong>Tables</strong>, <strong>Checked</strong>, <strong>Program updates</strong>, <strong>Audit trail protection</strong> and <strong>Files</strong>.</td>
+</tr>
+<tr>
+<td><strong>Deactivate</strong> or <strong>Activate</strong></td>
+<td>Switches the company off (with a reason) or on.</td>
+</tr>
+<tr>
+<td><strong>Set-up steps</strong></td>
+<td>Each attempt at setting the company up, step by step, with a tick or a cross and the details.</td>
+</tr>
+<tr>
+<td><strong>Recent platform activity</strong></td>
+<td>The last 25 entries of the platform audit log for this company.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Database</strong> box, line by line:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Line</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database</strong></td>
+<td>The name of the company's database.</td>
+</tr>
+<tr>
+<td><strong>Origin</strong></td>
+<td><strong>The original database (Company 1)</strong> or <strong>Created by the platform</strong>.</td>
+</tr>
+<tr>
+<td><strong>Tables</strong> and <strong>Checked</strong></td>
+<td>How many tables the database had when it was last checked, and when.</td>
+</tr>
+<tr>
+<td><strong>Program updates</strong></td>
+<td><strong>Up to date</strong>, or how many updates still have to be run (see <a href="#pf-updates">Database updates</a>).</td>
+</tr>
+<tr>
+<td><strong>Audit trail protection</strong></td>
+<td><strong>In place</strong>, or <strong>Missing</strong> in red with a <strong>Put the protection back</strong> button.</td>
+</tr>
+<tr>
+<td><strong>Files</strong></td>
+<td>The company's own folder for its logo, pictures, receipts and backups: <code>storage/ (the original folders)</code> for Company 1, <code>storage/companies/c002/</code> for company 2, and so on.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_1">Step by step<a class="man-hash" href="#s-step-by-step_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To change the company's details:</p>
+<ol>
+<li>Change the fields under <strong>Company information</strong>.</li>
+<li>Click <strong>Save</strong>. The message is "Company details saved." The name, address, phone, e-mail and TIN are also written to the company's own settings, so they appear on its reports and vouchers; the change is recorded in the company's audit trail.</li>
+</ol>
+<p>To make one of the company's users the Company Owner:</p>
+<ol>
+<li>Under <strong>Company Owner</strong>, leave <strong>One of its users</strong> chosen.</li>
+<li>Pick the person in the list. Only active, approved users are listed.</li>
+<li>Click <strong>Set owner</strong> and confirm "Make this person the Company Owner?". The message is "Company Owner saved."</li>
+</ol>
+<p>The new owner has full authority in the company from their next click, whatever their roles. The previous owner stays a user with the roles they had.</p>
+<p>To give the company an owner with a new account:</p>
+<ol>
+<li>Under <strong>Company Owner</strong>, choose <strong>A new account</strong>.</li>
+<li>Fill in <strong>Username</strong>, <strong>Full name</strong>, <strong>E-mail</strong> and <strong>Temporary password</strong>. The same rules apply as on <a href="#pf-new">New company</a>.</li>
+<li>Click <strong>Set owner</strong> and confirm. The message is "Company Owner saved. They must change the temporary password at the first log-in." The account gets the company's full-access role.</li>
+</ol>
+<p>To give the company a new Company Code:</p>
+<ol>
+<li>Under <strong>Company Code</strong>, click <strong>Regenerate</strong>.</li>
+<li>Confirm "Make a new code? The current one stops working at once; people who already joined stay."</li>
+<li>The message gives the new code: "New Company Code: ... The old one no longer works." Send it to the Company Owner.</li>
+</ol>
+<p>To stop joining, or to set the last day the code can be used:</p>
+<ol>
+<li>Turn <strong>Employees can join with the code</strong> off, or pick a date in the date box beside <strong>Save</strong>.</li>
+<li>Click <strong>Save</strong>. The message is "Company Code saved." The date counts to the end of that day.</li>
+</ol>
+<p>To change whether new employees need approval, and the role they start with:</p>
+<ol>
+<li>Tick or clear <strong>New employees wait for the owner's approval</strong>.</li>
+<li>Pick a role in the list, or leave <strong>Role chosen when approving</strong>. Full-access roles are not offered.</li>
+<li>Click <strong>Save</strong>. The message is "Joining rules saved." Without approval a role is required: "Without approval, new employees need a role to start with."</li>
+</ol>
+<p>To switch a company off:</p>
+<ol>
+<li>Under <strong>Deactivate</strong>, type the <strong>Reason</strong>. It is required.</li>
+<li>Click <strong>Deactivate</strong> and confirm. The message reads "... is deactivated. Its users cannot log in and nobody can join it; all of its data is kept."</li>
+</ol>
+<p>Users who are working at that moment are logged out at their next click with "Your company's access is currently suspended. Please contact your Company Owner." You can still open the company.</p>
+<p>To switch it on again:</p>
+<ol>
+<li>Under <strong>Activate</strong>, type a reason if you wish.</li>
+<li>Click <strong>Activate</strong>. The message reads "... is active again. Its users can log in." The users log in with their accounts as they were. A company whose database still needs updates cannot be switched on: "Bring the company database up to date first (Database updates)."</li>
+</ol>
+<p>To rebuild the platform's list of the company's usernames:</p>
+<ol>
+<li>Click <strong>Sync user list</strong> above the <strong>Users</strong> table.</li>
+<li>The message says how many users are listed on the platform, for example "9 user(s) listed on the platform."</li>
+</ol>
+<p>Use it when a user of the company cannot log in although their account is there, or after the company database was restored outside the program. If a username is also used in another company, the message names it: "These usernames belong to another company and cannot log in until they are renamed: ..." Rename that user on the company's <a href="manual.php?c=administration#pg-admin-users">User Accounts</a> page and sync again.</p>
+<p>To put the audit trail protection back (when it shows <strong>Missing</strong>):</p>
+<ol>
+<li>Click <strong>Put the protection back</strong> in the <strong>Database</strong> box.</li>
+<li>The message is "The audit trail protection is in place.", or "The triggers could not be created:" with the reason given by the database server.</li>
+</ol>
+<h4 id="s-a-company-whose-set-up-did-not-finish">A company whose set-up did not finish<a class="man-hash" href="#s-a-company-whose-set-up-did-not-finish" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A company that is <strong>Set-up failed</strong> (or still <strong>Being set up</strong> after 15 minutes) shows a red box at the top: "The set-up did not finish" (or "has not finished"), with the step and the reason, and "The company is not active, nobody can log in to it or join it, and any database this attempt created was removed again."</p>
+<p>To set it up again, once the cause is fixed (for example the database rights):</p>
+<ol>
+<li>If the company needs an owner's account, fill in <strong>Username</strong>, <strong>Full name</strong>, <strong>E-mail</strong> and <strong>Temporary password</strong> in the red box. Passwords are never kept, so they must be typed again. You can also leave them empty and assign the owner later.</li>
+<li>Click <strong>Set it up again</strong>. The steps run again as a new attempt, listed under <strong>Set-up steps</strong>. The message is "The company is set up and active." or "The set-up failed again. The steps below say where."</li>
+</ol>
+<p>To delete the failed record instead:</p>
+<ol>
+<li>Type the company's name exactly in <strong>Or delete this failed record: type the company name</strong>.</li>
+<li>Click <strong>Delete record</strong> and confirm. The message is "The failed company record was deleted." Its Company Code is retired.</li>
+</ol>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Active companies are never deleted.</strong> Only the record of a company whose set-up failed can be deleted; for any other company the answer is "Only a company whose set-up failed can be deleted. Deactivate an active company instead."</li>
+<li><strong>Changes reach the company's audit trail.</strong> Changing the details or the owner, regenerating the code, and switching the company off or on are written in the company's own audit trail under the name <code>platform:</code> followed by your username, with the role <strong>Super Admin</strong>, as well as in the platform audit log. The company's users see it there.</li>
+<li><strong>Two companies cannot share a name.</strong> "Another company already has that name."</li>
+<li>The <strong>Users</strong> list here is for reading. Users are approved, changed and deactivated inside the company, by its owner or by you after <strong>Open company</strong> (see <a href="manual.php?c=company-owner#pg-company-users">Employees &amp; Users</a>).</li>
+<li>If the company's database cannot be reached, a red line says so ("The company database cannot be reached: ..."). The company information and the Company Code can still be changed on the platform; the owner, the joining rules, the status and the user list wait until the database answers again.</li>
+<li><strong>Open company</strong> at the top of the page works as <strong>Open</strong> on the Companies page. <strong>All companies</strong> goes back to the list.</li>
+</ul>
+<h2 id="sec-inside-company">Working inside a company<a class="man-hash" href="#sec-inside-company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>To look at a company's books, fix a setting, approve an employee or help a user, you open the company and work inside it as its Super Admin.</p>
+<p><strong>Where to find it:</strong> <strong>Open</strong> on the <a href="#pf-companies">Companies</a> page, or <strong>Open company</strong> on the company's <a href="#pf-company">details page</a>.</p>
+<p>While you work inside a company:</p>
+<ul>
+<li>A yellow strip at the top reads "Super Admin: you are working inside ABC Distribution Corp.. Everything you do here is recorded in its audit trail." with a <strong>Back to the platform</strong> link. For an inactive company it adds "(inactive: its users cannot log in)".</li>
+<li>You see the company exactly as its users do: its menu, its Home page, its records. You have full authority, like the Company Owner: every page opens and every action is allowed, including the owner's actions on <a href="manual.php?c=company-owner#pg-company-profile">Company Profile &amp; Code</a> and <a href="manual.php?c=company-owner#pg-company-users">Employees &amp; Users</a>.</li>
+<li>You work through an account of your own in that company, named <code>@platform-</code> followed by your Super Admin number (for example <code>@platform-1</code>) and shown as "Super Admin:" followed by your name. The program makes this account the first time you open the company. Nobody can log in with it (its password is random and never shown), and it never appears in the company's user lists. Every change you make is in the company's audit trail under that name.</li>
+<li>The menu under your name at the top right reads <strong>Super Admin, managing this company</strong> and offers <strong>Back to the platform</strong> and <strong>Log out</strong>.</li>
+</ul>
+<h4 id="s-step-by-step_2">Step by step<a class="man-hash" href="#s-step-by-step_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>On <strong>Companies</strong>, click <strong>Open</strong> on the company's row.</li>
+<li>The company's Home page opens with the yellow strip.</li>
+<li>Work as you would in any company.</li>
+<li>Click <strong>Back to the platform</strong> in the strip (or in the menu under your name). You return to the Companies page.</li>
+</ol>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Log out</strong> in the company's menu ends your Super Admin session as well and takes you to the log-in page. Use <strong>Back to the platform</strong> to leave the company only.</li>
+<li>Opening any platform page while you are inside a company (for example with the browser's Back button) takes you out of the company first.</li>
+<li>A company whose database needs an update cannot be opened: "The database of ... needs the latest update first. Use "Update databases" on the Companies page." Run the update on <a href="#pf-updates">Database updates</a> and open it again.</li>
+<li>Inactive companies can be opened, for example to check something before switching them on again.</li>
+<li>Every opening and closing of a company is in the <a href="#pf-audit">Platform audit log</a> (<strong>company opened</strong>, <strong>company closed</strong>).</li>
+</ul>
+<h2 id="pf-updates">Database updates<a class="man-hash" href="#pf-updates" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>When a new version of the program is installed, it may bring <em>upgrade scripts</em>: files that add the new tables and columns the new version needs. Every company database has to receive them. This page shows which companies still need which scripts and runs them for you.</p>
+<p><strong>Where to find it:</strong> Companies &gt; Database updates, or the <strong>Database updates</strong> button on the Companies page. A company's details page also warns "This company's database needs ... update(s)." with a link here.</p>
+<p>The line at the top says how many upgrade scripts the program knows (<strong>9</strong> in the picture). A company database is up to date when every one of them has been run on it. New companies are created up to date.</p>
+<h4 id="s-the-columns_1">The columns<a class="man-hash" href="#s-the-columns_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company</strong></td>
+<td>The company (click to open its details page) and its status.</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>The company's database.</td>
+</tr>
+<tr>
+<td><strong>Updates to run</strong></td>
+<td>The names of the scripts still to run, oldest first, or <strong>Up to date</strong>. A red message means the database could not be read.</td>
+</tr>
+<tr>
+<td>Last column</td>
+<td><strong>Run</strong>, for a company with scripts to run.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_3">Step by step<a class="man-hash" href="#s-step-by-step_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>After copying the files of a new version of the program onto the server:</p>
+<ol>
+<li>Back up the company databases and the platform database (see "When something goes wrong" below).</li>
+<li>Log in as the Super Admin and open <strong>Database updates</strong>.</li>
+<li>Click <strong>Update all companies</strong> (shown only when something is waiting) and confirm "Run every pending update on every company database? Back the databases up first." To update one company only, click <strong>Run</strong> on its row.</li>
+<li>Read the message: "... update(s) run. Every company database is up to date.", "Every company database was already up to date.", or "Some updates could not be run." followed by the company and the reason.</li>
+</ol>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The scripts run oldest first. For each company, the program stops at the first script that fails and leaves the later ones for the next attempt. The scripts keep every record and can safely be run again.</li>
+<li>Until its database is updated, a company cannot be opened by the Super Admin or switched on again, and a new company copied from it fails its check. Its users see a <strong>Database update needed</strong> page after log-in instead of their work: users of the other companies are asked to contact the Super Admin, while administrators of Company 1 also see the files to run by hand.</li>
+<li>Each update run is recorded in the <a href="#pf-audit">Platform audit log</a> as <strong>database updated</strong>, with the names of the scripts.</li>
+<li>The server administrator can also run every pending update from the command line: <code>php tools/platform.php update-all</code>.</li>
+</ul>
+<h2 id="pf-admins">Super Admins<a class="man-hash" href="#pf-admins" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The accounts that manage the platform. A Super Admin can open and change every company, so keep this list short, and keep at least two active Super Admins so one can help the other.</p>
+<p><strong>Where to find it:</strong> Platform &gt; Super Admins.</p>
+<h4 id="s-the-columns_2">The columns<a class="man-hash" href="#s-the-columns_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Full name, <strong>You</strong> for your own account, and the e-mail address.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>The log-in name.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, <strong>Inactive</strong> or <strong>Locked</strong>. <strong>temporary password</strong> under it means the person has not yet replaced a temporary password.</td>
+</tr>
+<tr>
+<td><strong>Last log-in</strong></td>
+<td>Date and time of the last log-in.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The buttons at the end of each row, for the other Super Admins: <strong>Unlock</strong> (for a locked account), <strong>Deactivate</strong> or <strong>Activate</strong>, and a <strong>Temporary password</strong> box with <strong>Reset</strong>. On your own row there is <strong>Change my password</strong>, which opens <a href="#pf-account">My account</a>.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The <strong>New Super Admin</strong> box:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full name</strong></td>
+<td>The person's full name. Required.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>3 to 50 characters: letters, numbers, dot, dash or underscore. Saved in small letters. It must not be used by any Super Admin or any company user.</td>
+</tr>
+<tr>
+<td><strong>E-mail</strong></td>
+<td>Optional.</td>
+</tr>
+<tr>
+<td><strong>Temporary password</strong></td>
+<td>At least 10 characters with upper- and lower-case letters, a number and a symbol, not containing the username.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_4">Step by step<a class="man-hash" href="#s-step-by-step_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To add a Super Admin:</p>
+<ol>
+<li>Fill in the <strong>New Super Admin</strong> box.</li>
+<li>Click <strong>Create</strong>. The message reads "Super Admin ... created. They must change the temporary password at the first log-in."</li>
+<li>Give the new Super Admin their username and temporary password. At their first log-in <strong>My account</strong> opens and they cannot use any other platform page until they have chosen their own password.</li>
+</ol>
+<p>To reset another Super Admin's password:</p>
+<ol>
+<li>Type a temporary password in the <strong>Temporary password</strong> box on their row.</li>
+<li>Click <strong>Reset</strong>. The message is "Temporary password set for ..." A locked account is unlocked at the same time, and the person must change the password at the next log-in.</li>
+</ol>
+<p>To unlock, deactivate or activate another Super Admin, click <strong>Unlock</strong>, <strong>Deactivate</strong> (and confirm) or <strong>Activate</strong> on their row.</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"You cannot deactivate your own account." and "This is the last active Super Admin." protect the platform from being left without anyone to manage it.</li>
+<li>"That username is already used on the platform (by a Super Admin or a company user)." means the username is taken somewhere on the platform.</li>
+<li>Super Admin passwords follow their own rule (at least 10 characters with upper- and lower-case letters, a number and a symbol), whatever the companies' password rules are.</li>
+<li>Every change here is in the <a href="#pf-audit">Platform audit log</a>.</li>
+</ul>
+<h2 id="pf-settings">Platform settings<a class="man-hash" href="#pf-settings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The few settings that belong to the platform as a whole rather than to one company.</p>
+<p><strong>Where to find it:</strong> Platform &gt; Platform settings.</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name of new company databases: prefix</strong></td>
+<td>The start of the name of each new company database; the company number follows it (<strong>002</strong>, <strong>003</strong> ...). Letters, digits and underscores, at most 50. Left empty, the program uses the first company's database name followed by <code>_company_</code> (shown in grey in the box). On shared hosting, use the prefix your control panel requires (for example <code>cpuser_</code>).</td>
+</tr>
+<tr>
+<td><strong>New companies: employees who join wait for approval</strong></td>
+<td>The starting value of the approval box on <a href="#pf-new">New company</a>. Each company can change it afterwards on its own page.</td>
+</tr>
+<tr>
+<td><strong>Super Admin session ends after (minutes without activity)</strong></td>
+<td>How long a Super Admin can be idle before being logged out. At least 5.</td>
+</tr>
+<tr>
+<td><strong>Super Admin failed log-ins before the account locks</strong></td>
+<td>How many wrong passwords in a row lock a Super Admin account.</td>
+</tr>
+<tr>
+<td><strong>Wrong Company Codes allowed from one address in 15 minutes</strong></td>
+<td>How many wrong codes one computer may type on the join page. After that, the join page stops that computer for 15 minutes.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_5">Step by step<a class="man-hash" href="#s-step-by-step_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Change the values you need.</li>
+<li>Click <strong>Save</strong>. The message says how many settings were changed, for example "1 setting(s) changed."</li>
+</ol>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The box under the settings, <strong>Platform database</strong>, names the platform database (for example <code>gsmart_master</code>) and reminds you that the MySQL user of <code>config/config.php</code> needs the right to create and drop databases and to create tables, keys and triggers in them.</li>
+<li>It also explains the emergency switch described in "When something goes wrong" below.</li>
+<li>Changing the prefix affects only companies created afterwards; existing databases keep their names.</li>
+<li>Messages: "The database prefix may only have letters, digits and underscores (at most 50)." and "The Super Admin session needs at least 5 minutes."</li>
+<li>Every change is in the <a href="#pf-audit">Platform audit log</a> as <strong>platform settings</strong>, with the new values.</li>
+</ul>
+<h2 id="pf-audit">Platform audit log<a class="man-hash" href="#pf-audit" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A permanent record of what happened on the platform and to which company: log-ins of Super Admins, companies created, opened, changed, switched off and on, codes regenerated, employees who joined, were approved or rejected, database updates and settings changes. Entries cannot be changed or deleted.</p>
+<p><strong>Where to find it:</strong> Platform &gt; Platform audit log.</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company</strong></td>
+<td>One company, or <strong>All companies</strong>. The list changes as soon as you pick one.</td>
+</tr>
+<tr>
+<td><strong>What happened</strong></td>
+<td>One kind of entry, or <strong>Everything</strong>. Only the kinds recorded so far are listed.</td>
+</tr>
+<tr>
+<td><strong>From</strong> and <strong>To</strong></td>
+<td>The period. It starts as the last 30 days. Click <strong>Show</strong> after changing the dates.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-columns_3">The columns<a class="man-hash" href="#s-the-columns_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>When</strong></td>
+<td>Date and time.</td>
+</tr>
+<tr>
+<td><strong>Who</strong></td>
+<td>The username, and under it what kind of person: <strong>super admin</strong>, <strong>owner</strong>, <strong>user</strong>, <strong>guest</strong> (someone on the join page) or <strong>system</strong> (the command-line tool).</td>
+</tr>
+<tr>
+<td><strong>Company</strong></td>
+<td>The company concerned, when there is one.</td>
+</tr>
+<tr>
+<td><strong>What happened</strong></td>
+<td>The kind of entry (see below).</td>
+</tr>
+<tr>
+<td><strong>Details</strong></td>
+<td>What exactly was done, for example "Set-up finished: database gsmart_company_002, 70 tables".</td>
+</tr>
+<tr>
+<td><strong>From</strong></td>
+<td>The address of the computer it came from.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Some of the entries you will see:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>What happened</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>platform setup</td>
+<td>Multi-company was switched on and Company 1 registered.</td>
+</tr>
+<tr>
+<td>login, login failed, logout, session timeout</td>
+<td>A Super Admin logged in, failed, logged out or timed out; login failed is also written for unknown usernames on the log-in page.</td>
+</tr>
+<tr>
+<td>login refused</td>
+<td>A user of an inactive company tried to log in.</td>
+</tr>
+<tr>
+<td>company created, company activated</td>
+<td>A company record was made; its set-up finished (or it was switched on again).</td>
+</tr>
+<tr>
+<td>company setup failed, company setup retried, company deleted</td>
+<td>A set-up failed, was run again, or a failed record was deleted.</td>
+</tr>
+<tr>
+<td>company opened, company closed</td>
+<td>A Super Admin opened a company or went back to the platform.</td>
+</tr>
+<tr>
+<td>company edited, company deactivated, owner changed</td>
+<td>The company's details, status or owner were changed.</td>
+</tr>
+<tr>
+<td>company code regenerated, company code state, company join rules</td>
+<td>The Company Code or the joining rules were changed, by the owner or a Super Admin.</td>
+</tr>
+<tr>
+<td>employee joined, join refused</td>
+<td>An employee made an account with a code; someone typed a code that was refused.</td>
+</tr>
+<tr>
+<td>employee approved, employee rejected</td>
+<td>A Company Owner decided on a join request.</td>
+</tr>
+<tr>
+<td>database updated, restore</td>
+<td>Upgrade scripts were run; a company database was restored from a backup.</td>
+</tr>
+<tr>
+<td>super admin created, super admin password reset, platform settings</td>
+<td>Changes to Super Admins or to the platform settings.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-good-to-know_7">Good to know<a class="man-hash" href="#s-good-to-know_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The page shows the latest 500 entries of the period. Narrow the period or pick a company to see older ones.</li>
+<li>What happens inside a company is also in that company's own audit trail (<strong>System Administration &gt; Audit Trail</strong>), in much more detail. The platform audit log records the platform's view: who did what to which company.</li>
+</ul>
+<h2 id="pf-account">My account<a class="man-hash" href="#pf-account" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Where a Super Admin changes their own password.</p>
+<p><strong>Where to find it:</strong> Platform &gt; My account; also <strong>Change password</strong> in the menu under your name, and <strong>Change my password</strong> on Super Admins. It opens by itself when you log in with a temporary password.</p>
+<p>The line at the top gives your full name, username and last log-in. When you have a temporary password, a yellow line asks "Please replace your temporary password before continuing."</p>
+<h4 id="s-step-by-step_6">Step by step<a class="man-hash" href="#s-step-by-step_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Type your <strong>Current password</strong>.</li>
+<li>Type the new password in <strong>New password</strong> and again in <strong>Confirm new password</strong>. It needs at least 10 characters with upper- and lower-case letters, a number and a symbol, must not contain your username and must differ from the current one.</li>
+<li>Click <strong>Change password</strong>. The message is "Your password has been changed." and the Companies page opens.</li>
+</ol>
+<p>Messages: "Your current password is incorrect.", "The new passwords do not match.", "Choose a password different from your current one." and "The new password must have ..." followed by what is missing.</p>
+<h2 id="s-when-something-goes-wrong">When something goes wrong<a class="man-hash" href="#s-when-something-goes-wrong" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<h4 id="s-a-super-admin-is-locked-out">A Super Admin is locked out<a class="man-hash" href="#s-a-super-admin-is-locked-out" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Another active Super Admin can unlock the account or reset its password on <a href="#pf-admins">Super Admins</a>. If there is no other Super Admin (or all are locked out), the server administrator can give the account a new temporary password from the command line, in the program folder:</p>
+<p><code>php tools/platform.php reset-superadmin USERNAME "NEWPASSWORD"</code></p>
+<p>Replace USERNAME with the Super Admin's username and NEWPASSWORD with the temporary password to give; keep the quotes, because the password contains a symbol. The password must follow the Super Admin rule. The account is unlocked and made active, and the Super Admin must choose a new password at the next log-in. The reset is written in the platform audit log.</p>
+<p>The same tool has three more commands for the server administrator:</p>
+<ul>
+<li><code>php tools/platform.php list</code>: lists the companies with their status, database and Company Code;</li>
+<li><code>php tools/platform.php sync 2</code>: rebuilds the platform's list of the usernames of company 2 (or the number you type), like <strong>Sync user list</strong>;</li>
+<li><code>php tools/platform.php update-all</code>: runs the pending upgrade scripts on every company database, like <strong>Update all companies</strong>.</li>
+</ul>
+<h4 id="s-a-user-cannot-log-in-although-the-account-exists">A user cannot log in although the account exists<a class="man-hash" href="#s-a-user-cannot-log-in-although-the-account-exists" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Open the company's details page and click <strong>Sync user list</strong>. If a username is used in two companies (this can happen after restoring an old backup), the message names it; rename the user in one of the companies and sync again.</p>
+<h4 id="s-backups">Backups<a class="man-hash" href="#s-backups" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Each company backs up and restores its own database only, on its own <a href="manual.php?c=administration#pg-admin-backup">Backup &amp; Restore</a> page. The files are kept in the company's own folder, and the files of companies other than Company 1 are named after the company number (<code>company_002_...</code>), not after the database.</li>
+<li>A restore can only rebuild the company's own tables. Statements in a backup file that switch to or name another database, create databases, users, triggers, routines or views, read files or copy data with a SELECT are refused and listed. The audit trail protection is put back afterwards, and the company's list of usernames on the platform is rebuilt; a username that now clashes with another company is reported.</li>
+<li>The platform database (for example <code>gsmart_master</code>) is in no company's backup. Back it up yourself, for example with phpMyAdmin &gt; Export, at the same time as the company databases, and keep a copy off the server.</li>
+</ul>
+<h4 id="s-switching-multi-company-off-in-an-emergency">Switching multi-company off in an emergency<a class="man-hash" href="#s-switching-multi-company-off-in-an-emergency" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>If the platform database cannot be reached, no company can be opened. In an emergency the server administrator can move the file <code>storage/platform/multi_company.json</code> out of its folder: the program then runs as Company 1 alone, with Company 1's users only, and the other companies cannot be reached. Put the file back (or run Multi-Company Setup again) to return to several companies. Nothing is lost either way.</p>
+<h4 id="s-before-going-live-with-several-companies">Before going live with several companies<a class="man-hash" href="#s-before-going-live-with-several-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Keep the Super Admin password safe, and create a second Super Admin.</li>
+<li>Check on <a href="#pf-companies">Companies</a> that every company has a Company Owner.</li>
+<li>Back up the platform database together with the company databases, and do it before every database update.</li>
+<li>Scheduled report e-mails are sent for every active company from the same daily task; nothing extra is needed per company.</li>
+</ol>

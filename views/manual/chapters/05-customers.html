@@ -1,0 +1,1863 @@
+<p>This chapter covers the work you do for the people and companies you sell to: keeping customer records, quoting prices, taking orders, billing, recording cash sales, collecting payments, giving credits and refunds, sending statements and charging interest on overdue accounts. The last part explains the customer, receivables and sales reports.</p>
+<p>All the pages are under <strong>Customers</strong> in the sidebar. What you see and what you can do on each page depends on your role in Page Access Configuration: view, create, edit, delete, print and approve. If a button described here is missing on your screen, your role does not allow that action (see <a href="manual.php?c=administration">System Administration</a>).</p>
+<h2 id="s-how-a-sale-moves-through-the-program">How a sale moves through the program<a class="man-hash" href="#s-how-a-sale-moves-through-the-program" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A sale can start as a quotation and end as money in the bank. You do not have to use every step: a walk-in sale goes straight to a sales receipt, and a regular account customer can be invoiced without an estimate or an order.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Step</th>
+<th>Page</th>
+<th>Effect on the books</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quote a price</td>
+<td>Create Estimates</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Take an order</td>
+<td>Create Sales Orders</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Bill on account</td>
+<td>Create Invoices</td>
+<td>Debits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Bill many customers at once</td>
+<td>Create Batch Invoices</td>
+<td>Debits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Sell for cash</td>
+<td>Enter Sales Receipts</td>
+<td>Debits Undeposited Funds</td>
+</tr>
+<tr>
+<td>Add a charge to an account</td>
+<td>Enter Statement Charges</td>
+<td>Debits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Charge interest on late accounts</td>
+<td>Assess Finance Charges</td>
+<td>Debits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Collect</td>
+<td>Receive Payments</td>
+<td>Credits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Take goods back or give a credit</td>
+<td>Create Credit Memos/Refunds</td>
+<td>Credits Accounts Receivable</td>
+</tr>
+<tr>
+<td>Bank the collections</td>
+<td>Banking &gt; Make Deposits</td>
+<td>Moves Undeposited Funds to the bank</td>
+</tr>
+<tr>
+<td>Remind the customer</td>
+<td>Create Statements</td>
+<td>None</td>
+</tr>
+</tbody>
+</table></div>
+<p>Estimates and sales orders are <em>non-posting</em> documents: they record a commitment but never touch the ledger or the stock on hand. Everything else in the table posts to the general ledger the moment you save it (unless you save an invoice or sales receipt as pending, explained under <a href="#pg-cust-invoices">Create Invoices</a>).</p>
+<p>Collections are recorded in 1050 Undeposited Funds by default. They stay there until you group them into a bank deposit with <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>, exactly as the cashier brings the checks and cash to the bank.</p>
+<h4 id="s-customers-and-jobs">Customers and jobs<a class="man-hash" href="#s-customers-and-jobs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A <em>job</em> is a record kept under a customer, for a project or a branch you bill separately. It is shown as <strong>Customer:Job</strong>, for example <strong>ABC Trading Corp.:Office Renovation Project</strong>. A job has its own address, terms, price level and transactions, and it rolls up into its customer:</p>
+<ul>
+<li>The customer's open balance includes the balances of its jobs.</li>
+<li><strong>Receive Payments</strong> is done for the customer; the invoices of its jobs are listed with it.</li>
+<li>Statements are made per customer and include the jobs.</li>
+<li>Finance charges are assessed on the customer, for the overdue documents of the customer and its jobs.</li>
+<li>The credit limit that counts is the customer's own, compared with the balance of the customer and all its jobs.</li>
+</ul>
+<p>A job cannot have jobs of its own.</p>
+<h2 id="s-lists-to-set-up-first">Lists to set up first<a class="man-hash" href="#s-lists-to-set-up-first" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Before you enter customers, make sure these lists hold what you need. They are kept under <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a> in the Financial Set-up &amp; Reports module:</p>
+<ul>
+<li><strong>Payment terms</strong>: name, net days and an optional early-payment discount (for example "2% 10 Net 30": 2% off if paid within 10 days, due in 30).</li>
+<li><strong>Tax codes</strong>: for example VAT12 (12%), ZR, EX and NT, each with its output tax account.</li>
+<li><strong>Payment methods</strong>: Cash, Check, GCash, Bank Transfer and so on.</li>
+<li><strong>Price levels</strong>: the demo company has Wholesale (-5%), VIP (-10%), Retail Plus (+5%), Price Level 4 to Price Level 10 (0%, ready to be renamed). Fixed prices per item and level are set on the item or in Set Item Prices and Levels (see <a href="manual.php?c=inventory">Inventory</a>).</li>
+<li><strong>Sales representatives</strong>: with their commission %, used by the Sales by Rep reports.</li>
+<li><strong>Customer types</strong> and <strong>Billing groups</strong> (billing groups are used by <a href="#pg-cust-batch_invoices">Create Batch Invoices</a>).</li>
+</ul>
+<p>The accounts every customer transaction uses (Accounts Receivable, Undeposited Funds, Default Sales Income, Sales Returns and Allowances, Sales Discounts, Finance Charge Income, Reimbursable Expense Income, Creditable Withholding Tax, Creditable VAT Withheld and Output Tax) are set in <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>. If one is missing, saving stops with a message such as "The default account "Accounts Receivable" is not set. Set it under Financial Set-up &amp; Reports &gt; Module Default Accounts."</p>
+<p>The finance charge rate, minimum charge and grace period are set in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>. The discount and price limits of each role, and whether a role may exceed credit limits, are set in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>.</p>
+<h2 id="pg-cust-center">Customer Center<a class="man-hash" href="#pg-cust-center" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Customer Center is where you keep customer and job records and where you see everything about one customer: balance, credit limit, transactions, notes and reminders. It is also the quickest place to start any sale for a customer, because every form opens with the customer already filled in.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Customer Center</p>
+<h4 id="s-the-customer-list">The customer list<a class="man-hash" href="#s-the-customer-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The left side lists your customers in alphabetical order, each job indented under its customer with an arrow. The figure beside each name is that record's own Accounts Receivable balance.</p>
+<ul>
+<li><strong>Type to find a customer or job</strong>: the list narrows as you type, letter by letter, to the customers and jobs whose name, company name, contact person, phone or mobile contains what you typed. The count under the box says how many are shown ("3 of 24 customer(s) and job(s)"). When nothing matches, the list says <strong>No customer matches. Press Enter to search the whole list on the server.</strong> Press Enter to open the first match, or, when the list on screen is filtered to active customers, to search the whole list, inactive ones included.</li>
+<li>The drop-down beside it shows <strong>Active</strong> customers (the default), <strong>All</strong> customers including inactive ones (marked "inactive"), or only those <strong>With balance</strong>.</li>
+<li>Click a name to show its details on the right.</li>
+</ul>
+<p>At the top of the page, <strong>New customer / job</strong> opens a blank customer form and <strong>Export list</strong> downloads the list shown as a spreadsheet file (CSV) with the name, parent customer, company, contact, phone, email, billing address, terms, credit limit, balance and active flag. Exporting needs the print permission.</p>
+<h4 id="s-a-customers-details">A customer's details<a class="man-hash" href="#s-a-customers-details" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The top card shows the name (as Customer:Job for a job), the company name and TIN, the contact person, phone, mobile and email, and the billing address. On the right are:</p>
+<ul>
+<li><strong>Open balance</strong>: what the customer owes today. For a customer, it includes the balances of its jobs.</li>
+<li><strong>Credit limit</strong>: the limit, or "none".</li>
+<li><strong>Available credits</strong>: shown in green when the customer has unapplied payments or credit memos.</li>
+</ul>
+<p>Below are the <strong>Terms</strong>, <strong>Price level</strong> (Standard when none is set), <strong>Tax</strong>, <strong>Rep</strong>, <strong>Type</strong> and <strong>Pays by</strong> (preferred payment method).</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>In the list, ABC Trading Corp. shows ₱171,410.40, its own balance. The details show an open balance of ₱178,354.40, because its job Office Renovation Project owes another ₱6,944.00.</p></div>
+<p>The buttons under the details work on the selected customer:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the customer record for changes</td>
+</tr>
+<tr>
+<td><strong>Add job</strong></td>
+<td>Starts a new job under this customer (customers only)</td>
+</tr>
+<tr>
+<td><strong>Estimate</strong>, <strong>Sales order</strong>, <strong>Invoice</strong></td>
+<td>Opens a new form for this customer</td>
+</tr>
+<tr>
+<td><strong>Sales receipt</strong>, <strong>Statement charge</strong>, <strong>Credit memo</strong></td>
+<td>Opens a new form for this customer</td>
+</tr>
+<tr>
+<td><strong>Receive payment</strong></td>
+<td>Opens Receive Payments for this customer</td>
+</tr>
+<tr>
+<td><strong>Apply credits to invoices</strong></td>
+<td>Shown when credits are available; applies them in Receive Payments</td>
+</tr>
+<tr>
+<td><strong>Balance detail</strong></td>
+<td>Runs Customer Balance Detail for this customer</td>
+</tr>
+<tr>
+<td><strong>Transaction list</strong></td>
+<td>Runs Transaction List by Customer for this customer</td>
+</tr>
+<tr>
+<td><strong>Statement</strong></td>
+<td>Makes last month's statement for this customer</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Transactions</strong> card lists the customer's documents, newest first (up to 300), including those of its jobs. Use the type drop-down to show one kind only (Estimates, Sales orders, Invoices, Sales receipts, Payments, Credit memos, Statement charges, Finance charges or Refunds) and the date box to change the starting date, which is 1 January of last year by default. The columns are <strong>Type</strong>, <strong>No.</strong>, <strong>Date</strong>, <strong>Job</strong> (filled for a job's document), <strong>Amount</strong>, <strong>Open</strong> (the unpaid part of an invoice or charge, or the unused part of a payment or credit memo) and <strong>Status</strong>. Click a number to open the document.</p>
+<p>The <strong>Notes and to-do reminders</strong> card shows the Notes field of the customer record first, then every note added here, with who added it and when. A to-do has a checkbox icon and a <strong>Done</strong> link; a done to-do is struck through. Open to-dos also appear under <strong>To-do reminders</strong> on the Home dashboard, overdue dates in red, so collection calls are not forgotten.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer / job name</strong></td>
+<td>The name used on every list and form. Required.</td>
+</tr>
+<tr>
+<td><strong>Job of (leave blank for a customer)</strong></td>
+<td>For a job, the customer it belongs to. Leave blank for a customer.</td>
+</tr>
+<tr>
+<td><strong>Company name</strong></td>
+<td>The registered name. Printed on documents and statements instead of the name when filled.</td>
+</tr>
+<tr>
+<td><strong>Contact person</strong></td>
+<td>The person you deal with. Shown on the Collections Report.</td>
+</tr>
+<tr>
+<td><strong>Phone</strong>, <strong>Mobile</strong></td>
+<td>Contact numbers.</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Used by the Email buttons of documents and statements.</td>
+</tr>
+<tr>
+<td><strong>TIN</strong></td>
+<td>Printed under the Bill to address.</td>
+</tr>
+<tr>
+<td><strong>Billing address</strong></td>
+<td>Printed on invoices and statements, copied into Bill to on forms.</td>
+</tr>
+<tr>
+<td><strong>Shipping address</strong></td>
+<td>Copied into Ship to on forms.</td>
+</tr>
+<tr>
+<td><strong>Payment terms</strong></td>
+<td>Copied into Terms on invoices; decides the due date.</td>
+</tr>
+<tr>
+<td><strong>Credit limit (0 = none)</strong></td>
+<td>The most the customer may owe. 0 means no limit.</td>
+</tr>
+<tr>
+<td><strong>Price level</strong></td>
+<td>Standard, or a price level that changes the prices on sales forms.</td>
+</tr>
+<tr>
+<td><strong>Tax code</strong></td>
+<td>Used by Create Batch Invoices on taxable lines.</td>
+</tr>
+<tr>
+<td><strong>Preferred payment method</strong></td>
+<td>Suggested on Receive Payments and on sales receipts started from here.</td>
+</tr>
+<tr>
+<td><strong>Customer type</strong></td>
+<td>A grouping of your own, for example Corporate or School.</td>
+</tr>
+<tr>
+<td><strong>Sales representative</strong></td>
+<td>Copied into Sales rep on forms.</td>
+</tr>
+<tr>
+<td><strong>Billing group (batch invoicing)</strong></td>
+<td>Puts the customer in a group for Create Batch Invoices.</td>
+</tr>
+<tr>
+<td><strong>Taxes this customer withholds</strong></td>
+<td>The taxes of the <a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a> the customer usually withholds from what it pays you, for example a government office: WT on VAT 5% and WT on Goods 1%. <a href="#pg-cust-payments">Receive Payments</a> ticks them when one of its invoices is ticked.</td>
+</tr>
+<tr>
+<td><strong>Approved account customer at the POS</strong></td>
+<td>Allows charge sales to this customer at the POS register.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick to hide the customer from the drop-downs of forms.</td>
+</tr>
+<tr>
+<td><strong>Reason for change (required for credit limit changes)</strong></td>
+<td>Shown when editing. Explain any credit limit change.</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Free text shown at the top of the notes card.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step">Step by step<a class="man-hash" href="#s-step-by-step" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To add a customer:</p>
+<ol>
+<li>Click <strong>New customer / job</strong>.</li>
+<li>Type the <strong>Customer / job name</strong> and leave <strong>Job of</strong> blank.</li>
+<li>Fill in the company, contact, addresses, TIN and the terms, credit limit, price level and other settings.</li>
+<li>Click <strong>Save customer</strong>, or <strong>Save customer &amp; New</strong> to go on with the next one.</li>
+</ol>
+<p>To add a job:</p>
+<ol>
+<li>Select the customer in the list.</li>
+<li>Click <strong>Add job</strong>. The form opens with the customer in <strong>Job of</strong>.</li>
+<li>Type the job name and its own address, terms and settings.</li>
+<li>Click <strong>Save customer</strong>.</li>
+</ol>
+<p>To change a customer or its credit limit:</p>
+<ol>
+<li>Select the customer and click <strong>Edit</strong>.</li>
+</ol>
+<ol start="2">
+<li>Change what you need.</li>
+<li>If you changed <strong>Credit limit (0 = none)</strong>, type the reason in <strong>Reason for change (required for credit limit changes)</strong>.</li>
+<li>Click <strong>Save customer</strong>.</li>
+</ol>
+<p>To add a note or a to-do reminder:</p>
+<ol>
+<li>Select the customer.</li>
+<li>In the <strong>Notes and to-do reminders</strong> card, type the note in <strong>Add a note or reminder</strong>.</li>
+<li>Optionally pick a date, and tick <strong>To-do</strong> if it is something to follow up.</li>
+<li>Click <strong>Add</strong>. When the task is done, click <strong>Done</strong> beside it.</li>
+</ol>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Customers are never deleted. Untick <strong>Active</strong> instead; the history stays and the customer disappears from the drop-downs of new forms.</li>
+<li>Two customers cannot have the same name, and two jobs of one customer cannot either: "Another customer or job already has this name."</li>
+<li>A credit limit change without a reason stops with "Enter a reason for changing the credit limit." Users with the Approve permission on the Customer Center, and administrators, may leave the reason blank. Every change is kept in the audit trail with the values before and after.</li>
+<li>Adding notes needs the edit permission on the Customer Center.</li>
+<li>The price level and sales representative of the record chosen on a form are used, so a job can have its own price level.</li>
+</ul>
+<h2 id="s-working-with-sales-forms">Working with sales forms<a class="man-hash" href="#s-working-with-sales-forms" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Six pages share the same form, list and document view: <a href="#pg-cust-estimates">Create Estimates</a>, <a href="#pg-cust-sales_orders">Create Sales Orders</a>, <a href="#pg-cust-invoices">Create Invoices</a>, <a href="#pg-cust-sales_receipts">Enter Sales Receipts</a>, <a href="#pg-cust-statement_charges">Enter Statement Charges</a> and <a href="#pg-cust-credit_memos">Create Credit Memos/Refunds</a>. This section explains what they have in common; each page's own section explains only what is different.</p>
+<h4 id="s-the-list-of-documents">The list of documents<a class="man-hash" href="#s-the-list-of-documents" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Clicking one of these pages in the sidebar opens its list. At the top are <strong>New</strong> (to start a document) and <strong>Export</strong> (to download the list shown as a spreadsheet file; needs the print permission).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong>, <strong>To</strong></td>
+<td>The date range. It starts 90 days back and ends 30 days ahead.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Shows one status only. The choices depend on the page.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are in use; shows one class.</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Finds a number, reference, memo or customer name.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Filter</strong> to apply them. The list shows up to 500 documents: <strong>Date</strong>, <strong>No.</strong>, <strong>Name</strong>, <strong>Reference</strong>, <strong>Memo</strong>, <strong>Class</strong>, <strong>Total</strong>, <strong>Open</strong> (on pages where something can remain unpaid or unused), <strong>Status</strong> and <strong>By</strong> (the user who entered it). Voided documents are struck through. Click a number to open the document.</p>
+<h4 id="s-the-header-of-the-form">The header of the form<a class="man-hash" href="#s-the-header-of-the-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>These fields appear at the top of every sales form. Fields that only some forms have are explained in their page's section.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer:Job</strong></td>
+<td>The customer or job. Type part of the name to find it. Required.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The document date. Today by default.</td>
+</tr>
+<tr>
+<td><strong>Number</strong></td>
+<td>Leave blank to get the next number shown in grey, such as INV-00014 (auto). You may type your own.</td>
+</tr>
+<tr>
+<td><strong>Sales rep</strong></td>
+<td>Filled from the customer. Used by the Sales by Rep reports.</td>
+</tr>
+<tr>
+<td><strong>Bill to</strong></td>
+<td>Filled from the customer's billing address.</td>
+</tr>
+<tr>
+<td><strong>Ship to</strong></td>
+<td>Filled from the customer's shipping address. Printed on the document.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are set up. The class the whole document belongs to.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>An internal note. It is also the memo of the ledger lines and prints in small grey text.</td>
+</tr>
+<tr>
+<td><strong>Customer message</strong></td>
+<td>Printed at the bottom of the document. "Thank you for your business." by default.</td>
+</tr>
+</tbody>
+</table></div>
+<p>When you choose the customer, the program fills in <strong>Bill to</strong>, <strong>Ship to</strong>, <strong>Sales rep</strong> and (on invoices) <strong>Terms</strong> from the customer record. On a new invoice or credit memo with no lines yet, the page reloads for that customer, so the billable costs or the customer's open invoices can be shown.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The printed "Bill to" block is always taken from the customer record (company name, billing address and TIN), not from the <strong>Bill to</strong> box of the form. To change the address on the printout, correct the customer record in the <a href="#pg-cust-center">Customer Center</a>.</p></div>
+<h4 id="s-item-lines">Item lines<a class="man-hash" href="#s-item-lines" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The lines grid holds what you sell. Three blank lines are ready (one on a statement charge); click <strong>Add line</strong>, <strong>Add 5 lines</strong> or <strong>Add 10 lines</strong> for more, the square plus button at the end of a line to insert an empty line above it, and the red <strong>X</strong> to remove a line. The <strong>Inventory site</strong> chosen at the top is copied onto every line.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>The item. Type part of its code or name to find it.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Filled with the item's sales description. You may change it.</td>
+</tr>
+<tr>
+<td><strong>Qty</strong></td>
+<td>The quantity, in the unit shown in U/M. Set to 1 when you pick an item.</td>
+</tr>
+<tr>
+<td><strong>U/M</strong></td>
+<td>The unit of measure. Shown only when an item on the form has more than one unit.</td>
+</tr>
+<tr>
+<td><strong>Rate</strong></td>
+<td>The price for one unit. Filled from the item and the customer's price level.</td>
+</tr>
+<tr>
+<td><strong>Discount</strong></td>
+<td>A figure, and <strong>%</strong> (percent of the line) or <strong>Amt</strong> (an amount off the line).</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>Quantity times rate, less the discount. Worked out for you.</td>
+</tr>
+<tr>
+<td><strong>Tax</strong></td>
+<td>The tax code, taken from the item. The tax is worked out from the amount.</td>
+</tr>
+</tbody>
+</table></div>
+<p>How the item list shows each item (code first or name first) is set under "Searching for items" in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>, for all forms or for each form separately. Whichever way it is shown, typing any part of the code or the name finds the item. Only active items are offered.</p>
+<p>If you type an <strong>Amount</strong> yourself on a line that has a quantity and no discount, the program works the <strong>Rate</strong> back from it. On a line with no quantity and no rate, the amount you type is used as it is.</p>
+<p>Every line with a description or an amount needs an item: "Choose an item for every line that has a description or amount." A form with no lines stops with "Add at least one line."</p>
+<h4 id="s-prices-and-price-levels">Prices and price levels<a class="man-hash" href="#s-prices-and-price-levels" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When you pick an item, the rate is the item's sales price for the customer chosen on the form:</p>
+<ul>
+<li>A customer with no price level (Standard) gets the item's sales price.</li>
+<li>A customer with a price level gets the fixed price set for that item and level, if there is one.</li>
+<li>Otherwise the sales price is changed by the level's percentage. With VIP (-10%), an item selling at ₱899.00 is offered at ₱809.10.</li>
+</ul>
+<p>Choose the customer before the items. Lines already on the form keep their rates if you change the customer afterwards. See the <a href="#pg-rpt-item_price_list">Item Price List</a> for the price of every item at every level.</p>
+<h4 id="s-units-of-measure">Units of measure<a class="man-hash" href="#s-units-of-measure" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Items that belong to a U/M set can be sold in any unit of the set (see <a href="manual.php?c=inventory">Inventory</a>). The <strong>U/M</strong> column starts on the item's default sales unit. Changing the unit re-prices the line for the new unit. Stock always moves in the base unit.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Metro School Supplies buys 3 dz (dozen) Keyboard USB at ₱11,000.00 a dozen, with ₱1,500.00 off (<strong>Amt</strong>). The line amount is 3 × ₱11,000.00 less ₱1,500.00 = ₱31,500.00, and 36 pc leave the warehouse.</p></div>
+<h4 id="s-discounts-on-a-line">Discounts on a line<a class="man-hash" href="#s-discounts-on-a-line" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Type the discount in the <strong>Discount</strong> column and choose <strong>%</strong> or <strong>Amt</strong> beside it. A percent cannot be more than 100, and an amount off can never be more than the line itself. The printout shows the discount in the description, for example "(less 1,500.00)".</p>
+<h4 id="s-special-items">Special items<a class="man-hash" href="#s-special-items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Besides service, inventory, non-inventory, assembly and other charge items, four kinds of items behave differently on a sales form:</p>
+<ul>
+<li><strong>Discount item</strong>: with a percentage, it takes that percent off the line just above it; without one, it takes off the amount in its <strong>Rate</strong> (or its sales price). Its amount is negative.</li>
+<li><strong>Subtotal item</strong>: adds up the lines above it, back to the previous subtotal, and shows the total under its description. Put a discount item right after a subtotal to discount a group of lines.</li>
+<li><strong>Group item</strong>: a set of items sold together at its own <strong>Group price</strong> (see <a href="#sec-item-group-sales">Item groups on sales documents</a>).</li>
+<li><strong>Payment item</strong>: money received on the document itself. Type the amount in <strong>Rate</strong>; it reduces the total due and is recorded in Undeposited Funds.</li>
+</ul>
+<h4 id="sec-item-group-sales">Item groups on sales documents<a class="man-hash" href="#sec-item-group-sales" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>An item group (for example GRP-WFH Work-from-Home Bundle: a laptop, a mouse and a backpack) is sold on one line of an estimate, sales order, invoice, sales receipt, statement charge or credit memo, and at the POS. Pick the group: <strong>Qty</strong> is the number of groups and <strong>Rate</strong> is the price of one group, its <strong>Group price</strong> (with the customer's price level), or the sum of the prices of its items when <strong>Adopt the Group Price in the Item Group</strong> is cleared or the group has no group price (see <a href="manual.php?c=inventory#sec-item-groups">Item groups: group price and price variance</a>). A discount on the line is taken off the group.</p>
+<p>When the document is saved, the group line is recorded as the items in it, each at its own price, so stock, cost of sales and the sales of each item are kept as always, plus one line <strong>Price variance: Work-from-Home Bundle</strong> for the group price less the prices of its items, posted to the group's <strong>Price variance GL account</strong>. The document total is the group price times the quantity. A group sold for less than its price, or at another price, needs the same supervisor approval as an item.</p>
+<p>A document with item groups has two buttons above its lines, on its page and on its edit form:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>View by item group</strong></td>
+<td>One line per group: the group, how many, its price and amount, and under the description the items it holds. Editing in this view changes the group as a whole: a new quantity or price re-prices all of its items and its variance, and the saved lines keep their place (what was invoiced from a sales order stays linked).</td>
+</tr>
+<tr>
+<td><strong>View item details</strong></td>
+<td>Every item of each group on a line of its own, at its own price, with the price variance line and "In item group ..." under the description. Each line can be edited on its own.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Print</strong> prints the document the way it is shown.</p>
+<p>A sales order or estimate with groups comes across to its invoice by group, with the groups still to be invoiced; invoicing one group of four leaves three on the sales order.</p>
+<p>When <strong>Track Item Group Sales transactions</strong> is ticked (System Administration &gt; Company, Security &amp; Closing Date &gt; Inventory and POS), each group sold is also kept apart as a group, for <a href="#pg-rpt-sales_item_group">Sales by Item Group</a> and <a href="manual.php?c=point-of-sale#pg-rpt-pos_sales_item_group">POS Sales by Item Group</a>.</p>
+<h4 id="s-tax-and-totals">Tax and totals<a class="man-hash" href="#s-tax-and-totals" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The box at the bottom right shows <strong>Subtotal</strong>, <strong>Tax</strong> and <strong>Total</strong>, and changes as you type. Tax is worked out per line: the line amount times the rate of its tax code. The printed document shows "Subtotal (net of VAT)", "VAT" and "Total".</p>
+<h4 id="s-supervisor-approval">Supervisor approval<a class="man-hash" href="#s-supervisor-approval" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Estimates, sales orders, invoices, sales receipts and batch invoices check every line against the limits of your role (set in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>):</p>
+<ul>
+<li><strong>Max discount % without approval</strong>: applies to a line discount (a percent, or an amount off counted as a percent of the line) and to the percentage of a discount item.</li>
+<li><strong>Max price change % without approval</strong>: a rate that differs from the customer's price by more than this percent.</li>
+</ul>
+<p>A blank limit on the role means no limit. If a line goes over, saving stops with a message such as "Supervisor approval is required: 15.00% discount on LAP-001. Ask a supervisor to enter their username and password below." and the <strong>Supervisor approval</strong> box opens, marked "required". The supervisor types their <strong>Supervisor username</strong> and <strong>Password</strong> there, and you save again. The supervisor must have the Approve permission on the page and cannot approve their own document. Their name is recorded as <strong>Approved by</strong> on the document and on the printout. A user who has the Approve permission on the page does not need anyone else.</p>
+<p>Other messages you may see: "Approval failed: the supervisor username or password is wrong." (the failed attempt is logged) and "(name) is not allowed to approve on this page."</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>In the demo company the A/R Clerk role may give up to 10% discount and change prices by up to 5% without approval.</p></div>
+<h4 id="s-class">Class<a class="man-hash" href="#s-class" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When classes are set up, the <strong>Class</strong> box appears on every form. If you save without choosing one, the program asks: "This transaction has no class. It will be saved as Unclassified and will not appear under any class on the class reports." Click <strong>Choose a class</strong> to go back, or <strong>Continue saving</strong>.</p>
+<h4 id="s-saving">Saving<a class="man-hash" href="#s-saving" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Save</strong> saves and opens the saved document.</li>
+<li><strong>Save &amp; New</strong> saves and opens a blank form for the next one.</li>
+<li><strong>Cancel</strong> leaves without saving.</li>
+</ul>
+<p>If something is wrong, the form comes back with the message in red at the top and nothing is saved. Correct it and save again. A saved document is posted at once; editing it later removes the old ledger entries and stock movements and records the new ones, so the books always match the document.</p>
+<h4 id="s-the-saved-document">The saved document<a class="man-hash" href="#s-the-saved-document" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A saved document shows its details (date, number, status, customer, class, reference, due date, terms, sales rep, account, payment method, site, memo, who entered it and when, and who approved it), its lines, and the totals with the <strong>Open balance</strong> (invoices and charges) or <strong>Unapplied credit</strong> (credit memos). Users with the "View costs and margins" permission also see the <strong>Cost</strong> of each stocked line and a <strong>General ledger entries created automatically</strong> card with the journal lines. <strong>Related documents</strong> lists the documents it was created from, converted to, paid by, applied to, refunded by or deposited in, each one clickable.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the form to change the document</td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Opens the printable copy</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Starts an e-mail to the customer in your mail program</td>
+</tr>
+<tr>
+<td><strong>Memorize</strong></td>
+<td>Saves the document as a memorized transaction</td>
+</tr>
+<tr>
+<td><strong>Close</strong> / <strong>Reopen</strong></td>
+<td>Estimates and sales orders: stop or resume expecting the rest</td>
+</tr>
+<tr>
+<td><strong>Void</strong></td>
+<td>Cancels the document's effect but keeps it (posting documents)</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Removes the document</td>
+</tr>
+<tr>
+<td><strong>History</strong></td>
+<td>Opens its change history in <a href="manual.php?c=administration#pg-admin-txn_history">Transaction History</a></td>
+</tr>
+<tr>
+<td><strong>Back to list</strong></td>
+<td>Returns to the list</td>
+</tr>
+</tbody>
+</table></div>
+<p>Other buttons appear when they apply, such as <strong>Create Invoice</strong>, <strong>Receive Payment</strong>, <strong>Mark as final</strong>, <strong>Apply credit to invoices</strong> and <strong>Refund</strong>; they are explained on each page.</p>
+<h4 id="s-printing-and-emailing">Printing and emailing<a class="man-hash" href="#s-printing-and-emailing" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Print</strong> opens the document on a clean page with <strong>Print</strong> and <strong>Back</strong> buttons on top. Click <strong>Print</strong> to send it to a printer or save it as PDF from your browser. The printout carries the company name, address, TIN and phone (with the logo when the administrator switched it on), the document title and number, the date, the due date or "Valid until", the customer's name, billing address and TIN, the ship-to address, reference, terms, site and class, the lines, the customer message and memo, the totals ("Balance due" on invoices and charges), and signature lines for <strong>Prepared by</strong>, <strong>Checked by</strong>, <strong>Approved by</strong> and <strong>Received by</strong>. A voided document prints with "VOID".</p>
+<p><strong>Email</strong> opens a new message in your own e-mail program, addressed to the customer's email, with a subject such as "Invoice INV-00002 from Sample Trading Company" and a link to the printable copy. The program does not send the e-mail itself; you check and send it. Printing and emailing both need the print permission and are recorded in the audit trail.</p>
+<h4 id="s-memorizing">Memorizing<a class="man-hash" href="#s-memorizing" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Memorize</strong> keeps a copy of the document to enter again later, for example a monthly service invoice. The dialog asks for <strong>Name it</strong>, <strong>Group (optional)</strong>, <strong>How it is entered</strong> (Enter it automatically, Remind me when it is due, or Don't remind me), <strong>Every</strong> (a number and Day(s), Week(s), Month(s), Quarter(s) or Year(s)), <strong>Next due</strong>, <strong>Remind (days before)</strong>, <strong>Number remaining (blank = no limit)</strong> and <strong>Notes</strong>. The names, items and amounts are kept; the date and number are given each time. See <a href="manual.php?c=chart-of-accounts#pg-coa-memorized_txns">Memorized Transactions</a>.</p>
+<h4 id="s-voiding-and-deleting">Voiding and deleting<a class="man-hash" href="#s-voiding-and-deleting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Both ask for a <strong>Reason (required, recorded in the audit trail)</strong>.</p>
+<ul>
+<li><strong>Void</strong> keeps the document, marked VOID with the reason and time, and removes its effect on the ledger and the inventory. Its status becomes Void.</li>
+<li><strong>Delete</strong> removes the document. A full copy stays in the audit trail.</li>
+</ul>
+<p>Estimates and sales orders never post, so they have only <strong>Delete</strong>. The program refuses to void or delete a document when:</p>
+<ul>
+<li>payments or credits were applied to it: "Payments or credits have been applied to it. Remove them first (edit the payment or credit)."</li>
+<li>it was included in a bank deposit: "It is included in deposit DEP-00001. Remove it from the deposit first."</li>
+<li>a credit memo or payment was refunded: "It has been refunded (…). Void the refund first."</li>
+<li>an estimate or sales order was already converted in part: "It has already been converted or received in part. Close it instead."</li>
+</ul>
+<h4 id="s-rules-for-every-form">Rules for every form<a class="man-hash" href="#s-rules-for-every-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The closing date: without the permission "Can change transactions on/before the closing date or already reconciled", you cannot enter, change, void or delete a document dated on or before the closing date: "The books are closed through 08/31/2026. You do not have permission to record transactions dated on or before the closing date."</li>
+<li>A document cleared in a bank reconciliation cannot be changed by users without that permission.</li>
+<li>Users limited to certain inventory sites only see and use those sites: "You are not allowed to record transactions for that site."</li>
+<li>Inactive customers and items are not offered on new forms.</li>
+<li>Every save, edit, void, delete, print and e-mail is recorded in the audit trail.</li>
+</ul>
+<h2 id="pg-cust-estimates">Create Estimates<a class="man-hash" href="#pg-cust-estimates" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>An estimate is a price quotation. Use it when a customer asks how much something will cost before ordering. It does not affect the books or the stock, and when the customer accepts, you turn it into a sales order or an invoice with one click, without typing the lines again.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Estimates. Also <strong>Estimate</strong> in the Customer Center, and <strong>Create Estimates</strong> under Quick actions on the Home dashboard (opens a new form).</p>
+<p>The list's <strong>Status</strong> filter offers Pending, Accepted and Closed.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The common fields are explained under Working with sales forms, earlier in this chapter. The estimate adds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reference</strong></td>
+<td>Any reference, for example the customer's inquiry number.</td>
+</tr>
+<tr>
+<td><strong>Valid until</strong></td>
+<td>How long the quoted prices hold. 30 days from today by default. Printed on the estimate.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Pending</strong> (waiting for the customer), <strong>Accepted</strong> or <strong>Closed</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The lines grid has the <strong>Discount</strong> column. The <strong>Supervisor approval</strong> box is below the lines.</p>
+<h4 id="s-step-by-step_1">Step by step<a class="man-hash" href="#s-step-by-step_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To prepare an estimate:</p>
+<ol>
+<li>Click <strong>New</strong>.</li>
+<li>Choose the <strong>Customer:Job</strong>. Bill to, Ship to and Sales rep fill in.</li>
+<li>Check the <strong>Date</strong> and <strong>Valid until</strong>.</li>
+<li>Add the lines: choose each item, then correct the quantity, rate or discount if needed.</li>
+<li>Type a <strong>Memo</strong> if useful, for example "Office equipment for 5 workstations".</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>To send it, open the estimate and click <strong>Print</strong> or <strong>Email</strong>.</p>
+<p>To turn an accepted estimate into a sales order or an invoice:</p>
+<ol>
+<li>Open the estimate.</li>
+<li>Click <strong>Create Sales Order</strong> or <strong>Create Invoice</strong>. The new form opens with a blue note "Creating from Estimate EST-00001." and with the customer, addresses, sales rep, class and lines of the estimate, including their tax. The memo reads "From Estimate EST-00001".</li>
+<li>Change what is different, for example the quantity the customer really ordered.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>To bill an estimate in stages (progress billing), create the invoice from the estimate and lower the quantities or amounts to the part you are billing now. The estimate remembers how much of each line has been invoiced. The next invoice made from it leaves out the lines already invoiced in full, but brings any other line at its full estimate quantity, so lower it again to the part being billed.</p>
+<p>To close an estimate the customer declined, open it and click <strong>Close</strong>, then confirm "Close this document? Remaining quantities will no longer be expected." <strong>Reopen</strong> puts it back to Pending.</p>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Nothing. An estimate is a non-posting document ("Non-posting document: it records a commitment and does not affect the ledger."). It does not move stock.</p>
+<p>The status changes by itself:</p>
+<ul>
+<li>Creating a sales order from a Pending estimate makes it <strong>Accepted</strong>.</li>
+<li>Invoicing part of it makes it <strong>Accepted</strong>; invoicing every line in full makes it <strong>Closed</strong>.</li>
+<li><strong>Close</strong> makes it Closed; <strong>Reopen</strong> makes it Pending.</li>
+</ul>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Estimates cannot be voided, only deleted, and only while nothing has been created from them. After that, use <strong>Close</strong>.</li>
+<li>Discounts and price changes above your limits need supervisor approval, even on an estimate, so a quotation cannot promise a price the company would not approve.</li>
+<li>The <strong>Related documents</strong> card lists every sales order and invoice made from the estimate.</li>
+</ul>
+<h2 id="pg-cust-sales_orders">Create Sales Orders<a class="man-hash" href="#pg-cust-sales_orders" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A sales order records what the customer ordered and you have promised to deliver. Use it when goods are delivered or billed later, or in parts. The order tracks how much of each line has been invoiced, so back orders are never forgotten.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Sales Orders. Also <strong>Sales order</strong> in the Customer Center, <strong>Create Sales Order</strong> on an estimate, and <strong>Create Sales Orders</strong> under Quick actions on the Home dashboard.</p>
+<p>The list's <strong>Status</strong> filter offers Open, Partially filled, Closed and Void.</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The common fields are explained under Working with sales forms, earlier in this chapter. The sales order adds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer P.O. No.</strong></td>
+<td>The customer's purchase order number. Carried to the invoice.</td>
+</tr>
+<tr>
+<td><strong>Expected ship date</strong></td>
+<td>When you expect to deliver. Shown on the Open Sales Orders reports.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The warehouse or store the goods will come from.</td>
+</tr>
+</tbody>
+</table></div>
+<p>When you edit a saved order, the grid has two more columns: <strong>Invoiced</strong> (the quantity already invoiced) and <strong>Closed</strong> (tick to stop expecting the rest of that line). A line that has been invoiced in part has no <strong>X</strong>: it cannot be removed, only closed.</p>
+<h4 id="s-step-by-step_2">Step by step<a class="man-hash" href="#s-step-by-step_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To enter a sales order:</p>
+<ol>
+<li>Click <strong>New</strong>, or click <strong>Create Sales Order</strong> on the estimate.</li>
+<li>Choose the <strong>Customer:Job</strong> and type the <strong>Customer P.O. No.</strong></li>
+<li>Set the <strong>Expected ship date</strong> and the <strong>Inventory site</strong>.</li>
+<li>Enter or check the lines.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>To invoice what you deliver:</p>
+<ol>
+<li>Open the sales order and click <strong>Create Invoice</strong> (shown while the order is Open or Partial).</li>
+<li>The invoice opens with every line not yet fully invoiced, at the quantity still open. Closed lines are left out.</li>
+<li>Lower the quantities to what you are delivering now, or remove the lines you are not delivering.</li>
+<li>Click <strong>Save</strong>. The order's <strong>Invoiced</strong> column goes up and its status becomes Partial, or Closed when everything is invoiced.</li>
+</ol>
+<p>To stop expecting the rest of an order, open it and click <strong>Close</strong> (all lines), or edit it and tick <strong>Closed</strong> on single lines. <strong>Reopen</strong> opens all lines again.</p>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Nothing in the ledger ("Non-posting document"). The quantities not yet invoiced count as "on sales order" in the inventory reports and in <a href="#pg-rpt-open_so_item">Open Sales Orders by Item</a>, which helps purchasing see what is needed.</p>
+<p>The status is set by the program: <strong>Open</strong> (nothing invoiced), <strong>Partial</strong> (some lines invoiced) and <strong>Closed</strong> (every line invoiced or closed).</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A line already used on an invoice cannot be removed: "A line that was already used on another document cannot be removed. Close the line instead."</li>
+<li>A sales order cannot be voided, and cannot be deleted once invoiced in part; use <strong>Close</strong>.</li>
+<li>If you delete or void an invoice made from the order, the invoiced quantities go back on the order.</li>
+<li>The expected ship date is not printed on the sales order itself; it appears in the Open Sales Orders reports.</li>
+</ul>
+<h2 id="pg-cust-invoices">Create Invoices<a class="man-hash" href="#pg-cust-invoices" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>An invoice bills a customer who pays later. It records the sale, the output VAT and the amount the customer owes, and takes stocked items out of inventory. Use it for every credit sale; use a <a href="#pg-cust-sales_receipts">sales receipt</a> instead when the customer pays on the spot.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Invoices. Also <strong>Invoice</strong> in the Customer Center, <strong>Create Invoice</strong> on an estimate or sales order, and <strong>Create Invoices</strong> under Quick actions on the Home dashboard.</p>
+<p>The list's <strong>Status</strong> filter offers <strong>Unpaid</strong> (open or partly paid, not pending), <strong>Open</strong> (nothing paid yet), <strong>Partially paid</strong>, <strong>Paid</strong>, <strong>Pending</strong> and <strong>Void</strong>. The <strong>Open</strong> column shows what is still owed on each invoice.</p>
+<h4 id="s-fields_3">Fields<a class="man-hash" href="#s-fields_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The common fields are explained under Working with sales forms, earlier in this chapter. The invoice adds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer P.O. No.</strong></td>
+<td>The customer's purchase order number. Printed as "Reference".</td>
+</tr>
+<tr>
+<td><strong>Terms</strong></td>
+<td>Filled from the customer. Decides the due date and any early-payment discount.</td>
+</tr>
+<tr>
+<td><strong>Due date (blank = from terms)</strong></td>
+<td>Leave blank to use the date plus the terms' net days.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The warehouse or store the goods leave from.</td>
+</tr>
+<tr>
+<td><strong>Pending (non-posting until marked final)</strong></td>
+<td>Tick to save the invoice without posting it yet.</td>
+</tr>
+</tbody>
+</table></div>
+<p>If the customer has billable costs, a <strong>Billable time and costs for this customer</strong> card appears below the lines, with a <strong>Markup %</strong> box.</p>
+<h4 id="s-step-by-step_3">Step by step<a class="man-hash" href="#s-step-by-step_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To enter an invoice:</p>
+<ol>
+<li>Click <strong>New</strong>.</li>
+<li>Choose the <strong>Customer:Job</strong>. Terms, Sales rep, Bill to and Ship to fill in, and the page reloads for that customer.</li>
+<li>Type the <strong>Customer P.O. No.</strong> if there is one. Leave <strong>Due date</strong> blank to use the terms.</li>
+<li>Check the <strong>Inventory site</strong>.</li>
+<li>Enter the lines.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>To bill costs you paid for a customer's job (billable time and costs):</p>
+<ol>
+<li>Make sure the costs were entered in Enter Bills or Write Checks with the customer or job in <strong>Customer:Job</strong> and <strong>Billable</strong> ticked (see <a href="manual.php?c=vendors">Vendors and Payables</a>).</li>
+<li>Start the invoice for the customer. Costs of the customer and of all its jobs are listed with their date, source, vendor, description and amount.</li>
+<li>Tick <strong>Add</strong> on each cost to bill.</li>
+<li>Type a <strong>Markup %</strong> if you add a margin (it applies to every ticked cost).</li>
+<li>Click <strong>Save</strong>. Each cost becomes a line "Reimbursable: …" credited to Reimbursable Expense Income, and it leaves the list of unbilled costs.</li>
+</ol>
+<p>To hold an invoice until it is approved (pending):</p>
+<ol>
+<li>Tick <strong>Pending (non-posting until marked final)</strong> before saving.</li>
+<li>Save. The invoice shows "This transaction is pending. It does not affect the books or inventory until it is marked final."</li>
+<li>When it is approved, open it and click <strong>Mark as final</strong>. The form opens with Pending unticked and the note "Pending is unticked — saving posts this sale."</li>
+<li>Click <strong>Save</strong>. The invoice now posts.</li>
+</ol>
+<p>To collect on an invoice, open it and click <strong>Receive Payment</strong>. See <a href="#pg-cust-payments">Receive Payments</a>.</p>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>For every line: a credit to the item's income account (4000 Sales if the item has none) and a credit to the output tax account of its tax code (2100 Output Tax by default). For an inventory or assembly item, also a debit to Cost of Goods Sold and a credit to Inventory at the item's average cost, and the quantity leaves the inventory site. The total is debited to 1100 Accounts Receivable for the customer.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Invoice INV-00002 bills Office Renovation Project for 2 hr installation (₱3,000.00) and 4 hr repair (₱3,200.00), both VAT12.</p></div>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td>₱6,944.00</td>
+<td></td>
+</tr>
+<tr>
+<td>4010 Service Income</td>
+<td></td>
+<td>₱3,000.00</td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td></td>
+<td>₱360.00</td>
+</tr>
+<tr>
+<td>4010 Service Income</td>
+<td></td>
+<td>₱3,200.00</td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td></td>
+<td>₱384.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>For a laptop sold from stock, two more lines appear, for example debit 5000 Cost of Goods Sold ₱32,000.00 and credit 1200 Inventory ₱32,000.00.</p>
+<p>Special lines post as follows: a discount item debits its own income account (it is a negative amount), a payment item debits 1050 Undeposited Funds, and billable costs credit 4110 Reimbursable Expense Income.</p>
+<p>The status is <strong>Open</strong> until a payment or credit is applied, then <strong>Partial</strong>, then <strong>Paid</strong>. A pending invoice has the status <strong>Pending</strong>, posts nothing, has no open balance and is left out of the aging reports.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Credit limit: when you save an invoice that is not pending, the program adds it to the balance of the customer (with all its jobs) and compares the result with the customer's credit limit. Over the limit, saving stops with a message such as "Credit limit exceeded: balance 178,354.40 + this invoice 80,000.00 &gt; limit 250,000.00." Users without the permission "Can exceed customer credit limits" see "You are not allowed to exceed customer credit limits." and cannot save it. Users with it get a <strong>Credit limit override reason</strong> box: type the reason and save again; the override is recorded in the audit trail.</li>
+<li>A pending invoice skips the credit limit check until it is marked final.</li>
+<li id="sec-no-cost-sales">Items with no unit cost: an inventory part (or assembly) that has neither a <strong>Unit cost</strong> on its item form nor an average unit cost cannot be sold on an invoice, sales receipt, statement charge or POS sale, because its cost of goods sold would be zero. Saving stops with "This item has no unit cost and no average unit cost, so the sale would record no cost of goods sold: 0224 - Chicken Feet WN. Enter the unit cost on the item (Inventory &gt; Item List), or receive it at its cost first, then save again." For an item group, each item of the group is checked and the message adds "(in item group GRP-WFH)". An item with a unit cost but no stock received yet goes out at that unit cost. The check can be switched off with <strong>Block sales of items with no unit cost</strong> in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>; estimates and sales orders are not checked.</li>
+<li>Selling more than the quantity on hand follows the setting <strong>Allow selling or moving stock below zero (with warning)</strong>. Switched on (the standard), the program first asks "Saving the transaction will lead the inventory to a negative balance. Do you want to continue?" (see <a href="manual.php?c=getting-started#sec-negative-stock">Stock below zero: the Yes / No question</a>); <strong>Yes</strong> saves the invoice and a yellow message names the items now below zero, for example "Stock is now below zero: LAP-001 at Main Warehouse (-2.00).", <strong>No</strong> goes back to the invoice. Switched off, the invoice is not saved: "Not enough stock: LAP-001 at Main Warehouse has 3.00 on hand, and this would leave -2.00. …" The same applies to sales receipts. See "Stock below zero" in <a href="manual.php?c=inventory">Inventory</a>.</li>
+<li>An invoice with payments or credits applied cannot be voided or deleted until they are removed from the payment or credit.</li>
+<li>The printed "Balance due" is the open balance; a pending invoice prints ₱0.00 there because it is not yet owed.</li>
+<li>To bill many customers the same items at once, use <a href="#pg-cust-batch_invoices">Create Batch Invoices</a>.</li>
+<li>Charge sales at the POS register also create invoices (see <a href="manual.php?c=point-of-sale">Point of Sale</a>).</li>
+</ul>
+<h2 id="pg-cust-batch_invoices">Create Batch Invoices<a class="man-hash" href="#pg-cust-batch_invoices" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Create Batch Invoices bills the same items to many customers in one step, for example a monthly service fee to all your maintenance contract customers. Each customer gets a separate invoice with their own terms and prices.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Batch Invoices, or <strong>Create Batch Invoices</strong> under Quick actions on the Home dashboard.</p>
+<h4 id="s-fields_4">Fields<a class="man-hash" href="#s-fields_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Select a billing group…</strong></td>
+<td>Picks a billing group and ticks its customers.</td>
+</tr>
+<tr>
+<td><strong>Select all</strong></td>
+<td>Ticks or unticks every customer.</td>
+</tr>
+<tr>
+<td>Customer checkboxes</td>
+<td>The customers to invoice. The billing group shows after the name.</td>
+</tr>
+<tr>
+<td><strong>Invoice date</strong></td>
+<td>The date of every invoice. Today by default.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The site the goods leave from.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>"Monthly billing" and the month by default.</td>
+</tr>
+<tr>
+<td><strong>Customer message</strong></td>
+<td>Printed on each invoice.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Use each customer's price level</strong></td>
+<td>Ticked by default: each invoice uses the customer's price level.</td>
+</tr>
+<tr>
+<td>Item lines</td>
+<td>The items, quantities, rates and discounts billed to every customer.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The totals under the lines are for one invoice, "before customer-specific prices".</p>
+<h4 id="s-step-by-step_4">Step by step<a class="man-hash" href="#s-step-by-step_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose a group in the <strong>Select a billing group…</strong> box. The page reloads with that group's customers ticked, so choose the group before typing anything else.</li>
+</ol>
+<ol start="2">
+<li>Tick or untick customers as needed.</li>
+<li>Check the <strong>Invoice date</strong>, <strong>Inventory site</strong>, <strong>Memo</strong> and <strong>Customer message</strong>.</li>
+<li>Enter the lines to bill.</li>
+<li>Leave <strong>Use each customer's price level</strong> ticked to price each invoice for the customer, or untick it to bill everyone the rates you typed.</li>
+<li>Click <strong>Create invoices</strong>.</li>
+</ol>
+<p>The page shows "N invoices created (batch B…)" and a card with every invoice, its customer and total, and an <strong>Email</strong> link for each. Click <strong>Print all</strong> to print every invoice of the batch, each on its own page.</p>
+<h4 id="s-what-it-records_3">What it records<a class="man-hash" href="#s-what-it-records_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Each invoice posts exactly like one entered in <a href="#pg-cust-invoices">Create Invoices</a>: debit Accounts Receivable, credit income and output tax, and cost of goods sold for stocked items. Each invoice gets the customer's own terms, due date, sales rep, billing and shipping address. On lines that have a tax code, the tax code of the customer record is used instead when the customer has one, so a zero-rated customer is billed ZR.</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Messages: "Enter the invoice date.", "Select at least one customer." and "Enter the items to bill."</li>
+<li>Discounts and price changes above your limits need supervisor approval, as on single invoices. The rates are compared with the items' standard prices.</li>
+<li>Batch invoices are not checked against credit limits and are never pending.</li>
+<li>Jobs are listed by their own name (for example "Office Renovation Project"), and can be ticked like customers.</li>
+<li>Billing groups are made in <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>; a customer joins a group in its record in the <a href="#pg-cust-center">Customer Center</a>.</li>
+</ul>
+<h2 id="pg-cust-sales_receipts">Enter Sales Receipts<a class="man-hash" href="#pg-cust-sales_receipts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A sales receipt records a sale paid in full on the spot: cash, check, card or e-wallet. It records the sale and the money received in one step, so there is nothing to collect later.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Enter Sales Receipts. Also <strong>Sales receipt</strong> in the Customer Center, and <strong>Enter Sales Receipts</strong> under Quick actions on the Home dashboard.</p>
+<p>The list's <strong>Status</strong> filter offers Open, Closed, Paid, Pending and Void. A posted sales receipt shows Open, because there is nothing left to pay on it.</p>
+<h4 id="s-fields_5">Fields<a class="man-hash" href="#s-fields_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The common fields are explained under Working with sales forms, earlier in this chapter. The sales receipt adds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Check / reference no.</strong></td>
+<td>The check number or payment reference.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The site the goods leave from.</td>
+</tr>
+<tr>
+<td><strong>Payment method</strong></td>
+<td>How the customer paid. Filled from the customer when started from the Customer Center.</td>
+</tr>
+<tr>
+<td><strong>Deposit to</strong></td>
+<td>Where the money goes. 1050 Undeposited Funds by default.</td>
+</tr>
+<tr>
+<td><strong>Pending (non-posting until marked final)</strong></td>
+<td>Tick to save it without posting yet.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A customer is required. Use a customer such as "Walk-in Customer" for anonymous counter sales.</p>
+<h4 id="s-step-by-step_5">Step by step<a class="man-hash" href="#s-step-by-step_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New</strong>.</li>
+<li>Choose the <strong>Customer:Job</strong>.</li>
+<li>Type the <strong>Check / reference no.</strong> and choose the <strong>Payment method</strong>.</li>
+<li>Leave <strong>Deposit to</strong> on 1050 Undeposited Funds if the money will be deposited later with other collections, or choose the bank account if it went straight to the bank.</li>
+<li>Enter the lines.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>The printout is titled "OFFICIAL RECEIPT" unless the administrator set another "Receipt title for sales" in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</p>
+<h4 id="s-what-it-records_4">What it records<a class="man-hash" href="#s-what-it-records_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The same income, tax and cost of goods sold lines as an invoice, but the total is debited to the <strong>Deposit to</strong> account instead of Accounts Receivable.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>SR-00001 sells Juan Dela Cruz a laptop, a backpack and a mouse for ₱46,466.56.</p></div>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1050 Undeposited Funds</td>
+<td>₱46,466.56</td>
+<td></td>
+</tr>
+<tr>
+<td>4000 Sales</td>
+<td></td>
+<td>₱41,488.00</td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td></td>
+<td>₱4,978.56</td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td>₱32,850.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td></td>
+<td>₱32,850.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>The view lists the cost lines item by item (₱32,000.00, ₱500.00 and ₱350.00); they are added up here.</p>
+<p>The money stays in Undeposited Funds until you include it in a deposit with <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>. The Related documents card then shows "Deposited in: Deposit DEP-00001".</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A pending sales receipt works like a pending invoice: nothing posts until you click <strong>Mark as final</strong> and save.</li>
+<li>A sales receipt included in a deposit cannot be voided or deleted until it is removed from the deposit.</li>
+<li>Discounts and price changes above your limits need supervisor approval.</li>
+</ul>
+<h2 id="pg-cust-statement_charges">Enter Statement Charges<a class="man-hash" href="#pg-cust-statement_charges" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A statement charge adds an amount to a customer's account without a full invoice, for example a late payment fee or a small service charge. It appears on the customer's next statement and can be paid in Receive Payments like an invoice.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Enter Statement Charges. Also <strong>Statement charge</strong> in the Customer Center, and <strong>Enter Statement Charges</strong> under Quick actions on the Home dashboard.</p>
+<h4 id="s-fields_6">Fields<a class="man-hash" href="#s-fields_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The form is shorter than an invoice: there is no sales rep, inventory site, Bill to or Ship to, and the lines grid has no Discount column and starts with one line.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer:Job</strong></td>
+<td>The customer charged. Required.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the charge.</td>
+</tr>
+<tr>
+<td><strong>Number</strong></td>
+<td>Blank for the next number (SC-…).</td>
+</tr>
+<tr>
+<td><strong>Reference</strong></td>
+<td>Any reference.</td>
+</tr>
+<tr>
+<td><strong>Due date (blank = from terms)</strong></td>
+<td>When the charge is due. The form has no Terms field, so a blank due date becomes the charge date.</td>
+</tr>
+<tr>
+<td><strong>Class</strong>, <strong>Memo</strong>, <strong>Customer message</strong></td>
+<td>As on other sales forms.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_6">Step by step<a class="man-hash" href="#s-step-by-step_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New</strong>.</li>
+<li>Choose the <strong>Customer:Job</strong>.</li>
+<li>Type a <strong>Due date</strong> if the charge is not due at once.</li>
+<li>Choose the item, for example LATE-FEE, and check the amount.</li>
+<li>Type a <strong>Memo</strong> such as "Late payment fee".</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h4 id="s-what-it-records_5">What it records<a class="man-hash" href="#s-what-it-records_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Like an invoice: debit 1100 Accounts Receivable, credit the item's income account and output tax. SC-00001 for Green Valley Clinic debits Accounts Receivable ₱200.00 and credits 4100 Finance Charge Income ₱200.00, the income account of the LATE-FEE item.</p>
+<p>The status is Open, Partial or Paid, as for invoices. Open statement charges appear in the aging reports, on statements and in Receive Payments.</p>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Statement charges are not checked against the credit limit or the discount limits.</li>
+<li>To charge interest on overdue balances for all customers at once, use <a href="#pg-cust-finance_charges">Assess Finance Charges</a>.</li>
+</ul>
+<h2 id="pg-cust-statements">Create Statements<a class="man-hash" href="#pg-cust-statements" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A statement of account shows a customer what they owe: the balance, the transactions of the period and how old the unpaid amounts are. Send statements at the end of the month or before a collection call.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Statements, <strong>Statement</strong> in the Customer Center, or <strong>Create Statements</strong> under Quick actions on the Home dashboard.</p>
+<h4 id="s-fields_7">Fields<a class="man-hash" href="#s-fields_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong></td>
+<td>The first day of the period. First day of last month by default.</td>
+</tr>
+<tr>
+<td><strong>To (statement date)</strong></td>
+<td>The last day of the period and the date of the statement.</td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td><strong>Balance forward</strong>, <strong>Open item</strong> or <strong>Transaction statement</strong>.</td>
+</tr>
+<tr>
+<td><strong>Customers (none selected = all)</strong></td>
+<td>Pick one or more customers (hold Ctrl to pick several). None picked means all active customers.</td>
+</tr>
+<tr>
+<td><strong>Skip zero balances</strong></td>
+<td>Ticked by default: customers owing nothing get no statement.</td>
+</tr>
+<tr>
+<td><strong>Skip customers with no activity</strong></td>
+<td>Leaves out customers with no transactions in the period.</td>
+</tr>
+<tr>
+<td><strong>Include aging summary</strong></td>
+<td>Ticked by default: adds the aging row at the bottom.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only customers are listed, not jobs; a customer's statement includes its jobs.</p>
+<p>The three formats:</p>
+<ul>
+<li><strong>Balance forward</strong>: starts with the balance at the From date ("Balance forward"), then each transaction of the period with its <strong>Charges</strong>, <strong>Payments / credits</strong> and running <strong>Balance</strong>.</li>
+<li><strong>Open item</strong>: lists only what is still open at the statement date: each unpaid invoice or charge with its <strong>Due</strong> date, <strong>Amount</strong> and <strong>Open balance</strong>, and each unapplied payment or credit as a negative amount. A job's document shows the job name.</li>
+<li><strong>Transaction statement</strong>: the transactions of the period with Charges and Payments / credits, without the balance forward row or running balance.</li>
+</ul>
+<h4 id="s-step-by-step_7">Step by step<a class="man-hash" href="#s-step-by-step_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Set <strong>From</strong> and <strong>To (statement date)</strong>.</li>
+<li>Choose the <strong>Format</strong>.</li>
+<li>Pick the customers, or none for all.</li>
+<li>Tick or untick the options.</li>
+<li>Click <strong>Preview statements</strong>. The statements appear below the settings.</li>
+</ol>
+<ol start="6">
+<li>Click <strong>Print all (N)</strong> to open the printable statements in a new tab, each on its own page, and print them.</li>
+<li>To e-mail a statement, click the button with the customer's name (shown for customers with an email). It opens a message in your e-mail program with the subject "Statement of account as of 09/30/2026" and the balance in the text.</li>
+</ol>
+<p>Each statement shows the company name, address and TIN, "STATEMENT", the statement date and format, the customer's company name and billing address, the table, the aging row (<strong>Current</strong>, <strong>1 - 30</strong>, <strong>31 - 60</strong>, <strong>61 - 90</strong>, <strong>&gt; 90</strong> and <strong>Amount due</strong>, or just "Amount due" without aging) and the line "Please disregard this statement if payment has already been made. Thank you."</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>ABC Trading Corp.'s September statement starts with a balance forward of ₱183,332.80, shows payment PMT-00001 of ₱101,500.00 (₱100,000.00 received and ₱1,500.00 withholding tax) and invoices INV-00002 and INV-00003, and ends with ₱178,354.40 due, of which ₱81,832.80 is 1 - 30 days past due.</p></div>
+<h4 id="s-good-to-know_7">Good to know<a class="man-hash" href="#s-good-to-know_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Statements record nothing in the books. They read Accounts Receivable, so they always agree with the Customer Balance reports.</li>
+<li>The aging row counts days past the due date as at the statement date. Unapplied credits count as Current.</li>
+<li>Printing statements needs the print permission. Previewing and printing are recorded in the audit trail.</li>
+</ul>
+<h2 id="pg-cust-finance_charges">Assess Finance Charges<a class="man-hash" href="#pg-cust-finance_charges" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Assess Finance Charges works out interest on overdue balances for every customer and posts it as finance charges. Run it at the end of a month if your terms allow you to charge interest on late payments.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Assess Finance Charges, or <strong>Assess Finance Charges</strong> under Quick actions on the Home dashboard.</p>
+<p>The box at the top shows the settings in use, for example "Annual interest rate 12.00%, minimum charge 50.00, grace period 0 days, earlier finance charges are not charged interest. Interest runs from the due date (or the last assessment) to the assessment date. A customer already charged on or after the assessment date is not charged again." They are changed with <strong>Finance charge settings</strong>, which opens <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a> (Annual interest rate %, Minimum finance charge, Grace period (days) and Charge interest on earlier finance charges).</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkbox</td>
+<td>Ticked customers are charged. All are ticked at first.</td>
+</tr>
+<tr>
+<td><strong>Customer</strong></td>
+<td>The customer. Jobs are included in their customer.</td>
+</tr>
+<tr>
+<td><strong>Overdue documents</strong></td>
+<td>Each overdue document and the days of interest counted.</td>
+</tr>
+<tr>
+<td><strong>Last charged</strong></td>
+<td>The date of the customer's last finance charge.</td>
+</tr>
+<tr>
+<td><strong>Overdue balance</strong></td>
+<td>The open amount of those documents.</td>
+</tr>
+<tr>
+<td><strong>Finance charge</strong></td>
+<td>The interest worked out. You may change it.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-how-the-charge-is-worked-out">How the charge is worked out<a class="man-hash" href="#s-how-the-charge-is-worked-out" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>For each open invoice, statement charge (and earlier finance charge, if that setting is on) whose due date plus the grace period is before the assessment date:</p>
+<ul>
+<li>interest = open amount × annual rate ÷ 100 × days ÷ 365</li>
+<li>the days run from the due date, or from the last finance charge if that is later, to the assessment date.</li>
+<li>a customer who already has a finance charge dated on or after the assessment date is left out: that period has been charged.</li>
+</ul>
+<p>The interest of all the customer's documents is added up, and a customer's charge is never less than the minimum charge.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>On 09/27/2026, INV-00001 of ABC Trading Corp. has ₱81,832.80 open and has been due for 20 days. At 12% a year: ₱81,832.80 × 12% × 20 ÷ 365 = ₱538.08. Green Valley Clinic was last charged on 09/26/2026, so only 1 day counts; its interest is below the minimum, so it is charged ₱50.00.</p></div>
+<h4 id="s-step-by-step_8">Step by step<a class="man-hash" href="#s-step-by-step_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Type the <strong>Assessment date</strong> and click <strong>Recalculate</strong>.</li>
+</ol>
+<ol start="2">
+<li>Untick the customers you will not charge.</li>
+<li>Change a <strong>Finance charge</strong> amount if you agreed on another figure.</li>
+<li>Choose a <strong>Class</strong> if you use classes.</li>
+<li>Click <strong>Assess charges</strong>.</li>
+</ol>
+<p>The program shows "N finance charge(s) posted." and opens the list of finance charges.</p>
+<p><strong>Posted finance charges</strong> opens this list at any time. Click a number to open a finance charge; from there you can print, email, void or delete it.</p>
+<h4 id="s-what-it-records_6">What it records<a class="man-hash" href="#s-what-it-records_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>One finance charge per ticked customer, numbered FC-…, dated and due on the assessment date, with the memo "Finance charge on overdue balance as of …" and a line naming the documents charged:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td>₱538.08</td>
+<td></td>
+</tr>
+<tr>
+<td>4100 Finance Charge Income</td>
+<td></td>
+<td>₱538.08</td>
+</tr>
+</tbody>
+</table></div>
+<p>Finance charges appear on the next statement, in the aging reports and in Receive Payments.</p>
+<h4 id="s-good-to-know_8">Good to know<a class="man-hash" href="#s-good-to-know_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>If nobody is overdue, the page shows "No customers have overdue balances as of …".</li>
+<li>"Select at least one customer to charge." appears if you click <strong>Assess charges</strong> with every customer unticked or every amount at zero.</li>
+<li>A customer is never charged twice for the same period. After an assessment, the customers charged no longer appear for that date or any earlier one, and if the page is sent again (a double click, or a second user assessing at the same time) the program posts nothing more for them and says "Not charged again, already charged on or after …" with their names. To undo a charge, void it; the customer then appears again.</li>
+<li>A saved finance charge cannot be changed, so it has no <strong>Edit</strong> button. To correct a charge, void it and assess again, or enter a statement charge for the difference.</li>
+</ul>
+<h2 id="pg-cust-forecast">Set Up Forecast<a class="man-hash" href="#pg-cust-forecast" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A forecast holds the sales you expect from each customer, month by month, for one fiscal year. Compare it with what was really sold using the <a href="#pg-rpt-forecast_vs_actual">Forecast vs Actual by Customer</a> report.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Set Up Forecast</p>
+<p>The list shows <strong>Name</strong>, <strong>What it budgets</strong>, <strong>Fiscal year</strong>, <strong>Customer</strong>, <strong>Class</strong>, <strong>Yearly total</strong> and <strong>Notes</strong>, with an <strong>Amounts</strong> button to enter the figures and a trash button to delete the forecast. <strong>Forecast vs actual</strong> opens the report.</p>
+<h4 id="s-fields_8">Fields<a class="man-hash" href="#s-fields_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>For example "Forecast 2026". Required.</td>
+</tr>
+<tr>
+<td><strong>What it budgets</strong></td>
+<td>Always "Sales forecast by customer".</td>
+</tr>
+<tr>
+<td><strong>Fiscal year</strong></td>
+<td>The year the forecast covers.</td>
+</tr>
+<tr>
+<td><strong>Customer (blank = one sheet for all customers)</strong></td>
+<td>One customer, or All customers in one sheet.</td>
+</tr>
+<tr>
+<td><strong>Class (optional)</strong></td>
+<td>Limits the actual figures to one class.</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Any note.</td>
+</tr>
+<tr>
+<td><strong>Start from last year's actual figures</strong></td>
+<td>Fills the months with last year's income for the customer.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The months follow the fiscal year start set in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>; the form says, for example, "The fiscal year starts in January".</p>
+<h4 id="s-step-by-step_9">Step by step<a class="man-hash" href="#s-step-by-step_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New forecast</strong>.</li>
+<li>Type the <strong>Name</strong> and <strong>Fiscal year</strong>, and choose the customer or leave it blank for all customers.</li>
+<li>Tick <strong>Start from last year's actual figures</strong> to begin from last year's sales.</li>
+<li>Click <strong>Create</strong>. The amounts page opens.</li>
+<li>For each customer (one sheet per customer when you chose all customers), type the expected sales in the income account rows, one box per month. The row, column and grand totals update as you type.</li>
+<li>To fill a row quickly, click in the row, type an amount in <strong>Fill a row</strong> and click <strong>Across</strong> (the same amount every month), or type a yearly amount in <strong>Yearly total</strong> and click <strong>Spread</strong> (divided evenly over the twelve months).</li>
+<li>Click <strong>Save the amounts</strong>. The page shows "N monthly amount(s) saved."</li>
+</ol>
+<p>To change the figures later, click <strong>Amounts</strong> on the list.</p>
+<h4 id="s-good-to-know_9">Good to know<a class="man-hash" href="#s-good-to-know_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Only active income and other income accounts are offered as rows.</li>
+<li>The same name cannot be used twice for the same year: "There is already a forecast called "…" for 2026."</li>
+<li>Deleting asks "Delete "…" and its amounts?" and cannot be undone.</li>
+<li>Forecasts do not record anything in the books. Budgets for accounts are made in <a href="manual.php?c=chart-of-accounts#pg-coa-budgets">Set Up Budgets</a>.</li>
+</ul>
+<h2 id="pg-cust-payments">Receive Payments<a class="man-hash" href="#pg-cust-payments" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Receive Payments records money a customer pays on their account and applies it to their invoices and charges. It also handles early-payment discounts, tax withheld by the customer, available credits and overpayments.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Receive Payments. Also <strong>Receive payment</strong> in the Customer Center, <strong>Receive Payment</strong> on an open invoice, and <strong>Receive Payments</strong> under Quick actions on the Home dashboard.</p>
+<h4 id="s-fields_9">Fields<a class="man-hash" href="#s-fields_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Received from</strong></td>
+<td>The customer. Choosing one reloads the page with their open invoices.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date the payment was received.</td>
+</tr>
+<tr>
+<td><strong>Amount received</strong></td>
+<td>The money received. If you leave it blank, it adds up the payments you apply.</td>
+</tr>
+<tr>
+<td><strong>Payment method</strong></td>
+<td>How it was paid. Filled from the customer.</td>
+</tr>
+<tr>
+<td><strong>Check / reference no.</strong></td>
+<td>The check number or transfer reference.</td>
+</tr>
+<tr>
+<td><strong>Deposit to</strong></td>
+<td>Where the money goes. 1050 Undeposited Funds by default.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>Any note.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Under the fields, the program shows the <strong>Customer balance</strong> and, if any, the <strong>Available credits</strong>.</p>
+<p>Only customers are listed in <strong>Received from</strong>. The invoices of a customer's jobs are listed with the customer, with a <strong>Job</strong> column.</p>
+<p>The <strong>Outstanding invoices and charges</strong> table lists every open invoice, statement charge and finance charge, the ones due first at the top:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkbox</td>
+<td>Tick to pay the invoice.</td>
+</tr>
+<tr>
+<td><strong>Date</strong>, <strong>Type / No.</strong></td>
+<td>The document. Click the number to open it.</td>
+</tr>
+<tr>
+<td><strong>Job</strong></td>
+<td>The job, when the document belongs to one.</td>
+</tr>
+<tr>
+<td><strong>Due</strong></td>
+<td>The due date, in red when overdue.</td>
+</tr>
+<tr>
+<td><strong>Original</strong>, <strong>Open</strong></td>
+<td>The document total and what is still owed.</td>
+</tr>
+<tr>
+<td><strong>Disc. avail.</strong></td>
+<td>The early-payment discount the terms allow on this date.</td>
+</tr>
+<tr>
+<td><strong>Discount</strong></td>
+<td>The discount you give. Posted to Sales Discounts.</td>
+</tr>
+<tr>
+<td><strong>Withholding</strong></td>
+<td>The taxes the customer withheld, by type (see below). Ask the customer for its BIR Form 2307.</td>
+</tr>
+<tr>
+<td><strong>Credits</strong></td>
+<td>Available credit used on this invoice (shown when there are credits).</td>
+</tr>
+<tr>
+<td><strong>Payment</strong></td>
+<td>The part of the money received applied to this invoice.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Totals applied</strong> adds up the Payment column (and the Credits column). The bar at the bottom shows <strong>Received</strong>, <strong>Applied</strong>, <strong>Unapplied</strong> and, when used, <strong>Credits applied</strong>.</p>
+<h4 id="s-step-by-step_10">Step by step<a class="man-hash" href="#s-step-by-step_10" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To record a payment:</p>
+<ol>
+<li>Choose the customer in <strong>Received from</strong>.</li>
+<li>Check the <strong>Date</strong>, choose the <strong>Payment method</strong> and type the <strong>Check / reference no.</strong></li>
+<li>Type the <strong>Amount received</strong>, or leave it blank for now.</li>
+<li>Tick the invoices being paid. With no amount typed, each ticked invoice is paid in full and the amount received adds itself up. With an amount typed, each ticked invoice gets what is left of it, and the program tells you when an invoice can only be paid in part.</li>
+<li>Or, after typing the amount received, click <strong>Auto-apply amount</strong>: the amount is spread over the invoices, oldest due first. Anything left over stays as a credit for the customer.</li>
+<li>Type any <strong>Discount</strong>, and tick the taxes the customer withheld in the <strong>Withholding</strong> box of the invoices they belong to.</li>
+<li>Check <strong>Deposit to</strong>.</li>
+<li>Click <strong>Save payment</strong> (or <strong>Save payment &amp; New</strong> for the next customer).</li>
+</ol>
+<p>The program shows "Payment saved." and opens the payment.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>ABC Trading Corp. pays INV-00001 with a check of ₱100,000.00 and a BIR Form 2307 for ₱1,500.00 withheld. Tick the tax in the <strong>Withholding</strong> box of INV-00001 and type 1,500.00 over its amount, and type 100,000.00 in <strong>Payment</strong>: the invoice is reduced by ₱101,500.00.</p></div>
+<h4 id="s-the-taxes-the-customer-withheld">The taxes the customer withheld<a class="man-hash" href="#s-the-taxes-the-customer-withheld" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The <strong>Withholding</strong> box of an invoice opens the taxes of the <a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a> that apply to payments from customers. Tick the ones the customer withheld (one or more): each amount is worked out from the open balance net of VAT and can be typed over, and the <strong>Payment</strong> on the invoice drops by the same figure. A customer's usual taxes (<strong>Taxes this customer withholds</strong> on its record) are ticked when its invoice is ticked. The box works even before the invoice is ticked: its tax base already shows the open balance net of VAT, and ticking a tax ticks the invoice.</p>
+<div class="man-callout man-note"><p><strong>Example (a government buyer):</strong> the City Government of Makati pays an invoice of ₱100,688.00 (₱89,900.00 plus ₱10,788.00 VAT) and withholds 5% VAT (₱4,495.00) and 1% income tax (₱899.00) on the ₱89,900.00. Tick WT on VAT and WT on Goods on the invoice: <strong>Payment</strong> becomes ₱95,294.00, the check received.</p></div>
+<p>The two kinds are kept apart, as the BIR requires: the 1% / 2% income tax withheld is debited to <strong>1310 Creditable Withholding Tax</strong> (a credit against the company's income tax), the 5% VAT withheld to <strong>1315 Creditable VAT Withheld</strong> (a VAT credit, 2550Q Item 16, listed in the <a href="manual.php?c=bir-reports#pg-rpt-bir_cvat_withheld">Creditable VAT Withheld Schedule</a>). Neither is input VAT. A payment saved before the taxes were kept by type keeps its withholding as it was.</p>
+<p>To give the early-payment discount:</p>
+<ol>
+<li>Enter the payment date. If it is within the discount days of the invoice's terms (for example "2% 10 Net 30"), the <strong>Disc. avail.</strong> column shows the discount and the <strong>Discount</strong> box shows it in grey.</li>
+<li>Type the discount in <strong>Discount</strong>. It is not filled in for you.</li>
+<li>Apply the rest as the payment.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Cebu Tech Hub pays INV-00006 of ₱96,718.72 within 10 days on terms 2% 10 Net 30. The discount is ₱1,934.37, and the payment ₱94,784.35.</p></div>
+<p>To apply available credits (unapplied payments or credit memos):</p>
+<ol>
+<li>Choose the customer. The <strong>Available credits</strong> card lists each credit with its date, memo and available amount.</li>
+<li>Click <strong>Apply available credits</strong> to spread all the credits over the open invoices, the ticked ones first, then the oldest; or type an amount in <strong>Apply now</strong> on a credit; or type an amount in the <strong>Credits</strong> column of an invoice.</li>
+<li>Add a payment if money was also received, or leave <strong>Amount received</strong> blank to apply only the credits.</li>
+<li>Click <strong>Save payment</strong>. The message says how much credit was applied ("Credits applied." when no money was received).</li>
+</ol>
+<p>To refund an overpayment:</p>
+<ol>
+<li>Record the payment with the full amount received. The part not applied stays as a credit: "Overpayment of … is kept as a credit for this customer."</li>
+<li>Tick <strong>Refund any overpayment</strong> before saving to go straight to the refund form, or later click <strong>Refund</strong> on the payment. See <a href="#pg-cust-credit_memos">Create Credit Memos/Refunds</a>.</li>
+</ol>
+<p>To change a payment, open it from the <strong>Payments list</strong> and click <strong>Edit</strong>. The customer cannot be changed. Payments taken at the POS are changed from the POS module.</p>
+<p><strong>Payments list</strong> opens the list of customer payments. Its <strong>Status</strong> filter offers <strong>Has unapplied credit</strong>, <strong>Fully applied</strong> and <strong>Void</strong>, and the <strong>Open</strong> column shows the unused part of each payment.</p>
+<h4 id="s-what-it-records_7">What it records<a class="man-hash" href="#s-what-it-records_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deposit to (1050 Undeposited Funds)</td>
+<td>Amount received</td>
+<td></td>
+</tr>
+<tr>
+<td>4060 Sales Discounts</td>
+<td>Discounts</td>
+<td></td>
+</tr>
+<tr>
+<td>1310 Creditable Withholding Tax</td>
+<td>Income tax withheld (1% / 2%)</td>
+<td></td>
+</tr>
+<tr>
+<td>1315 Creditable VAT Withheld</td>
+<td>VAT withheld (5%)</td>
+<td></td>
+</tr>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td></td>
+<td>Total of the above</td>
+</tr>
+</tbody>
+</table></div>
+<p>For the ABC Trading Corp. example: debit Undeposited Funds ₱100,000.00 and Creditable Withholding Tax ₱1,500.00, credit Accounts Receivable ₱101,500.00. The invoices paid become Partial or Paid.</p>
+<p>Applying a credit moves no money and records no ledger entry: the credit memo or earlier payment already reduced Accounts Receivable. It only links the credit to the invoice, so both show as settled.</p>
+<h4 id="s-good-to-know_10">Good to know<a class="man-hash" href="#s-good-to-know_10" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The payments applied can never be more than the amount received. The <strong>Unapplied</strong> figure turns red, a message explains, and the save buttons are disabled until you correct it or click <strong>Auto-apply amount</strong>.</li>
+<li>Messages you may see: "Choose a customer.", "The amount received cannot be negative.", "The amount applied to INV-… is more than its open balance (…).", "You applied … but received only …. Lower the payments on the invoices, or correct the amount received.", "Credit … has only … available.", "Enter the amount received or choose credits to apply." and "The credits chosen (…) are more than the open invoices can take. Lower the credit amounts by …".</li>
+<li>Pending invoices are not listed; mark them final first.</li>
+<li>Credits recorded on a job are not listed when you receive a payment from the customer. Open the job's credit memo and click <strong>Apply credit to invoices</strong> instead.</li>
+<li>A payment included in a bank deposit cannot be voided or deleted until it is removed from the deposit. Voiding a payment removes its applications, so its invoices are open again.</li>
+<li>Money in Undeposited Funds reaches the bank account with <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>.</li>
+</ul>
+<h2 id="pg-cust-credit_memos">Create Credit Memos/Refunds<a class="man-hash" href="#pg-cust-credit_memos" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A credit memo reduces what a customer owes: for goods returned, a price correction or an allowance. The credit can be kept for later, applied to an invoice at once, or paid back as a refund. This page also records refunds of overpayments.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Create Credit Memos/Refunds. Also <strong>Credit memo</strong> in the Customer Center, and <strong>Create Credit Memos/Refunds</strong> under Quick actions on the Home dashboard.</p>
+<p>The list shows credit memos and customer refunds together, with a <strong>Type</strong> column. The <strong>Open</strong> column shows the credit still available. A refund queued for printing shows "to print" beside its status until it is printed.</p>
+<h4 id="s-fields_10">Fields<a class="man-hash" href="#s-fields_10" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The common fields are explained under Working with sales forms, earlier in this chapter. The credit memo adds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reference</strong></td>
+<td>For example the invoice the goods were sold on.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The site of the sale.</td>
+</tr>
+<tr>
+<td><strong>Return goods to stock</strong></td>
+<td>Ticked by default: stocked items come back into inventory.</td>
+</tr>
+<tr>
+<td><strong>Return to site</strong></td>
+<td>Where returned goods go. <strong>Same as inventory site</strong> by default.</td>
+</tr>
+</tbody>
+</table></div>
+<p>On a new credit memo, the <strong>What to do with this credit</strong> card asks:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Credit</strong></td>
+<td><strong>Keep as available credit</strong>, <strong>Apply to an invoice now</strong> or <strong>Give a refund</strong>.</td>
+</tr>
+<tr>
+<td><strong>Invoice</strong></td>
+<td>With Apply: the open invoice to reduce. Choose the customer first so the list fills.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_11">Step by step<a class="man-hash" href="#s-step-by-step_11" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To record returned goods:</p>
+<ol>
+<li>Click <strong>New</strong>.</li>
+<li>Choose the <strong>Customer:Job</strong>. The page reloads for the customer.</li>
+<li>Leave <strong>Return goods to stock</strong> ticked if the goods can be sold again, and choose <strong>Return to site</strong> if they go to another site. Untick it for defective goods that will not return to stock.</li>
+<li>Enter the items, quantities and rates returned, with the same tax code as the sale.</li>
+<li>Type a <strong>Memo</strong> such as "Returned 2 defective keyboards".</li>
+<li>In <strong>Credit</strong>, choose what to do with it:<ul>
+<li><strong>Keep as available credit</strong>: the customer uses it on a later payment.</li>
+<li><strong>Apply to an invoice now</strong>: choose the <strong>Invoice</strong>; the credit reduces it by up to its open balance.</li>
+<li><strong>Give a refund</strong>: after saving, the refund form opens ("Now record how the refund was paid.").</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>To apply a kept credit later, open the credit memo and click <strong>Apply credit to invoices</strong>. Receive Payments opens with all the customer's available credits spread over the open invoices; change the amounts if needed and click <strong>Save payment</strong>. See <a href="#pg-cust-payments">Receive Payments</a>.</p>
+<p>To refund a credit memo or an overpayment:</p>
+<ol>
+<li>Open the credit memo or payment and click <strong>Refund</strong> (shown while it has unapplied credit).</li>
+<li>The page "Refund Credit Memo CM-00001" shows the customer and the available credit. Fill in:<ul>
+<li><strong>Date</strong>.</li>
+<li><strong>Pay from account</strong>: the bank account the refund is paid from. Required.</li>
+<li><strong>Refund method</strong>: cash, check and so on.</li>
+<li><strong>Amount</strong>: the available credit by default; you may refund less.</li>
+<li><strong>Memo</strong>: "Refund of Credit Memo CM-00001" by default.</li>
+<li><strong>Class</strong>, when classes are set up.</li>
+<li><strong>Queue a refund check for printing</strong>: tick if a check will be printed.</li>
+</ul>
+</li>
+<li>Click <strong>Record refund</strong>. The program shows "Refund recorded." and opens the refund.</li>
+</ol>
+<p>The refund takes the next check number and prints as a REFUND VOUCHER with the payee, address, TIN, amount in words, the account paid from, the ledger lines and signature lines including <strong>Received by</strong>.</p>
+<h4 id="s-what-it-records_8">What it records<a class="man-hash" href="#s-what-it-records_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A credit memo is the reverse of a sale. Each line is debited to 4050 Sales Returns and Allowances (whatever item it is), its tax is debited to the output tax account, and the total is credited to 1100 Accounts Receivable. With <strong>Return goods to stock</strong> ticked, stocked items come back into the site at the current average cost: debit Inventory, credit Cost of Goods Sold.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>CM-00001 credits Metro School Supplies for 2 keyboards returned to stock.</p></div>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4050 Sales Returns and Allowances</td>
+<td>₱1,898.10</td>
+<td></td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td>₱227.77</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td>₱1,233.33</td>
+<td></td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td></td>
+<td>₱1,233.33</td>
+</tr>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td></td>
+<td>₱2,125.87</td>
+</tr>
+</tbody>
+</table></div>
+<p>A refund pays the credit back:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td>Refund amount</td>
+<td></td>
+</tr>
+<tr>
+<td>Pay from account (bank)</td>
+<td></td>
+<td>Refund amount</td>
+</tr>
+</tbody>
+</table></div>
+<p>The credit memo's status is <strong>Open</strong> while it has unapplied credit and <strong>Closed</strong> when it is fully applied or refunded.</p>
+<h4 id="s-good-to-know_11">Good to know<a class="man-hash" href="#s-good-to-know_11" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Refund messages: "The refund must be more than zero and no more than the available credit (…)." and "Choose the account the refund is paid from."</li>
+<li>A refund above your role's "Max check / bill payment / adjustment amount without approval" needs supervisor approval ("refund above your amount limit"). Voiding or deleting a refund above that amount needs approval too.</li>
+<li>Refunds cannot be edited: "Refunds cannot be edited. Void it and record a new one."</li>
+<li>A credit memo that was refunded cannot be voided until the refund is voided: "It has been refunded (…). Void the refund first." Voiding a credit memo that was applied removes the application and reopens the invoice.</li>
+<li>The <strong>What to do with this credit</strong> card only appears on a new credit memo. Discount and price limits are not checked on credit memos.</li>
+</ul>
+<h2 id="s-customer-and-receivables-reports">Customer and receivables reports<a class="man-hash" href="#s-customer-and-receivables-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>These reports show who owes what, how old the amounts are and how customers pay. They share the report tools explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>: <strong>Refresh</strong>, <strong>Columns</strong>, <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong>, <strong>Memorize</strong>, and clicking a figure or number to open what is behind it.</p>
+<p>All of them are in the sidebar under <strong>Customers &gt; Reports</strong>, in the group "Customer and Receivables Reports", and in <strong>Home &gt; Report Center</strong>. Where a report has a <strong>Customer</strong> filter, choosing a customer also includes its jobs.</p>
+<p>The aging reports sort each open amount by the number of days past its due date at the <strong>As of</strong> date: <strong>Current</strong> (not yet due, and all unapplied credits), <strong>1 - 30</strong>, <strong>31 - 60</strong>, <strong>61 - 90</strong> and <strong>&gt; 90</strong> days past due. Pending invoices are never included.</p>
+<h3 id="pg-rpt-ar_aging_summary">A/R Aging Summary<a class="man-hash" href="#pg-rpt-ar_aging_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows, for each customer and job, how much is owed and how long it has been overdue. Use it to see at a glance who to call first.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; A/R Aging Summary. Also the "overdue document(s)" link under <strong>Accounts Receivable</strong> on the Home dashboard.</p>
+<p>Filters: <strong>As of</strong> and <strong>Customer</strong>. Each row is a customer or job with its open amounts in the five aging columns and the <strong>Total</strong>. Unapplied payments and credits are included as negative Current amounts, so Metro School Supplies shows -₱2,625.87 in Current.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Above the table the report checks itself against the ledger: "Accounts Receivable per ledger: 253,913.11 — agrees with the aging total." If it says the ledger "differs from the aging total", something was posted to Accounts Receivable without a customer document, usually a journal entry; look for it in the General Ledger.</p>
+<p>Click a customer to open the A/R Aging Detail for that customer.</p>
+<h3 id="pg-rpt-ar_aging_detail">A/R Aging Detail<a class="man-hash" href="#pg-rpt-ar_aging_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every open document grouped by aging period, so you can see exactly which invoices are late.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; A/R Aging Detail</p>
+<p>Filters: <strong>As of</strong> and <strong>Customer</strong>. The groups are Current, 1 - 30 days past due, 31 - 60, 61 - 90 and &gt; 90, each with its total. The columns are <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (click to open), <strong>Customer</strong>, <strong>Terms</strong>, <strong>Due date</strong>, <strong>Days past due</strong> and <strong>Open balance</strong>. The report keeps its own order and cannot be re-sorted.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-customer_balance_summary">Customer Balance Summary<a class="man-hash" href="#pg-rpt-customer_balance_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows the Accounts Receivable balance of every customer and job at a date, straight from the ledger.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Customer Balance Summary</p>
+<p>The report can also be narrowed by <strong>Customer</strong> and <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>As of</strong>. Columns: <strong>Customer:Job</strong> and <strong>Balance</strong>. Only customers with a balance are listed. When every entry to Accounts Receivable names a customer, the total equals the Accounts Receivable account on the Balance Sheet at the same date. Click a name for its Customer Balance Detail.</p>
+<h3 id="pg-rpt-customer_balance_detail">Customer Balance Detail<a class="man-hash" href="#pg-rpt-customer_balance_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every transaction that changed each customer's balance, with a running balance. Use it to answer "how did we arrive at this balance?".</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Customer Balance Detail, or <strong>Balance detail</strong> in the Customer Center.</p>
+<p>Filters: <strong>As of</strong> and <strong>Customer</strong>. For each customer and job: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong>, <strong>Memo</strong>, <strong>Amount</strong> (charges positive, payments and credits negative) and the running <strong>Balance</strong>, then a total. A payment shows the full amount taken off the balance, including any discount and withholding: PMT-00001 shows -₱101,500.00.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-open_invoices">Open Invoices<a class="man-hash" href="#pg-rpt-open_invoices" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every unpaid invoice, statement charge and finance charge, and every unapplied payment or credit memo, grouped by customer.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Open Invoices</p>
+<p>Filters: <strong>As of</strong> and <strong>Customer</strong>. Columns: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong>, <strong>Terms</strong>, <strong>Due date</strong>, <strong>Days past due</strong> and <strong>Open balance</strong>, with a total per customer. Unapplied credits appear as "Unapplied Customer Payment" or "Unapplied Credit Memo" with a negative amount.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Unapplied credits next to open invoices of the same customer can be applied to them in <a href="#pg-cust-payments">Receive Payments</a>, with or without new money.</p></div>
+<h3 id="pg-rpt-collections">Collections Report<a class="man-hash" href="#pg-rpt-collections" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists only the overdue documents, with the customer's contact person, phone and email, ready for collection calls.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Collections Report</p>
+<p>Filters: <strong>As of</strong> and <strong>Customer</strong>. Each customer heading shows the <strong>Contact</strong>, <strong>Phone</strong> (phone and mobile) and the email in the <strong>Num / email</strong> column. Under it: <strong>Type</strong>, <strong>Date</strong>, <strong>Num / email</strong> (the document number), <strong>Due date</strong>, <strong>Days overdue</strong> and <strong>Amount due</strong>, with a total per customer. Documents not yet due and unapplied credits are left out.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-avg_days_summary">Average Days to Pay Summary<a class="man-hash" href="#pg-rpt-avg_days_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows how many days, on average, each customer takes to pay an invoice in full. Use it to review credit terms and credit limits.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Average Days to Pay Summary</p>
+<p>Filters: <strong>Dates</strong> (this fiscal year by default), <strong>From</strong>, <strong>To</strong> and <strong>Customer</strong>. Columns: <strong>Customer</strong>, <strong>Invoices paid</strong> and <strong>Average days to pay</strong>, and an <strong>OVERALL AVERAGE</strong> row. Only invoices fully paid during the period count; the days run from the invoice date to the date of the payment or credit that finished paying it. Statement and finance charges are not included. Click a customer for the detail.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-avg_days_detail">Average Days to Pay<a class="man-hash" href="#pg-rpt-avg_days_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the paid invoices behind the average, one by one.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Average Days to Pay</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong> and <strong>Customer</strong>. For each customer: <strong>Invoice</strong>, <strong>Invoice date</strong>, <strong>Amount</strong>, <strong>Paid in full</strong> (the date) and <strong>Days to pay</strong>, then "Average for" the customer, and the overall average at the bottom.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-ar_graph">Accounts Receivable Graph<a class="man-hash" href="#pg-rpt-ar_graph" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Pictures the receivables: a bar chart of the amounts by aging period and a pie chart of the share owed by each customer.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Accounts Receivable Graph</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>As of</strong>. <strong>Receivables by aging period</strong> shows one bar per period; click a figure to open the A/R Aging Detail. <strong>Share of total owed by customer</strong> shows the five largest customers and "All others". The table lists every customer (jobs counted with their customer) with <strong>Owed</strong> and <strong>% of total</strong>. As the report notes, "A few customers owing a large share of the total indicates concentration risk." In the demo company, ABC Trading Corp. alone owes 70.2%.</p>
+<h3 id="pg-rpt-unbilled_costs">Unbilled Cost by Job<a class="man-hash" href="#pg-rpt-unbilled_costs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the costs marked billable to a customer or job in Enter Bills or Write Checks that have not been added to an invoice yet, so no reimbursable expense is forgotten.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Unbilled Cost by Job</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> and <strong>Vendor</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Customer</strong>. For each customer or job: <strong>Type</strong> (Bill or Check), <strong>Date</strong>, <strong>Num</strong>, <strong>Vendor</strong>, <strong>Account / item</strong>, <strong>Memo</strong> and <strong>Amount</strong>, with totals. To bill them, start an invoice for the customer; the costs appear in its <strong>Billable time and costs for this customer</strong> card (see <a href="#pg-cust-invoices">Create Invoices</a>). Once invoiced, a cost leaves this report.</p>
+<h3 id="pg-rpt-txn_list_customer">Transaction List by Customer<a class="man-hash" href="#pg-rpt-txn_list_customer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every customer transaction in a period, grouped by customer and job.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Transaction List by Customer, or <strong>Transaction list</strong> in the Customer Center.</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Type</strong> (one kind of transaction) and <strong>Include estimates and sales orders</strong> (unticked, only posting documents are listed). It includes invoices, sales receipts, payments, credit memos, statement and finance charges, refunds, POS sales and POS returns.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> and <strong>Class</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Columns: <strong>Type</strong> (with "(void)" or "(pending)" when so), <strong>Date</strong>, <strong>Num</strong>, <strong>Memo</strong>, <strong>Account</strong> (the account of the document, such as Accounts Receivable or the Deposit to account), <strong>Clr</strong> (a check mark when it has been cleared in a bank reconciliation) and <strong>Amount</strong>. Payments, credit memos and POS returns are shown as negative amounts.</p>
+<h3 id="pg-rpt-item_price_list">Item Price List<a class="man-hash" href="#pg-rpt-item_price_list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the selling price of every active item, and its price at every active price level.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Item Price List</p>
+<p>The report can also be narrowed by <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Category</strong>. Columns: <strong>Item</strong>, <strong>Description</strong>, <strong>Type</strong>, <strong>Unit</strong>, <strong>Price</strong> (the standard sales price) and one column per price level, in name order. A level's price is the fixed price set for that item, or the standard price changed by the level's percentage. Prices exclude VAT.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>LAP-001 sells for ₱39,990.00. Wholesale (-5%) gives ₱37,990.50, while VIP shows ₱36,500.00 because a fixed VIP price was set for this item instead of the -10%.</p></div>
+<h2 id="s-sales-reports">Sales reports<a class="man-hash" href="#s-sales-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>These reports analyse what was sold, to whom, by whom and where. They count invoices, sales receipts and POS sales, less credit memos and POS returns; voided, pending and suspended sales are left out. Amounts are net of VAT and of line discounts. They are in the sidebar under <strong>Customers &gt; Reports</strong>, in the group "Sales Reports", and in <strong>Home &gt; Report Center</strong>. The common report tools are explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>.</p>
+<p>Columns of cost and margin are shown only to users with the permission "View costs and margins".</p>
+<h3 id="pg-rpt-sales_customer_summary">Sales by Customer Summary<a class="man-hash" href="#pg-rpt-sales_customer_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows total sales per customer and job for a period.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Customer Summary</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Sales rep</strong>, <strong>Class</strong> and <strong>Columns</strong> (<strong>Total only</strong>, or one column per <strong>Month</strong>, <strong>Quarter</strong> or <strong>Year</strong>). Rows are customers and jobs in name order; POS sales without a customer are grouped as "Walk-in / cash sales". Click a customer for its Sales by Customer Detail.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Site</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-forecast_vs_actual">Forecast vs Actual by Customer<a class="man-hash" href="#pg-rpt-forecast_vs_actual" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Puts a sales forecast made in <a href="#pg-cust-forecast">Set Up Forecast</a> beside the actual figures of the same months.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Forecast vs Actual by Customer, or <strong>Forecast vs actual</strong> on the Set Up Forecast pages.</p>
+<p>Filters:</p>
+<ul>
+<li><strong>Customer</strong>: one customer, or all.</li>
+<li><strong>Forecast</strong>: which forecast to use. Left blank, the newest one is used.</li>
+<li><strong>Show</strong>: <strong>Year to date</strong> (the months of the fiscal year up to this month), <strong>The whole fiscal year</strong> or <strong>One month at a time</strong>.</li>
+<li><strong>Month</strong>: with One month at a time, the month of the fiscal year (Month 1 is the first month).</li>
+</ul>
+<p>Columns: <strong>Customer</strong>, <strong>Forecast</strong>, <strong>Actual</strong>, <strong>Difference</strong> (actual less forecast) and <strong>% of forecast</strong>. The <strong>Actual</strong> column is the customer's sales in the same months: what was posted to the Income and Other Income accounts for that customer (the accounts a forecast is made of), net of returns and discounts booked to them, without VAT. Sales without a customer, such as walk-in POS sales, are on their own line. Click a customer to open <a href="#pg-rpt-sales_customer_detail">Sales by Customer Detail</a> for the same months. The note above the table names the forecast, its year and the months compared. Until a forecast exists, the report says "No forecast has been set up yet. Customers &gt; Set Up Forecast makes one."</p>
+<h3 id="pg-rpt-sales_customer_detail">Sales by Customer Detail<a class="man-hash" href="#pg-rpt-sales_customer_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every line sold to each customer in a period.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Customer Detail</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Sales rep</strong> and <strong>Class</strong>. For each customer: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (the receipt number for POS sales), <strong>Customer</strong>, <strong>Item</strong>, <strong>Qty</strong>, <strong>Sales price</strong> (per base unit) and <strong>Amount</strong>, with the quantity and amount totals per customer.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Site</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-income_customer_summary">Income by Customer Summary<a class="man-hash" href="#pg-rpt-income_customer_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What each customer's purchases earned in a period: the sales of the items sold to the customer less what those items cost, that is the income, or the loss when the cost is higher. Use it to see which customers are worth the most to the business, and which ones are sold to at a loss.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Income by Customer Summary</p>
+<p>Filters: <strong>Dates</strong> (this month as delivered), <strong>From</strong>, <strong>To</strong>, <strong>Sales rep</strong>, <strong>Class</strong> and <strong>Site</strong>. One line per customer or job, and <strong>Walk-in / cash sales</strong> for counter sales without a customer:</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>Sort by</strong> puts the customers in the order of <strong>Qty sold</strong>, <strong>Sales</strong>, <strong>Cost of sales</strong>, <strong>Income / (loss)</strong> or <strong>Margin %</strong>, <strong>Increasing</strong> or <strong>Decreasing</strong>: for example <strong>Income / (loss)</strong>, <strong>Decreasing</strong> lists the most profitable customers first and the losses last. <strong>Default order</strong> lists them by name (see <a href="manual.php?c=home-and-reports#s-sorting">Sorting</a>).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transactions</strong></td>
+<td>How many invoices, sales receipts, POS sales, credit memos and returns the customer had.</td>
+</tr>
+<tr>
+<td><strong>Qty sold</strong></td>
+<td>The quantity of items, less what came back.</td>
+</tr>
+<tr>
+<td><strong>Sales</strong></td>
+<td>The sales of those items, net of VAT and discounts, less credit memos and returns.</td>
+</tr>
+<tr>
+<td><strong>Cost of sales</strong></td>
+<td>What the items cost when they were sold (their average cost at that moment).</td>
+</tr>
+<tr>
+<td><strong>Income / (loss)</strong></td>
+<td>Sales less cost of sales. A negative figure is a loss and its line is marked with a red edge.</td>
+</tr>
+<tr>
+<td><strong>Margin %</strong></td>
+<td>Income as a share of the sales.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Cost, income and margin are shown only to users who may view costs. Services and other items that are not stocked have no cost, so all their sales are income. Click a customer for the <a href="#pg-rpt-income_customer_detail">Income by Customer Detail</a> of the same period.</p>
+<h3 id="pg-rpt-income_customer_detail">Income by Customer Detail<a class="man-hash" href="#pg-rpt-income_customer_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same figures line by line: every item sold to each customer in the period, with what it earned.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Income by Customer Detail</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Item</strong>, <strong>Sales rep</strong>, <strong>Class</strong> and <strong>Site</strong>. For each customer a heading line, then one line per item sold: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (click to open the transaction), <strong>Item</strong> (click for the Inventory Center), <strong>Qty</strong>, <strong>Sales price</strong>, <strong>Sales</strong>, <strong>Cost of sales</strong>, <strong>Income / (loss)</strong> and <strong>Margin %</strong>, and a total per customer. Returns and credit memos are negative lines; a line sold below cost is marked with a red edge.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Sort out a loss by opening the transaction from <strong>Num</strong>: a price typed too low, a discount above the limit, or an item whose cost went up after its price was set. <a href="manual.php?c=inventory#pg-inv-set_prices">Set Item Prices and Levels</a> can price items from their cost plus a markup.</p></div>
+<h3 id="pg-rpt-sales_item_summary">Sales by Item Summary<a class="man-hash" href="#pg-rpt-sales_item_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows, for each item, the quantity sold, the sales, and (with the cost permission) the cost of goods sold and the gross margin.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Item Summary</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Site</strong> and <strong>Class</strong>. Items are grouped by type (Inventory, Assembly, Non-inventory, Service, Other charges, Discounts, Other) with a total per group. Columns: <strong>Item</strong>, <strong>Qty</strong>, <strong>Amount</strong>, <strong>% of sales</strong>, <strong>Avg price</strong>, and for inventory and assembly items <strong>COGS</strong>, <strong>Avg cost</strong>, <strong>Gross margin</strong> and <strong>Margin %</strong>. Click an item for its Sales by Item Detail.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Sales rep</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>Sort by</strong> puts the items of each type in the order of <strong>Qty</strong>, <strong>Amount</strong>, <strong>% of sales</strong>, <strong>COGS</strong>, <strong>Gross margin</strong> or <strong>Margin %</strong>, <strong>Increasing</strong> or <strong>Decreasing</strong>. The types and their totals keep their places; the items move within each type, and items without a figure (no COGS on a service, for example) come last. <strong>Default order</strong> lists the items by code (see <a href="manual.php?c=home-and-reports#s-sorting">Sorting</a>).</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>A low <strong>Margin %</strong> on a stocked item means the selling price is close to the average cost; check the item's price or its price levels.</p></div>
+<h3 id="pg-rpt-sales_item_detail">Sales by Item Detail<a class="man-hash" href="#pg-rpt-sales_item_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every sale of each item in a period.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Item Detail</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Item</strong> and <strong>Class</strong>. For each item: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong>, <strong>Customer</strong> ("Walk-in" for POS sales without a customer), <strong>Item</strong>, <strong>Qty</strong>, <strong>Sales price</strong> and <strong>Amount</strong>, with totals per item. Quantities are in the base unit: the 3 dozen keyboards on INV-00013 show as 36 at ₱916.67.</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Sales rep</strong>, <strong>Site</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-sales_item_group">Sales by Item Group<a class="man-hash" href="#pg-rpt-sales_item_group" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The item groups sold, counted as groups and not as the items in them, so you can see which groups sell the most. Sales in every module count: invoices, sales receipts, statement charges and POS sales, less credit memos and POS returns.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Item Group. Also the <strong>Sales by Item Group</strong> button on a group's own form. It is given to the roles that may open Sales by Item Summary.</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Customer</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Sales rep</strong> and <strong>Item group</strong>, and two tick boxes: <strong>Show the individual item details</strong> and <strong>Show the transactions</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item group name</strong></td>
+<td>The group (click it to open its form).</td>
+</tr>
+<tr>
+<td><strong>Qty</strong></td>
+<td>The number of groups sold.</td>
+</tr>
+<tr>
+<td><strong>Group price</strong></td>
+<td>The average price of one group: the total over the quantity.</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td>What the groups sold for, before tax. Click it to see the transactions.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sort by</strong> puts the groups in the order of <strong>Qty</strong> or <strong>Total</strong>, <strong>Increasing</strong> or <strong>Decreasing</strong>; with the item details or the transactions shown, they move with their group. <strong>Default order</strong> lists the groups by code (see <a href="manual.php?c=home-and-reports#s-sorting">Sorting</a>).</p>
+<p>The <strong>Totals</strong> line adds up the quantities and totals. <strong>Consolidated price</strong>, <strong>Price variance</strong>, <strong>Tax</strong> and <strong>Transactions</strong> can be added with <strong>Modify Report</strong>. With <strong>Show the individual item details</strong> ticked, each group is followed by its items (quantity, price and amount) and its price variance, then a total for the group; with <strong>Show the transactions</strong>, by each invoice, sales receipt and POS sale it was sold on.</p>
+<p>The report reads the groups recorded while <strong>Track Item Group Sales transactions</strong> was ticked; when it is cleared, the report says so.</p>
+<h3 id="pg-rpt-sales_rep_summary">Sales by Rep Summary<a class="man-hash" href="#pg-rpt-sales_rep_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Shows total sales per sales representative and their commission.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Rep Summary</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Class</strong> and <strong>Columns</strong>. Rows are the reps named on the sales documents, and "(no sales rep)" for sales without one. <strong>Commission</strong> is the total times the rep's commission % on the sales representative list: Maria Santos, at 3%, earns ₱2,585.40 on ₱86,180.00. Click a rep for the detail.</p>
+<p>The report can also be narrowed by <strong>Customer</strong>, <strong>Customer type</strong>, <strong>Site</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-sales_rep_detail">Sales by Rep Detail<a class="man-hash" href="#pg-rpt-sales_rep_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every line sold by each sales representative.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales by Rep Detail</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Sales rep</strong> and <strong>Class</strong>. The columns are the same as in Sales by Customer Detail, grouped by rep.</p>
+<p>The report can also be narrowed by <strong>Customer</strong>, <strong>Customer type</strong>, <strong>Site</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-inventory_sales_site">Inventory Sales by Site<a class="man-hash" href="#pg-rpt-inventory_sales_site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Compares the sales of stocked items by inventory site, so warehouse and store sales can be seen side by side.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Inventory Sales by Site</p>
+<p>Filters: <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Item</strong>, <strong>Site</strong> and <strong>Class</strong>. Only inventory and assembly items are counted. For each site: <strong>Site / item</strong>, <strong>Qty sold</strong>, <strong>Sales</strong> and <strong>Cost of sales</strong>, with site totals. POS sales count under the site of the terminal's store; invoices and sales receipts under their inventory site.</p>
+<p>The report can also be narrowed by <strong>Customer</strong>, <strong>Customer type</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>Sort by</strong> puts the items of each site in the order of <strong>Qty sold</strong>, <strong>Sales</strong> or <strong>Cost of sales</strong>, <strong>Increasing</strong> or <strong>Decreasing</strong>; the sites and their totals keep their places. <strong>Default order</strong> lists the items by code (see <a href="manual.php?c=home-and-reports#s-sorting">Sorting</a>).</p>
+<h3 id="pg-rpt-sales_inv_movement">Sales Report Through Inventory Movement<a class="man-hash" href="#pg-rpt-sales_inv_movement" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The quantity sold worked out from the stock: what each item had at the start, what was delivered, what was withdrawn and what is left at the end. The difference is what the sales took out, valued at the average selling price of the period. Use it to check the sales against the inventory, for example for a store that counts its stock at the end of the day.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Sales Report Through Inventory Movement. It is given to the roles that may open Sales by Item Summary.</p>
+<p>Filters: <strong>Dates</strong> with a <strong>From date and time</strong> and a <strong>To date and time</strong> (this month as delivered), <strong>Item</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Category</strong>, <strong>Cashier</strong>, <strong>Shift</strong> and <strong>Exclude zero sales</strong>. The times let a business open 24 hours see the sales, deliveries, withdrawals and ending inventory of each shift (for example 12:01 AM - 8:00 AM, 8:01 AM - 2:00 PM and 2:01 PM - 12:00 AM), and so the cash sales and the stock each cashier is answerable for; <strong>Shift</strong> fills in the time a POS shift was opened and closed. See <a href="manual.php?c=inventory#sec-inv-movement-times">Dates with times, cashier and shift</a>. Tick <strong>Exclude zero sales</strong> to leave out the items with no sales in the period (of the cashier, when one is chosen).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item description</strong></td>
+<td>The inventory part or assembly. The <strong>Item code</strong> can be added with <strong>Modify Report</strong>.</td>
+</tr>
+<tr>
+<td><strong>Beg. inventory</strong></td>
+<td>The ending inventory of the day before the <strong>From</strong> date.</td>
+</tr>
+<tr>
+<td><strong>Delivery (in)</strong></td>
+<td>What came in during the period: Write Checks and Cash Vouchers with inventory (positive or negative), Receive Items, Receive Items and Enter Bills, Transfer Inventory to the site, Adjust Quantity (positive), Build Assemblies (the assembled items) and Disassemble / Process Items (the outputs). Invoices, batch invoices, sales receipts and POS sales are not included.</td>
+</tr>
+<tr>
+<td><strong>Withdrawals (out)</strong></td>
+<td>What went out other than by sales: Transfer Inventory from the site, Adjust Quantity (negative), Build Assemblies (the component items), Disassemble / Process Items (the inputs consumed) and Supplier Debit Memos. Invoices, batch invoices, sales receipts and POS sales are not included.</td>
+</tr>
+<tr>
+<td><strong>Ending inventory</strong></td>
+<td>The ending inventory of the <strong>To</strong> date.</td>
+</tr>
+<tr>
+<td><strong>Sales (qty)</strong></td>
+<td><strong>Beg. inventory</strong> + <strong>Delivery</strong> - <strong>Withdrawals</strong> - <strong>Ending inventory</strong>: the quantity the invoices, batch invoices, sales receipts and POS sales took out of stock, less credit memos and POS returns that restock.</td>
+</tr>
+<tr>
+<td><strong>Ave. price</strong></td>
+<td>The average price per unit of those invoices, batch invoices, sales receipts and POS sales: their amount over the quantity sold.</td>
+</tr>
+<tr>
+<td><strong>Total sales</strong></td>
+<td><strong>Sales (qty)</strong> × <strong>Ave. price</strong>, which equals the total amount of the invoices, batch invoices, sales receipts and POS sales of the item. Click it for <a href="#pg-rpt-sales_item_detail">Sales by Item Detail</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>TOTAL</strong> line adds up the quantities and the total sales; its <strong>Ave. price</strong> is the total sales over the total quantity sold. Only transactions dated within the range count, and voided ones are left out. Click a beginning, delivery, withdrawal, ending or sales figure to see its source transactions in <a href="manual.php?c=inventory#pg-rpt-inv_movement_txns">Inventory Movement Transactions</a>.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Cheese sticks: 10 at the start, 5 delivered, 2 withdrawn and 8 left at the end, so 5 were sold. The invoices and POS sales of the period sold them for ₱75.00, an average of ₱15.00, so <strong>Total sales</strong> is 5 × ₱15.00 = ₱75.00.</p></div>
+<h4 id="s-sales-of-one-cashier">Sales of one cashier<a class="man-hash" href="#s-sales-of-one-cashier" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Choose a <strong>Cashier</strong> (the users who entered sales documents or worked a POS shift) to see that cashier's share; the site becomes the outlet the cashier worked at. <strong>Sales (qty)</strong>, <strong>Ave. price</strong> and <strong>Total sales</strong> are then those of the sales documents the cashier entered, and a <strong>Sold by other cashiers</strong> column shows the rest of the quantity sold, so <strong>Sales (qty)</strong> + <strong>Sold by other cashiers</strong> is still <strong>Beg. inventory</strong> + <strong>Delivery</strong> - <strong>Withdrawals</strong> - <strong>Ending inventory</strong>. The stock columns stay those of the site, as stock does not belong to a cashier.</p>
+<p>With a <strong>Shift</strong> chosen, the report covers that shift alone, at its terminal's site: the beginning inventory when it opened, the sales rung up during it, and the ending inventory when it closed.</p>
+<h3 id="pg-rpt-pending_sales">Pending Sales<a class="man-hash" href="#pg-rpt-pending_sales" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the invoices and sales receipts saved as pending, which have not yet posted.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Pending Sales</p>
+<p>The report can also be narrowed by <strong>Customer type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Customer</strong>. Columns: <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong>, <strong>Customer</strong>, <strong>Memo</strong> and <strong>Amount</strong>. As the report notes, pending sales do not affect the books or inventory until they are marked final. Click a number to open the document and click <strong>Mark as final</strong> when it is approved.</p>
+<h3 id="pg-rpt-open_so_customer">Open Sales Orders by Customer<a class="man-hash" href="#pg-rpt-open_so_customer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists what is still to be delivered on open sales orders, customer by customer.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Open Sales Orders by Customer</p>
+<p>The report can also be narrowed by <strong>Customer type</strong>, <strong>Site</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Customer</strong>. For each customer: <strong>Date</strong>, <strong>Num</strong>, <strong>Ship date</strong> (the expected ship date of the order), <strong>Item</strong>, <strong>Ordered</strong>, <strong>Invoiced</strong>, <strong>Backordered</strong> (still to deliver) and <strong>Open amount</strong> (backordered quantity times the rate, less the line discount, before VAT). Closed lines and closed orders are left out.</p>
+<h3 id="pg-rpt-open_so_item">Open Sales Orders by Item<a class="man-hash" href="#pg-rpt-open_so_item" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists, for each item, the quantity still committed on open sales orders, beside the quantity on hand and on purchase orders.</p>
+<p><strong>Where to find it:</strong> Customers &gt; Reports &gt; Open Sales Orders by Item</p>
+<p>The report can also be narrowed by <strong>Customer</strong>, <strong>Customer type</strong>, <strong>Site</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Item</strong>. For each item: <strong>Date</strong>, <strong>Num</strong>, <strong>Customer</strong>, <strong>Ship date</strong> and <strong>Qty committed</strong>, and on the item's total row the <strong>On hand</strong> (all sites) and <strong>On PO</strong> quantities.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>When the quantity committed is more than on hand plus on PO, order or build more before the ship date. See <a href="manual.php?c=vendors">Vendors and Payables</a> and <a href="manual.php?c=inventory">Inventory</a>.</p></div>

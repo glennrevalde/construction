@@ -1,0 +1,602 @@
+<p>GSMaRT Construction System can keep the books of several companies on one server. This chapter is for the people who run one of those companies: the <strong>Company Owner</strong>, the company's administrators, and the new employees who join with the <strong>Company Code</strong>. It explains how the companies are kept apart, the owner's first log-in, the three pages of the <strong>Company</strong> menu (<strong>Company Profile &amp; Code</strong>, <strong>Employees &amp; Users</strong> and <strong>Join Requests</strong>), and the join page a new employee uses to make an account. The Super Admin, who creates the companies and looks after the platform, has a chapter of their own: <a href="manual.php?c=super-admin">Super Admin: Managing Several Companies</a>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>An installation that runs a single company also has the Company menu. <strong>Employees &amp; Users</strong> works there as described below, but there is no Company Code and nobody can join on their own. <strong>Company Profile &amp; Code</strong> then says "This installation runs a single company, so there is no Company Code yet." and shows administrators a <strong>Multi-Company Setup</strong> button, which leads to <a href="manual.php?c=administration#pg-admin-multi_company">Multi-Company Setup</a>.</p></div>
+<h2 id="s-how-several-companies-work">How several companies work<a class="man-hash" href="#s-how-several-companies-work" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A few facts explain almost everything on the Company pages:</p>
+<ul>
+<li><strong>Each company has its own database.</strong> A database is the store where the program keeps its records. Every company on the platform has a separate one: its customers, suppliers, items, transactions, reports, users, audit trail, logo, uploaded receipts and backups are in it and nowhere else. When you log in, the program opens your company's database and no other.</li>
+<li><strong>Nobody can see another company's records.</strong> There is no report, link, setting or search that reaches into another company. A Company Owner cannot even see another company's user list. Your company is decided on the server when you log in, from your username; nothing typed in the address bar, a form or a cookie can change it.</li>
+<li><strong>Everybody logs in on the same page.</strong> There is no company to choose. You type your own username and password; the log-in page looks the username up, finds the company it belongs to, and checks the password, the lock-out and the approval in that company.</li>
+<li><strong>Usernames are unique across all companies.</strong> Because the log-in page finds your company by your username, no two people on the platform can have the same one, whatever company they are in, and no company user can have a Super Admin's username. A username can therefore be refused as "already taken" even though nobody in your own company uses it: choose another.</li>
+<li><strong>The Company Code is only for joining.</strong> Each company has a code, for example <strong>STC-B8TJC</strong>. A new employee types it once, on the join page, to say which company they belong to. It is not a password: it logs nobody in and opens nothing. After joining, the employee always logs in with their own username and password.</li>
+<li><strong>A company can be switched off.</strong> The Super Admin can make a company inactive. Its users are logged out at their next click with the message "Your company's access is currently suspended. Please contact your Company Owner.", nobody can log in or join, and everything in the company (database, users, records) is kept until it is switched on again.</li>
+<li><strong>The checks are repeated on every click.</strong> Each time you open a page, the program checks again that your company is still active and that your account still belongs to it.</li>
+</ul>
+<h3 id="s-who-is-who">Who is who<a class="man-hash" href="#s-who-is-who" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Person</th>
+<th>What they do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Super Admin</td>
+<td>Belongs to no company. Creates companies, gives each one its Company Owner, switches companies on and off, and can open any company to work inside it.</td>
+</tr>
+<tr>
+<td>Company Owner</td>
+<td>One per company. Has full access to every page of the company, approves the employees who join, manages the users and the Company Code.</td>
+</tr>
+<tr>
+<td>Administrators</td>
+<td>Users with a full-access role such as <strong>Administrator</strong>. They can use the Company pages but cannot change the Company Code, the joining rules or the owner's account.</td>
+</tr>
+<tr>
+<td>Employees</td>
+<td>Everyone else. They see the pages their roles and page access allow.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="s-what-makes-the-company-owner-different">What makes the Company Owner different<a class="man-hash" href="#s-what-makes-the-company-owner-different" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Full authority.</strong> The owner can always open every page of the company and do everything on it, whatever the roles, <a href="manual.php?c=administration#pg-admin-page_access">Page Access Configuration</a> and user overrides say. Nothing can lock the owner out of their own company. <strong>Effective Access (View as User)</strong> gives <strong>Company Owner</strong> as the reason.</li>
+<li><strong>A protected account.</strong> Only the owner (or the Super Admin) can change the owner's account. On <strong>Employees &amp; Users</strong> the owner's row shows <strong>Company Owner</strong> instead of a <strong>Manage</strong> button to everybody else, and on <a href="manual.php?c=administration#pg-admin-users">User Accounts</a> an administrator who tries gets "Only the Company Owner can change the Company Owner's account."</li>
+<li><strong>Cannot be deactivated.</strong> "The Company Owner cannot be deactivated. The Super Admin can make someone else the owner first."</li>
+<li><strong>Chosen by the Super Admin.</strong> The owner of a new company is set when the Super Admin creates it (or later on the company's page); the owner of Company 1 is chosen on <a href="manual.php?c=administration#pg-admin-multi_company">Multi-Company Setup</a>. To hand the company over to someone else, ask the Super Admin.</li>
+<li><strong>Shown in the user menu.</strong> Click your name at the top right: the first line reads <strong>Company Owner</strong> followed by your roles, for example <strong>Company Owner, Administrator</strong>.</li>
+</ul>
+<h2 id="s-the-company-owners-first-log-in">The Company Owner's first log-in<a class="man-hash" href="#s-the-company-owners-first-log-in" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>When the Super Admin creates a new company with its owner's account, they give the owner a username and a <em>temporary password</em>, a password that must be replaced at the first log-in. In the examples of this chapter the company is <strong>ABC Distribution Corp.</strong> and its owner is <strong>John Doe</strong>, username <strong>johndoe</strong>.</p>
+<h4 id="s-step-by-step">Step by step<a class="man-hash" href="#s-step-by-step" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the log-in page of the program.</li>
+<li>Type your username (for example <code>johndoe</code>) in <strong>Username</strong> and the temporary password in <strong>Password</strong>.</li>
+<li>Click <strong>Log in</strong>. The <strong>Change password</strong> page opens with the message "Please replace your temporary password before continuing." You cannot open any other page until the password is changed.</li>
+<li>In <strong>Current password</strong>, type the temporary password.</li>
+<li>In <strong>New password</strong>, type the password you will use from now on. The line under the boxes gives your company's password rules.</li>
+<li>Type the new password again in <strong>Confirm new password</strong>.</li>
+<li>Click <strong>Change password</strong>. The message "Your password has been changed." appears and the Home page opens.</li>
+</ol>
+<p>The password rules come from the company's settings (<strong>System Administration &gt; Company, Security &amp; Closing Date</strong>). A new company starts with the rules of the company its set-up was copied from, for example "at least 8 characters, upper- and lower-case letters, a number, a symbol. Passwords expire every 90 days." The new password must also not contain your username and must differ from the temporary one. If something is wrong you see one of these messages: "Your current password is incorrect.", "The new passwords do not match.", "Choose a password different from your current one." or "The new password must have ..." followed by what is missing.</p>
+<p>After the change, the Home page of your company opens. The company name appears in the top bar beside the program name, and the sidebar has every module, including <strong>Company</strong> at the bottom.</p>
+<h3 id="s-what-a-new-company-already-has">What a new company already has<a class="man-hash" href="#s-what-a-new-company-already-has" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A company created by the Super Admin is not a blank database. It receives a copy of the <em>set-up lists</em> of another company (usually Company 1), so it can start work quickly:</p>
+<ul>
+<li>the company settings, with your company's own name, address, phone, e-mail and TIN (no logo and no closing date);</li>
+<li>the modules and pages of the menu, the user roles with their page access and special permissions;</li>
+<li>the document numbering, with every counter starting again from 1;</li>
+<li>the chart of accounts (with the bank account numbers left blank) and the module default accounts;</li>
+<li>the terms, tax codes, payment methods, price level names, customer types, billing groups, item categories, units of measure, and fixed asset categories with their accounts;</li>
+<li>one inventory site, <strong>Main</strong>.</li>
+</ul>
+<p>Nothing else is copied: no customers, suppliers, items, employees or other names, no users (you are the only user), no transactions, balances, budgets, fixed assets, POS records or audit trail. That is why every figure on the Home page is zero.</p>
+<h3 id="s-getting-the-new-company-ready">Getting the new company ready<a class="man-hash" href="#s-getting-the-new-company-ready" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A good order for the first day:</p>
+<ol>
+<li>Check the company details, the logo, the password rules and the closing date in <strong>System Administration &gt; Company, Security &amp; Closing Date</strong>.</li>
+<li>Enter the bank account numbers in the Chart of Accounts, and add or remove accounts to suit the company.</li>
+<li>Add the other inventory sites you use (<strong>Inventory &gt; Inventory Site List</strong>) and the POS terminals (<strong>Point of Sale &gt; POS Terminals</strong>) if you sell over the counter.</li>
+<li>Enter or import your customers, suppliers and items (see <a href="manual.php?c=administration">System Administration</a> for <strong>Import from CSV</strong>), then your opening balances.</li>
+<li>Bring in your people: hand out the Company Code (see <a href="#pg-company-profile">Company Profile &amp; Code</a>) or create their accounts with <strong>New user</strong>.</li>
+</ol>
+<h2 id="pg-company-profile">Company Profile &amp; Code<a class="man-hash" href="#pg-company-profile" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page shows your company as the platform knows it, its Company Code, and the rules for employees who join with the code. Everybody who can open the page sees the code, so it can be handed out; only the Company Owner can change it.</p>
+<p><strong>Where to find it:</strong> Company &gt; Company Profile &amp; Code. The <strong>Company Code</strong> button on <strong>Employees &amp; Users</strong> opens it too.</p>
+<p>In the first picture the page belongs to Company 1, Sample Trading Company, whose owner is the System Administrator (<strong>admin</strong>). In the second it is seen by John Doe, owner of the new company ABC Distribution Corp.; two employees are waiting for his approval.</p>
+<h4 id="s-what-the-page-shows">What the page shows<a class="man-hash" href="#s-what-the-page-shows" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Company Code</strong></td>
+<td>The code in large letters, and under it a line that says whether it can be used right now (see the next table).</td>
+</tr>
+<tr>
+<td><strong>Copy code</strong></td>
+<td>Copies the code, with its dash, so you can paste it into a message. The button reads <strong>Copied</strong> for a moment.</td>
+</tr>
+<tr>
+<td><strong>Copy join link</strong></td>
+<td>Copies the address of the join page with the code already filled in. An employee who opens the link only has to type their own details.</td>
+</tr>
+<tr>
+<td>Text under the code</td>
+<td>A reminder that the code only tells the system which company the employee is joining, and whether each registration waits for approval under Join Requests.</td>
+</tr>
+<tr>
+<td><strong>A new code</strong></td>
+<td>The owner's <strong>Regenerate code</strong> button.</td>
+</tr>
+<tr>
+<td><strong>Joining</strong></td>
+<td>The owner's switch <strong>Employees can join with the code</strong>, the <strong>Valid until (optional)</strong> date and <strong>Save</strong>.</td>
+</tr>
+<tr>
+<td><strong>New employees</strong></td>
+<td>Whether employees who join wait for approval, and the role they start with.</td>
+</tr>
+<tr>
+<td><strong>Company</strong></td>
+<td><strong>Name</strong>, <strong>Address</strong>, <strong>Contact person</strong>, <strong>Phone</strong>, <strong>E-mail</strong>, <strong>TIN</strong>, <strong>Status</strong>, <strong>On the platform since</strong> and <strong>Company Owner</strong>.</td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td>How many users are <strong>Active</strong>, <strong>Waiting</strong>, <strong>Inactive</strong>, <strong>Locked</strong> and <strong>Rejected</strong>. Click a number to open that tab of Employees &amp; Users.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The line under the code:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Line</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Employees can join with this code.</td>
+<td>The code works. If an expiry date is set, the line ends with "until" and the date.</td>
+</tr>
+<tr>
+<td>Joining with the code is switched off.</td>
+<td>The owner turned the <strong>Employees can join with the code</strong> switch off.</td>
+</tr>
+<tr>
+<td>The code expired on ...</td>
+<td>The <strong>Valid until</strong> date has passed.</td>
+</tr>
+<tr>
+<td>The company is not active, so nobody can join.</td>
+<td>The Super Admin has switched the company off.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>These fields are shown to the Company Owner (and to the Super Admin working inside the company). Other users see the code, the copy buttons, and one sentence under <strong>New employees</strong> saying whether employees who join wait for approval.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Employees can join with the code</strong></td>
+<td>On: new employees can use the code. Off: the code is refused on the join page until you switch it on again. The code itself stays the same.</td>
+</tr>
+<tr>
+<td><strong>Valid until (optional)</strong></td>
+<td>The last day the code can be used. It works until the end of that day. Leave it empty for no limit. The date cannot be in the past.</td>
+</tr>
+<tr>
+<td><strong>Every employee who joins waits for approval (recommended)</strong></td>
+<td>Ticked: a new account cannot log in until you approve it under Join Requests. Not ticked: employees can log in as soon as they have joined.</td>
+</tr>
+<tr>
+<td><strong>Role to start with</strong></td>
+<td>A role from your company's list (full-access roles are not offered). With approval, it is ticked for you when you approve someone; with the blank choice, <strong>Chosen when approving</strong>, you pick the role each time. Without approval, every employee who joins gets this role straight away, so a role is required.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_1">Step by step<a class="man-hash" href="#s-step-by-step_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To hand out the code:</p>
+<ol>
+<li>Open <strong>Company &gt; Company Profile &amp; Code</strong>.</li>
+<li>Click <strong>Copy code</strong> and paste the code into a message to the new employee, or click <strong>Copy join link</strong> and send the link instead.</li>
+<li>Tell the employee to open the log-in page, click <strong>Join your company with its Company Code</strong>, and fill in the form (see "Joining your company with the Company Code" later in this chapter).</li>
+</ol>
+<p>To make a new code (for example when the code was shared with the wrong people):</p>
+<ol>
+<li>Click <strong>Regenerate code</strong>.</li>
+<li>Confirm the question "Make a new Company Code? The current code stops working immediately."</li>
+<li>The message "The new Company Code is ... The old one stopped working just now." shows the new code. Hand it out to the employees who still have to join.</li>
+</ol>
+<p>Employees who already joined keep their accounts and keep logging in as before: they never use the code again.</p>
+<p>To stop joining for a while, or to set an expiry date:</p>
+<ol>
+<li>Under <strong>Joining</strong>, turn <strong>Employees can join with the code</strong> off, or leave it on and pick a date in <strong>Valid until (optional)</strong>.</li>
+<li>Click <strong>Save</strong>. The message reads "Joining with the Company Code is switched off." or "Employees can join with the Company Code."</li>
+<li>To allow joining again, turn the switch back on (and clear or change the date), then click <strong>Save</strong>.</li>
+</ol>
+<p>To change whether new employees need approval, and the role they start with:</p>
+<ol>
+<li>Under <strong>New employees</strong>, tick or clear <strong>Every employee who joins waits for approval (recommended)</strong>.</li>
+<li>Choose a <strong>Role to start with</strong>, or leave <strong>Chosen when approving</strong>.</li>
+<li>Click <strong>Save</strong>. The message is "Joining rules saved."</li>
+</ol>
+<p>To change the company's name, address, phone, e-mail or TIN, click <strong>Edit company details</strong> at the top of the page. It opens <strong>System Administration &gt; Company, Security &amp; Closing Date</strong>, and the platform's record of your company follows what you save there. The <strong>Contact person</strong> is kept by the Super Admin on the platform.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Employees &amp; Users</strong>: opens the list of the company's users.</li>
+<li><strong>Edit company details</strong>: opens <strong>System Administration &gt; Company, Security &amp; Closing Date</strong>. It appears only for users who can open that page.</li>
+</ul>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Only the Company Owner, and the Super Admin working inside the company, can regenerate the code, switch joining on or off, set the expiry date and change the approval rule. Administrators see the line "Only the Company Owner can make a new code or switch joining off." If someone else tries anyway, the answer is "Only the Company Owner can change the Company Code and the joining rules."</li>
+<li><strong>The code's format.</strong> The code is made of the initials of the company name (up to three letters; words such as The, And, Of, Inc, Corp, Co, Ltd and LLC are skipped), a dash, and five random characters. The random part never uses characters that are easy to confuse (0 and O, 1, I and L). "Sample Trading Company" gives codes like <strong>STC-B8TJC</strong>; "ABC Distribution Corp." gives codes like <strong>AD-UW92E</strong>. Every code is unique on the platform, and a code that was replaced is never given out again.</li>
+<li><strong>Typing the code.</strong> It can be typed with or without the dash, with spaces, in capitals or in small letters: <strong>AD-UW92E</strong>, <code>aduw92e</code> and <code>AD UW92E</code> are the same code.</li>
+<li><strong>One message for every unusable code.</strong> A mistyped code, an old code, a code whose joining is switched off, an expired code and the code of an inactive company all get the same answer on the join page: "Invalid or inactive Company Code. Please verify the code with your Company Owner." This is on purpose: nobody can learn which companies exist by trying codes.</li>
+<li><strong>Too many wrong codes.</strong> After 10 wrong codes from the same computer (the Super Admin can change the number) within 15 minutes, the join page refuses that computer for 15 minutes with "Too many attempts from this computer. Please wait 15 minutes and try again."</li>
+<li><strong>A full-access role is never given without approval.</strong> If you clear the approval box, the starting role must be an ordinary role. The messages are "Without approval, new employees need a role to start with: choose one." and "A full-access role cannot be given to employees who join without approval."</li>
+<li>Every change on this page is written to your company's audit trail (actions <strong>Company Code Changed</strong> and <strong>Company Join Rules</strong>) and to the Super Admin's platform audit log.</li>
+</ul>
+<h2 id="pg-company-users">Employees &amp; Users<a class="man-hash" href="#pg-company-users" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This is the Company Owner's list of everybody who has an account in the company, with what each person can do and how the account was made. From here you approve or reject the employees who joined, change roles, reset passwords, unlock, deactivate and activate accounts.</p>
+<p><strong>Where to find it:</strong> Company &gt; Employees &amp; Users. The <strong>Employees &amp; Users</strong> button on Company Profile &amp; Code, and the numbers under <strong>Users</strong> there, open it too.</p>
+<p>The first picture shows the nine users of Sample Trading Company. The second shows ABC Distribution Corp. seen by its owner: John Doe himself and two employees, Maria Reyes (<strong>mreyes</strong>) and Paolo Cruz (<strong>pcruz</strong>), who joined with the Company Code and are waiting for approval.</p>
+<p>When employees are waiting and you are not on the <strong>Join requests</strong> tab, a blue notice at the top says, for example, "2 employees are waiting for approval." with a <strong>Review the join requests</strong> link.</p>
+<h4 id="s-the-tabs-and-filters">The tabs and filters<a class="man-hash" href="#s-the-tabs-and-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Tab or filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>All users</strong></td>
+<td>Every user of the company. The number beside each tab is how many users it holds.</td>
+</tr>
+<tr>
+<td><strong>Join requests</strong></td>
+<td>Employees who joined with the Company Code and wait for approval.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Approved accounts that can log in.</td>
+</tr>
+<tr>
+<td><strong>Inactive</strong></td>
+<td>Approved accounts that were deactivated.</td>
+</tr>
+<tr>
+<td><strong>Locked</strong></td>
+<td>Accounts locked after too many wrong passwords.</td>
+</tr>
+<tr>
+<td><strong>Rejected</strong></td>
+<td>Registrations that were rejected.</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Type part of a name, username, e-mail address or employee number and click <strong>Search</strong>.</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Shows only the users who have that role. The list changes as soon as you pick one.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Waiting employees are always listed first; the others follow in order of name.</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Employee</strong></td>
+<td>Full name. Under it: <strong>Company Owner</strong> for the owner, and <strong>No.</strong> with the employee number when there is one.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>The name the person logs in with, and their e-mail address under it.</td>
+</tr>
+<tr>
+<td><strong>Roles</strong></td>
+<td>The person's roles. <strong>None yet</strong> for an employee waiting for approval.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, <strong>Inactive</strong>, <strong>Locked</strong>, <strong>Waiting for approval</strong> or <strong>Rejected</strong> (with the reason under it). For employees who joined with the code, it also shows who approved them (<strong>Approved by</strong>) or rejected them (<strong>By</strong>).</td>
+</tr>
+<tr>
+<td><strong>Account made</strong></td>
+<td>How the account came to be, and the date.</td>
+</tr>
+<tr>
+<td><strong>Last log-in</strong></td>
+<td>The date and time of the last log-in, or <strong>Never</strong>.</td>
+</tr>
+<tr>
+<td><strong>Actions</strong></td>
+<td><strong>Approve</strong> and <strong>Reject</strong> for waiting employees, <strong>Approve</strong> for rejected ones, <strong>Manage</strong> for everybody else (see below).</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Account made</strong> column reads:</p>
+<ul>
+<li><strong>Created by an administrator</strong>: made on <a href="manual.php?c=administration#pg-admin-users">User Accounts</a> (this includes every user who was there before the company joined the platform);</li>
+<li><strong>Joined with the Company Code</strong>: the employee made the account on the join page;</li>
+<li><strong>Created with the company</strong>: the owner's account, made by the Super Admin together with the company;</li>
+<li><strong>Created by the Super Admin</strong>: an account the Super Admin made later, for example a new owner.</li>
+</ul>
+<h4 id="s-the-manage-menu">The Manage menu<a class="man-hash" href="#s-the-manage-menu" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click <strong>Manage</strong> on a user's row to see what you can do with the account:</p>
+<ul>
+<li><strong>Change roles</strong>: tick the roles the person should have.</li>
+<li><strong>Reset password</strong>: give the person a temporary password.</li>
+<li><strong>Unlock</strong>: shown only for a locked account.</li>
+<li><strong>Activate</strong>: shown only for an inactive account.</li>
+<li><strong>Deactivate</strong>: shown for active and locked accounts, except your own and the Company Owner's.</li>
+<li><strong>All details, sites and POS terminals</strong>: opens the person's page on <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>, for the e-mail, employee number, sites, POS terminals and every other detail. It appears only if you may edit on User Accounts.</li>
+</ul>
+<p>For a user of another company working here ("User of ..." under <strong>Account made</strong>), <strong>Reset password</strong> is not offered (their password is kept at their own company), and <strong>Deactivate</strong> and <strong>Activate</strong> read <strong>Remove access to this company</strong> and <strong>Give access back</strong>. <strong>Add user from another company</strong> at the top gives such access; see <a href="manual.php?c=administration#sec-two-companies">A user who works in two companies</a>. A user of this company who also works elsewhere shows "Also works in" and the other company under their name.</p>
+<h4 id="s-step-by-step_2">Step by step<a class="man-hash" href="#s-step-by-step_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To change someone's roles:</p>
+<ol>
+<li>Click <strong>Manage</strong> on the person's row, then <strong>Change roles</strong>.</li>
+<li>In the <strong>Roles of ...</strong> window, tick the roles to give and clear the ones to take away. Full-access roles are marked <strong>(full access)</strong>.</li>
+<li>Click <strong>Save roles</strong>. The message lists the roles now held, for example "Roles of Ben Garcia saved: A/R Clerk."</li>
+</ol>
+<p>To reset a password (for someone who forgot theirs):</p>
+<ol>
+<li>Click <strong>Manage</strong>, then <strong>Reset password</strong>.</li>
+<li>Type a <strong>Temporary password</strong> that follows the company's password rules.</li>
+<li>Click <strong>Set temporary password</strong>. The message reads "Temporary password set. ... must change it at the next log-in."</li>
+<li>Give the temporary password to the person. At their next log-in they must replace it on the <strong>Change password</strong> page. A locked account is unlocked by the reset.</li>
+</ol>
+<p>To unlock an account:</p>
+<ol>
+<li>Open the <strong>Locked</strong> tab (or find the person on <strong>All users</strong>).</li>
+<li>Click <strong>Manage</strong>, then <strong>Unlock</strong>. The message reads "... was unlocked." The person can log in again with their own password.</li>
+</ol>
+<p>To deactivate an account (for someone who has left):</p>
+<ol>
+<li>Click <strong>Manage</strong>, then <strong>Deactivate</strong>.</li>
+<li>Type a <strong>Reason (kept in the audit trail)</strong> if you wish.</li>
+<li>Click <strong>Deactivate</strong>. The message reads "... was deactivated and can no longer log in. Their name stays on everything they entered." If the person is working at that moment, they are sent to the log-in page at their next click.</li>
+</ol>
+<p>To activate an account again:</p>
+<ol>
+<li>Open the <strong>Inactive</strong> tab.</li>
+<li>Click <strong>Manage</strong>, then <strong>Activate</strong>. The message reads "... was activated and can log in again."</li>
+</ol>
+<p>To add a user yourself, without the Company Code:</p>
+<ol>
+<li>Click <strong>New user</strong>. The new-user form of <a href="manual.php?c=administration#pg-admin-users">User Accounts</a> opens.</li>
+<li>Fill it in as described there. The username must be free on the whole platform.</li>
+</ol>
+<p>Approving and rejecting employees who joined with the code is described under <a href="#pg-company-join_requests">Join Requests</a>.</p>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New user</strong>: opens the new-user form on <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>. It appears only if you may create on that page.</li>
+<li><strong>Roles</strong>: opens <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>, where the roles and what they may do are set.</li>
+<li><strong>Company Code</strong>: opens <a href="#pg-company-profile">Company Profile &amp; Code</a>.</li>
+</ul>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Users are never deleted</strong>, so their names stay on every record and audit entry they made. Deactivate a person who has left instead.</li>
+<li><strong>The owner's row</strong> can only be changed by the owner (and the Super Admin). Other users see <strong>Company Owner</strong> in its <strong>Actions</strong> column instead of <strong>Manage</strong>. The owner's own <strong>Manage</strong> menu has no <strong>Deactivate</strong>.</li>
+<li><strong>The Super Admin's account is never listed.</strong> When the Super Admin works inside your company, they use an account of their own that nobody can log into; it does not appear here or on User Accounts, but everything it does is in your audit trail.</li>
+<li><strong>Permissions.</strong> Opening the page, like every page, is controlled by <a href="manual.php?c=administration#pg-admin-page_access">Page Access Configuration</a>; on a new installation it follows the access of User Accounts. <strong>Change roles</strong>, <strong>Reset password</strong>, <strong>Unlock</strong>, <strong>Activate</strong> and <strong>Deactivate</strong> need the <em>edit</em> permission on the page; <strong>Approve</strong> and <strong>Reject</strong> need the <em>approve</em> permission. The Company Owner and full-access roles have both.</li>
+<li><strong>Messages you may see:</strong> "Keep at least one role." (a user must keep a role), "You cannot remove the Administrator role from your own account." (an administrator other than the owner), "You cannot deactivate your own account.", "The Company Owner cannot be deactivated. The Super Admin can make someone else the owner first.", "Approve the registration first." (activating or unlocking an account that was never approved), "That user cannot be changed here." (the owner's account, for anyone but the owner).</li>
+<li><strong>Temporary passwords</strong> must follow the company's password rules and may not contain the username; otherwise the message says what is missing, for example "The temporary password must have at least 8 characters, a symbol."</li>
+<li>Every change is written to the company's audit trail with the old and new values (roles, status, approval) and the reason when one was typed.</li>
+</ul>
+<h2 id="sec-joining">Joining your company with the Company Code<a class="man-hash" href="#sec-joining" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>New employees can make their own account instead of waiting for an administrator to create one. All they need is the Company Code from their Company Owner. This section is written for the employee.</p>
+<p><strong>Where to find it:</strong> on the log-in page, under the <strong>Log in</strong> button: <strong>New employee? Join your company with its Company Code</strong>. A join link sent by the owner opens the same page with the code already filled in.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full name</strong></td>
+<td>Your name as it should appear on the records you enter. Required.</td>
+</tr>
+<tr>
+<td><strong>E-mail</strong></td>
+<td>Your e-mail address. Required.</td>
+</tr>
+<tr>
+<td><strong>Employee no. (if any)</strong></td>
+<td>Your employee number, if your company uses them.</td>
+</tr>
+<tr>
+<td><strong>Username</strong></td>
+<td>The name you will log in with: 3 to 50 characters, letters, numbers, dot, dash or underscore. It is saved in small letters. It must not be used by anybody on the platform.</td>
+</tr>
+<tr>
+<td><strong>Password</strong></td>
+<td>Your own password. It must follow your company's password rules and must not contain your username.</td>
+</tr>
+<tr>
+<td><strong>Confirm password</strong></td>
+<td>The same password again.</td>
+</tr>
+<tr>
+<td><strong>Company Code</strong></td>
+<td>The code your Company Owner gave you, for example <code>AD-UW92E</code>. The dash, spaces and capitals do not matter. It is not your password.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_3">Step by step<a class="man-hash" href="#s-step-by-step_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the log-in page and click <strong>Join your company with its Company Code</strong>.</li>
+<li>Fill in <strong>Full name</strong>, <strong>E-mail</strong> and, if you have one, <strong>Employee no.</strong></li>
+<li>Choose a <strong>Username</strong>, and type your <strong>Password</strong> twice.</li>
+<li>Type the <strong>Company Code</strong>.</li>
+<li>Click <strong>Create my account</strong>.</li>
+</ol>
+<p>The page then confirms which company the account was made in, for example "Your account for ABC Distribution Corp. was created". If your company wants to approve new employees, it adds "Your Company Owner has to approve it before you can log in. Once it is approved, log in with the username <strong>mreyes</strong> and the password you chose." If it does not, it says you can log in now. Click <strong>Go to log in</strong> to return to the log-in page.</p>
+<h4 id="s-while-you-wait-for-approval">While you wait for approval<a class="man-hash" href="#s-while-you-wait-for-approval" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>If you try to log in before the owner has approved your account, and your password is right, the log-in page answers "Your registration is waiting for approval by your Company Owner. You can log in once it is approved." Wait until the owner tells you the account is approved, then log in with your username and the password you chose. You are not asked to change the password: it is already your own.</p>
+<p>If the owner rejected the registration, the answer is "Your registration was not approved. Please contact your Company Owner." With a wrong password you only see "Invalid username or password.", so nobody else can find out whether an account is waiting.</p>
+<h4 id="s-messages-on-the-join-page">Messages on the join page<a class="man-hash" href="#s-messages-on-the-join-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid or inactive Company Code. Please verify the code with your Company Owner.</td>
+<td>The code is wrong, old, switched off or expired, or the company is inactive. Ask the owner for the current code.</td>
+</tr>
+<tr>
+<td>That username is already taken. Please choose another.</td>
+<td>Somebody on the platform, in any company, has that username. Choose another.</td>
+</tr>
+<tr>
+<td>Your password must have ...</td>
+<td>Make the password longer or add what is listed (capital and small letters, a number, a symbol), and leave the username out of it.</td>
+</tr>
+<tr>
+<td>The two passwords do not match.</td>
+<td>Type the same password in both boxes.</td>
+</tr>
+<tr>
+<td>Enter your full name. / Enter a valid e-mail address.</td>
+<td>Fill in the box named.</td>
+</tr>
+<tr>
+<td>Choose a username of 3 to 50 characters: letters, numbers, dot, dash or underscore.</td>
+<td>Remove spaces and other characters from the username.</td>
+</tr>
+<tr>
+<td>Too many attempts from this computer. Please wait 15 minutes and try again.</td>
+<td>Too many wrong codes were typed from this computer. Wait, then try with the right code.</td>
+</tr>
+<tr>
+<td>You are logged in already. Joining is for new employees who do not have an account yet.</td>
+<td>Someone is logged in on this browser. Log out first, or use your existing account.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The account is made in your company's database only. Joining does not give you any access by itself: the owner decides your role when approving you (or the company's starting role is given when approval is switched off).</p></div>
+<h2 id="pg-company-join_requests">Join Requests<a class="man-hash" href="#pg-company-join_requests" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Join Requests lists the employees who made an account with the Company Code and wait for the Company Owner's approval. Approving lets the person log in with the role you choose; rejecting keeps them out, with a reason.</p>
+<p><strong>Where to find it:</strong> Company &gt; Join Requests. When employees are waiting, the menu shows how many, for example <strong>Join Requests (2)</strong>. The <strong>Join requests</strong> tab of Employees &amp; Users, and the <strong>Review the join requests</strong> link in its blue notice, show the same list.</p>
+<p>The page has the same tabs, filters, columns and buttons as <a href="#pg-company-users">Employees &amp; Users</a>; it simply opens on the <strong>Join requests</strong> tab. Clicking another tab takes you to Employees &amp; Users. The employees who wait are also listed at the top of <strong>All users</strong>, above everybody else:</p>
+<p>Before approving, check that you know the person: the full name, username, e-mail address and employee number in the row are what they typed on the join page.</p>
+<h4 id="s-step-by-step_4">Step by step<a class="man-hash" href="#s-step-by-step_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>To approve an employee:</p>
+<ol>
+<li>Click <strong>Approve</strong> on the employee's row.</li>
+<li>In the <strong>Approve ...</strong> window, tick the role or roles the person should have. If the company has a <strong>Role to start with</strong>, it is already ticked. Full-access roles are marked <strong>(full access)</strong>; give them only to people who should see and change everything.</li>
+<li>Click <strong>Approve</strong>. The message reads, for example, "Maria Reyes is approved and can log in now."</li>
+<li>Tell the employee they can log in. If they must work only at certain sites or POS terminals, set these afterwards with <strong>Manage &gt; All details, sites and POS terminals</strong> (see <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>).</li>
+</ol>
+<p>To reject a registration:</p>
+<ol>
+<li>Click <strong>Reject</strong> on the employee's row.</li>
+<li>Type the reason in <strong>Reason (kept in the audit trail)</strong>. A reason is required.</li>
+<li>Click <strong>Reject</strong>. The message reads "The registration of ... was rejected. They cannot log in." The person moves to the <strong>Rejected</strong> tab, with the reason under the status.</li>
+</ol>
+<p>To approve a registration that was rejected earlier:</p>
+<ol>
+<li>Open the <strong>Rejected</strong> tab of Employees &amp; Users.</li>
+<li>Click <strong>Approve</strong> on the row and continue as above. (A rejected registration cannot be rejected a second time.)</li>
+</ol>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Approving sets the account to <strong>Active</strong>, gives it the roles you ticked, and records you as the approver (shown as <strong>Approved by</strong> in the <strong>Status</strong> column). The audit trail gets a <strong>User Approved</strong> entry with the roles given.</li>
+<li>Rejecting sets the account to <strong>Rejected</strong> and inactive, keeps the reason, and records who rejected it (shown as <strong>By</strong>). The audit trail gets a <strong>User Rejected</strong> entry with the reason.</li>
+<li>The employee's own joining is in the audit trail too, as <strong>User Registered</strong> under the employee's username.</li>
+<li>Each of these is also written to the Super Admin's platform audit log.</li>
+</ul>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>A role is required.</strong> Approving without a role gives "Give ... at least one role before approving."</li>
+<li><strong>Approve and Reject need the <em>approve</em> permission</strong> on the page. The Company Owner and full-access roles have it. Users without it see the list but no buttons.</li>
+<li><strong>Approval can be switched off</strong> on <a href="#pg-company-profile">Company Profile &amp; Code</a>. Employees who join then become active at once with the starting role, and this list stays empty.</li>
+<li><strong>Nothing is deleted.</strong> A rejected registration stays on the <strong>Rejected</strong> tab; the username stays taken.</li>
+<li>The Super Admin sees the number of employees waiting in each company, but the approval belongs to the company.</li>
+</ul>
+<h2 id="sec-multi-login">Logging in when there are several companies<a class="man-hash" href="#sec-multi-login" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Everybody, owners and employees alike, logs in on the same page with their own username and password; the page subtitle reads <strong>Log in to your company</strong>. Besides the usual messages about wrong passwords and locked accounts (see <a href="manual.php?c=getting-started">Getting Started</a>), you may meet these:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Your registration is waiting for approval by your Company Owner. You can log in once it is approved.</td>
+<td>You joined with the code and the owner has not approved you yet.</td>
+</tr>
+<tr>
+<td>Your registration was not approved. Please contact your Company Owner.</td>
+<td>The owner rejected your registration.</td>
+</tr>
+<tr>
+<td>Your company's access is currently suspended. Please contact your Company Owner.</td>
+<td>The Super Admin has switched your company off. Your records are kept.</td>
+</tr>
+<tr>
+<td>Your account is no longer linked to this company. Please log in again.</td>
+<td>Your account was changed while you were working. Log in again; if it keeps happening, ask your Company Owner.</td>
+</tr>
+<tr>
+<td>Your account needs to be checked by your Company Owner before you can log in.</td>
+<td>The platform's record of your username did not match your account; the program corrects it. Try again. If the message comes back, the owner asks the Super Admin to rebuild the company's user list.</td>
+</tr>
+<tr>
+<td>Too many failed log-in attempts from this computer. Please wait 15 minutes and try again.</td>
+<td>Many log-ins with unknown usernames were tried from this computer. Wait 15 minutes.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>If you forget your password, ask your Company Owner (or an administrator) to reset it on <a href="#pg-company-users">Employees &amp; Users</a>. The Company Code cannot be used to log in.</p></div>
+<h2 id="sec-switch-company">Working in two companies<a class="man-hash" href="#sec-switch-company" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A user who was given access to another company (see <a href="manual.php?c=administration#sec-two-companies">A user who works in two companies</a>) logs in at their own company as always. The company name at the top of the screen then becomes a switch.</p>
+<ol>
+<li>Click the company name at the top (on a phone, the building button beside the program name).</li>
+<li>The list <strong>Your companies</strong> shows your own company ("Your own company") and each company that gave you access ("Access given to you"). The one open now is ticked.</li>
+<li>Click the company to work in. Its Home page opens with "You are now working in ...". No password is asked.</li>
+</ol>
+<p>While you work in the other company, a blue strip under the top bar says so: "You are working in ABC Distribution Corp. with access given to you. Your own company is Sample Trading Company." Click <strong>Back to Sample Trading Company</strong> on the strip, or use the switch again, to go back.</p>
+<ul>
+<li>In the other company you see its menus, records and reports, and you can do only what its roles for you allow. You are not a Super Admin and have no rights over the platform or other companies.</li>
+<li>Your password belongs to your own company: <strong>Change password</strong> is offered there, not in the other company.</li>
+<li>Each switch is recorded in the audit trail of the company you open.</li>
+<li>When the other company removes your access, or your own account is deactivated, the switch disappears; if you were working in the other company you are taken back to your own.</li>
+</ul>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Your access to ... has ended. You are back in your own company.</td>
+<td>The other company (or yours) removed the access while you were working there.</td>
+</tr>
+<tr>
+<td>You have no access to that company.</td>
+<td>The access was removed, or the company is not open.</td>
+</tr>
+<tr>
+<td>Your access to ... is switched off there. Please ask its administrator.</td>
+<td>The other company switched your account off.</td>
+</tr>
+<tr>
+<td>The database of ... needs the latest update first. Please ask the platform administrator (Super Admin).</td>
+<td>The other company's database is waiting for an update.</td>
+</tr>
+</tbody>
+</table></div>

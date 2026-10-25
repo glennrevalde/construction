@@ -1,0 +1,1511 @@
+<p>The Vendors module covers everything you buy and everything you owe: the list of suppliers, purchase orders, receiving the goods, the suppliers' bills, returns and billing corrections (supplier debit memos), advances paid to suppliers before the goods come, and paying the bills, with the taxes withheld from the suppliers. It also keeps the scanned or photographed receipts until they are entered, and it tracks each purchase from order to payment. Everything posts to 2000 Accounts Payable and to the inventory, expense and tax accounts, so the payables reports always agree with the general ledger.</p>
+<h2 id="s-how-purchasing-works">How purchasing works<a class="man-hash" href="#s-how-purchasing-works" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>There are three ways to record a purchase. Choose the one that matches how the supplier delivers and bills.</p>
+<ul>
+<li><strong>The bill comes with the goods, or it is a service or an expense.</strong> Enter it in <a href="#pg-vend-bills">Enter Bills</a>, or in <a href="#pg-vend-receive_bill">Receive Items and Enter Bills</a> when the goods were ordered on a purchase order.</li>
+<li><strong>The goods arrive first and the bill later.</strong> Record the delivery in <a href="#pg-vend-receive_items">Receive Items</a>. Stock goes up at once. When the bill arrives, turn the receipt into a bill in <a href="#pg-vend-bill_received">Enter Bill for Received Items</a>.</li>
+<li><strong>You pay on the spot.</strong> Write a check in <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a> or a cash voucher in <a href="manual.php?c=banking#pg-bank-cash_voucher">Cash Voucher</a> (see <a href="manual.php?c=banking">Banking</a>); no bill is needed.</li>
+</ul>
+<p>Purchase orders (<a href="#pg-vend-purchase_orders">Create Purchase Orders</a>) are optional. They do not post to the books; they record what was ordered, so you can receive against them and see what is still to come.</p>
+<p>Bills are paid in <a href="#pg-vend-pay_bills">Pay Bills</a>, less the taxes withheld from the supplier when the company is a withholding agent (see <a href="manual.php?c=bir">BIR Reports</a>). Money paid before the goods or services come is recorded in <a href="#pg-vend-advances">Advances to Suppliers</a> and applied to the bills later. Returns, price corrections and allowances from a supplier are recorded as <a href="#pg-vend-debit_memos">Supplier Debit Memos</a> and applied to the supplier's bills. The <a href="#pg-vend-bill_tracker">Bill Tracker</a> shows every purchase at its stage: ordered, received, billed, paid.</p>
+<h3 id="s-the-accounts-used">The accounts used<a class="man-hash" href="#s-the-accounts-used" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account (demo)</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2000 Accounts Payable</td>
+<td>Every bill, item receipt, debit memo and bill payment</td>
+</tr>
+<tr>
+<td>1300 Input Tax</td>
+<td>The VAT on purchase lines with the VAT12 tax code</td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td>Inventory and assembly items bought, received or returned</td>
+</tr>
+<tr>
+<td>6110 Purchases - Non-inventory</td>
+<td>Non-inventory, service and other charge items with no expense or cost account of their own</td>
+</tr>
+<tr>
+<td>5050 Purchase Discounts</td>
+<td>Early-payment discounts taken in Pay Bills</td>
+</tr>
+<tr>
+<td>2110 Withholding Tax Payable</td>
+<td>The 1% / 2% income tax withheld from suppliers in Pay Bills, owed to the BIR until remitted (0619-E, 1601-EQ)</td>
+</tr>
+<tr>
+<td>2115 VAT Withheld Payable</td>
+<td>The 5% VAT withheld from suppliers, owed to the BIR until remitted (1600-VT)</td>
+</tr>
+<tr>
+<td>1410 Advances to Suppliers</td>
+<td>Money paid to suppliers before their goods or services come, until it is applied to their bills</td>
+</tr>
+</tbody>
+</table></div>
+<p>These come from <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a> (Accounts Payable, Input Tax, Default Purchases / Expense, Purchase Discounts, Withholding Tax Payable (Expanded), VAT Withheld Payable, Advances to Suppliers), from each tax of the <a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a> when it has an account of its own, from the tax code's purchase account in <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>, and from the item's own accounts in the <a href="manual.php?c=inventory#pg-inv-items">Item List</a>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Amounts on purchase lines are entered net of VAT. When a line has a tax code, the tax is worked out on the amount and added on top: a ₱10,000.00 expense with VAT12 makes a ₱11,200.00 bill.</p></div>
+<h2 id="pg-vend-center">Vendor Center<a class="man-hash" href="#pg-vend-center" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Vendor Center is the list of suppliers with what you owe each one. Select a vendor to see its details, all its transactions and your notes, and to start a purchase order, a bill or a payment for it.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Vendor Center.</p>
+<p>The left side lists the vendors with their balance. The right side shows the vendor selected (the first one when the page opens).</p>
+<h4 id="s-the-list">The list<a class="man-hash" href="#s-the-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type to find a vendor</strong></td>
+<td>Narrows the list as you type, letter by letter, to the vendors whose name, company name or contact person contains what you typed; the count under the box says how many are shown. When nothing matches, the list says <strong>No vendor matches. Press Enter to search the whole list on the server.</strong> Enter opens the first match, or searches the whole list, inactive vendors included.</td>
+</tr>
+<tr>
+<td>Show box</td>
+<td><strong>Active</strong> (the default), <strong>All</strong> (including inactive vendors) or <strong>With balance</strong> (only vendors you owe money to, or who owe you)</td>
+</tr>
+<tr>
+<td>Vendor rows</td>
+<td>The vendor's name and balance. Click a row to select the vendor.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-a-vendors-detail">A vendor's detail<a class="man-hash" href="#s-a-vendors-detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The top card shows the vendor's name, company name, TIN, your account number with the vendor, the contact person, phone, email, address, payment terms and default expense account. On the right, <strong>We owe</strong> is the vendor's balance in Accounts Payable; <strong>Credits available</strong> appears when the vendor has supplier debit memos not yet applied, and <strong>Advances to apply</strong> when it has advances not yet applied to its bills. The detail also shows the vendor's <strong>Withholding taxes</strong>, and the buttons include <strong>Advance payment</strong>.</p>
+<p>The buttons start work for this vendor:</p>
+<ul>
+<li><strong>Edit</strong> opens the vendor's record.</li>
+<li><strong>Purchase order</strong>, <strong>Receive items</strong>, <strong>Enter bill</strong>, <strong>Pay bills</strong>, <strong>Advance payment</strong> and <strong>Write check</strong> open those pages with the vendor already chosen. <strong>Enter bill</strong> also brings the vendor's payment terms onto the bill.</li>
+<li><strong>Balance detail</strong> opens the <a href="#pg-rpt-vendor_balance_detail">Vendor Balance Detail</a> report and <strong>Transaction list</strong> the <a href="#pg-rpt-txn_list_vendor">Transaction List by Vendor</a> report, both for this vendor.</li>
+</ul>
+<p><strong>Transactions</strong> lists the vendor's documents, newest first (up to 300): <strong>Type</strong>, <strong>No.</strong> (click to open it), <strong>Vendor ref.</strong>, <strong>Date</strong>, <strong>Due</strong>, <strong>Amount</strong>, <strong>Open</strong> (the open balance of a bill, the unapplied amount of a debit memo, or what is left of an advance) and <strong>Status</strong>.</p>
+<p><strong>Notes and reminders</strong> shows the vendor's <strong>Notes</strong> field and the notes added here, each with its date and author. A note marked <strong>To-do</strong> appears in the <strong>To-do reminders</strong> card on the Home page.</p>
+<h4 id="s-step-by-step-add-a-vendor">Step by step: add a vendor<a class="man-hash" href="#s-step-by-step-add-a-vendor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Vendor Center</strong> and click <strong>New vendor</strong>.</li>
+<li>Fill in the fields below. Only the <strong>Vendor name</strong> is required.</li>
+<li>Click <strong>Save vendor</strong> (or <strong>Save vendor &amp; New</strong> to add another). The Vendor Center opens with the new vendor selected.</li>
+</ol>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor name</strong></td>
+<td>The name used in lists and on documents, for example TechDistributors Inc. Required and unique.</td>
+</tr>
+<tr>
+<td><strong>Company name</strong></td>
+<td>The registered name. Printed on purchase orders, bills and debit memos instead of the vendor name when filled in.</td>
+</tr>
+<tr>
+<td><strong>Contact person</strong>, <strong>Phone</strong>, <strong>Fax</strong>, <strong>Email</strong></td>
+<td>How to reach the supplier. The email is used by the <strong>Email</strong> button of the vendor's documents.</td>
+</tr>
+<tr>
+<td><strong>Address</strong></td>
+<td>Printed on purchase orders, bills and check vouchers</td>
+</tr>
+<tr>
+<td><strong>Tax identification no. (TIN)</strong></td>
+<td>Printed on purchase orders, bills and check vouchers</td>
+</tr>
+<tr>
+<td><strong>Payment terms</strong></td>
+<td>For example Net 30. Brought onto bills entered from the Vendor Center, and onto the bills of Receive Items and Enter Bills, Enter Bill for Received Items, fixed asset purchases and maintenance records. The due date is worked out from it.</td>
+</tr>
+<tr>
+<td><strong>Credit limit with vendor</strong></td>
+<td>The credit line the supplier gives you, for your reference. The program does not check it.</td>
+</tr>
+<tr>
+<td><strong>Our account no. with this vendor</strong></td>
+<td>Your customer number with the supplier (for example your Meralco account number)</td>
+</tr>
+<tr>
+<td><strong>Default expense account</strong></td>
+<td>The account the supplier's purchases usually go to. Receipt Management uses it for receipts from this vendor.</td>
+</tr>
+<tr>
+<td><strong>Tax code</strong></td>
+<td>The supplier's usual tax code, for your reference</td>
+</tr>
+<tr>
+<td><strong>Withholding taxes</strong></td>
+<td>The taxes of the <a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a> usually withheld when this supplier is paid: one, two or more (for example <strong>WT on Goods 1% (WC158)</strong>, or WT on Goods 1% and WT on VAT 5%). Tick them in the drop-down list. <a href="#pg-vend-pay_bills">Pay Bills</a> ticks them for the supplier's bills; they can still be changed on each bill. <strong>None withheld</strong> when nothing is ticked.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to hide the vendor from the lists and the Vendor boxes of new documents</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Anything worth keeping, shown in <strong>Notes and reminders</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-change-a-vendor">Step by step: change a vendor<a class="man-hash" href="#s-step-by-step-change-a-vendor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Select the vendor and click <strong>Edit</strong>.</li>
+<li>Change the fields and click <strong>Save vendor</strong>.</li>
+</ol>
+<p>The <strong>Withholding taxes</strong> box lists the active taxes of the Withholding Tax Table that apply to payments to suppliers. The vendor's detail in the Vendor Center shows them (<strong>Withholding taxes: WT on Goods 1%</strong>), and the vendor list export has a <strong>Withholding taxes</strong> column.</p>
+<h4 id="s-step-by-step-add-a-note-or-a-reminder">Step by step: add a note or a reminder<a class="man-hash" href="#s-step-by-step-add-a-note-or-a-reminder" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Select the vendor.</li>
+<li>Under <strong>Notes and reminders</strong>, type the note in <strong>Add a note or reminder</strong>, for example "Ask for the revised price list".</li>
+<li>Enter a date if it is due on a certain day, and tick <strong>To-do</strong> to make it a reminder on the Home page.</li>
+<li>Click <strong>Add</strong>.</li>
+</ol>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The balance is worked out from the Accounts Payable lines of the ledger that carry the vendor: bills and item receipts increase it, bill payments and debit memos decrease it.</li>
+<li>Vendors cannot be deleted; untick <strong>Active</strong> instead. An inactive vendor is left out of the Vendor boxes, so make it active again before you edit one of its old documents.</li>
+<li><strong>Export list</strong> downloads the vendors shown (name, company, contact, phone, email, address, TIN, account number and balance) as a CSV file. It needs the print permission.</li>
+<li>A to-do note added here cannot be marked done from the Vendor Center; it stays in the Home page reminders.</li>
+<li>To load many vendors at once, use <a href="manual.php?c=administration#pg-admin-import">Import from CSV</a>.</li>
+<li>Giving the same person both the Vendor Center and Pay Bills (creating vendors and paying them) is a combination the administrator is warned about. See <a href="manual.php?c=administration">System Administration</a>.</li>
+</ul>
+<h2 id="pg-vend-bill_tracker">Bill Tracker<a class="man-hash" href="#pg-vend-bill_tracker" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Bill Tracker follows purchases through their stages on one page: ordered or received but not yet billed, billed but not yet paid, overdue, and paid. Use it every week to see what is coming, what is due and what was settled.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Bill Tracker.</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>One vendor, or all</td>
+</tr>
+<tr>
+<td><strong>Show</strong></td>
+<td><strong>All stages</strong>, <strong>Unbilled</strong>, <strong>Unpaid</strong>, <strong>Overdue only</strong> or <strong>Paid</strong></td>
+</tr>
+<tr>
+<td><strong>Paid from</strong>, <strong>Paid to</strong></td>
+<td>The payment dates for the <strong>Paid</strong> card and section (the last 30 days by default)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Filter</strong> to apply them.</p>
+<h4 id="s-the-cards">The cards<a class="man-hash" href="#s-the-cards" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Card</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unbilled (open POs + receipts)</strong></td>
+<td>What was ordered but not yet received (quantity still open times cost, before tax) plus item receipts not yet billed</td>
+</tr>
+<tr>
+<td><strong>Unpaid bills</strong></td>
+<td>The open balance of all unpaid bills</td>
+</tr>
+<tr>
+<td><strong>Overdue</strong></td>
+<td>The open balance of the bills past their due date</td>
+</tr>
+<tr>
+<td><strong>Paid</strong></td>
+<td>The total of the bills fully paid in the chosen dates</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-sections">The sections<a class="man-hash" href="#s-the-sections" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Unbilled</strong> lists the open purchase orders (with the <strong>Expected</strong> delivery date and the amount still open) and the item receipts not yet billed. <strong>Convert to bill</strong> opens <a href="#pg-vend-receive_bill">Receive Items and Enter Bills</a> for the purchase order; <strong>Close PO</strong> closes it (remaining quantities are no longer expected); <strong>Enter bill</strong> on an item receipt opens <a href="#pg-vend-bill_received">Enter Bill for Received Items</a>.</li>
+<li><strong>Unpaid bills</strong> lists every open bill, with its due date in red and an <strong>overdue</strong> mark when it is late. Tick the bills to pay and click <strong>Pay selected</strong>.</li>
+<li><strong>Paid</strong> lists the bills fully paid in the chosen dates, with the date of the last payment (<strong>Paid on</strong>).</li>
+</ul>
+<h4 id="s-step-by-step-pay-bills-from-the-tracker">Step by step: pay bills from the tracker<a class="man-hash" href="#s-step-by-step-pay-bills-from-the-tracker" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>In <strong>Unpaid bills</strong>, tick the bills to pay (the box in the header ticks all).</li>
+<li>Click <strong>Pay selected</strong>. Pay Bills opens with only those bills, ticked, and their amounts (and any early-payment discount) filled in.</li>
+<li>Finish the payment as described in <a href="#pg-vend-pay_bills">Pay Bills</a>.</li>
+</ol>
+<h2 id="pg-vend-bills">Enter Bills<a class="man-hash" href="#pg-vend-bills" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A bill is a supplier's invoice that you will pay later. Entering it records what you owe (Accounts Payable), the expense or the inventory, and the input VAT. Enter bills for utilities, rent, services and supplies, and for goods that were not ordered on a purchase order.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Enter Bills. The <strong>Enter Bills</strong> quick action on the Home page opens a new bill, and <strong>Enter bill</strong> in the Vendor Center opens one for the selected vendor.</p>
+<p>The page opens on the list of bills of the last 90 days and the next 30 days.</p>
+<h4 id="s-the-list_1">The list<a class="man-hash" href="#s-the-list_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong>, <strong>To</strong></td>
+<td>The bill dates to list</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>All</strong>, <strong>Unpaid</strong> (open or partly paid), <strong>Open</strong>, <strong>Partially paid</strong>, <strong>Paid</strong>, <strong>Pending</strong> or <strong>Void</strong></td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are in use</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Finds bills by number, reference, memo or vendor name</td>
+</tr>
+<tr>
+<td>Columns</td>
+<td><strong>Date</strong>, <strong>No.</strong> (click to open), <strong>Name</strong>, <strong>Reference</strong> (the vendor's invoice number), <strong>Memo</strong>, <strong>Class</strong>, <strong>Total</strong>, <strong>Open</strong>, <strong>Status</strong>, <strong>By</strong> (who entered it)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Voided bills are shown struck through. The buttons at the top are <strong>Enter bill</strong>, <strong>Supplier debit memos</strong> (opens <a href="#pg-vend-debit_memos">Supplier Debit Memos</a>) and <strong>Export</strong> (a CSV file of the list; needs the print permission).</p>
+<h3 id="s-entering-a-bill">Entering a bill<a class="man-hash" href="#s-entering-a-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Click <strong>Enter bill</strong>. The form has a header, two tabs of lines (<strong>Expenses</strong> and <strong>Items</strong>) and the totals.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>The supplier. Required. Type part of the name to search.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The bill date. The due date is counted from it.</td>
+</tr>
+<tr>
+<td><strong>Number</strong></td>
+<td>Leave it blank to get the next number (the grey text shows it, for example BILL-00013 (auto)), or type your own</td>
+</tr>
+<tr>
+<td><strong>Vendor's invoice / reference no.</strong></td>
+<td>The supplier's invoice number. Shown in lists, reports and Pay Bills as the bill's reference.</td>
+</tr>
+<tr>
+<td><strong>Terms</strong></td>
+<td>The payment terms. Filled in from the vendor when you start the bill from the Vendor Center.</td>
+</tr>
+<tr>
+<td><strong>Due date (blank = from terms)</strong></td>
+<td>Leave blank to count it from the terms. With no terms, the bill is due on its date.</td>
+</tr>
+<tr>
+<td><strong>Default site for items</strong></td>
+<td>The inventory site that receives the items. It is copied onto the <strong>Site</strong> of every item line, so it need not be chosen line by line; a line can be given another site.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the bill. Shown when classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>A note shown in lists and on the ledger lines</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Expenses</strong> tab (one line per account):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Account</strong></td>
+<td>The expense or other account, for example 6020 Utilities Expense</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The amount, net of VAT</td>
+</tr>
+<tr>
+<td><strong>Tax</strong></td>
+<td>The tax code, for example VAT12. The tax is added on top of the amount.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>The line description</td>
+</tr>
+<tr>
+<td><strong>Customer:Job</strong> and <strong>Billable</strong></td>
+<td>The customer the cost was for. Tick <strong>Billable</strong> to charge it to the customer later.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Items</strong> tab (one line per item):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>The item bought. Choosing it fills the description, the tax code, a quantity of 1 and the item's cost.</td>
+</tr>
+<tr>
+<td><strong>Description</strong>, <strong>Qty</strong>, <strong>U/M</strong></td>
+<td>The description, the quantity and, for items with several units, the unit (the <strong>U/M</strong> column appears only then)</td>
+</tr>
+<tr>
+<td><strong>Cost</strong>, <strong>Amount</strong></td>
+<td>The cost per unit and the line amount (quantity times cost). Typing the amount works out the cost.</td>
+</tr>
+<tr>
+<td><strong>Tax</strong>, <strong>Site</strong></td>
+<td>The tax code, and the site that receives the item (<strong>Default</strong> uses the header's site)</td>
+</tr>
+<tr>
+<td><strong>Customer:Job</strong> and <strong>Billable</strong></td>
+<td>As on the Expenses tab</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Add line</strong>, <strong>Add 5 lines</strong> or <strong>Add 10 lines</strong> for more lines; the square plus button at the end of a line inserts an empty line above it, and the red cross removes a line. There is no set limit to the number of lines: a supplier's delivery of more than a hundred items can be entered on one bill, and editing it later keeps every line. The box under the lines shows the <strong>Subtotal</strong>, the <strong>Tax</strong> and the <strong>Total</strong>.</p>
+<h4 id="s-step-by-step-enter-a-bill-for-an-expense">Step by step: enter a bill for an expense<a class="man-hash" href="#s-step-by-step-enter-a-bill-for-an-expense" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Enter Bills</strong> and click <strong>Enter bill</strong>.</li>
+<li>Choose the <strong>Vendor</strong>, for example Meralco, and check the <strong>Date</strong>.</li>
+<li>Type the <strong>Vendor's invoice / reference no.</strong>, for example MER-202609, and choose the <strong>Terms</strong>.</li>
+<li>On the <strong>Expenses</strong> tab, choose the <strong>Account</strong> (6020 Utilities Expense), type the <strong>Amount</strong> and choose the <strong>Tax</strong> code.</li>
+<li>Add more lines if the bill covers several accounts.</li>
+<li>Click <strong>Save</strong>. The bill opens. <strong>Save &amp; New</strong> saves and opens a blank bill.</li>
+</ol>
+<h4 id="s-step-by-step-enter-a-bill-for-items">Step by step: enter a bill for items<a class="man-hash" href="#s-step-by-step-enter-a-bill-for-items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Start a new bill and choose the <strong>Vendor</strong>, for example TechDistributors Inc.</li>
+<li>Choose the <strong>Default site for items</strong>, for example Main Warehouse.</li>
+<li>Click the <strong>Items</strong> tab.</li>
+<li>On each line choose the <strong>Item</strong> (for example LAP-001 Laptop 14-inch i5 16GB), type the <strong>Qty</strong> and check the <strong>Cost</strong> and the <strong>Tax</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>If the goods were ordered on a purchase order, use <a href="#pg-vend-receive_bill">Receive Items and Enter Bills</a> instead. A bill entered here is not linked to the purchase order, so the order would still show the goods as not received.</p></div>
+<h3 id="s-after-saving-the-bill">After saving: the bill<a class="man-hash" href="#s-after-saving-the-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The saved bill shows its details, its lines and the <strong>General ledger entries created automatically</strong>. The box on the right has the <strong>Subtotal</strong>, <strong>Tax</strong>, <strong>Total</strong> and <strong>Open balance</strong>. <strong>Related documents</strong> lists the purchase order or receipt it came from and the payments and debit memos applied to it; <strong>Attached receipts</strong> lists receipt files from Receipt Management.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the bill for changes</td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Opens the printable bill</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Opens your e-mail program with a message to the vendor's email address and a link to the printable bill</td>
+</tr>
+<tr>
+<td><strong>Pay Bill</strong></td>
+<td>Opens Pay Bills for this vendor (shown while the bill has an open balance)</td>
+</tr>
+<tr>
+<td><strong>Memorize</strong></td>
+<td>Saves the bill as a memorized transaction, to be entered again on a schedule. See <a href="manual.php?c=chart-of-accounts#pg-coa-memorized_txns">Memorized Transactions</a>.</td>
+</tr>
+<tr>
+<td><strong>Void</strong></td>
+<td>Keeps the bill, marked VOID, and removes its effect on the ledger and inventory</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Removes the bill; a full copy stays in the audit trail</td>
+</tr>
+<tr>
+<td><strong>History</strong></td>
+<td>Opens the bill's <a href="manual.php?c=administration#pg-admin-txn_history">Transaction History</a></td>
+</tr>
+<tr>
+<td><strong>Back to list</strong></td>
+<td>Returns to the list of bills</td>
+</tr>
+</tbody>
+</table></div>
+<p>The printed bill shows the company, the vendor's name, address and TIN, the reference and terms, the lines, the subtotal net of VAT and the VAT when there is tax, the total, the balance due, and signature lines (Prepared by, Checked by, Approved by, Received by).</p>
+<h4 id="s-step-by-step-void-or-delete-a-bill">Step by step: void or delete a bill<a class="man-hash" href="#s-step-by-step-void-or-delete-a-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the bill.</li>
+<li>Click <strong>Void</strong> or <strong>Delete</strong>.</li>
+<li>Type the reason (required; it is kept in the audit trail) and click <strong>Void transaction</strong> or <strong>Delete transaction</strong>.</li>
+</ol>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A bill for 10 units of LAP-001 at ₱32,000.00 with VAT12, received at Main Warehouse:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory</td>
+<td>₱320,000.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1300 Input Tax</td>
+<td>₱38,400.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2000 Accounts Payable</td>
+<td></td>
+<td>₱358,400.00</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Expense lines debit their own account.</li>
+<li>Inventory and assembly items debit the item's asset account (1200 Inventory) and add the quantity to the site's stock. The item's average cost is recalculated (weighted average: value on hand divided by quantity on hand).</li>
+<li>Non-inventory, service and other charge items debit the item's expense account, or its cost of goods sold account, or 6110 Purchases - Non-inventory.</li>
+<li>The tax of each line is debited to the tax code's purchase account (1300 Input Tax).</li>
+<li>The total is credited to 2000 Accounts Payable under the vendor.</li>
+<li>Lines marked <strong>Billable</strong> wait for the customer's next invoice: they appear under <strong>Billable time and costs for this customer</strong> in <a href="manual.php?c=customers#pg-cust-invoices">Create Invoices</a>.</li>
+</ul>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A bill has the status <strong>Open</strong> until paid, <strong>Partial</strong> when partly paid, and <strong>Paid</strong> when its open balance is zero.</li>
+<li>Editing a bill posts it again: the ledger and the stock are corrected to the new figures.</li>
+<li>A bill that has payments or debit memos applied cannot be voided or deleted: "Payments or credits have been applied to it. Remove them first (edit the payment or credit)." Edit the bill payment and untick the bill (see <a href="#sec-edit-bill-payment">Edit a bill payment</a>) or void the payment, or take the debit memo back on its apply page, then void the bill.</li>
+<li>Messages: "Choose a vendor.", "Add at least one expense or item line.", "Choose an account for every expense line.", "Choose an item for every line that has a description or amount.".</li>
+<li>Bills dated on or before the closing date can only be entered or changed by users with the special permission for closed periods.</li>
+<li>Giving the same person Enter Bills and Write Checks is a combination the administrator is warned about. See <a href="manual.php?c=administration">System Administration</a>.</li>
+</ul>
+<h2 id="pg-vend-debit_memos">Supplier Debit Memos<a class="man-hash" href="#pg-vend-debit_memos" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A supplier debit memo reduces what you owe a supplier: goods returned, a price or billing correction, an allowance. It is the supplier's credit memo seen from your side. After saving it, you apply it to the supplier's outstanding bills, here or in Pay Bills.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Supplier Debit Memos, or <strong>Supplier debit memos</strong> on the list of bills.</p>
+<p>The list works like the list of bills. Its <strong>Status</strong> filter offers <strong>With available amount</strong>, <strong>Fully applied</strong> and <strong>Void</strong>, and the <strong>Open</strong> column shows the amount not yet applied. The buttons are <strong>New debit memo</strong>, <strong>Pay bills</strong> and <strong>Export</strong>.</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The form is the bill form with the vendor box labelled <strong>Supplier</strong> and one more card, <strong>What to do with this debit memo</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Supplier</strong></td>
+<td>The supplier. Required.</td>
+</tr>
+<tr>
+<td><strong>Date</strong>, <strong>Number</strong></td>
+<td>The date and the number (DM-00002 (auto) when left blank)</td>
+</tr>
+<tr>
+<td><strong>Vendor's invoice / reference no.</strong></td>
+<td>The supplier's credit memo number</td>
+</tr>
+<tr>
+<td><strong>Terms</strong>, <strong>Due date (blank = from terms)</strong>, <strong>Default site for items</strong>, <strong>Class</strong>, <strong>Memo</strong></td>
+<td>As on a bill. For returned items, the site is where they leave from.</td>
+</tr>
+<tr>
+<td><strong>Expenses</strong> tab</td>
+<td>Price corrections and allowances: the account the credit goes to, the amount and the tax</td>
+</tr>
+<tr>
+<td><strong>Items</strong> tab</td>
+<td>Returned goods: the item, the quantity returned and its cost</td>
+</tr>
+<tr>
+<td><strong>After saving</strong></td>
+<td><strong>Apply it to outstanding bills now</strong> (the default on a new memo) opens the apply page after saving. <strong>Keep it as an available credit</strong> keeps it for later. The note beside it tells you how many outstanding bills the supplier has.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-record-a-return-and-apply-it">Step by step: record a return and apply it<a class="man-hash" href="#s-step-by-step-record-a-return-and-apply-it" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Supplier Debit Memos</strong> and click <strong>New debit memo</strong>.</li>
+<li>Choose the <strong>Supplier</strong>, for example TechDistributors Inc., and type the supplier's credit memo number.</li>
+<li>On the <strong>Items</strong> tab, choose the item returned (for example MOU-001 Wireless Mouse), the quantity and the cost it was billed at, and the tax code.</li>
+<li>Leave <strong>After saving</strong> on <strong>Apply it to outstanding bills now</strong>.</li>
+<li>Click <strong>Save</strong>. The apply page opens (see below).</li>
+</ol>
+<h4 id="s-applying-a-debit-memo-to-bills">Applying a debit memo to bills<a class="man-hash" href="#s-applying-a-debit-memo-to-bills" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The apply page shows the <strong>Supplier</strong>, the <strong>Debit memo amount</strong>, the amount <strong>Already applied</strong> and the amount <strong>Available to apply</strong>. Below are the supplier's <strong>Outstanding bills</strong> with their <strong>Bill amount</strong>, <strong>Open balance</strong> and an <strong>Amount to apply</strong> box, and the list of <strong>Bills this debit memo was applied to</strong>.</p>
+<ol>
+<li>Type the amount to apply on each bill, or click <strong>Apply to the oldest bills first</strong> to fill the boxes from the oldest bill down.</li>
+<li>Watch the total and the amount "left on the memo". The button is disabled while an amount is more than a bill's open balance or the total is more than the amount available.</li>
+<li>Click <strong>Apply to the bills</strong>.</li>
+</ol>
+<p>To undo an application, click <strong>Take back</strong> beside the bill in <strong>Bills this debit memo was applied to</strong> and confirm. The amount becomes available on the memo again. To come back to this page later, open the debit memo and click <strong>Apply to outstanding bills</strong> (or <strong>Bills it was applied to</strong> once it is fully applied).</p>
+<h4 id="s-the-saved-debit-memo">The saved debit memo<a class="man-hash" href="#s-the-saved-debit-memo" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The saved memo shows its lines, the ledger entries, the <strong>Unapplied credit</strong> and, under <strong>Related documents</strong>, the bills it was applied to. The buttons are the same as on a bill, with the apply button in place of <strong>Pay Bill</strong>.</p>
+<p><strong>Print</strong> gives the SUPPLIER DEBIT MEMO, to send to the supplier with the returned goods.</p>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The return of 2 MOU-001 Wireless Mouse at ₱350.00 with VAT12:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2000 Accounts Payable</td>
+<td>₱784.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td></td>
+<td>₱700.00</td>
+</tr>
+<tr>
+<td>1300 Input Tax</td>
+<td></td>
+<td>₱84.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>Returned inventory items leave the site's stock at the amount entered on the line. Applying the memo to a bill makes no ledger entry (the memo already debited Accounts Payable); it only lowers the bill's open balance. The memo's status is <strong>Open</strong> while an amount is available and <strong>Closed</strong> when fully applied.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>An available debit memo can also be used in <a href="#pg-vend-pay_bills">Pay Bills</a>, in the <strong>Use credit</strong> column.</li>
+<li>Messages on the apply page: "Enter the amount to apply on at least one bill.", "The amount for bill ... is more than its open balance of ...", "The total applied (...) is more than the available amount of this debit memo (...)", "A voided debit memo cannot be applied."</li>
+<li>Applying and taking back need the edit permission on this page.</li>
+</ul>
+<h2 id="pg-vend-pay_bills">Pay Bills<a class="man-hash" href="#pg-vend-pay_bills" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Pay Bills pays one or more open bills at once, by check, cash, bank transfer or any other payment method. It creates one bill payment per vendor, takes early-payment discounts, uses the vendor's available debit memos and advances, and deducts the taxes withheld from the supplier (the <strong>Withholding</strong> column).</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Pay Bills. It also opens from the <strong>Accounts Payable</strong> card and the <strong>Pay Bills</strong> quick action on the Home page, from <strong>Pay bills</strong> in the Vendor Center, from <strong>Pay Bill</strong> on a bill, from <strong>Pay selected</strong> in the Bill Tracker, and from <strong>Go to Pay Bills</strong> on the Unpaid Bills Detail report.</p>
+<p>The page lists all open bills, the oldest due date first. Due dates already past are shown in red.</p>
+<p>Choose a <strong>Vendor</strong> and click <strong>Filter</strong> to see only that vendor's bills.</p>
+<h4 id="s-fields_3">Fields<a class="man-hash" href="#s-fields_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>One vendor, or <strong>All vendors</strong></td>
+</tr>
+<tr>
+<td><strong>Show bills</strong></td>
+<td><strong>All open bills</strong>, or <strong>Due on or before</strong> the <strong>Due by</strong> date (a week from today by default)</td>
+</tr>
+<tr>
+<td>Tick box</td>
+<td>Tick each bill to pay. Ticking fills <strong>Discount</strong> with the early-payment discount available, ticks the supplier's usual withholding taxes, and fills <strong>Amount to pay</strong> with what is left. Only ticked bills are paid. Unticking a bill clears its line.</td>
+</tr>
+<tr>
+<td><strong>Due</strong>, <strong>Vendor</strong>, <strong>Bill / ref.</strong>, <strong>Open</strong></td>
+<td>The bill's due date, vendor, reference (click it to open the bill) and open balance</td>
+</tr>
+<tr>
+<td><strong>Discount</strong></td>
+<td>The early-payment discount taken. When the bill's terms (for example 2% 10 Net 30) give one if paid today, the box shows <strong>avail.</strong> and the amount under it, and ticking the bill fills it in; type over it or clear it.</td>
+</tr>
+<tr>
+<td><strong>Use credit</strong></td>
+<td>Shown when a vendor on the list has supplier debit memos not yet applied: the part to apply to this bill, with <strong>of</strong> and what the vendor has under the box (disabled for a vendor with none)</td>
+</tr>
+<tr>
+<td><strong>Use advance</strong></td>
+<td>Shown when a vendor on the list has advances left (<a href="#pg-vend-advances">Advances to Suppliers</a>): the part to apply to this bill, with <strong>of</strong> and what is left under the box</td>
+</tr>
+<tr>
+<td><strong>Withholding</strong></td>
+<td>Shown when the company is a withholding agent (<a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a>): the taxes withheld from the supplier on this bill. Click it to tick the taxes and see or change their amounts (see below).</td>
+</tr>
+<tr>
+<td><strong>Amount to pay</strong></td>
+<td>The money paid on this bill: the open balance less the discount, the credit, the advance and the taxes withheld. It follows each change; type over it for a partial payment. <strong>Total to pay</strong> adds up this column (the total withheld is shown beside it).</td>
+</tr>
+<tr>
+<td><strong>Payment date</strong></td>
+<td>The date of the payment</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>The payment method, for example Check, Cash or Bank Transfer (Check by default)</td>
+</tr>
+<tr>
+<td><strong>Payment account</strong></td>
+<td>The bank, cash or credit card account the money comes from (1010 Cash in Bank - BDO Checking by default). For a cash payment choose a cash account such as 1000 Cash or 1005 Petty Cash Fund.</td>
+</tr>
+<tr>
+<td><strong>Reference (transfer / card)</strong></td>
+<td>The transfer, card or deposit reference</td>
+</tr>
+<tr>
+<td><strong>Queue checks for printing</strong></td>
+<td>Check payments only: marks the payments "to print" so you can print them together later</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>Left blank, it reads "Payment of" and the bills' references</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the payments</td>
+</tr>
+<tr>
+<td><strong>Supervisor approval</strong></td>
+<td>For payments above your amount limit</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-pay-bills">Step by step: pay bills<a class="man-hash" href="#s-step-by-step-pay-bills" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Pay Bills</strong>. Filter by <strong>Vendor</strong> or <strong>Due on or before</strong> if you like.</li>
+<li>Tick the bills to pay. Change <strong>Amount to pay</strong> for a partial payment.</li>
+<li>Where a discount is available (<strong>avail.</strong> under the <strong>Discount</strong> box), ticking the bill fills it in and the amount to pay leaves it out.</li>
+<li>Where the vendor has credits or advances, type the part to use in <strong>Use credit</strong> or <strong>Use advance</strong>: the amount to pay goes down by the same figure.</li>
+<li>Set the <strong>Payment date</strong>, the <strong>Method</strong> and the <strong>Payment account</strong>. Type the <strong>Reference</strong> for a transfer.</li>
+<li>Tick <strong>Queue checks for printing</strong> if you will print the checks later.</li>
+<li>Click <strong>Pay selected bills</strong>. With one vendor, the payment opens; with several, the list of bill payments opens.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Industrial Machines Corp. has three open bills. Tick IMC-SV-0192 (₱12,500.00), leave the amount, choose <strong>Method</strong> Check and <strong>Payment account</strong> 1010 Cash in Bank - BDO Checking, and click <strong>Pay selected bills</strong>. The program records one bill payment of ₱12,500.00, numbered in the check series, and the bill becomes <strong>Paid</strong>.</p></div>
+<h4 id="s-the-withholding-column">The Withholding column<a class="man-hash" href="#s-the-withholding-column" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When the company is a withholding agent, each bill has a <strong>Withholding</strong> box. Ticking the bill ticks the supplier's usual taxes (its <strong>Withholding taxes</strong> in the Vendor Center) and works out their amounts at once; the box shows the total withheld and the rates used (<strong>1%</strong>, or <strong>1% + 5%</strong>), and <strong>Amount to pay</strong> drops by the same figure.</p>
+<p>Click the box to open the list of the <a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a>:</p>
+<p>The base and the amounts are there even before the bill is ticked: open the <strong>Withholding</strong> box of any bill and the <strong>Tax base, net of VAT</strong> already shows its outstanding balance net of VAT (less the early-payment discount, when there is one). Ticking a tax works out its amount at once, ticks the bill and lowers <strong>Amount to pay</strong>. The amount can still be typed over for an adjustment.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it shows / what to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tax base, net of VAT</strong></td>
+<td>The base the taxes are worked out on: what the line settles (the open balance less the discount and the credit) without its VAT. For a bill of ₱112,000.00 with 12% VAT it is ₱100,000.00. It follows the line until you type a base of your own.</td>
+</tr>
+<tr>
+<td>A tick box per tax</td>
+<td>Tick one or more taxes to withhold on this bill (one or more per invoice paid). Each shows its name, rate and ATC, for example <strong>WT on Goods 1%, ATC WC158</strong>. A tax set up on the gross amount says so.</td>
+</tr>
+<tr>
+<td>The amount of each tax</td>
+<td>Worked out when the tax is ticked: the base times the rate (₱100,000.00 × 1% = ₱1,000.00). Type over it to adjust; a typed amount is kept when the base changes.</td>
+</tr>
+<tr>
+<td><strong>Total withheld</strong></td>
+<td>The sum of the ticked taxes: the figure the Withholding box shows</td>
+</tr>
+<tr>
+<td><strong>Clear</strong>, <strong>Done</strong></td>
+<td><strong>Clear</strong> unticks every tax of the bill; <strong>Done</strong> closes the list</td>
+</tr>
+</tbody>
+</table></div>
+<h5 id="s-step-by-step-pay-a-bill-less-the-taxes-withheld">Step by step: pay a bill less the taxes withheld</h5>
+<ol>
+<li>Go to <strong>Vendors &gt; Pay Bills</strong> and choose the <strong>Vendor</strong>.</li>
+<li>Tick the bill. The supplier's usual taxes are ticked and the amount to pay is already less the tax.</li>
+<li>To change the taxes, click the <strong>Withholding</strong> box: tick or untick taxes, or type over an amount, then click <strong>Done</strong>. You can also start here: ticking a tax on a bill that is not ticked yet ticks the bill, with the amount worked out from its outstanding balance.</li>
+<li>Set the <strong>Payment date</strong>, <strong>Method</strong> and <strong>Payment account</strong> and click <strong>Pay selected bills</strong>.</li>
+<li>Print the supplier's certificate at the end of the quarter with <a href="manual.php?c=bir-reports#pg-bir-form_2307">Print BIR Form 2307</a> (or from the <strong>BIR Form 2307</strong> button of the payment).</li>
+</ol>
+<div class="man-callout man-note"><p><strong>Example (the company guide's case D):</strong> a supplier bills ₱112,000.00 for goods: ₱100,000.00 plus ₱12,000.00 VAT. The company withholds 1% income tax (WT on Goods) and 5% VAT (WT on VAT), both on the ₱100,000.00 net of VAT: ₱1,000.00 and ₱5,000.00. <strong>Amount to pay</strong> becomes ₱106,000.00. The payment debits Accounts Payable ₱112,000.00 and credits the bank ₱106,000.00, Withholding Tax Payable ₱1,000.00 and VAT Withheld Payable ₱5,000.00, and the bill is <strong>Paid</strong>.</p></div>
+<p>The saved payment lists the taxes in <strong>Taxes withheld from the supplier</strong> (the bill, the tax with its ATC, the base and the amount) and has a <strong>BIR Form 2307</strong> button that opens the certificate of the supplier for the quarter of the payment.</p>
+<h4 id="s-using-an-advance">Using an advance<a class="man-hash" href="#s-using-an-advance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When a vendor has advances left (see <a href="#pg-vend-advances">Advances to Suppliers</a>), Pay Bills shows the <strong>Use advance</strong> column, with what is left of the vendor's advances under each box. Type the part of the advance to apply in <strong>Use advance</strong>: the amount to pay drops by it. On saving, the advance is applied first (oldest advance first) as a payment of its own, numbered AAP-00001 and so on, that debits Accounts Payable and credits Advances to Suppliers; what is left is paid from the payment account. The taxes withheld and the discount of the bill go with the cash payment, or with the advance when the bill is settled out of the advance alone.</p>
+<h4 id="s-the-list-of-bill-payments">The list of bill payments<a class="man-hash" href="#s-the-list-of-bill-payments" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Bill payments</strong> at the top of Pay Bills opens the list of payments made, with the usual date, class and search filters. Its <strong>Status</strong> filter offers <strong>To be printed</strong> (payments queued for printing) and <strong>Void</strong>. Click a number to open a payment; <strong>Pay bills</strong> returns to Pay Bills.</p>
+<p>An open bill payment shows its details, the bills it paid, and the ledger entries. The buttons are <strong>Edit</strong>, <strong>Print</strong>, <strong>Email</strong>, <strong>Void</strong>, <strong>Delete</strong>, <strong>History</strong> and <strong>Back to list</strong>. <strong>Edit</strong> appears for users with the edit permission on Pay Bills.</p>
+<h4 id="sec-edit-bill-payment">Edit a bill payment<a class="man-hash" href="#sec-edit-bill-payment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Edit</strong> on a bill payment opens <strong>Edit Bill Payment</strong>. It shows the vendor, the amount paid now, the taxes withheld and whether the check was printed, then the payment's details and every open bill of the vendor, with the bills this payment pays already ticked and their taxes withheld in the <strong>Withholding</strong> column.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Payment date</strong>, <strong>Check / payment no.</strong>, <strong>Method</strong>, <strong>Payment account</strong>, <strong>Reference (transfer / card)</strong>, <strong>Memo</strong>, <strong>Class</strong></td>
+<td>As on Pay Bills. The check number must not be used by another check or bill payment.</td>
+</tr>
+<tr>
+<td><strong>Queue the check for printing</strong></td>
+<td>Puts the check back in <strong>To be printed</strong></td>
+</tr>
+<tr>
+<td>Tick box</td>
+<td>Ticked: the payment pays this bill. Untick a bill to take the payment off it; tick another bill of the same vendor to pay it too (its amount is filled in).</td>
+</tr>
+<tr>
+<td><strong>Bill amount</strong>, <strong>Left to pay</strong></td>
+<td>The bill's total, and what is left on it without this payment: the most this payment can put on it</td>
+</tr>
+<tr>
+<td><strong>Disc. avail.</strong>, <strong>Discount</strong></td>
+<td>The early-payment discount for the payment date, and the discount taken</td>
+</tr>
+<tr>
+<td><strong>Withholding</strong></td>
+<td>The taxes withheld on the bill, as in Pay Bills: tick, untick or type over them. Changing them changes <strong>Amount paid</strong>.</td>
+</tr>
+<tr>
+<td><strong>Amount paid</strong></td>
+<td>The money this payment puts on the bill. <strong>Total paid</strong> is the new amount of the payment.</td>
+</tr>
+<tr>
+<td><strong>Reason for the change</strong></td>
+<td>Optional; kept in the audit trail with the change</td>
+</tr>
+</tbody>
+</table></div>
+<h5 id="s-step-by-step-change-a-bill-payment">Step by step: change a bill payment</h5>
+<ol>
+<li>Open the bill payment (Vendors &gt; Pay Bills &gt; <strong>Bill payments</strong>, then its number) and click <strong>Edit</strong>.</li>
+<li>Change what is wrong: the date, the account paid from, the check number, or the amounts on the bills. Untick a bill the payment should not pay; tick a bill it should pay.</li>
+<li>Type the <strong>Reason for the change</strong>.</li>
+<li>Click <strong>Save changes</strong>. The payment opens with the new figures.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Bill payment 1008 to TechDistributors Inc. paid ₱1,127,280.00 on TD-INV-10231 from 1010 Cash in Bank - BDO Checking, but the money left the BPI account. Click <strong>Edit</strong>, choose <strong>Payment account</strong> 1020 Cash in Bank - BPI Savings, type the reason "paid from BPI" and click <strong>Save changes</strong>. The ledger now credits 1020 instead of 1010; the bill stays as it was. To pay TD-INV-10288 with the same check as well, tick it before saving: its ₱75,040.00 is filled in and the check becomes ₱1,202,320.00.</p></div>
+<p>What happens when you save:</p>
+<ul>
+<li>The payment is posted again: Accounts Payable is debited and the payment account credited for the new total (and Purchase Discounts for the new discounts, and the withholding tax payable accounts for the new taxes withheld).</li>
+<li>A payment that applies an advance (AAP-...) is not edited: void it and apply the advance again in Pay Bills.</li>
+<li>Every bill the payment paid before or pays now gets its balance and status worked out again (<strong>Open</strong>, <strong>Partial</strong> or <strong>Paid</strong>).</li>
+<li>The vendor stays the same. A payment made to the wrong vendor is voided and entered again.</li>
+<li>Vendor credits used on the bills are not part of the payment; they stay as they are (take them back on the debit memo's apply page).</li>
+<li>A new total above your amount limit needs supervisor approval, as on Pay Bills.</li>
+<li>A printed check whose amount, number or date changed shows a reminder to print it again.</li>
+<li>Payments dated on or before the closing date, and payments cleared in a bank reconciliation, are protected as every other transaction is.</li>
+<li>Messages: "Tick at least one bill and enter the amount paid on it. To cancel the whole payment, void it instead.", "Payment for ... is more than what is left on it (...)", "Check / payment number ... is already used by another check or bill payment.", "A voided bill payment cannot be edited.".</li>
+</ul>
+<h4 id="s-step-by-step-print-the-checks">Step by step: print the checks<a class="man-hash" href="#s-step-by-step-print-the-checks" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the bill payment (for queued checks, open <strong>Bill payments</strong> and choose <strong>Status</strong> <strong>To be printed</strong>).</li>
+<li>Click <strong>Print</strong>. The voucher opens: CHECK VOUCHER for a check payment, PAYMENT VOUCHER for other methods. It shows the payee with address and TIN, the amount in figures and in words, the account paid from, the bills paid with their discounts, the ledger entries, and Prepared by, Checked by, Approved by and Received by lines.</li>
+<li>Click <strong>Print</strong> on the voucher page.</li>
+</ol>
+<p>Opening the print marks the payment as printed and removes it from <strong>To be printed</strong>.</p>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>One payment per vendor, with the vendor's bills listed on it:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2000 Accounts Payable</td>
+<td>Amount paid plus discount</td>
+<td></td>
+</tr>
+<tr>
+<td>The <strong>Payment account</strong>, for example 1010 Cash in Bank - BDO Checking</td>
+<td></td>
+<td>Amount paid</td>
+</tr>
+<tr>
+<td>5050 Purchase Discounts</td>
+<td></td>
+<td>Discount</td>
+</tr>
+<tr>
+<td>2110 Withholding Tax Payable (or the tax's own account)</td>
+<td></td>
+<td>Income tax withheld (1% / 2%)</td>
+</tr>
+<tr>
+<td>2115 VAT Withheld Payable (or the tax's own account)</td>
+<td></td>
+<td>VAT withheld (5%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Accounts Payable is debited with everything the bill is settled by: the cash, the discount and the taxes withheld. An advance applied is a payment of its own: Dr 2000 Accounts Payable, Cr 1410 Advances to Suppliers.</p>
+<p>Each bill's open balance goes down by the amount paid, the discount and the taxes withheld, and its status becomes <strong>Partial</strong> or <strong>Paid</strong>. Credits used are applied from the vendor's debit memos (oldest first) without a ledger entry. When a vendor's bills are settled with credits only, no payment document is made for that vendor.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Opening Pay Bills needs the create permission on it; the list of bill payments needs only access to the page; <strong>Edit</strong> on a bill payment needs the edit permission.</li>
+<li>When the largest payment to one vendor is more than your amount limit (<strong>Max check / bill payment / adjustment amount without approval</strong>), a supervisor must type their username and password in <strong>Supervisor approval</strong>, unless you have the Approve permission on Pay Bills. Voiding or deleting a payment above your limit needs approval too.</li>
+<li>Voiding a bill payment reopens the bills it paid. Credits used from debit memos stay applied; take them back on the debit memo's apply page if needed.</li>
+<li>Bill payments share the check number series with Write Checks (1008, 1009 ...).</li>
+<li>The <strong>Withholding</strong> column is shown only when <strong>This company is a withholding agent</strong> is on (<a href="manual.php?c=bir-reports#pg-bir-wht_table">Withholding Tax Table</a>). The taxes are kept by bill and type, which is what <a href="manual.php?c=bir-reports#pg-bir-form_2307">BIR Form 2307</a> and the <a href="manual.php?c=bir-reports#sec-bir-reports">BIR Reports</a> are made from.</li>
+<li>Messages: "Select at least one bill and enter the amount to pay.", "Payment for ... is more than its open balance of ..." (the amount paid, discount, credit, advance and taxes withheld together), "A withholding tax ticked on ... is not on the Withholding Tax Table (or is inactive).", "Only ... of advances is left for ...", "Not enough vendor credit available for ...", "Amounts cannot be negative.", "Choose the account to pay from.", "Enter the payment date."</li>
+<li>The early-payment discount shown is worked out for today's date when the page opens.</li>
+</ul>
+<h2 id="pg-vend-receipts">Receipt Management<a class="man-hash" href="#pg-vend-receipts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Receipt Management is an inbox for supplier receipts and invoices received as photos, PDF files or e-mails. You upload them, review the details the program read from them, and then create a bill, a check or a credit card charge from each one, or match it to a transaction already entered. The file stays attached to the transaction.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Receipt Management.</p>
+<h4 id="s-receipt-list">Receipt List<a class="man-hash" href="#s-receipt-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Receipt List</strong> at the top of the page lists every receipt saved, whatever its status, with date filters.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dates</strong>, <strong>From</strong>, <strong>To</strong></td>
+<td>The period (this month as delivered). Choose a ready-made period or type the dates.</td>
+</tr>
+<tr>
+<td><strong>Date of</strong></td>
+<td><strong>The receipt</strong> (the date read from it or typed on it; the upload date when it has none) or <strong>The upload</strong>.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>For review, Matched, Created or Rejected; <strong>All</strong> as delivered.</td>
+</tr>
+<tr>
+<td><strong>Vendor</strong>, <strong>Search</strong></td>
+<td>One vendor; words in the file name, the vendor or the memo.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Columns: <strong>Date</strong>, <strong>Receipt</strong> (click to open the file), <strong>Vendor</strong>, <strong>Amount</strong>, <strong>Account</strong>, <strong>Status</strong> (with <strong>review</strong> for those still to be reviewed), <strong>Transaction</strong> (the bill, check or charge it was matched to or created) and <strong>Uploaded</strong> (when, how and by whom), with the number of receipts and their total. <strong>Export</strong> gives the list as a spreadsheet.</p>
+<h4 id="s-uploading-receipts">Uploading receipts<a class="man-hash" href="#s-uploading-receipts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Upload receipts (JPG, PNG, PDF, TXT, EML, up to 10 MB each)</strong></td>
+<td>Choose one or more files. GIF, WEBP and HEIC pictures are accepted too. On a phone, the button opens the camera.</td>
+</tr>
+<tr>
+<td><strong>Source</strong></td>
+<td><strong>Computer</strong> or <strong>Mobile photo</strong>, kept with the receipt</td>
+</tr>
+<tr>
+<td><strong>Upload</strong></td>
+<td>Adds the files to the <strong>For review</strong> tab</td>
+</tr>
+</tbody>
+</table></div>
+<p>E-mailed receipts: set a mail rule to save the attachments into the inbox folder shown on the page (storage/receipts/inbox in the demo), then click <strong>import them</strong>. Each file is added with the source "email".</p>
+<p>When a file is added, the program tries to read the <strong>Vendor</strong>, the <strong>Date</strong> and the <strong>Amount</strong>:</p>
+<ul>
+<li>from the text of TXT and EML files and of PDF files that contain text;</li>
+<li>from the file name, for any file. A photo named Petron_2026-09-24_2150.00.jpg is read as Petron Service Station, 09/24/2026, ₱2,150.00.</li>
+</ul>
+<p>Photos are not read by character recognition, so name the photo files that way to save typing. The vendor is found by the first word of its name, when that word has at least four letters. When a vendor is found, its <strong>Default expense account</strong> is filled in as the <strong>Account</strong>.</p>
+<h4 id="s-step-by-step-upload-and-create-a-bill-from-a-receipt">Step by step: upload and create a bill from a receipt<a class="man-hash" href="#s-step-by-step-upload-and-create-a-bill-from-a-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Receipt Management</strong>.</li>
+<li>Click <strong>Choose Files</strong>, pick the receipts, choose the <strong>Source</strong> and click <strong>Upload</strong>.</li>
+<li>On the <strong>For review</strong> tab, check each receipt: open the picture or file by clicking it, then correct the <strong>Vendor</strong>, <strong>Date</strong>, <strong>Amount</strong>, <strong>Account</strong> and <strong>Memo</strong>.</li>
+<li>Click <strong>Create bill</strong>. A new bill opens with the vendor, the date and one expense line with the account, amount and memo.</li>
+<li>Add the tax code and anything else, then click <strong>Save</strong> on the bill.</li>
+</ol>
+<p>The receipt's status becomes <strong>Created</strong> and the bill shows the file under <strong>Attached receipts</strong>. <strong>Create check</strong> and <strong>Create credit card charge</strong> work the same way with <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a> (the credit card charge starts with the first credit card account).</p>
+<h4 id="s-step-by-step-match-a-receipt-to-a-transaction-already-entere">Step by step: match a receipt to a transaction already entered<a class="man-hash" href="#s-step-by-step-match-a-receipt-to-a-transaction-already-entere" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>On the <strong>For review</strong> tab, choose the transaction in <strong>Match to existing transaction</strong>. It lists the vendor's bills, checks and item receipts, the closest in amount and date first.</li>
+<li>Click <strong>Match</strong>.</li>
+</ol>
+<p>The receipt's status becomes <strong>Matched</strong> and the transaction shows it under <strong>Attached receipts</strong>.</p>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Save details</strong></td>
+<td>Keeps the corrected details; the receipt stays for review</td>
+</tr>
+<tr>
+<td><strong>Match</strong></td>
+<td>Links the receipt to the chosen transaction</td>
+</tr>
+<tr>
+<td><strong>Create bill</strong></td>
+<td>Saves the details and opens a new bill from them (needs the create permission on Enter Bills)</td>
+</tr>
+<tr>
+<td><strong>Create check</strong></td>
+<td>Saves the details and opens a new check (needs the create permission on Write Checks)</td>
+</tr>
+<tr>
+<td><strong>Create credit card charge</strong></td>
+<td>Same, with the credit card account chosen</td>
+</tr>
+<tr>
+<td><strong>Reject</strong></td>
+<td>Marks the receipt rejected (for duplicates or personal receipts), after you confirm</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-tabs">The tabs<a class="man-hash" href="#s-the-tabs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Each tab shows its number of receipts. The buttons appear only on receipts still for review.</p>
+<p><strong>For review</strong> holds the receipts not yet dealt with. The page opens on this tab.</p>
+<p><strong>Matched</strong> holds the receipts linked to an existing transaction, with a link to it beside the status.</p>
+<p><strong>Created</strong> holds the receipts a bill or check was created from, with a link to it.</p>
+<p><strong>Rejected</strong> holds the rejected receipts.</p>
+<p><strong>All</strong> shows every receipt, whatever its status (the latest 200).</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Uploading needs the create permission on this page; reviewing, matching and rejecting need the edit permission.</li>
+<li>If the bill created from a receipt is deleted, the receipt goes back to <strong>For review</strong>.</li>
+<li>A file that is not accepted is refused: "File type .xyz is not accepted." or "... is larger than 10 MB."</li>
+</ul>
+<h2 id="pg-vend-purchase_orders">Create Purchase Orders<a class="man-hash" href="#pg-vend-purchase_orders" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A purchase order (PO) records what you ordered from a supplier, at what cost, and when you expect it. It does not post to the books. When the goods arrive you receive them against the PO, which keeps track of what has been received and what is still to come.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Create Purchase Orders (also under Inventory &gt; Transactions). The <strong>Create Purchase Orders</strong> quick action on the Home page opens a new PO, and <strong>Purchase order</strong> in the Vendor Center opens one for the selected vendor.</p>
+<p>The list works like the list of bills. Its <strong>Status</strong> filter offers <strong>Open</strong>, <strong>Partially filled</strong>, <strong>Closed</strong> and <strong>Void</strong>.</p>
+<h4 id="s-fields_4">Fields<a class="man-hash" href="#s-fields_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>The supplier. Required.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The order date</td>
+</tr>
+<tr>
+<td><strong>Number</strong></td>
+<td>Blank for the next number (PO-00003 (auto)), or your own</td>
+</tr>
+<tr>
+<td><strong>Expected delivery</strong></td>
+<td>When the goods should arrive (a week from today by default). Printed as the due date.</td>
+</tr>
+<tr>
+<td><strong>Ship to</strong></td>
+<td>The delivery address, the company address by default</td>
+</tr>
+<tr>
+<td><strong>Receive at site</strong></td>
+<td>The site the goods will go to</td>
+</tr>
+<tr>
+<td><strong>Class</strong>, <strong>Memo</strong></td>
+<td>As on a bill</td>
+</tr>
+<tr>
+<td><strong>Item</strong>, <strong>Description</strong>, <strong>Qty</strong>, <strong>U/M</strong>, <strong>Cost</strong>, <strong>Amount</strong>, <strong>Tax</strong></td>
+<td>The items ordered. Choosing an item fills its description, tax code, a quantity of 1 and its cost.</td>
+</tr>
+<tr>
+<td><strong>Customer:Job</strong>, <strong>Billable</strong></td>
+<td>The customer the goods are for, if any</td>
+</tr>
+</tbody>
+</table></div>
+<p>On a PO that is being edited, two more columns appear: <strong>Received</strong> (the quantity received so far) and <strong>Closed</strong> (tick it to stop expecting the rest of a line).</p>
+<h4 id="s-step-by-step-create-a-purchase-order">Step by step: create a purchase order<a class="man-hash" href="#s-step-by-step-create-a-purchase-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Create Purchase Orders</strong> and click <strong>New</strong>.</li>
+<li>Choose the <strong>Vendor</strong>, for example TechDistributors Inc., and set the <strong>Expected delivery</strong> date and <strong>Receive at site</strong>.</li>
+<li>Enter the items, for example 10 LAP-001 at ₱32,000.00 and 15 RAM-8GB at ₱1,100.00, with the VAT12 tax code.</li>
+<li>Click <strong>Save</strong>. Print or email it to the supplier from the saved PO.</li>
+</ol>
+<h4 id="s-the-saved-purchase-order">The saved purchase order<a class="man-hash" href="#s-the-saved-purchase-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The saved PO carries the note "Non-posting document: it records a commitment and does not affect the ledger." Its lines show the <strong>Received</strong> quantity of each item.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong>, <strong>Print</strong>, <strong>Email</strong>, <strong>Memorize</strong>, <strong>History</strong>, <strong>Back to list</strong></td>
+<td>As on a bill</td>
+</tr>
+<tr>
+<td><strong>Receive Items</strong></td>
+<td>Opens <a href="#pg-vend-receive_items">Receive Items</a> with this PO (the bill will follow)</td>
+</tr>
+<tr>
+<td><strong>Receive Items and Enter Bill</strong></td>
+<td>Opens <a href="#pg-vend-receive_bill">Receive Items and Enter Bills</a> with this PO</td>
+</tr>
+<tr>
+<td><strong>Close</strong></td>
+<td>Closes the PO after you confirm "Close this document? Remaining quantities will no longer be expected." A closed PO shows <strong>Reopen</strong> instead.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Removes the PO. Not possible once anything was received on it.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The printed PURCHASE ORDER shows the vendor's name, address and TIN, the site, the ship-to address when there is one, the items, the subtotal net of VAT, the VAT and the total, and signature lines.</p>
+<h4 id="s-what-it-records_3">What it records<a class="man-hash" href="#s-what-it-records_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Nothing in the ledger. The PO's status is <strong>Open</strong> until something is received, <strong>Partial</strong> while some lines are still open, and <strong>Closed</strong> when every line is fully received or closed. The quantities ordered and not yet received show as <strong>On purchase order</strong> in the <a href="manual.php?c=inventory#pg-inv-center">Inventory Center</a>.</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A PO that has been received in part cannot be voided or deleted: "It has already been converted or received in part. Close it instead."</li>
+<li>A line already received cannot be removed from the PO: "A line that was already used on another document cannot be removed. Close the line instead."</li>
+<li>The tax on the PO is carried to the bill when you use Receive Items and Enter Bills.</li>
+</ul>
+<h2 id="pg-vend-receive_bill">Receive Items and Enter Bills<a class="man-hash" href="#pg-vend-receive_bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use this page when the goods arrive together with the supplier's invoice. In one step it adds the goods to stock, enters the bill, and updates the purchase order they were ordered on.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Receive Items and Enter Bills. <strong>Receive Items and Enter Bill</strong> on a purchase order and <strong>Convert to bill</strong> in the Bill Tracker open it with the PO chosen.</p>
+<p>The page first asks for the <strong>Vendor</strong>.</p>
+<p><strong>Receive Items and Enter Bills List</strong> at the top of the page lists every bill entered here, with date filters (<strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>), <strong>Status</strong>, <strong>Class</strong> and <strong>Search</strong>, and <strong>Export</strong>. Click a number to open the bill.</p>
+<p>Once the vendor is chosen, the <strong>Open purchase order</strong> box lists its open POs ("This vendor has no open purchase orders." when there are none). Choose a PO to fill the lines with the quantities still to be received, at the PO cost and tax, or leave <strong>Receive without a PO</strong> and enter the lines yourself.</p>
+<h4 id="s-fields_5">Fields<a class="man-hash" href="#s-fields_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong>, <strong>Open purchase order</strong></td>
+<td>The supplier and, if any, the PO being received</td>
+</tr>
+<tr>
+<td><strong>Bill date</strong></td>
+<td>The date of the supplier's invoice</td>
+</tr>
+<tr>
+<td><strong>Vendor's invoice no.</strong></td>
+<td>The supplier's invoice number</td>
+</tr>
+<tr>
+<td><strong>Receive at site</strong></td>
+<td>The site the goods go to (the PO's site by default)</td>
+</tr>
+<tr>
+<td><strong>Terms</strong>, <strong>Due date (blank = from terms)</strong></td>
+<td>The payment terms (the vendor's by default) and the due date</td>
+</tr>
+<tr>
+<td><strong>Allow over-receiving</strong></td>
+<td>Tick it to accept more than was ordered on a PO line</td>
+</tr>
+<tr>
+<td><strong>Class</strong>, <strong>Memo</strong></td>
+<td>Left blank, the memo reads "Received against Purchase Order PO-00002"</td>
+</tr>
+<tr>
+<td>Item lines</td>
+<td><strong>Item</strong>, <strong>Description</strong>, <strong>Qty</strong> (change it to what actually arrived), <strong>U/M</strong>, <strong>Cost</strong>, <strong>Amount</strong>, <strong>Tax</strong>, <strong>Site</strong>, <strong>Customer:Job</strong>, <strong>Billable</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-receive-a-po-with-its-bill">Step by step: receive a PO with its bill<a class="man-hash" href="#s-step-by-step-receive-a-po-with-its-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Receive Items and Enter Bills</strong> and choose the <strong>Vendor</strong>.</li>
+<li>Choose the <strong>Open purchase order</strong>. The lines fill in.</li>
+<li>Enter the <strong>Bill date</strong>, the <strong>Vendor's invoice no.</strong> and check the <strong>Terms</strong>.</li>
+<li>Change the <strong>Qty</strong> of any line that did not arrive in full, and remove lines that did not arrive at all. Correct the <strong>Cost</strong> if the invoice price differs.</li>
+<li>Click <strong>Receive and enter bill</strong>. The new bill opens in Enter Bills.</li>
+</ol>
+<h4 id="s-what-it-records_4">What it records<a class="man-hash" href="#s-what-it-records_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A bill, exactly as in <a href="#pg-vend-bills">Enter Bills</a>: debit 1200 Inventory and 1300 Input Tax, credit 2000 Accounts Payable, and the quantities added to the site's stock. The PO's <strong>Received</strong> quantities go up and its status becomes <strong>Partial</strong> or <strong>Closed</strong>.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>PO-00002 ordered 10 LAP-001 and 15 RAM-8GB. Only 6 laptops arrive, with invoice TD-INV-10412. Receive them with a <strong>Qty</strong> of 6 on the laptop line and remove the RAM line. The bill is for 6 laptops, and PO-00002 becomes <strong>Partial</strong> with 4 laptops and 15 RAM modules still expected.</p></div>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"You are receiving more than was ordered on ... Tick "Allow over-receiving" to continue." appears when a quantity is more than what is still open on the PO line.</li>
+<li>Messages: "Choose a vendor.", "Enter the quantities received."</li>
+</ul>
+<h2 id="pg-vend-receive_items">Receive Items<a class="man-hash" href="#pg-vend-receive_items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use Receive Items when the goods arrive before the supplier's bill. It records an <em>item receipt</em>: the goods go into stock at once, valued at the PO cost, and the amount owed is recorded in Accounts Payable. When the bill arrives, you turn the receipt into a bill with <a href="#pg-vend-bill_received">Enter Bill for Received Items</a>.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Receive Items (also under Inventory &gt; Transactions). <strong>Receive Items</strong> on a purchase order and <strong>Receive items</strong> in the Vendor Center open it with the PO or the vendor chosen.</p>
+<p>After you choose the vendor, the form works like Receive Items and Enter Bills, without the bill details.</p>
+<h4 id="s-fields_6">Fields<a class="man-hash" href="#s-fields_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong>, <strong>Open purchase order</strong></td>
+<td>The supplier and, if any, the PO being received</td>
+</tr>
+<tr>
+<td><strong>Date received</strong></td>
+<td>The delivery date</td>
+</tr>
+<tr>
+<td><strong>Delivery / packing slip no.</strong></td>
+<td>The supplier's delivery receipt number</td>
+</tr>
+<tr>
+<td><strong>Receive at site</strong>, <strong>Allow over-receiving</strong>, <strong>Class</strong>, <strong>Memo</strong></td>
+<td>As on Receive Items and Enter Bills</td>
+</tr>
+<tr>
+<td>Item lines</td>
+<td>The items and quantities that arrived, at their cost</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-receive-goods-without-the-bill">Step by step: receive goods without the bill<a class="man-hash" href="#s-step-by-step-receive-goods-without-the-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Receive Items</strong> and choose the <strong>Vendor</strong>.</li>
+<li>Choose the <strong>Open purchase order</strong>, or leave <strong>Receive without a PO</strong>.</li>
+<li>Enter the <strong>Date received</strong> and the <strong>Delivery / packing slip no.</strong>.</li>
+<li>Correct the quantities to what arrived.</li>
+<li>Click <strong>Record item receipt</strong>. The receipt opens; its <strong>Enter Bill for Received Items</strong> button is ready for when the bill comes.</li>
+</ol>
+<h4 id="s-the-list-of-item-receipts">The list of item receipts<a class="man-hash" href="#s-the-list-of-item-receipts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Receive Items List</strong> at the top of the page lists every receipt of items made here: the item receipts still waiting for their bill (type Item Receipt) and those whose bill has been entered (type Bill), with date filters (<strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>), <strong>Status</strong>, <strong>Class</strong> and <strong>Search</strong>, and <strong>Export</strong>. Click a number to open it. <strong>Receive items</strong> returns to the form.</p>
+<h4 id="s-edit-an-item-receipt">Edit an item receipt<a class="man-hash" href="#s-edit-an-item-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>An item receipt whose bill has not been entered yet has an <strong>Edit</strong> button (for users with the edit permission on Receive Items).</p>
+<p><strong>Edit Item Receipt</strong> shows the vendor, the purchase order it was received against and its total, then the same boxes as when it was entered: <strong>Date received</strong>, <strong>Delivery / packing slip no.</strong>, <strong>Receive at site</strong>, <strong>Allow over-receiving</strong>, <strong>Class</strong>, <strong>Memo</strong>, the item lines, and <strong>Reason for the change</strong>.</p>
+<h5 id="s-step-by-step-correct-an-item-receipt">Step by step: correct an item receipt</h5>
+<ol>
+<li>Open the receipt (Vendors &gt; Receive Items &gt; <strong>Receive Items List</strong>, then its number) and click <strong>Edit</strong>.</li>
+<li>Change the quantities, costs, site, date or slip number; add a line that was left out or remove one with its <strong>x</strong>.</li>
+<li>Type the <strong>Reason for the change</strong> and click <strong>Save changes</strong>.</li>
+</ol>
+<p>When you save, the receipt is posted again: the stock at the site, 1200 Inventory and 2000 Accounts Payable move to the new quantities and costs, and the purchase order it was received against shows the new quantities received (a PO line may be reopened, or closed when it is now fully received). What the receipt itself received on a PO line is still open to it, so raising 4 to the 10 ordered needs no <strong>Allow over-receiving</strong>; more than ordered still does. The before and after, with the reason, go to the audit trail.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>an item receipt recorded 4 of the 10 wireless mice ordered on a purchase order, but all 10 had come. Click <strong>Edit</strong>, change the quantity to 10, type "all 10 came, the slip was misread" and click <strong>Save changes</strong>. Stock goes up by 6, Inventory and Accounts Payable by 6 times the cost, and the purchase order is fully received.</p></div>
+<ul>
+<li>The vendor cannot be changed: void the receipt and receive the items again.</li>
+<li>A receipt whose bill was entered is changed as the bill (<a href="#pg-vend-bills">Enter Bills</a>).</li>
+<li>Taking stock down below zero asks first, as on any document; closed periods are protected.</li>
+</ul>
+<h4 id="s-what-it-records_5">What it records<a class="man-hash" href="#s-what-it-records_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory</td>
+<td>Quantity times cost</td>
+<td></td>
+</tr>
+<tr>
+<td>2000 Accounts Payable</td>
+<td></td>
+<td>Quantity times cost</td>
+</tr>
+</tbody>
+</table></div>
+<p>No tax is recorded on an item receipt, even if a tax code is chosen on a line: the VAT is recorded when the bill is entered. The receipt counts in the vendor's balance and in the A/P aging reports, but it is not a bill, so it does not appear in Pay Bills until you enter the bill.</p>
+<h4 id="s-good-to-know_7">Good to know<a class="man-hash" href="#s-good-to-know_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>An item receipt can be edited until its bill is entered (see above); costs can also be corrected when you enter the bill.</li>
+<li>Voiding or deleting an item receipt takes the goods out of stock and reopens the PO quantities.</li>
+</ul>
+<h2 id="pg-vend-bill_received">Enter Bill for Received Items<a class="man-hash" href="#pg-vend-bill_received" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>When the bill arrives for goods already recorded with Receive Items, this page turns the item receipt into a bill. The quantities stay as received; you confirm or correct the costs, add the VAT and any extra charges, and the inventory value and the payable are adjusted to the billed amounts.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Enter Bill for Received Items. <strong>Enter Bill for Received Items</strong> on an item receipt and <strong>Enter bill</strong> in the Bill Tracker open it with the receipt chosen.</p>
+<h4 id="s-fields_7">Fields<a class="man-hash" href="#s-fields_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>The supplier. Choosing it lists its item receipts.</td>
+</tr>
+<tr>
+<td><strong>Item receipt</strong></td>
+<td>The receipt to bill, shown with its number, date, total and delivery reference</td>
+</tr>
+<tr>
+<td>Received line</td>
+<td>The date the goods were received and their cost</td>
+</tr>
+<tr>
+<td><strong>Bill date</strong></td>
+<td>The date of the supplier's invoice</td>
+</tr>
+<tr>
+<td><strong>Vendor's invoice no.</strong></td>
+<td>Required</td>
+</tr>
+<tr>
+<td><strong>Terms</strong>, <strong>Due date (blank = from terms)</strong>, <strong>Class</strong>, <strong>Memo</strong></td>
+<td>As on a bill. The memo defaults to "Bill for Item Receipt IR-00001".</td>
+</tr>
+<tr>
+<td><strong>Items (update billed costs)</strong> tab</td>
+<td>The received lines. The quantities are fixed; change the <strong>Cost</strong> if the supplier billed another price. The VAT12 tax code is filled in on every line; change it for zero-rated or exempt items.</td>
+</tr>
+<tr>
+<td><strong>Other charges (freight, etc.)</strong> tab</td>
+<td>Expense lines for charges on the bill that were not on the receipt, such as freight</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-enter-the-bill-for-received-goods">Step by step: enter the bill for received goods<a class="man-hash" href="#s-step-by-step-enter-the-bill-for-received-goods" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Enter Bill for Received Items</strong> and choose the <strong>Vendor</strong>, then the <strong>Item receipt</strong>.</li>
+<li>Enter the <strong>Bill date</strong> and the <strong>Vendor's invoice no.</strong>, and check the <strong>Terms</strong>.</li>
+<li>On <strong>Items (update billed costs)</strong>, compare each cost with the bill and correct it where it differs. Check the tax codes.</li>
+<li>Add freight or other charges on <strong>Other charges (freight, etc.)</strong>.</li>
+<li>Click <strong>Enter bill</strong>. The bill opens in Enter Bills, with the message "Bill entered. Inventory value and the payable were adjusted to the billed cost."</li>
+</ol>
+<h4 id="s-what-it-records_6">What it records<a class="man-hash" href="#s-what-it-records_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The item receipt becomes a bill with the next bill number (the item receipt number is no longer used, and the receipt leaves the list of item receipts). It is posted again as a bill: 1200 Inventory at the billed cost, 1300 Input Tax, the other charges to their accounts, and 2000 Accounts Payable for the total. The difference between the received cost and the billed cost goes to the inventory value and the items' average cost.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>6 LAP-001 were received at the PO cost of ₱32,000.00 (₱192,000.00). The bill says ₱31,500.00 each, plus VAT, plus ₱1,000.00 freight. Change the cost to 31500, keep VAT12, add a freight line to 6100 Freight and Delivery, and click <strong>Enter bill</strong>. Inventory is now ₱189,000.00 for these laptops, input tax ₱22,680.00 (plus any VAT on the freight line), and the bill totals the lot.</p></div>
+<h4 id="s-good-to-know_8">Good to know<a class="man-hash" href="#s-good-to-know_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The vendor's item receipts are listed until they are billed. "No open item receipts for this vendor." means there is nothing to bill.</li>
+<li>"Choose the item receipt." appears when you save without one.</li>
+</ul>
+<h2 id="pg-vend-advances">Advances to Suppliers<a class="man-hash" href="#pg-vend-advances" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>An advance is money paid to a supplier before the goods or services it pays for arrive: a down payment on a machine, a deposit on an order, a prepayment for a service. Recording it here keeps it as an asset (the supplier owes you the goods) until the supplier's bill comes; then it is applied to the bill in <a href="#pg-vend-pay_bills">Pay Bills</a>.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Advances to Suppliers opens a new advance. <strong>Advance payment</strong> in the Vendor Center opens it for the vendor chosen; <strong>Advances to suppliers</strong> at the top of Pay Bills opens the list.</p>
+<h4 id="s-fields_8">Fields<a class="man-hash" href="#s-fields_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Supplier</strong></td>
+<td>The supplier paid. Choosing it shows what is owed to it on bills, the advances not yet applied and its open purchase orders.</td>
+</tr>
+<tr>
+<td><strong>Date paid</strong></td>
+<td>The date the money left</td>
+</tr>
+<tr>
+<td><strong>Advance no.</strong></td>
+<td>Left blank, the next number of the ADV- series (ADV-00001)</td>
+</tr>
+<tr>
+<td><strong>Amount paid in advance</strong></td>
+<td>The amount paid. Required.</td>
+</tr>
+<tr>
+<td><strong>Paid from</strong></td>
+<td>The bank, cash or credit card account the money came from (1010 Cash in Bank - BDO Checking by default)</td>
+</tr>
+<tr>
+<td><strong>Method</strong>, <strong>Check / reference no.</strong></td>
+<td>How it was paid, and the check or transfer number</td>
+</tr>
+<tr>
+<td><strong>Advance account</strong></td>
+<td>The asset account that holds the advance: 1410 Advances to Suppliers by default (Module Default Accounts &gt; Advances to Suppliers)</td>
+</tr>
+<tr>
+<td><strong>Goods / services expected</strong></td>
+<td>When the goods or services should come, for your follow-up</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the advance</td>
+</tr>
+<tr>
+<td><strong>What it pays for</strong></td>
+<td>For example "30% down payment on the packaging machine"</td>
+</tr>
+<tr>
+<td><strong>Reason for the change</strong></td>
+<td>On an edit only; kept in the audit trail</td>
+</tr>
+<tr>
+<td><strong>Supervisor approval</strong></td>
+<td>For an advance above your amount limit</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-record-an-advance-and-apply-it-to-the-bill">Step by step: record an advance and apply it to the bill<a class="man-hash" href="#s-step-by-step-record-an-advance-and-apply-it-to-the-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Vendors &gt; Advances to Suppliers</strong> (or <strong>Advance payment</strong> in the Vendor Center).</li>
+<li>Choose the <strong>Supplier</strong>, type the <strong>Amount paid in advance</strong>, choose <strong>Paid from</strong>, type the check number and what it pays for.</li>
+<li>Click <strong>Record advance</strong>. The advance opens.</li>
+<li>When the supplier's bill comes, enter it (<a href="#pg-vend-bills">Enter Bills</a> or <a href="#pg-vend-receive_bill">Receive Items and Enter Bills</a>).</li>
+<li>Open <strong>Pay Bills</strong> for the supplier (the advance's <strong>Apply to bills</strong> button does it), tick the bill and type the part of the advance in <strong>Use advance</strong>. Pay the rest from the bank in the same step, or leave <strong>Amount to pay</strong> at zero when the advance covers it all.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>the company pays Industrial Machines Corp. ₱150,000.00 by check 1188 as a 30% down payment on a packaging machine. The advance debits 1410 Advances to Suppliers and credits 1010 Cash in Bank - BDO Checking. When the ₱500,000.00 bill comes, Pay Bills applies ₱150,000.00 of the advance (Dr Accounts Payable, Cr Advances to Suppliers) and pays the rest by check, less any tax withheld.</p></div>
+<h4 id="s-the-saved-advance">The saved advance<a class="man-hash" href="#s-the-saved-advance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The advance shows the supplier, the accounts, what was applied to bills and what is <strong>Left to apply</strong>, with the applications under <strong>Related documents</strong> (<strong>Applied by</strong>). Its buttons are <strong>Edit</strong>, <strong>Print</strong>, <strong>Email</strong>, <strong>Apply to bills</strong> (while something is left), <strong>Void</strong>, <strong>Delete</strong>, <strong>History</strong> and <strong>Back to list</strong>.</p>
+<p><strong>Advances list</strong> opens the list of advances, with the <strong>Status</strong> filter <strong>Not fully applied</strong>, <strong>Fully applied</strong> and <strong>Void</strong>.</p>
+<h4 id="s-what-it-records_7">What it records<a class="man-hash" href="#s-what-it-records_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1410 Advances to Suppliers (the <strong>Advance account</strong>)</td>
+<td>Amount paid</td>
+<td></td>
+</tr>
+<tr>
+<td>The <strong>Paid from</strong> account</td>
+<td></td>
+<td>Amount paid</td>
+</tr>
+</tbody>
+</table></div>
+<p>Applying it to a bill (in Pay Bills) makes a bill payment numbered AAP-00001 and so on, dated the payment date:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2000 Accounts Payable</td>
+<td>Advance applied (plus the bill's discount and taxes withheld when they go with it)</td>
+<td></td>
+</tr>
+<tr>
+<td>1410 Advances to Suppliers</td>
+<td></td>
+<td>Advance applied</td>
+</tr>
+<tr>
+<td>2110 / 2115 withholding tax payable</td>
+<td></td>
+<td>Taxes withheld, when they go with it</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-good-to-know_9">Good to know<a class="man-hash" href="#s-good-to-know_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>An advance can be edited (its date, amount, accounts and details) but not lowered below what has been applied. The supplier cannot be changed.</li>
+<li>An advance applied to bills cannot be voided or deleted: void its applications first (open the AAP- payment from <strong>Related documents</strong> and click <strong>Void</strong>); the bill reopens and the advance is available again.</li>
+<li>An application (AAP-) is not edited: void it and apply the advance again.</li>
+<li>Advances paid by check appear in the <a href="manual.php?c=banking#pg-rpt-check_register">Check Register</a>. They are not part of Accounts Payable, so they do not lower the vendor's balance or the A/P aging until they are applied.</li>
+<li>The <a href="#pg-rpt-vendor_advances">Advances to Suppliers report</a> lists what is left of every advance.</li>
+<li>Messages: "Choose the supplier the advance was paid to.", "Enter the amount paid in advance.", "... of this advance has already been applied to bills, so it cannot be lowered below that. Void the applications first.", "It has been applied to bills (AAP-...). Void the application first."</li>
+</ul>
+<h2 id="s-vendor-and-payables-reports">Vendor and payables reports<a class="man-hash" href="#s-vendor-and-payables-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The vendor reports are under <strong>Vendors &gt; Reports</strong> in the sidebar (heading <strong>Vendors and Payables Reports</strong>) and in the Report Center. Their common tools (Refresh, Columns, Print / PDF, Export to spreadsheet, Email link, Modify Report, Memorize, and clicking a figure to see the detail) are explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>.</p>
+<h3 id="pg-rpt-ap_aging_summary">A/P Aging Summary<a class="man-hash" href="#pg-rpt-ap_aging_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What you owe each vendor, split by how long it is past due. Use it to plan payments and to check that Accounts Payable agrees with the open documents.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; A/P Aging Summary.</p>
+<p><strong>The filters:</strong> <strong>As of</strong> and <strong>Vendor</strong>.</p>
+<p><strong>The columns:</strong> <strong>Vendor</strong> (click to open the A/P Aging Detail for the vendor), <strong>Current</strong>, <strong>1 - 30</strong>, <strong>31 - 60</strong>, <strong>61 - 90</strong>, <strong>&gt; 90</strong> (days past the due date) and <strong>Total</strong>. Bills are aged by their due date. Item receipts not yet billed count as current, and unapplied debit memos as negative amounts in <strong>Current</strong>.</p>
+<p>The note above the table gives <strong>Accounts Payable per ledger</strong> and says whether it agrees with the aging total. If it says "differs from the aging total", something was posted to Accounts Payable outside bills, item receipts, debit memos and bill payments (for example a journal entry without a vendor). Run <a href="manual.php?c=administration#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a> or ask your accountant.</p>
+<h3 id="pg-rpt-ap_aging_detail">A/P Aging Detail<a class="man-hash" href="#pg-rpt-ap_aging_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every open bill, item receipt and debit memo, grouped by aging period.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; A/P Aging Detail.</p>
+<p><strong>The filters:</strong> <strong>As of</strong> and <strong>Vendor</strong>.</p>
+<p><strong>The columns:</strong> <strong>Type</strong>, <strong>Date</strong>, <strong>Num / vendor ref.</strong> (the vendor's invoice number, or the document number; click to open it), <strong>Vendor</strong>, <strong>Terms</strong>, <strong>Due date</strong>, <strong>Days past due</strong> and <strong>Open balance</strong>, grouped under <strong>Current</strong>, <strong>1 - 30 days past due</strong> and so on, with a total for each group.</p>
+<h3 id="pg-rpt-vendor_balance_summary">Vendor Balance Summary<a class="man-hash" href="#pg-rpt-vendor_balance_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The balance owed to each vendor on a date, from the ledger.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Vendor Balance Summary.</p>
+<p><strong>The filters:</strong> <strong>As of</strong>.</p>
+<p>The report can also be narrowed by <strong>Vendor</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>The columns:</strong> <strong>Vendor</strong> (click to open the Vendor Balance Detail) and <strong>Balance</strong>. Vendors with a zero balance are left out.</p>
+<h3 id="pg-rpt-vendor_balance_detail">Vendor Balance Detail<a class="man-hash" href="#pg-rpt-vendor_balance_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every transaction that changed each vendor's balance, with a running balance.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Vendor Balance Detail, or <strong>Balance detail</strong> in the Vendor Center.</p>
+<p><strong>The filters:</strong> <strong>As of</strong> and <strong>Vendor</strong>.</p>
+<p><strong>The columns:</strong> <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (the reference or number; click to open), <strong>Memo</strong>, <strong>Amount</strong> (bills positive, payments and debit memos negative) and <strong>Balance</strong>, grouped by vendor with a total for each.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Use it to reconcile a supplier's statement of account: the running balance on the statement date should match the supplier's figure.</p></div>
+<h3 id="pg-rpt-unpaid_bills">Unpaid Bills Detail<a class="man-hash" href="#pg-rpt-unpaid_bills" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The open bills of each vendor with their due dates and days past due. It is the list to work from when planning payments.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Unpaid Bills Detail, or <strong>Unpaid Bills Detail</strong> on Pay Bills.</p>
+<p><strong>The filters:</strong> <strong>As of</strong> and <strong>Vendor</strong>.</p>
+<p><strong>The columns:</strong> <strong>Type</strong>, <strong>Date</strong>, <strong>Num / vendor ref.</strong>, <strong>Due date</strong>, <strong>Days past due</strong> and <strong>Open balance</strong>, grouped by vendor. Unapplied debit memos appear as "Unapplied Supplier Debit Memo" with a negative balance. Item receipts are not listed (they are not bills yet). The <strong>Go to Pay Bills</strong> button under the report opens Pay Bills.</p>
+<h3 id="pg-rpt-txn_list_vendor">Transaction List by Vendor<a class="man-hash" href="#pg-rpt-txn_list_vendor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every transaction with each vendor in a period: purchase orders, item receipts, bills, debit memos, bill payments and checks.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Transaction List by Vendor, or <strong>Transaction list</strong> in the Vendor Center.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this month by default), <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong> and <strong>Type</strong> (one kind of transaction).</p>
+<p>The report can also be narrowed by <strong>Class</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>The columns:</strong> <strong>Type</strong> ("(void)" is added to voided ones), <strong>Date</strong>, <strong>Num</strong>, <strong>Vendor ref.</strong>, <strong>Memo</strong>, <strong>Account</strong> (the bank account for payments and checks, Accounts Payable for bills), <strong>Clr</strong> (a check mark when cleared in a bank reconciliation) and <strong>Amount</strong> (payments, checks and debit memos negative). Purchase orders are listed for reference; they do not post.</p>
+<h3 id="pg-rpt-vendor_contacts">Vendor Contact List<a class="man-hash" href="#pg-rpt-vendor_contacts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The active vendors with their contact details and the balance owed.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Vendor Contact List.</p>
+<p><strong>The filters:</strong> <strong>Search</strong> (vendor name or contact person).</p>
+<p><strong>The columns:</strong> <strong>Vendor</strong> (click to open it in the Vendor Center), <strong>Contact</strong>, <strong>Phone</strong>, <strong>Fax</strong>, <strong>Email</strong>, <strong>Billing address</strong>, <strong>Account no.</strong> (your account number with the vendor) and <strong>Balance owed</strong>. <strong>TIN</strong> and <strong>Withholding taxes</strong> (the supplier's usual taxes of the Withholding Tax Table) can be added with Modify Report.</p>
+<h3 id="pg-rpt-expenses_vendor_summary">Expenses by Vendor Summary<a class="man-hash" href="#pg-rpt-expenses_vendor_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>How much was spent with each supplier in a period: everything charged to the expense accounts (expenses, cost of goods sold and other expenses) by bills, checks, cash vouchers, card charges and journal entries that name the supplier, less supplier debit memos.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Expenses by Vendor Summary.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this month as delivered), <strong>From</strong>, <strong>To</strong>, <strong>Columns</strong> (<strong>Total only</strong>, or one column per <strong>Month</strong>, <strong>Quarter</strong> or <strong>Year</strong>, starting with the first period that has an expense) and <strong>Class</strong>.</p>
+<p>The report can also be narrowed by <strong>Vendor</strong> and <strong>Expense account</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>The columns:</strong> <strong>Vendor</strong> (click for the detail), <strong>Transactions</strong>, the period columns if chosen, <strong>Total expenses</strong> and <strong>% of total</strong>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Purchases of inventory items go to the inventory account and become cost of goods sold only when they are sold, so a bill for stock is not an expense here. Expenses that name no supplier (a petty-cash payment to an employee, depreciation) are not listed either. The total agrees with the expense accounts of the <a href="manual.php?c=chart-of-accounts#pg-rpt-general_ledger">General Ledger</a> for the lines that name a supplier.</p></div>
+<h3 id="pg-rpt-expenses_vendor_detail">Expenses by Vendor Detail<a class="man-hash" href="#pg-rpt-expenses_vendor_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every expense charged to each supplier in the period, with the account it went to.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Expenses by Vendor Detail.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Class</strong> and <strong>Expense account</strong> (one of the expense, cost of goods sold and other expense accounts).</p>
+<p><strong>The columns:</strong> for each supplier a heading line, then <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (the supplier's reference, or the number; click to open the transaction), <strong>Memo</strong>, <strong>Account</strong> (click for its General Ledger), <strong>Class</strong>, <strong>Amount</strong> and <strong>Balance</strong> (running within the supplier), and a total per supplier. Supplier debit memos are negative amounts.</p>
+<h3 id="pg-rpt-vendor_advances">Advances to Suppliers<a class="man-hash" href="#pg-rpt-vendor_advances" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What is left of the money paid to suppliers in advance, supplier by supplier, as of a date.</p>
+<p><strong>Where to find it:</strong> Vendors &gt; Reports &gt; Advances to Suppliers, or <strong>Advances report</strong> on the advance form.</p>
+<p><strong>The filters:</strong> <strong>As of</strong> (today as delivered), <strong>Vendor</strong>, and <strong>Show</strong> (<strong>With something left to apply</strong>, or <strong>Every advance</strong>).</p>
+<p><strong>The columns:</strong> for each supplier a heading line, then <strong>Date paid</strong>, <strong>Advance no.</strong> (click to open it), <strong>What it pays for</strong>, <strong>Days outstanding</strong>, <strong>Advance</strong>, <strong>Applied to bills</strong> and <strong>Left to apply</strong>, with a total per supplier. <strong>Check / ref.</strong> and <strong>Expected</strong> can be added with Modify Report.</p>
+<p>Under the report, the balance of 1410 Advances to Suppliers in the general ledger as of the same date is shown; when it differs from the advances left (an entry made to the account directly, for example), the difference is given.</p>

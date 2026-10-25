@@ -1,0 +1,2156 @@
+<p>The Inventory module holds the Item List, the list of everything you buy and sell, and keeps the quantity and value of the goods you stock at each of your sites. From it you move stock between sites, correct quantities and values, count the stock, build assemblies, take items apart or process them into several products, and keep your selling prices and price levels up to date. The inventory reports at the end of the chapter show what you have, where it is, what it is worth and what needs to be ordered.</p>
+<p>Buying and selling are done in other modules: goods come in through purchase orders, <strong>Receive Items</strong> and bills (chapter 6, <a href="manual.php?c=vendors">Vendors and Payables</a>) and go out through invoices, sales receipts (chapter 5, <a href="manual.php?c=customers">Customers and Receivables</a>) and the counter (<a href="manual.php?c=point-of-sale">Point of Sale</a>). Each of those documents uses the items described here and changes the stock at the site named on it.</p>
+<h2 id="s-how-inventory-is-kept">How inventory is kept<a class="man-hash" href="#s-how-inventory-is-kept" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A few rules explain almost everything in this chapter.</p>
+<ul>
+<li><strong>Only two item types are stocked.</strong> <em>Inventory parts</em> and <em>inventory assemblies</em> have a quantity on hand and a value. They are called <em>tracked</em> items. Services, non-inventory parts and the other types are sold and bought, but no stock is kept for them.</li>
+<li><strong>Stock is kept per site.</strong> A <em>site</em> is a place where goods are kept: a warehouse, a store, a stockroom, a delivery van. Every receipt, sale, transfer, adjustment and build names a site, and the quantity on hand of each item is known for each site. You set up the sites in the <a href="#pg-inv-sites">Inventory Site List</a>.</li>
+<li><strong>Costing is weighted average.</strong> Each tracked item has one <em>average cost</em> for all sites together. The average is always the remaining value of the item divided by its remaining quantity, both counted from the same movements (every receipt, sale, transfer, adjustment, build and processing order the item was in). A purchase at a different cost changes the average; a sale, transfer, adjustment down or build takes goods out at the current average.</li>
+<li><strong>The books follow the stock.</strong> Every document that changes the value of stock also posts to the general ledger: the item's inventory asset account (for example 1200 Inventory), cost of goods sold (5000 Cost of Goods Sold) and, for adjustments, 5100 Inventory Adjustments and Shrinkage. The <strong>Inventory Valuation Summary</strong> compares the stock value with the ledger balance, so you can see that they agree.</li>
+<li><strong>The last unit takes the last peso.</strong> When a sale or issue takes the last unit of an item, all the value that is left goes out with it, so no value stays behind on an item with no stock.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>You have 10 USB-032 USB Flash Drive 32GB at ₱180.00 each, a value of ₱1,800.00. You receive 10 more at ₱170.00 (₱1,700.00). The average cost becomes ₱3,500.00 ÷ 20 = ₱175.00. When you sell 3, cost of goods sold is 3 × ₱175.00 = ₱525.00, and the 17 left are worth ₱2,975.00, still ₱175.00 each.</p></div>
+<h3 id="s-stock-below-zero">Stock below zero<a class="man-hash" href="#s-stock-below-zero" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A sale can take more than the site has, for example when goods were delivered before the supplier's delivery receipt was entered. The quantity at that site then goes below zero. The issue beyond the stock is costed at the last average cost.</p>
+<p>The receipt that brings the stock back (a bill, an item receipt, the outputs of a processing order, a build, an adjustment up) settles that shortfall at its own cost. The difference between what the short units were costed at and what they really cost goes to cost of goods sold, and what is left on hand carries the cost of the receipt. The settlement shows in the item's history as a line with no quantity under the receipt, marked <strong>Below-zero stock settled at this cost</strong>, and in the receipt's journal as "Stock sold below zero, settled at the cost received". A transfer between sites does not settle anything: it is the same stock moving.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The counter sold 99.9 kg of PK-CHOP Pork Chop but only 90 kg were processed: 9.9 kg went out below zero at the ₱225.00 average (₱2,227.50). The day's processing order then puts in 10 kg at ₱300.00 (₱3,000.00). The 9.9 kg really cost ₱300.00, so ₱742.50 more goes to cost of goods sold, and the 0.1 kg left is worth ₱30.00: the average is ₱300.00. Before version 31 the whole difference stayed on the 0.1 kg and the average became ₱7,725.00.</p></div>
+<p>The setting <strong>Allow selling or moving stock below zero (with warning)</strong>, in <strong>System Administration &gt; Company, Security &amp; Closing Date</strong> under <strong>Inventory and POS</strong> (see <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>), decides what happens when a document would take an item's quantity at a site below zero. It applies to every document that takes stock out: invoices, sales receipts, POS sales, supplier debit memos that return items, transfers, adjustments and any other stock-out document, when it is saved, edited or marked final.</p>
+<ul>
+<li><strong>Switched on</strong> (the standard): on sales invoices, sales receipts, batch invoices, POS sales, inventory adjustments and transfers the program asks first: "Saving the transaction will lead the inventory to a negative balance. Do you want to continue?", with the items, their quantity on hand and what would be left. <strong>Yes</strong> saves the document, <strong>No</strong> goes back to it with nothing saved (see <a href="manual.php?c=getting-started#sec-negative-stock">Stock below zero: the Yes / No question</a>). Once saved, and on the other documents straight away, a yellow message names each item now below zero, for example "Stock is now below zero: LAP-001 at Main Warehouse (-2.00)."</li>
+<li><strong>Switched off</strong>: the document is not saved, and the message says what is missing, for example "Not enough stock: LAP-001 at Main Warehouse has 3.00 on hand, and this would leave -2.00. Selling or moving stock below zero is switched off (System Administration &gt; Company, Security &amp; Closing Date)." Sell or move less, or record the missing receipt first. A processing order whose outputs were already used cannot be voided or deleted either.</li>
+</ul>
+<p>Only a save that lowers the quantity is checked: changing the memo or the price of an older document while the item happens to be below zero is still allowed. <strong>Utilities: Verify &amp; Rebuild Data</strong> re-posts history without this check.</p>
+<p><strong>Build Assemblies</strong> and <strong>Disassemble / Process Items</strong> never issue parts that are short, whatever the setting: they offer to save the document as <em>pending</em> instead. Watch the <strong>Negative Inventory Listing</strong> report and the "negative stock record(s)" figure on the Home dashboard, and record the missing receipt, transfer or adjustment. <strong>Utilities: Verify &amp; Rebuild Data</strong> also warns about negative quantities (see <a href="manual.php?c=administration#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a>).</p>
+<h3 id="s-who-sees-costs">Who sees costs<a class="man-hash" href="#s-who-sees-costs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Costs are sensitive. A user sees the <strong>Cost</strong>, <strong>Avg cost</strong>, value and margin figures only when one of their roles has the special permission <strong>View costs and margins</strong> (see <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>). Without it, those columns and fields are hidden on the pages and reports of this chapter, and the <strong>Total value</strong> and <strong>Quantity and total value</strong> adjustments and the markup on cost are not offered.</p>
+<p>A user can also be limited to some sites (see <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>). Such a user sees and records stock only for the sites they are allowed.</p>
+<h3 id="s-how-items-are-shown-in-the-lists">How items are shown in the lists<a class="man-hash" href="#s-how-items-are-shown-in-the-lists" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The item drop-downs of the transaction forms show both the <em>item name/code</em> (for example LAP-001) and the <em>display name</em> (Laptop 14-inch i5 16GB). <strong>System Administration &gt; Company, Security &amp; Closing Date &gt; Searching for items</strong> decides which comes first, for all transactions at once or for each transaction on its own: <strong>Item name/code + Display name</strong> (LAP-001 - Laptop 14-inch i5 16GB) or <strong>Display name + Item name/code</strong> (Laptop 14-inch i5 16GB - LAP-001). The two item columns of <strong>Adjust Quantity/Value on Hand</strong>, <strong>Physical Inventory Count</strong>, <strong>Change Item Prices</strong> and <strong>Set Item Prices and Levels</strong> follow the same order. Whatever the order, typing any part of either one finds the item.</p>
+<h3 id="s-the-inventory-menu">The Inventory menu<a class="man-hash" href="#s-the-inventory-menu" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The sidebar menu <strong>Inventory</strong> has three parts:</p>
+<ul>
+<li><strong>Transactions:</strong> Inventory Center, Transfer Inventory, Adjust Quantity/Value on Hand, Build Assemblies, Disassemble / Process Items, Physical Inventory Count, Change Item Prices, Set Item Prices and Levels, and two purchasing pages that are also in the Vendors menu: <a href="manual.php?c=vendors#pg-vend-purchase_orders">Create Purchase Orders</a> and <a href="manual.php?c=vendors#pg-vend-receive_items">Receive Items</a>. Those two are described in chapter 6.</li>
+<li><strong>Lists:</strong> Item List, Category List, Inventory Site List, U/M Set List, Processing Formulas (Multi-Output BOM).</li>
+<li><strong>Reports:</strong> the inventory reports described at the end of this chapter.</li>
+</ul>
+<p>The transaction pages you may create are also on the <strong>Quick actions</strong> box of the Home dashboard.</p>
+<h2 id="pg-inv-center">Inventory Center<a class="man-hash" href="#pg-inv-center" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Inventory Center is the place to look up a stocked item: how many you have at each site, what is committed on sales orders, what is coming on purchase orders, and every movement of the item. From the item you can go straight to the page that changes it.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Inventory Center. The <strong>Inventory Center</strong> button on the form of an inventory part or assembly opens it on that item.</p>
+<p>The left side lists the active inventory parts and assemblies. Click an item code to show its details on the right; the first item is shown when the page opens.</p>
+<h4 id="s-the-item-list-on-the-left">The item list on the left<a class="man-hash" href="#s-the-item-list-on-the-left" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column or box</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type to find an item, or scan a barcode</strong></td>
+<td>The list narrows as you type, letter by letter, to the items whose code, name or barcode contains what you typed; the count under the box says how many are shown. When nothing matches, the list says <strong>No item matches. Press Enter to search the server, or scan again.</strong> Press Enter to open the first match. A scanned barcode is typed for you and opens the item.</td>
+</tr>
+<tr>
+<td>Site box</td>
+<td><strong>All sites</strong> (as delivered), or one site. With a site chosen, the whole page is that site's: see <strong>Looking at one site</strong> below.</td>
+</tr>
+<tr>
+<td><strong>Item</strong></td>
+<td>The item name/code (click it) and the display name.</td>
+</tr>
+<tr>
+<td><strong>On hand</strong></td>
+<td>Quantity in stock. A negative quantity is shown in red.</td>
+</tr>
+<tr>
+<td><strong>On SO</strong></td>
+<td>Quantity still to be delivered on open sales orders.</td>
+</tr>
+<tr>
+<td><strong>Avail.</strong></td>
+<td>On hand less On SO: what you can still promise.</td>
+</tr>
+<tr>
+<td><strong>On PO</strong></td>
+<td>Quantity still to be received on open purchase orders.</td>
+</tr>
+<tr>
+<td><strong>Reorder</strong></td>
+<td>The reorder point. It is highlighted when the stock is at or below it.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-item-details-on-the-right">The item details on the right<a class="man-hash" href="#s-the-item-details-on-the-right" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The top card shows the code and name, the type, barcode, unit and preferred vendor, the total <strong>On hand</strong> in large figures, and: <strong>Sales price</strong>, <strong>Average cost</strong>, <strong>Value</strong> (the remaining value of the item's movements; with a site chosen, the site's quantity × the average cost), <strong>Reorder point</strong> (and the build point of an assembly), <strong>On sales order</strong> and <strong>On purchase order</strong>. Average cost and value are shown only to users who may view costs.</p>
+<p>Below it:</p>
+<ul>
+<li><strong>Quantity by site:</strong> the quantity at each active site.</li>
+<li><strong>Open orders:</strong> the open sales orders and purchase orders for the item, with the quantity still open and the due or ship date. Click a document to open it.</li>
+<li><strong>Bill of materials:</strong> for an assembly, its components and the quantity of each per unit.</li>
+<li><strong>Transaction history:</strong> the movements of the item, newest first: <strong>Date</strong>, <strong>Transaction</strong> (click to open it), <strong>Site</strong>, <strong>Qty</strong> (negative when goods went out), <strong>Unit cost</strong>, <strong>Value</strong>, <strong>Avg after</strong> (the average cost after the movement) and <strong>On hand after</strong> (the total for all sites after the movement). The cost columns are shown only to users who may view costs. The heading says how many movements are shown of how many there are. Two dates and <strong>Latest 100</strong>, <strong>Latest 500</strong> or <strong>All</strong>, then <strong>Show</strong>, choose which ones.
+<ul>
+<li><strong>On hand after</strong> counts every movement from the item's very first one, in the order they happened: by date, and on one date the stock received (bills, item receipts, returns, adjustments up) before the stock used or sold that day (processing orders, builds and transfers, then sales and adjustments down), whatever order they were typed in. A bill and a processing order of the same day read as bought, then processed.</li>
+<li>The last line is <strong>Opening balance</strong> (0, before the first movement) or, when older movements are not shown, <strong>Balance before</strong> the first date shown, with how many earlier movements there are and a <strong>Show all</strong> link. The first line shown always starts from that balance.</li>
+<li>A line with no quantity changes only the value: <strong>Value adjustment</strong> on an adjustment, <strong>Below-zero stock settled at this cost</strong> under a receipt (see <a href="#s-stock-below-zero">Stock below zero</a>).</li>
+<li>When the quantity on hand differs from the total of the movements, a yellow note says by how much and points to <a href="manual.php?c=administration#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a>. Since version 31 this is put right by itself the next time the item moves, and the average cost never uses the quantity in that note: it always divides the value by the quantity of the movements.</li>
+</ul>
+</li>
+</ul>
+<h4 id="s-looking-at-one-site">Looking at one site<a class="man-hash" href="#s-looking-at-one-site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Choose a site in the <strong>Site</strong> box (the list refreshes at once) and everything on the page counts that site alone. A strip at the top says <strong>Showing Makati Store only: the quantities, open orders and transaction history below are this site's</strong>, with <strong>Show all sites</strong> to go back.</p>
+<ul>
+<li>In the list, <strong>On hand</strong>, <strong>On SO</strong>, <strong>Avail.</strong> and <strong>On PO</strong> are the site's figures, and the count under the search box names the site.</li>
+<li>In the detail card, the large figure reads <strong>On hand at Makati Store</strong>, with the company-wide quantity under it ("11 at all sites"), and <strong>Value here</strong>, <strong>On sales order</strong> and <strong>On purchase order</strong> are the site's.</li>
+<li><strong>Quantity by site</strong> shows the chosen site's row, with an <strong>All sites</strong> link in its heading. Without a site, every site's row is listed, each a link that filters the page to that site, and an <strong>All sites</strong> total closes the table.</li>
+<li><strong>Open orders at Makati Store</strong> lists only the sales orders and purchase orders for that site.</li>
+<li><strong>Transaction history at Makati Store</strong> lists only the movements at that site, and its last column, <strong>Makati Store after</strong>, is that site's own quantity after each movement, counted from the first movement at the site (the newest line shows what the site holds now; a figure below zero is in red). The <strong>Site</strong> column is left out, since every line is the same site. With no movement at the site, the table says <strong>No movements at Makati Store.</strong></li>
+</ul>
+<p>The site is kept while you click from item to item, so a store can be gone through item by item.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New inventory item</strong></td>
+<td>Opens a blank inventory part form in the <a href="#pg-inv-items">Item List</a>.</td>
+</tr>
+<tr>
+<td><strong>New assembly</strong></td>
+<td>Opens a blank inventory assembly form.</td>
+</tr>
+<tr>
+<td><strong>Edit item</strong></td>
+<td>Opens the item's form.</td>
+</tr>
+<tr>
+<td><strong>Purchase order</strong></td>
+<td>Starts a new purchase order to the item's preferred vendor.</td>
+</tr>
+<tr>
+<td><strong>Adjust</strong></td>
+<td>Opens <a href="#pg-inv-adjust">Adjust Quantity/Value on Hand</a> with the item's row highlighted.</td>
+</tr>
+<tr>
+<td><strong>Transfer</strong></td>
+<td>Starts a new <a href="#pg-inv-transfers">Transfer Inventory</a> with the item on the first line.</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td>For an assembly: opens <a href="#pg-inv-build">Build Assemblies</a> on it.</td>
+</tr>
+<tr>
+<td><strong>Disassemble</strong> or <strong>Process / break down</strong></td>
+<td>Opens <a href="#pg-inv-process">Disassemble / Process Items</a> with the item as the input. An assembly loads its bill of materials; another item loads the first active formula that uses it as an input.</td>
+</tr>
+<tr>
+<td><strong>Valuation detail</strong></td>
+<td>Opens the <a href="#pg-rpt-inv_valuation_detail">Inventory Valuation Detail</a> report for the item.</td>
+</tr>
+<tr>
+<td><strong>Average cost changes</strong></td>
+<td>Opens the <a href="#pg-rpt-avg_cost_changes">Average Cost Changes</a> report for the item, all dates: every transaction that moved its average cost and why.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each button appears only when you may use the page it opens.</p>
+<h4 id="s-step-by-step-check-an-item-before-promising-it-to-a-customer">Step by step: check an item before promising it to a customer<a class="man-hash" href="#s-step-by-step-check-an-item-before-promising-it-to-a-customer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Inventory Center</strong>.</li>
+<li>Type part of the code or name (for example <code>LAP</code>) in <strong>Search / scan barcode</strong> and press Enter.</li>
+<li>If the goods must come from one store, pick that site in the site box.</li>
+<li>Read <strong>Avail.</strong>: that is what you can still sell without breaking an earlier promise.</li>
+<li>Click the item code and look at <strong>Open orders</strong> to see when more is expected on a purchase order.</li>
+</ol>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>If <strong>Avail.</strong> is short at one site but there is stock at another, click <strong>Transfer</strong> to move it.</p></div>
+<h2 id="pg-inv-items">Item List<a class="man-hash" href="#pg-inv-items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Item List holds every item you buy or sell. Each line of an invoice, bill, receipt or POS sale uses one of these items, and the item decides the accounts the line posts to, its tax code and, for stocked goods, the stock it moves.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Item List.</p>
+<h3 id="s-the-item-types">The item types<a class="man-hash" href="#s-the-item-types" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>When you create an item you choose its <em>type</em>. The type cannot be changed afterwards, so choose with care.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Type</th>
+<th>Use it for</th>
+<th>Demo example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service</td>
+<td>Work you charge or pay for: labor, installation, repairs</td>
+<td>SRV-INSTALL Installation and Setup</td>
+</tr>
+<tr>
+<td>Inventory part</td>
+<td>Goods you buy, keep in stock and sell; quantity and value are tracked per site</td>
+<td>LAP-001 Laptop 14-inch i5 16GB</td>
+</tr>
+<tr>
+<td>Non-inventory part</td>
+<td>Goods bought or sold without keeping stock, such as special orders or supplies</td>
+<td>NI-TONER Toner Cartridge (special order)</td>
+</tr>
+<tr>
+<td>Inventory assembly</td>
+<td>A stocked item you build from other items, with a bill of materials</td>
+<td>SET-OFFICE Office Monitor Set</td>
+</tr>
+<tr>
+<td>Other charge</td>
+<td>Fees and charges: delivery, late payment, reimbursable expenses</td>
+<td>DEL-FEE Delivery Fee</td>
+</tr>
+<tr>
+<td>Subtotal</td>
+<td>A line that adds up the lines above it on a sales form</td>
+<td>SUBTOTAL Subtotal</td>
+</tr>
+<tr>
+<td>Group</td>
+<td>Several items entered with one code; each member is put on the form</td>
+<td>GRP-WFH Work-from-Home Bundle</td>
+</tr>
+<tr>
+<td>Discount</td>
+<td>A percentage or fixed amount taken off the line above it</td>
+<td>DISC-10 10% Discount</td>
+</tr>
+<tr>
+<td>Payment</td>
+<td>Money received on the document itself, such as a down payment</td>
+<td>DOWNPMT Down Payment Received</td>
+</tr>
+</tbody>
+</table></div>
+<p>The last tab, <strong>Sales tax items</strong>, is not an item type. It lists the tax codes (for example VAT12, NT and EX) with their <strong>Rate</strong>, <strong>Output tax account</strong>, <strong>Input tax account</strong> and <strong>Active</strong> status. Tax codes are managed under <strong>Financial Set-up &amp; Reports &gt; Terms, Tax Codes &amp; Other Lists</strong> (the <strong>Manage tax codes</strong> link under the table; see <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>), and each item carries its own tax code.</p>
+<h4 id="s-how-the-special-types-behave-on-a-sales-form">How the special types behave on a sales form<a class="man-hash" href="#s-how-the-special-types-behave-on-a-sales-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Subtotal:</strong> shows on screen the total of the lines above it, up to the previous subtotal. Its own amount is zero and it posts nothing. It prints on the document without a quantity.</li>
+<li><strong>Group:</strong> a group is sold on one line: the group, how many, and its <strong>Group price</strong> (see <a href="#sec-item-groups">Item groups: group price and price variance</a>). When the document is saved, the line becomes the items of the group, each at its own price (so stock, cost of sales and the sales of each item are recorded), and one price variance line for the difference between the group price and the prices of its items, posted to the group's <strong>Price variance GL account</strong>. The document can then be shown and edited by item group or by item details. On a purchase form the members come in at their cost.</li>
+<li><strong>Discount:</strong> a percentage discount (for example DISC-10, 10%) takes that percentage of the amount of the line directly above it; a fixed discount (DISC-AMT, ₱100.00) takes off the amount in its <strong>Fixed discount amount</strong> (you can type another amount on the line). The discount line posts as a negative amount to the item's <strong>Discount account</strong> (4060 Sales Discounts in the demo), so it is recorded as a debit there.</li>
+<li><strong>Payment:</strong> records money received on the document itself. The line reduces the document total and posts as a debit to 1050 Undeposited Funds, to be deposited later in <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>. A payment line carries no tax.</li>
+</ul>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Put a percentage discount directly under the line it discounts. Placed under a <strong>Subtotal</strong> line, it does not take the percentage of the subtotal.</p></div>
+<p>The POS register sells services, inventory parts, non-inventory parts, assemblies, other charges and item groups; subtotal, discount and payment items are not offered there.</p>
+<h3 id="s-the-list">The list<a class="man-hash" href="#s-the-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part of the page</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tabs</td>
+<td><strong>All</strong> or one item type, plus <strong>Sales tax items</strong>.</td>
+</tr>
+<tr>
+<td>Search box</td>
+<td>Type part of a code, display name, barcode, category, preferred supplier or description. The list narrows with every letter you type, with no button to press; several words must all be found ("cab hdmi"). The count at the right says how many items match ("3 of 131 item(s)"), and "No item matches what you typed." shows when none does. <strong>Enter</strong> opens the first item that matches. The <strong>×</strong> in the box clears it.</td>
+</tr>
+<tr>
+<td>Category box</td>
+<td><strong>All categories</strong>, <strong>(no category)</strong>, or one category; the list changes as soon as you choose. The item counts of the <a href="#pg-inv-categories">Category List</a> open the Item List with this box set.</td>
+</tr>
+<tr>
+<td><strong>Include inactive</strong></td>
+<td>Tick it to list inactive items too; they are shown in grey. The list changes at once.</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>Click it to open the item.</td>
+</tr>
+<tr>
+<td><strong>Name</strong>, <strong>Type</strong>, <strong>Category</strong>, <strong>Unit</strong></td>
+<td>The display name, type, category and unit (the base unit of the item's U/M set).</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td>The sales price; for a percentage discount, the percentage.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong>, <strong>Avg cost</strong></td>
+<td>The purchase cost and, for tracked items, the average cost. Shown only to users who may view costs.</td>
+</tr>
+<tr>
+<td><strong>On hand</strong></td>
+<td>For tracked items, the total quantity at all sites; negative quantities are shown in red.</td>
+</tr>
+<tr>
+<td><strong>Tax</strong>, <strong>Pref. vendor</strong></td>
+<td>The item's tax code and preferred vendor.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New item:</strong> a menu of the nine types; pick one to open a blank form of that type.</li>
+<li><strong>Category List:</strong> opens the <a href="#pg-inv-categories">Category List</a>, where categories are added, renamed and deleted.</li>
+<li><strong>Import from CSV:</strong> opens <strong>System Administration &gt; Import from CSV</strong> with <strong>Inventory items</strong> chosen, to add or update many items from a spreadsheet file (see <a href="manual.php?c=administration#pg-admin-import">Import from CSV</a>). It is shown when you may create on that page.</li>
+<li><strong>Export:</strong> downloads the items of the tab (narrowed by the words in the search box) as a CSV file (type, code, name, description, unit, price, on hand, and cost and average cost for users who may view costs). It needs the Print/Export permission, and the export is recorded in the audit trail.</li>
+</ul>
+<h3 id="s-the-item-form">The item form<a class="man-hash" href="#s-the-item-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The form changes with the type. These pictures show the new-item form of each type.</p>
+<p>An existing item opens with its code in the title, for example <strong>Item: LAB-ASM</strong>, and the same sections as its type.</p>
+<h4 id="s-fields-first-section-every-type">Fields: first section (every type)<a class="man-hash" href="#s-fields-first-section-every-type" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item name / code</strong></td>
+<td>The short code people type or scan, up to 40 characters, for example LAP-001. Required and unique.</td>
+</tr>
+<tr>
+<td><strong>Display name</strong></td>
+<td>The name shown on lists and documents, up to 120 characters. Required.</td>
+</tr>
+<tr>
+<td><strong>Barcode</strong></td>
+<td>Inventory parts, assemblies and non-inventory parts only. The code printed on the product; the POS register and the Inventory Center find the item by it. It must be unique.</td>
+</tr>
+<tr>
+<td><strong>Unit of measure (U/M set)</strong></td>
+<td>The set of units the item is counted in (see <a href="#pg-inv-uom">U/M Set List</a>). Leave it empty for a single unit.</td>
+</tr>
+<tr>
+<td><strong>Sales unit</strong></td>
+<td>With a U/M set: the unit sales documents start in. <strong>Base unit</strong> follows the set's own choice.</td>
+</tr>
+<tr>
+<td><strong>Purchase unit</strong></td>
+<td>With a U/M set: the unit purchase documents start in.</td>
+</tr>
+<tr>
+<td><strong>Unit</strong></td>
+<td>Without a U/M set: the name of the unit, for example pc or kg. Hidden when a set is chosen.</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>The item category, used to group reports such as <strong>POS Sales by Category</strong>. Categories are kept under <strong>Terms, Tax Codes &amp; Other Lists</strong>.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop using the item. Inactive items are not offered on new documents but stay on old ones. An inventory part or assembly can be made inactive only when it has no balance: nothing on hand at any site and no value left. While it has one, <strong>Active</strong> stays ticked and cannot be unticked, and the line under it says "Has a balance: it can be made inactive once it is at zero." Services, non-inventory parts and the other types can be made inactive at any time.</td>
+</tr>
+</tbody>
+</table></div>
+<p>When a U/M set is chosen, the note under the fields reminds you that stock, costs and reports stay in the base unit of the set; the <strong>Manage U/M sets</strong> link opens the U/M Set List.</p>
+<h4 id="s-fields-purchase-information">Fields: Purchase information<a class="man-hash" href="#s-fields-purchase-information" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Service, inventory part, non-inventory part, other charge and inventory assembly.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purchase description</strong></td>
+<td>The text used on purchase documents. Not on assemblies.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>The usual purchase cost per base unit. It fills the rate on purchase forms. For a service or other charge used in a bill of materials or a processing order, it is the standard cost charged for it. Shown only to users who may view costs.</td>
+</tr>
+<tr>
+<td><strong>Standard cost (info)</strong></td>
+<td>Assemblies only: a cost for your information. The real cost of an assembly comes from its builds.</td>
+</tr>
+<tr>
+<td><strong>Cost of goods sold account</strong></td>
+<td>Inventory parts and assemblies: the account debited when the item is sold. Default 5000 Cost of Goods Sold.</td>
+</tr>
+<tr>
+<td><strong>Expense / purchase account</strong></td>
+<td>Other types: the account debited when the item is bought. Leave it on <strong>Default</strong> to use the module default (6110 Purchases - Non-inventory in the demo).</td>
+</tr>
+<tr>
+<td><strong>Preferred vendor</strong></td>
+<td>The usual supplier. Used by the Inventory Center's <strong>Purchase order</strong> button and the stock status reports.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields-sales-information">Fields: Sales information<a class="man-hash" href="#s-fields-sales-information" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Every type except subtotal.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sales description</strong></td>
+<td>The text put on sales documents.</td>
+</tr>
+<tr>
+<td><strong>Sales price</strong></td>
+<td>The standard selling price per base unit, before VAT. Not on payments; on a group it is the <strong>Group price</strong> (see <a href="#sec-item-groups">Item groups: group price and price variance</a>).</td>
+</tr>
+<tr>
+<td><strong>Discount % (0 = fixed amount)</strong></td>
+<td>Discounts only: the percentage taken off the line above. Leave 0 for a fixed amount.</td>
+</tr>
+<tr>
+<td><strong>Fixed discount amount</strong></td>
+<td>Discounts only: the amount taken off when the percentage is 0.</td>
+</tr>
+<tr>
+<td><strong>Income account</strong></td>
+<td>The account credited when the item is sold. Default 4000 Sales. On a discount this field is <strong>Discount account</strong> (default 4060 Sales Discounts).</td>
+</tr>
+<tr>
+<td><strong>Tax code</strong></td>
+<td>The tax code of the item, for example VAT12 (12%). <strong>None</strong> means no tax.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields-inventory-information">Fields: Inventory information<a class="man-hash" href="#s-fields-inventory-information" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Inventory parts and assemblies only.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inventory asset account</strong></td>
+<td>The asset account that holds the value of the stock. Default 1200 Inventory.</td>
+</tr>
+<tr>
+<td><strong>Reorder point (min)</strong></td>
+<td>When the total on hand falls to this quantity, the item is flagged for reordering. 0 means no reorder point.</td>
+</tr>
+<tr>
+<td><strong>Maximum stock</strong></td>
+<td>The quantity you want after reordering. The stock status reports suggest ordering up to it.</td>
+</tr>
+<tr>
+<td><strong>Build point</strong></td>
+<td>Assemblies only: when stock falls to this quantity, the stock status reports suggest a build.</td>
+</tr>
+<tr>
+<td><strong>On hand</strong>, <strong>Average cost</strong></td>
+<td>On an existing item: the total quantity and the average cost, for information.</td>
+</tr>
+<tr>
+<td><strong>Quantity on hand</strong>, <strong>Total value</strong>, <strong>As of</strong>, <strong>Site</strong></td>
+<td>On a new inventory part only: the opening stock (optional). It is posted as an inventory adjustment against Opening Balance Equity at that site and date.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields-bill-of-materials-assemblies-and-items-in-this-group-">Fields: Bill of materials (assemblies) and Items in this group (groups)<a class="man-hash" href="#s-fields-bill-of-materials-assemblies-and-items-in-this-group-" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>A component: an inventory part, assembly, service, other charge or non-inventory part.</td>
+</tr>
+<tr>
+<td><strong>Qty</strong></td>
+<td>How many of it go into one unit of the assembly, or into one group.</td>
+</tr>
+<tr>
+<td><strong>Avg / std cost</strong>, <strong>Total</strong></td>
+<td>Assemblies, for users who may view costs: the average cost (stocked items) or cost (others) of the component and the cost for the quantity.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Add component</strong> for another line and the red cross to remove one. For an assembly, <strong>Total component cost</strong> shows the cost of one unit at today's costs. Put labor (such as LAB-ASM Assembly Labor) and overhead on the bill of materials as service or other charge items: they are charged at their <strong>Cost</strong> when you build.</p>
+<h4 id="sec-item-groups">Item groups: group price and price variance<a class="man-hash" href="#sec-item-groups" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A group, such as a burger meal or a work-from-home set, is sold at a price of its own, which may differ from the sum of the prices of its items. The form of a group has, under <strong>Category</strong>:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group price</strong></td>
+<td>The price of one group. It is the price followed on estimates, sales orders, sales receipts, invoices and POS sales when <strong>Adopt the Group Price in the Item Group</strong> is ticked (System Administration &gt; Company, Security &amp; Closing Date &gt; Inventory and POS).</td>
+</tr>
+<tr>
+<td><strong>Consolidated price</strong></td>
+<td>The sum of the individual prices of the items in the group (each item's sales price times its quantity in the group). It follows the items as you change them.</td>
+</tr>
+<tr>
+<td><strong>Price variance</strong></td>
+<td><strong>Group price</strong> less <strong>Consolidated price</strong>: negative when the group is sold for less than its items.</td>
+</tr>
+<tr>
+<td><strong>Price variance GL account</strong></td>
+<td>Where the price variance of each group sold is recorded. Blank uses the module default account <strong>Item Group Price Variance</strong> (4070, an income account).</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Items in this group</strong> table shows the <strong>Price</strong> and <strong>Amount</strong> of each item, and the sum of the individual prices under it. <strong>Tax code of the price variance</strong> (under Sales information) is the tax of the variance line; blank uses the tax code most items of the group have.</p>
+<p>When a group is sold, its items are recorded at their own prices and the variance goes to the variance account. For example, GRP-WFH Work-from-Home Bundle has a laptop (39,990.00), a mouse (599.00) and a backpack (899.00): a consolidated price of 41,488.00. With a group price of 40,000.00, two bundles sold record sales of 79,980.00, 1,198.00 and 1,798.00 on the three items and a price variance of -2,976.00 (a debit to Item Group Price Variance), so the invoice is 80,000.00 before VAT.</p>
+<p><strong>Sold as a group</strong> at the foot of the form shows the groups sold this month and this fiscal year and their sales, with a link to <a href="manual.php?c=customers#pg-rpt-sales_item_group">Sales by Item Group</a>.</p>
+<h4 id="s-fields-price-levels">Fields: Price levels<a class="man-hash" href="#s-fields-price-levels" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Shown for inventory parts, assemblies, non-inventory parts, services and other charges when price levels exist. There is one box for each active price level, ten as delivered (<strong>Wholesale</strong> −5%, <strong>VIP</strong> −10%, <strong>Retail Plus</strong> +5% and <strong>Price Level 4</strong> to <strong>Price Level 10</strong> at 0%), five to a row.</p>
+<ul>
+<li>Beside each level name you see its percentage and the price it gives on the sales price, for example <strong>-5% = 854.05</strong>. The figure follows the sales price as you type it.</li>
+<li>Leave a box empty to use the level's percentage.</li>
+<li>Type a figure to fix the item's price on that level, whatever the percentage.</li>
+</ul>
+<p>Customers who have a price level get these prices on invoices, sales receipts and at the POS. Levels are renamed and their percentages changed with <strong>Rename price levels</strong> on <a href="#pg-inv-set_prices">Set Item Prices and Levels</a> or under <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a> (both linked at the bottom of the section). To set many items at once, use Set Item Prices and Levels.</p>
+<h4 id="s-buttons_2">Buttons<a class="man-hash" href="#s-buttons_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Save item:</strong> saves and keeps the item open.</li>
+<li><strong>Save item &amp; New:</strong> saves and opens a blank form of the same type.</li>
+<li><strong>Cancel</strong> and <strong>Back to list:</strong> return to the list without saving.</li>
+<li><strong>Inventory Center:</strong> on a saved inventory part or assembly, opens it in the Inventory Center.</li>
+</ul>
+<h4 id="s-step-by-step-create-an-inventory-part">Step by step: create an inventory part<a class="man-hash" href="#s-step-by-step-create-an-inventory-part" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Item List</strong> and click <strong>New item &gt; Inventory part</strong>.</li>
+<li>Type the <strong>Item name / code</strong> (for example <code>BAG-002</code>) and the <strong>Display name</strong>.</li>
+<li>Type or scan the <strong>Barcode</strong> if the product has one.</li>
+<li>Choose the <strong>Unit of measure (U/M set)</strong> or type the <strong>Unit</strong>, and the <strong>Category</strong>.</li>
+<li>Under <strong>Purchase information</strong>, type the <strong>Cost</strong> and pick the <strong>Preferred vendor</strong>. Leave the <strong>Cost of goods sold account</strong> as it is unless your accountant asks otherwise.</li>
+<li>Under <strong>Sales information</strong>, type the <strong>Sales price</strong> and choose the <strong>Tax code</strong> (VAT12 for VAT-able goods).</li>
+<li>Under <strong>Inventory information</strong>, type the <strong>Reorder point (min)</strong> and <strong>Maximum stock</strong>.</li>
+<li>If the goods are already on your shelves, type the opening <strong>Quantity on hand</strong> and its <strong>Total value</strong>, the <strong>As of</strong> date and the <strong>Site</strong>.</li>
+<li>Fill the <strong>Price levels</strong> boxes only for levels that need a fixed price.</li>
+<li>Click <strong>Save item</strong>. The message "Item saved." appears.</li>
+</ol>
+<h4 id="s-step-by-step-create-an-assembly">Step by step: create an assembly<a class="man-hash" href="#s-step-by-step-create-an-assembly" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New item &gt; Inventory assembly</strong>.</li>
+<li>Fill the first section, the sales price, tax code, reorder point, maximum stock and <strong>Build point</strong>.</li>
+<li>Under <strong>Bill of materials</strong>, pick the first component in <strong>Item</strong> and type its <strong>Qty</strong> per assembly.</li>
+<li>Click <strong>Add component</strong> for each other component, including labor as a service item.</li>
+<li>Check <strong>Total component cost</strong>, then click <strong>Save item</strong>.</li>
+<li>Build the stock with <a href="#pg-inv-build">Build Assemblies</a>. An assembly has no opening quantity on its form. For assemblies you already had before you started, use <a href="#pg-inv-adjust">Adjust Quantity/Value on Hand</a> with <strong>Quantity and total value</strong>, so they come in with a value.</li>
+</ol>
+<h4 id="s-step-by-step-create-a-group-discount-subtotal-or-payment-ite">Step by step: create a group, discount, subtotal or payment item<a class="man-hash" href="#s-step-by-step-create-a-group-discount-subtotal-or-payment-ite" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New item</strong> and pick <strong>Group</strong>, <strong>Discount</strong>, <strong>Subtotal</strong> or <strong>Payment</strong>.</li>
+<li>Type the <strong>Item name / code</strong> and <strong>Display name</strong>.</li>
+<li>For a group, add the member items and their quantities under <strong>Items in this group</strong>, then type the <strong>Group price</strong> and choose the <strong>Price variance GL account</strong> (or leave the module default).</li>
+<li>For a discount, type either the <strong>Discount % (0 = fixed amount)</strong> or the <strong>Fixed discount amount</strong>, and check the <strong>Discount account</strong>.</li>
+<li>Type a <strong>Sales description</strong> (it is printed on the documents).</li>
+<li>Click <strong>Save item</strong>.</li>
+</ol>
+<h4 id="s-step-by-step-change-or-retire-an-item">Step by step: change or retire an item<a class="man-hash" href="#s-step-by-step-change-or-retire-an-item" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the item's <strong>Code</strong> on the list (tick <strong>Include inactive</strong> to find an inactive one).</li>
+<li>Change the fields and click <strong>Save item</strong>. Changes apply to new documents; saved documents keep their own figures.</li>
+<li>To retire the item, untick <strong>Active</strong> and save. Items cannot be deleted, because documents still refer to them.</li>
+</ol>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>An inventory part or assembly that still has stock or a value cannot be made inactive. Sell it, transfer it, or adjust it to zero with <a href="#pg-inv-adjust">Adjust Quantity/Value on Hand</a> first; then <strong>Active</strong> can be unticked. Saving it inactive anyway is refused with, for example, "BAG-001 still has 16 on hand (Main Warehouse, Makati Store, Cebu Store) and a value of 8,000.00. Only an inventory item with no balance can be made inactive: sell, transfer or adjust it to zero first." The same rule applies to an <strong>is_active</strong> column of <a href="manual.php?c=administration#pg-admin-import">Import from CSV</a>.</p></div>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Saving an item posts nothing, except the opening balance of a new inventory part. That is posted as an inventory adjustment dated <strong>As of</strong> at the chosen <strong>Site</strong>:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory</td>
+<td>Total value</td>
+<td></td>
+</tr>
+<tr>
+<td>3900 Opening Balance Equity</td>
+<td></td>
+<td>Total value</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>A new item BAG-002 with <strong>Quantity on hand</strong> 20 and <strong>Total value</strong> ₱10,000.00 comes in as 20 units at ₱500.00 each. If you leave <strong>Total value</strong> at 0, the units come in at no cost; type the value.</p></div>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Enter the item code and name." Both fields are required.</li>
+<li>"Another item already uses this code." or "Another item already uses this barcode." Codes and barcodes are unique.</li>
+<li>"Add at least one component." An assembly or group needs at least one line. "An item cannot be a component of itself."</li>
+<li>"This item was already entered in units of its present U/M set, so the set cannot be changed. Add the units you need to that set instead."</li>
+<li>Users without the Edit permission on the Item List see the form with every field greyed out.</li>
+<li>Every change is kept in the audit trail with the values before and after.</li>
+<li>The Home dashboard shows <strong>Items at or below reorder point</strong>, with the number of negative stock records under it; that line opens <a href="#pg-rpt-stock_status_item">Inventory Stock Status by Item</a>.</li>
+</ul>
+<h2 id="pg-inv-categories">Category List<a class="man-hash" href="#pg-inv-categories" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Categories group the items: Computers, Accessories, Frozen Products, Meat. An item's category is chosen on its form, and the categories filter the Item List, Set Item Prices and Levels, the Item Price List and the inventory reports, and make the groups of POS Sales by Category. The Category List is where they are added, renamed and deleted.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Lists &gt; Category List. Also the <strong>Category List</strong> button of the Item List.</p>
+<h4 id="s-the-list_1">The list<a class="man-hash" href="#s-the-list_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Category</strong></td>
+<td>The name. The search box above the list narrows it as you type.</td>
+</tr>
+<tr>
+<td><strong>Items</strong></td>
+<td>How many items are in the category, active or not. Click the number to open the Item List with only those items.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>How many of them are active.</td>
+</tr>
+<tr>
+<td><strong>On hand</strong></td>
+<td>The quantity on hand of its inventory parts and assemblies, at all sites.</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>That quantity at average cost. Shown only to users who may view costs.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The line <strong>(no category)</strong> at the foot counts the items that have none; its number opens them in the Item List so they can be given one.</p>
+<h4 id="s-add-or-rename-a-category">Add or rename a category<a class="man-hash" href="#s-add-or-rename-a-category" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>To add one, type the <strong>Category name</strong> in <strong>New category</strong> and click <strong>Add category</strong> (or <strong>Add category &amp; New</strong> to add another straight away). The message <strong>Category "Frozen Products" added.</strong> appears.</li>
+<li>To rename one, click <strong>Rename</strong> on its line, type the new name and click <strong>Save the name</strong>. Every item in the category shows the new name at once, on every page and report.</li>
+</ol>
+<p>Spaces at the ends of the name are removed and runs of spaces become one. Two categories cannot have the same name, whatever the capitals: the program says <strong>There is already a category called "...". To put the two together, delete one and move its items to the other.</strong></p>
+<h4 id="s-delete-a-category">Delete a category<a class="man-hash" href="#s-delete-a-category" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Delete</strong> on the category's line. A <strong>Delete</strong> panel opens on the right.</li>
+<li>If items are in the category, choose in <strong>Move its items to</strong> where they go: another category, which merges the two, or <strong>No category</strong>. A category without items needs no choice.</li>
+<li>Click <strong>Delete the category</strong> and confirm. The message says where the items went, for example <strong>Category "Supplies" deleted. Its 4 item(s) are now in "Accessories".</strong> <strong>Keep it</strong> closes the panel without deleting.</li>
+</ol>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Only the category of the items changes: their prices, costs, stock and history stay as they are. Adding needs the Create right on this page, renaming the Edit right and deleting the Delete right; every change is kept in the audit trail. The categories can also be added and renamed on the Item categories tab of <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>, which points here for deleting.</p></div>
+<h2 id="pg-inv-sites">Inventory Site List<a class="man-hash" href="#pg-inv-sites" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A site is a place where you keep stock. Set up one for each warehouse, store, stockroom and delivery van, and one for damaged goods.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Inventory Site List.</p>
+<p>The table on the left lists the sites: <strong>Code</strong>, <strong>Name</strong>, <strong>Type</strong>, <strong>Address</strong>, <strong>Items</strong> (how many items have stock there), <strong>Units</strong> (the total quantity there), <strong>POS</strong> (how many POS terminals sell from it) and an <strong>Edit</strong> link. The form on the right adds a new site, or changes the one you clicked <strong>Edit</strong> on.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Code</strong></td>
+<td>A short code, up to 20 characters, for example WH. It is saved in capitals and must be unique.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The site name, for example Main Warehouse.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td><strong>Warehouse</strong>, <strong>Retail store</strong>, <strong>Stockroom</strong>, <strong>Delivery van</strong>, <strong>Damaged goods</strong> or <strong>Other</strong>.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop using the site.</td>
+</tr>
+<tr>
+<td><strong>Address</strong></td>
+<td>The site's address (optional).</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-add-a-site">Step by step: add a site<a class="man-hash" href="#s-step-by-step-add-a-site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Inventory Site List</strong>.</li>
+<li>Type the <strong>Code</strong> and <strong>Name</strong>, choose the <strong>Type</strong> and type the <strong>Address</strong>.</li>
+<li>Click <strong>Save site</strong> (or <strong>Save site &amp; New</strong> to add another). The message "Site saved." appears.</li>
+</ol>
+<p>To change a site, click <strong>Edit</strong> on its row, change the fields and click <strong>Save site</strong>.</p>
+<h4 id="s-buttons_3">Buttons<a class="man-hash" href="#s-buttons_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Transfer inventory:</strong> opens a new <a href="#pg-inv-transfers">Transfer Inventory</a>.</li>
+<li><strong>Quantity on Hand by Site:</strong> opens the <a href="#pg-rpt-qoh_by_site">report</a> with one column per site.</li>
+</ul>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Another site uses this code."</li>
+<li>"This site still holds stock. Transfer it out before making the site inactive." Sites cannot be deleted.</li>
+<li>The first active site of the type <strong>Damaged goods</strong> receives the goods returned at the POS that cannot be resold (see <a href="manual.php?c=point-of-sale#pg-pos-receipts">POS Receipts, Returns &amp; Voids</a>).</li>
+<li>Each POS terminal sells from one site, chosen in <a href="manual.php?c=point-of-sale#pg-pos-terminals">POS Terminals</a>.</li>
+</ul>
+<h2 id="pg-inv-uom">U/M Set List<a class="man-hash" href="#pg-inv-uom" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A <em>U/M set</em> (unit of measure set) lets you buy, sell and count one item in several units: by the piece and by the box, by the kilo and by the sack. Each set has one <em>base unit</em>, the unit stock is counted and costed in, and any number of other units with the number of base units each contains.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; U/M Set List. The <strong>Manage U/M sets</strong> link on the item form also opens it.</p>
+<p>The note at the top explains the rule: a document line can be entered in any unit of the item's set; the quantity is multiplied by the number of base units the unit contains and the price divided by it, so a case of 12 at ₱1,200.00 is stored as 12 pieces at ₱100.00 each. Stock, costs and reports are always kept in the base unit.</p>
+<p>The list shows each <strong>Set</strong>, its <strong>Kind</strong>, <strong>Base unit</strong>, <strong>Units</strong> and the number of <strong>Items</strong> using it, with an <strong>Edit</strong> link. Inactive sets are marked <strong>inactive</strong>.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Set name</strong></td>
+<td>A name that is unique, for example Length (m).</td>
+</tr>
+<tr>
+<td><strong>Kind</strong></td>
+<td><strong>Count</strong>, <strong>Weight</strong>, <strong>Volume</strong>, <strong>Length</strong>, <strong>Area</strong>, <strong>Time</strong> or <strong>Other</strong>. It only groups the list.</td>
+</tr>
+<tr>
+<td><strong>Base unit</strong></td>
+<td>The unit stock is kept in, for example m or pc.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop offering the set on new items.</td>
+</tr>
+<tr>
+<td><strong>Unit</strong></td>
+<td>Another unit of the set, for example roll.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Its name, for example Roll of 100 m. Left blank, the unit code is used.</td>
+</tr>
+<tr>
+<td><strong>= how many</strong> (base unit)</td>
+<td>How many base units one of it contains, for example 100. It can be less than 1 (1 cm = 0.01 m).</td>
+</tr>
+<tr>
+<td><strong>Unit sales documents start in</strong></td>
+<td>The unit code sales lines start in. Blank means the base unit.</td>
+</tr>
+<tr>
+<td><strong>Unit purchases start in</strong></td>
+<td>The unit code purchase lines start in. Blank means the base unit.</td>
+</tr>
+</tbody>
+</table></div>
+<p>An item can override the two starting units with its own <strong>Sales unit</strong> and <strong>Purchase unit</strong>.</p>
+<h4 id="s-step-by-step-create-a-um-set">Step by step: create a U/M set<a class="man-hash" href="#s-step-by-step-create-a-um-set" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; U/M Set List</strong>.</li>
+<li>Type the <strong>Set name</strong>, choose the <strong>Kind</strong> and type the <strong>Base unit</strong> (for example <code>pc</code>).</li>
+<li>On the first line, type the <strong>Unit</strong> (for example <code>box</code>), its <strong>Description</strong> and how many base units it holds (for example <code>50</code>).</li>
+<li>Click <strong>Add unit</strong> for each other unit.</li>
+<li>Type the units that sales and purchases should start in, or leave them blank for the base unit.</li>
+<li>Click <strong>Save U/M set</strong>. The message "U/M set saved." appears.</li>
+<li>Open each item that uses the set in the Item List and choose the set in <strong>Unit of measure (U/M set)</strong>.</li>
+</ol>
+<p>To change a set, click <strong>Edit</strong> on its row. Remove a unit with the red cross, then save.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Enter the set name and the base unit." and "Another U/M set already uses this name."</li>
+<li>"Every unit needs how many ... it contains (a number greater than zero)."</li>
+<li>"The unit ... is the base unit; it is already on the list." and "The unit ... is listed twice."</li>
+<li>"The unit ... is used on n record(s) and cannot be removed. Keep it on the list." A unit used on documents or chosen as an item's sales or purchase unit stays.</li>
+<li>Renaming the base unit renames the unit of every item in the set.</li>
+<li>On the POS register, an item whose set has more than one unit gets a <strong>U/M</strong> box on its cart line.</li>
+</ul>
+<h2 id="pg-inv-formulas">Processing Formulas (Multi-Output BOM)<a class="man-hash" href="#pg-inv-formulas" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A processing formula is a reusable recipe for turning one or more inputs into several outputs: taking an item apart, opening a box to sell the contents one by one, or processing raw material into a main product and by-products. It says what goes in, what comes out and how the cost is shared, for one <em>batch</em>. A <a href="#pg-inv-process">processing order</a> multiplies the formula by the number of batches you run.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Processing Formulas (Multi-Output BOM). The <strong>Formulas</strong> and <strong>Processing formulas</strong> buttons on the processing pages open it too.</p>
+<h4 id="s-the-list_2">The list<a class="man-hash" href="#s-the-list_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The list shows the <strong>Code</strong>, <strong>Name</strong>, process <strong>Type</strong>, <strong>Allocation</strong> method, <strong>Inputs (per batch)</strong>, <strong>Outputs (per batch)</strong> (by-products and scrap are marked), the number of <strong>Orders</strong> that used it and its <strong>Status</strong>. Choose <strong>Active formulas</strong>, <strong>Inactive formulas</strong> or <strong>All formulas</strong> in the box above the table.</p>
+<ul>
+<li><strong>Run:</strong> starts a new processing order with the formula loaded.</li>
+<li><strong>New formula:</strong> opens a blank formula.</li>
+<li><strong>New from assembly BOM:</strong> pick an assembly in the box beside it and click the button. The new formula is filled from its bill of materials: code <strong>UNB-</strong> plus the assembly code, type <strong>Disassembly / Unbuild</strong>, method <strong>Relative standard cost</strong>, the assembly as input and its stocked components as outputs.</li>
+<li><strong>Processing orders:</strong> opens the list of processing orders.</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>You do not need a formula to take an assembly apart: a processing order can load any assembly's bill of materials directly.</p></div>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Code</strong></td>
+<td>Up to 30 characters, saved in capitals, unique.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>What the formula does, for example Break bulk: USB 32GB box of 50.</td>
+</tr>
+<tr>
+<td><strong>Process type</strong></td>
+<td><strong>Disassembly / Unbuild</strong>, <strong>De-kitting / Break-bulk</strong> or <strong>Co-product / By-product</strong>.</td>
+</tr>
+<tr>
+<td><strong>Usual processing site</strong></td>
+<td>The site orders start on. <strong>Any</strong> leaves it to the person running it.</td>
+</tr>
+<tr>
+<td><strong>Cost allocation method</strong></td>
+<td>How the cost is shared among the outputs (see the table below). The help text under the box explains the method chosen.</td>
+</tr>
+<tr>
+<td><strong>Description / instructions</strong></td>
+<td>Notes for the people doing the work.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop the formula being chosen for new orders.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Inputs per batch:</strong> the <strong>Item</strong> consumed (an inventory part, assembly, non-inventory part, service or other charge), a <strong>Description</strong> and the <strong>Qty</strong> per batch. <strong>Est. cost</strong> is filled when you check the allocation.</p>
+<p><strong>Additional costs per batch (optional):</strong> labor, machine time or overhead added to the cost. <strong>Account credited</strong> starts on the module default account for absorbed processing costs (5200 Direct Labor Absorbed in the demo); type a <strong>Description</strong> and the <strong>Amount</strong> per batch.</p>
+<p><strong>Outputs per batch:</strong> the <strong>Item</strong> produced (inventory parts and assemblies only), a <strong>Description</strong>, the <strong>Role</strong> (<strong>Co-product (main)</strong>, <strong>By-product</strong> or <strong>Scrap / waste</strong>), the <strong>Qty</strong> per batch and the <strong>Basis</strong>. <strong>Share</strong>, <strong>Est. cost</strong> and <strong>Unit cost</strong> are filled when you check the allocation.</p>
+<h4 id="s-the-cost-allocation-methods">The cost allocation methods<a class="man-hash" href="#s-the-cost-allocation-methods" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>By-products and scrap are valued first, at their <strong>Basis</strong> (a value per unit; scrap is usually 0). The rest of the cost goes to the co-products by the method:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Method</th>
+<th>How the co-products share the cost</th>
+<th>Basis on a co-product</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Relative sales value</strong></td>
+<td>In proportion to quantity × selling price</td>
+<td>Price per unit; blank uses the sales price</td>
+</tr>
+<tr>
+<td><strong>Relative standard cost</strong></td>
+<td>In proportion to quantity × standard cost</td>
+<td>Cost per unit; blank uses the item cost</td>
+</tr>
+<tr>
+<td><strong>Physical units</strong></td>
+<td>Every unit produced carries the same cost</td>
+<td>Not used</td>
+</tr>
+<tr>
+<td><strong>Weight / measure</strong></td>
+<td>In proportion to quantity × weight or volume per unit</td>
+<td>Weight per unit (required)</td>
+</tr>
+<tr>
+<td><strong>Fixed percentages</strong></td>
+<td>Each gets its percentage; they must add up to 100</td>
+<td>The percentage</td>
+</tr>
+<tr>
+<td><strong>Current average cost (difference to variance)</strong></td>
+<td>Each is valued at its average cost; the difference goes to the variance account</td>
+<td>Value per unit; blank uses the average cost</td>
+</tr>
+<tr>
+<td><strong>Manual amounts (difference to variance)</strong></td>
+<td>Each gets the amount you give; the difference goes to the variance account</td>
+<td>Total cost of the line per batch</td>
+</tr>
+</tbody>
+</table></div>
+<p>With the first five methods the outputs always carry the whole cost. The last two value the outputs and post any difference from the cost to the processing variance account.</p>
+<h4 id="s-step-by-step-create-a-formula">Step by step: create a formula<a class="man-hash" href="#s-step-by-step-create-a-formula" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New formula</strong>.</li>
+<li>Type the <strong>Code</strong> and <strong>Name</strong>, choose the <strong>Process type</strong>, the <strong>Usual processing site</strong> and the <strong>Cost allocation method</strong>.</li>
+<li>Under <strong>Inputs per batch</strong>, choose each item and its <strong>Qty</strong>. Click <strong>Add input</strong> for more.</li>
+<li>Under <strong>Additional costs per batch (optional)</strong>, enter the labor or overhead, or leave the line empty.</li>
+<li>Under <strong>Outputs per batch</strong>, choose each item, its <strong>Role</strong> and <strong>Qty</strong>, and a <strong>Basis</strong> where the method needs one. Click <strong>Add output</strong> for more.</li>
+<li>Click <strong>Check allocation</strong>. The shares and costs are worked out with today's costs, and a blue box gives the total cost per batch, the by-products and scrap, the amount allocated and, for the variance methods, the variance.</li>
+<li>Click <strong>Save formula</strong> (or <strong>Save &amp; New</strong>). The message "Formula ... saved." appears.</li>
+</ol>
+<h4 id="s-buttons-on-a-saved-formula">Buttons on a saved formula<a class="man-hash" href="#s-buttons-on-a-saved-formula" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Run this formula:</strong> starts a processing order with it.</li>
+<li><strong>Deactivate</strong> or <strong>Activate:</strong> a deactivated formula "stays on past orders but cannot be chosen for new ones".</li>
+<li><strong>Delete:</strong> only for a formula never used on an order; you must type a reason, and a full copy is kept in the audit trail.</li>
+<li><strong>Yield analysis:</strong> for a used formula, opens the <a href="#pg-rpt-process_yield">Processing Yield Analysis</a> report on it.</li>
+<li><strong>Formula list:</strong> back to the list.</li>
+</ul>
+<p>A formula already used shows "Used on n processing order(s). Changes apply to new orders only; posted orders keep their own lines."</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Add at least one input item (what is being processed or taken apart)." and "Add at least one output item (what the process produces)."</li>
+<li>"... cannot be an output. Outputs must be inventory or assembly items so their quantity and value can be tracked."</li>
+<li>"... is both an input and an output. Use an inventory adjustment for rework of the same item." and "The same output item is listed twice. Combine the lines."</li>
+<li>"Mark at least one output as a co-product (main product)." The five sharing methods need one.</li>
+<li>"The co-product percentages must add up to 100% ..." and "Enter the weight or measure per unit (basis) for ...".</li>
+<li>"By-product and scrap values (...) are more than the total cost to allocate (...). Lower their values per unit."</li>
+<li>"Formula ... is used on n processing order(s). Deactivate it instead."</li>
+</ul>
+<h2 id="pg-inv-transfers">Transfer Inventory<a class="man-hash" href="#pg-inv-transfers" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use Transfer Inventory to move stock from one site to another, for example from the Main Warehouse to the Makati Store. The quantities move; the total value of your inventory does not change.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Transfer Inventory (opens the list; click <strong>New transfer</strong>). Also the <strong>Transfer</strong> button of the Inventory Center, <strong>Transfer inventory</strong> on the Inventory Site List, and the Home dashboard <strong>Quick actions</strong>.</p>
+<h4 id="s-the-list_3">The list<a class="man-hash" href="#s-the-list_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The list shows the transfers dated from 90 days ago to 30 days ahead. Change <strong>From</strong> and <strong>To</strong>, choose a <strong>Status</strong> (<strong>Posted</strong> or <strong>Void</strong>) or <strong>Class</strong>, or type in <strong>Search</strong> (number, name or memo), then click <strong>Filter</strong>. The columns are <strong>Date</strong>, <strong>No.</strong> (click to open), <strong>From site</strong> and <strong>To site</strong> (where the goods left and where they arrived), <strong>Reference</strong>, <strong>Memo</strong>, <strong>Class</strong>, <strong>Quantity</strong> (the total quantity moved), <strong>Status</strong> and <strong>By</strong>. <strong>Export</strong> downloads the list as a CSV file with the same columns.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>A transfer has no amount, so the list shows the quantity moved instead of a total.</p></div>
+<h4 id="s-fields_3">Fields<a class="man-hash" href="#s-fields_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the move.</td>
+</tr>
+<tr>
+<td><strong>From site</strong></td>
+<td>The site the goods leave.</td>
+</tr>
+<tr>
+<td><strong>To site</strong></td>
+<td>The site receiving them.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>A note, for example Stock for store.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class, if you use classes.</td>
+</tr>
+<tr>
+<td><strong>Item</strong></td>
+<td>An inventory part or assembly.</td>
+</tr>
+<tr>
+<td><strong>On hand at source</strong></td>
+<td>Filled in when you choose the item: the quantity at the From site.</td>
+</tr>
+<tr>
+<td><strong>Qty to move</strong></td>
+<td>The quantity to move.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-move-stock-to-a-store">Step by step: move stock to a store<a class="man-hash" href="#s-step-by-step-move-stock-to-a-store" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Transfer Inventory</strong> and click <strong>New transfer</strong>.</li>
+<li>Check the <strong>Date</strong>, choose the <strong>From site</strong> (for example Main Warehouse) and the <strong>To site</strong> (Makati Store).</li>
+<li>On each line choose the <strong>Item</strong>, check <strong>On hand at source</strong> and type the <strong>Qty to move</strong>. Click <strong>Add line</strong>, <strong>Add 5 lines</strong> or <strong>Add 10 lines</strong> for more lines; the square plus button at the end of a line inserts one above it.</li>
+<li>Click <strong>Record transfer</strong> (or <strong>Record transfer &amp; New</strong>). The message "Transfer recorded. Quantities moved without changing total inventory value." appears and the transfer opens. If the From site does not have enough, the program first asks "Saving the transaction will lead the inventory to a negative balance. Do you want to continue?": <strong>Yes</strong> records it, <strong>No</strong> goes back to the transfer.</li>
+</ol>
+<h4 id="s-step-by-step-print-void-or-delete-a-transfer">Step by step: print, void or delete a transfer<a class="man-hash" href="#s-step-by-step-print-void-or-delete-a-transfer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the transfer from the list.</li>
+<li>Click <strong>Print</strong> for the printout, which names the <strong>From site</strong> and the <strong>To site</strong> in its heading and lists the items and quantities with a <strong>Total quantity</strong> line and signature lines. Click <strong>Print</strong> again on the printout page to send it to the printer.</li>
+<li>To undo the transfer, click <strong>Void</strong>, type the reason and click <strong>Void transaction</strong>. The document stays, marked VOID, and the goods go back. <strong>Delete</strong> removes it; its full content stays in the audit trail.</li>
+</ol>
+<h4 id="s-edit-a-transfer">Edit a transfer<a class="man-hash" href="#s-edit-a-transfer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A posted transfer has an <strong>Edit</strong> button (for users with the edit permission on Transfer Inventory). <strong>Edit Inventory Transfer</strong> shows the transfer as it was entered: <strong>Date</strong>, <strong>From site</strong>, <strong>To site</strong>, <strong>Memo</strong>, <strong>Class</strong>, the lines, and <strong>Reason for the change</strong>.</p>
+<ol>
+<li>Open the transfer from the <strong>Transfers list</strong> and click <strong>Edit</strong>.</li>
+<li>Change the quantities, the items, the sites or the date. <strong>On hand at source</strong> counts what this transfer itself took from the site it moved from, so the stock you see is what you can move.</li>
+<li>Type the <strong>Reason for the change</strong> and click <strong>Save changes</strong>.</li>
+</ol>
+<p>When you save, the stock moves again: the quantities the transfer moved go back to the site they left, then the new lines leave the <strong>From site</strong> and arrive at the <strong>To site</strong>, at average cost. The before and after, with the reason, go to the audit trail. A move that would take a site below zero asks first, as on a new transfer. A voided transfer cannot be edited, and transfers dated on or before the closing date are protected.</p>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>No journal entry: the goods leave one site and arrive at the other with the same value, and both sides use the item's inventory asset account. Each item goes out of the From site at its average cost and comes into the To site at that same cost.</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Choose two different sites."</li>
+<li>"You are not allowed to move stock to that site." The <strong>To site</strong> list shows every active site, but you can finish the transfer only to a site you may use.</li>
+<li>"Not enough stock of ... at the source site (...)." This appears only when <strong>Allow selling or moving stock below zero (with warning)</strong> is switched off.</li>
+<li>"Enter at least one item and quantity."</li>
+<li>The saved transfer shows <strong>From site</strong> and <strong>To site</strong> in its header and a <strong>Total quantity</strong> under its lines; it has no rate or amount columns. The item's history in the Inventory Center and the <a href="#pg-rpt-inv_valuation_detail">Inventory Valuation Detail</a> show the movement out of one site and into the other.</li>
+<li>A saved transfer can be corrected with <strong>Edit</strong> (see above), or voided and recorded again.</li>
+</ul>
+<h2 id="pg-inv-adjust">Adjust Quantity/Value on Hand<a class="man-hash" href="#pg-inv-adjust" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use this page to correct the quantity or the value of stock: goods damaged, lost, stolen, spoiled or used as samples, stock found, a write-down to net realizable value, or a cost correction. Every adjustment needs a reason, is posted to the books, and is recorded in the audit trail with your name.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Adjust Quantity/Value on Hand (opens a new adjustment). Also the <strong>Adjust</strong> button of the Inventory Center (which opens it with that item on the first line) and the Home dashboard <strong>Quick actions</strong>.</p>
+<h4 id="s-per-item-or-per-batch">Per Item or Per Batch<a class="man-hash" href="#s-per-item-or-per-batch" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The bar at the top, <strong>Adjustment option</strong>, offers two ways of entering the same adjustment:</p>
+<ul>
+<li><strong>Per Item Adjustment</strong> is the QuickBooks layout: you pick the items to adjust on lines, one by one or several at once, and see the quantity on hand, the new quantity and the difference of each. Use it for a few items, a damaged carton, a sample.</li>
+<li><strong>Per Batch Adjustment</strong> lists every stocked item of the site in one long grid; you type the new figures of the ones that changed. Use it after counting a whole site.</li>
+</ul>
+<p>Click either one. The program remembers your choice and opens the page that way next time. Both post the same kind of transaction, with the same reasons and the same entries.</p>
+<h4 id="s-per-item-adjustment-the-header">Per Item Adjustment: the header<a class="man-hash" href="#s-per-item-adjustment-the-header" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Adjustment type</strong></td>
+<td><strong>Quantity</strong>, <strong>Total value</strong> or <strong>Quantity and total value</strong>. The lines show the quantity columns, the value columns, or both, as you change it. The value types are offered only to users who may view costs.</td>
+</tr>
+<tr>
+<td><strong>Adjustment date</strong></td>
+<td>The date of the adjustment.</td>
+</tr>
+<tr>
+<td><strong>Reference no.</strong></td>
+<td>A reference, for example an incident report number.</td>
+</tr>
+<tr>
+<td><strong>Adjustment account</strong></td>
+<td>The account that takes the gain or loss. Default 5100 Inventory Adjustments and Shrinkage.</td>
+</tr>
+<tr>
+<td><strong>Inventory site</strong></td>
+<td>The site whose stock you are adjusting. Changing it updates the <strong>Qty on hand</strong> of every line.</td>
+</tr>
+<tr>
+<td><strong>Customer:Job</strong></td>
+<td>Optional: the customer or job the adjustment is for (goods used on a job, samples for a customer). It is carried onto the ledger lines for job costing.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the adjustment, if you use classes. A line without a class of its own gets it.</td>
+</tr>
+<tr>
+<td><strong>Reason (required)</strong></td>
+<td>The reasons on the list (as delivered: <strong>Count difference</strong>, <strong>Damage</strong>, <strong>Theft / loss</strong>, <strong>Spoilage / expiry</strong>, <strong>Samples / promotional use</strong>, <strong>Found stock</strong>, <strong>Write-down to net realizable value</strong>, <strong>Cost correction</strong>) or <strong>Other</strong> (then <strong>Describe</strong> it). <strong>Edit reasons</strong> beside the label changes the list (see below).</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-per-item-adjustment-the-lines">Per Item Adjustment: the lines<a class="man-hash" href="#s-per-item-adjustment-the-lines" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>Type part of the code or name and pick the item. An item can be on one line only; a second line with it is marked red and refused on saving.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>The item's display name.</td>
+</tr>
+<tr>
+<td><strong>Qty on hand</strong></td>
+<td>What the chosen site holds now, in the U/M of the line.</td>
+</tr>
+<tr>
+<td><strong>New quantity</strong></td>
+<td>Type the quantity the site should have. The difference fills in by itself.</td>
+</tr>
+<tr>
+<td><strong>Qty difference</strong></td>
+<td>Or type the change itself, for example <code>-2</code> for two units damaged, <code>5</code> for five found. The new quantity fills in by itself.</td>
+</tr>
+<tr>
+<td><strong>U/M</strong></td>
+<td>The unit the quantities are typed in, when the item has a U/M set (pieces, boxes, cases). The program converts to the base unit.</td>
+</tr>
+<tr>
+<td><strong>Current value</strong></td>
+<td>Value types: the value of the item at all sites.</td>
+</tr>
+<tr>
+<td><strong>New value</strong></td>
+<td>Value types: the value the item should have at all sites after the adjustment. With <strong>Quantity and total value</strong>, typing the <strong>New quantity</strong> fills it in with the value the new quantity gives at the average cost (shown in grey italics); type over it to set a value of your own.</td>
+</tr>
+<tr>
+<td><strong>Net adjustment</strong></td>
+<td>What the line changes the value of the stock by: the quantity change at the average cost, plus any value change. Negative figures (in brackets) are losses. Shown to users who may view costs.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of this line, when it differs from the one at the top.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The cross at the end of a line removes it; the square plus button beside it inserts an empty line above it. <strong>Add line</strong>, <strong>Add 5 lines</strong> and <strong>Add 10 lines</strong> add empty lines at the end.</p>
+<ul>
+<li><strong>Find &amp; Select Items...</strong> opens a list of every active inventory part and assembly with its quantity at the site. Type in the search box to narrow it, tick <strong>Only items in stock at the site</strong> if you want, tick the items (the box in the heading ticks every item shown) and click <strong>Add the selected items</strong>. Each one gets a line. Items already on a line cannot be ticked again.</li>
+<li><strong>Set Qty to Zero</strong> makes the <strong>New quantity</strong> of every line 0, for writing off everything on the lines.</li>
+<li><strong>Categories</strong> with <strong>Add their items</strong> puts every active item of the ticked categories on the lines at once (the items already on a line are left as they are), to adjust whole categories. Click the <strong>Categories</strong> box, tick one category or several, then click <strong>Add their items</strong>. <strong>Find &amp; Select Items</strong> has a <strong>Categories</strong> box as well: tick one or more to list only their items.</li>
+</ul>
+<p>Under the lines are the <strong>Memo</strong> and two figures that change as you type: <strong>Total value of adjustment</strong> (the quantity differences at average cost plus any value changes; negative for a loss; shown to users who may view costs) and <strong>Number of item adjustments</strong> (the lines that change something).</p>
+<p>The buttons: <strong>Save &amp; Close</strong> posts the adjustment and opens it; <strong>Save &amp; New</strong> posts it and opens a fresh form with the same option, type and site; <strong>Clear</strong> empties the form after asking. An adjustment that would leave an item below zero at the site asks "Saving the transaction will lead the inventory to a negative balance. Do you want to continue?" first, in both adjustment options: <strong>Yes</strong> posts it, <strong>No</strong> goes back to the lines.</p>
+<h4 id="s-per-batch-adjustment">Per Batch Adjustment<a class="man-hash" href="#s-per-batch-adjustment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The boxes at the top, <strong>Adjustment type</strong>, <strong>Site</strong> and <strong>Categories</strong>, choose what the grid shows; changing them reloads the page. <strong>Categories</strong> is a list of check boxes: click it and tick one category, or two or more, then click <strong>Show</strong> (or just close the list). The grid lists only the items of the ticked categories, so they can be counted and adjusted together. <strong>Tick all</strong> and <strong>Clear</strong> work on the whole list, and with many categories a search box at the top finds one by name. With nothing ticked the box reads <strong>All categories</strong> and the grid lists every item. The button shows the ticked categories ("Accessories, Computers", or "Accessories, Cables and 2 more categories"), and <strong>Post adjustment &amp; New</strong> opens the next grid with the same categories ticked. The header has the same <strong>Adjustment date</strong>, <strong>Reference no.</strong>, <strong>Adjustment account</strong>, <strong>Reason</strong>, <strong>Memo</strong> and <strong>Class</strong> as above.</p>
+<p>The grid lists every active inventory part and assembly. The first two columns are the item name/code and the display name.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qty at site</strong></td>
+<td>The quantity now at the chosen site.</td>
+</tr>
+<tr>
+<td><strong>New qty</strong></td>
+<td>Type the quantity the site should have. Leave it blank to leave the item alone.</td>
+</tr>
+<tr>
+<td><strong>Change</strong></td>
+<td>The difference, worked out as you type.</td>
+</tr>
+<tr>
+<td><strong>Total qty</strong></td>
+<td>Value types: the quantity at all sites.</td>
+</tr>
+<tr>
+<td><strong>Current value</strong></td>
+<td>Value types: the value at all sites (total qty × average cost).</td>
+</tr>
+<tr>
+<td><strong>New value</strong></td>
+<td>Value types: type the value the item should have at all sites after the adjustment. With <strong>Quantity and total value</strong>, that is the value with the new quantity: typing the <strong>New qty</strong> fills it in at the average cost (grey italics) until you type a value of your own.</td>
+</tr>
+<tr>
+<td><strong>Net adjustment</strong></td>
+<td>What the row changes the value of the stock by (users who may view costs).</td>
+</tr>
+</tbody>
+</table></div>
+<p>Under the grid, <strong>Total value of adjustment</strong> and <strong>Number of item adjustments</strong> add up as you type. Click <strong>Post adjustment</strong> (or <strong>Post adjustment &amp; New</strong>).</p>
+<h4 id="s-edit-reasons">Edit reasons<a class="man-hash" href="#s-edit-reasons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The reasons offered in the <strong>Reason</strong> box are a list the company keeps. Users who may edit adjustments see <strong>Edit reasons</strong> beside the box.</p>
+<ol>
+<li>Click <strong>Edit reasons</strong>. The box <strong>Reasons for adjustments</strong> lists them.</li>
+<li>Change the wording of a reason, put the list in order with the up and down arrows, take a reason off with the cross, or click <strong>Add a reason</strong> and type it.</li>
+<li>Click <strong>Save the reasons</strong>. The <strong>Reason</strong> box offers the new list at once; nothing typed on the adjustment is lost.</li>
+</ol>
+<p><strong>Other</strong> (described in words) is always offered last and cannot be taken off. A reason can be at most 60 characters, and the same reason cannot be on the list twice. Adjustments already saved keep the reason they were saved with. Each change is recorded in the audit trail.</p>
+<h4 id="s-memorize-adjustment-and-load-memorized-adjustment">Memorize Adjustment and Load Memorized Adjustment<a class="man-hash" href="#s-memorize-adjustment-and-load-memorized-adjustment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>An adjustment made again and again (the weekly spoilage of the same items, a monthly sample allocation) can be kept as a pro-forma and loaded the next time, to revise the figures and post.</p>
+<ol>
+<li>Fill in the adjustment as usual (Per Item or Per Batch): the items, their new quantity or difference, the reason, the memo.</li>
+<li>Click <strong>Memorize Adjustment</strong> (beside the save buttons). Type a name in <strong>Name it</strong>, a <strong>Group</strong> if you use groups, and choose the <strong>Reminder</strong>: <strong>Don't remind me (I load it when needed)</strong>, or <strong>Remind me when it is due</strong> with how often and the next due date.</li>
+<li>Click <strong>Memorize Adjustment</strong> in the box. The message "Memorized as "...". Load it with "Load Memorized Adjustment" and revise the figures for the next adjustment. Nothing was posted." appears and the form stays as it was, ready to be posted too.</li>
+</ol>
+<p>To use it: click <strong>Load Memorized Adjustment</strong> in the title bar, then <strong>Load</strong> on its line. The form opens in the option it was memorized in (Per Item or Per Batch) with its site, type, account, reason, memo and lines; change what differs and save. A Per Item pro-forma can also be shown in the Per Batch grid: a difference becomes the new quantity. A memorized adjustment is never posted on its own: on the Memorized Transactions list it has <strong>Open</strong> (open on the form) instead of <strong>Enter now</strong>.</p>
+<h4 id="s-step-by-step-write-off-damaged-goods-per-item">Step by step: write off damaged goods (Per Item)<a class="man-hash" href="#s-step-by-step-write-off-damaged-goods-per-item" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Adjust Quantity/Value on Hand</strong> and click <strong>Per Item Adjustment</strong>.</li>
+<li>Leave <strong>Adjustment type</strong> on <strong>Quantity</strong> and choose the <strong>Inventory site</strong>, for example Main Warehouse.</li>
+<li>Choose the <strong>Reason</strong>, for example <strong>Damage</strong>, and type a <strong>Memo</strong> such as <code>water leak</code>.</li>
+<li>On the first line pick the item, for example BAG-001, and type <code>-2</code> in <strong>Qty difference</strong>. <strong>New quantity</strong> shows what will be left.</li>
+<li>If the <strong>Supervisor approval</strong> box opens, ask a supervisor to type their username and password in it (or a one-time approval code).</li>
+<li>Click <strong>Save &amp; Close</strong>. The message "1 item adjustment(s) posted and logged with your name and the reason." appears and the adjustment opens.</li>
+</ol>
+<h4 id="s-step-by-step-write-an-item-down-to-a-new-value">Step by step: write an item down to a new value<a class="man-hash" href="#s-step-by-step-write-an-item-down-to-a-new-value" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose <strong>Adjustment type</strong> <strong>Total value</strong>.</li>
+<li>Choose the reason <strong>Write-down to net realizable value</strong> (or <strong>Cost correction</strong>).</li>
+<li>Pick the item on a line (Per Item) or find its row (Per Batch), and type the total value it should have in <strong>New value</strong>, for all sites together.</li>
+<li>Save. The quantity stays; the average cost becomes the new value divided by the quantity.</li>
+</ol>
+<h4 id="s-step-by-step-bring-in-stock-with-its-value">Step by step: bring in stock with its value<a class="man-hash" href="#s-step-by-step-bring-in-stock-with-its-value" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Use <strong>Quantity and total value</strong> when both the count and the worth change, for example assemblies you had before you started using the program.</p>
+<ol>
+<li>Choose <strong>Adjustment type</strong> <strong>Quantity and total value</strong> and the site.</li>
+<li>Choose the <strong>Reason</strong> and type a <strong>Memo</strong>.</li>
+<li>For the item, type the new quantity for this site and the <strong>New value</strong> the item should have in total once the new quantity is in.</li>
+<li>Save.</li>
+</ol>
+<p>The quantity changes first, at the average cost, and the value is then set to exactly the <strong>New value</strong> you typed. The average cost becomes the new value divided by the item's total quantity.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Suppose SET-OFFICE Office Monitor Set has 2 units at the Main Warehouse and nowhere else, worth ₱30,000.00. You count 5 and agree they are worth ₱70,000.00 in all. Type the new quantity <code>5</code> and <strong>New value</strong> <code>70000</code>. After posting, the item has 5 units worth ₱70,000.00 (₱14,000.00 each): Inventory is debited ₱40,000.00 and the adjustment account credited ₱40,000.00.</p></div>
+<h4 id="s-edit-an-adjustment">Edit an adjustment<a class="man-hash" href="#s-edit-an-adjustment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A posted adjustment has an <strong>Edit</strong> button (for users with the edit permission on Adjust Quantity/Value on Hand). <strong>Edit Inventory Adjustment</strong> opens it on lines, as a Per Item Adjustment, whichever way it was entered, with its <strong>Adjustment type</strong>, date, reference, account, site, Customer:Job, class, <strong>Reason</strong> and memo, and a box <strong>Why it is being changed</strong>.</p>
+<p><strong>Qty on hand</strong> and <strong>Current value</strong> are what the site had <em>without</em> this adjustment, so <strong>New quantity</strong>, <strong>Qty difference</strong> and <strong>New value</strong> read as they did when it was entered: an adjustment that took 2 damaged bags off shows <strong>Qty difference</strong> -2 and the new quantity it left.</p>
+<ol>
+<li>Open the adjustment from the <strong>Adjustments list</strong> and click <strong>Edit</strong>.</li>
+<li>Change the difference or the new quantity (the other follows), the new value, the U/M or the class of a line; add or remove lines with <strong>Find &amp; Select Items</strong> or the <strong>x</strong>.</li>
+<li>Keep or change the <strong>Reason</strong>, type <strong>Why it is being changed</strong>, and click <strong>Save changes</strong>.</li>
+</ol>
+<p>Saving takes the adjustment off the books, works the lines out again against the stock without it, and posts it again in the same step, under the same number. The before and after, with the reason, go to the audit trail. An adjustment above your amount limit needs supervisor approval, as a new one does.</p>
+<h4 id="s-the-adjustments-list">The adjustments list<a class="man-hash" href="#s-the-adjustments-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click <strong>Adjustments list</strong> to see the saved adjustments. The list works like the transfers list (filters <strong>From</strong>, <strong>To</strong>, <strong>Status</strong>, <strong>Class</strong>, <strong>Search</strong>; <strong>New adjustment</strong> and <strong>Export</strong> buttons). Click a number to open an adjustment; from there you can <strong>Edit</strong>, <strong>Print</strong>, <strong>Void</strong> or <strong>Delete</strong> it.</p>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A decrease takes the goods out at average cost:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5100 Inventory Adjustments and Shrinkage</td>
+<td>₱1,000.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td></td>
+<td>₱1,000.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>This is the entry of ADJ-00001 (2 BAG-001 at ₱500.00). An increase posts the reverse, at the current average cost. Each ledger line carries the class of its line (or of the adjustment) and the Customer:Job chosen at the top. A value change debits Inventory and credits the adjustment account when the value goes up, and the reverse when it goes down.</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Put at least one item on the adjustment before memorizing it." (Memorize Adjustment with no lines)</li>
+<li>"Choose or describe the reason for the adjustment."</li>
+<li>"No changes entered. Type the new quantity or value for the items to adjust." (Per Batch) or "No changes entered. Choose the items and type their new quantity (or the difference)." (Per Item).</li>
+<li>"BAG-001 is on two lines. Keep it on one line." (Per Item)</li>
+<li>"You are not allowed to adjust stock at that site."</li>
+<li>A supervisor must approve when the adjustment is worth more than your <strong>Max check / bill payment / adjustment amount without approval</strong> (the value is estimated at average cost). A user with the Approve permission on this page approves their own.</li>
+<li>The value of an item is kept for all sites together, so a value adjustment changes the average cost everywhere.</li>
+<li>A saved adjustment can be corrected with <strong>Edit</strong> (see above), or voided and posted again.</li>
+<li>Giving one person both this page and <strong>Physical Inventory Count</strong> (with create or edit rights) is flagged as a segregation-of-duties conflict when roles and users are saved.</li>
+</ul>
+<h2 id="pg-inv-build">Build Assemblies<a class="man-hash" href="#pg-inv-build" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Building turns components into finished assemblies: the component quantities go down, the assembly quantity goes up, and the component cost (plus any labor on the bill of materials) becomes the value of the assembly. When components are short, you can save the build as <em>pending</em> and complete it when the parts arrive.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Build Assemblies (opens the <strong>Assembly Builds</strong> list; click <strong>Build assemblies</strong>). Also the <strong>Build</strong> button of the Inventory Center and the Home dashboard <strong>Quick actions</strong>.</p>
+<p>The list works like the transfers list; its <strong>Status</strong> filter offers <strong>Completed</strong>, <strong>Pending</strong> and <strong>Void</strong>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The <strong>Total</strong> column of this list is not used for builds and shows 0.00. The value of a build is in the item's history and in the <a href="#pg-rpt-inv_valuation_detail">Inventory Valuation Detail</a>.</p></div>
+<h4 id="s-fields_4">Fields<a class="man-hash" href="#s-fields_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Assembly item</strong></td>
+<td>The assembly to build.</td>
+</tr>
+<tr>
+<td><strong>Build at site</strong></td>
+<td>Where the components are taken from and the assembly is put.</td>
+</tr>
+<tr>
+<td><strong>Quantity to build</strong></td>
+<td>How many assemblies.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The build date.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>A note, for example Weekly build.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class, if you use classes.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Changing the assembly, site or quantity reloads the page. The line <strong>On hand at site</strong> shows how many of the assembly the site has, and its build point.</p>
+<p>The table lists the bill of materials: <strong>Component</strong>, <strong>Description</strong>, <strong>Per unit</strong>, <strong>Needed</strong> (per unit × quantity) and <strong>On hand at site</strong> (<strong>n/a</strong> for labor and other items without stock). A component that is short is shown in red with <strong>short</strong>.</p>
+<h4 id="s-step-by-step-build-assemblies">Step by step: build assemblies<a class="man-hash" href="#s-step-by-step-build-assemblies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Build Assemblies</strong> and click <strong>Build assemblies</strong>.</li>
+<li>Choose the <strong>Assembly item</strong> and the <strong>Build at site</strong>, and type the <strong>Quantity to build</strong>.</li>
+<li>Check that no line says <strong>short</strong>.</li>
+<li>Click <strong>Build</strong> (or <strong>Build &amp; New</strong>). The message "Assembly built." appears.</li>
+</ol>
+<h4 id="s-step-by-step-save-a-pending-build-and-complete-it-later">Step by step: save a pending build and complete it later<a class="man-hash" href="#s-step-by-step-save-a-pending-build-and-complete-it-later" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>When a component is short, the page says "Some components are short. You can save the build as <strong>pending</strong>; it is non-posting and can be completed when the parts arrive."</li>
+<li>Click <strong>Save as pending build</strong>. The message "Build saved as pending. It will not affect inventory until completed." appears.</li>
+<li>When the parts are in, open the build from the list (or from the <a href="#pg-rpt-pending_builds">Pending Builds</a> report).</li>
+<li>In the box at the bottom, "This build is pending. When the missing components arrive, complete it here.", check the <strong>Build date</strong> and click <strong>Complete build</strong>.</li>
+<li>If parts are still missing, the message "Still short of components: ..." lists them.</li>
+</ol>
+<p>The saved build shows the assembly and each <strong>component</strong> with its quantity. <strong>Print</strong> gives a printout of the build, <strong>Void</strong> undoes it and <strong>Delete</strong> removes it (with a reason).</p>
+<h4 id="s-buttons_4">Buttons<a class="man-hash" href="#s-buttons_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Builds list:</strong> the list of builds.</li>
+<li><strong>Pending Builds:</strong> the <a href="#pg-rpt-pending_builds">Pending Builds</a> report.</li>
+<li><strong>Disassemble (unbuild):</strong> opens a processing order that takes the assembly apart (see <a href="#pg-inv-process">Disassemble / Process Items</a>).</li>
+</ul>
+<h4 id="s-edit-a-build">Edit a build<a class="man-hash" href="#s-edit-a-build" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A build has an <strong>Edit</strong> button (for users with the edit permission on Build Assemblies). <strong>Edit Build Assembly</strong> shows the <strong>Assembly item</strong>, <strong>Build at site</strong>, <strong>Quantity to build</strong>, <strong>Date</strong>, <strong>Memo</strong>, <strong>Class</strong>, the components and <strong>Reason for the change</strong>.</p>
+<ul>
+<li>The components follow the quantity: with the same assembly they are the quantities per unit recorded on this build; when another assembly is chosen they come from its bill of materials.</li>
+<li><strong>On hand at site</strong> counts what this build itself used, so the components you see are what you can build with.</li>
+<li>A completed build: <strong>Save changes</strong> posts it again (the components it used go back to the site, the new quantities are taken and the assembly is added at their cost). When the components are short for the new quantity it says so and cannot be saved.</li>
+<li>A pending build: <strong>Save changes (still pending)</strong> keeps it pending (nothing moves in stock), and <strong>Save and complete the build</strong> completes it when the components are there.</li>
+</ul>
+<p>The before and after, with the reason, go to the audit trail.</p>
+<h4 id="s-what-it-records_3">What it records<a class="man-hash" href="#s-what-it-records_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Stocked components are issued at their average cost; labor and other non-stock components are charged at their <strong>Cost</strong> and credited to their expense account. The assembly receives the total. Building one SET-OFFICE (MON-024, KEY-001, MOU-001, CAB-HDMI and LAB-ASM at ₱150.00):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory (SET-OFFICE)</td>
+<td>₱7,706.67</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory (the four stocked parts)</td>
+<td></td>
+<td>₱7,556.67</td>
+</tr>
+<tr>
+<td>5200 Direct Labor Absorbed (LAB-ASM)</td>
+<td></td>
+<td>₱150.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>There is no gain or loss. A pending build posts nothing.</p>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Choose the assembly and a quantity greater than zero." and "This assembly has no bill of materials."</li>
+<li>"There are not enough components at this site. Save the build as pending, or transfer / receive the components first." A build never issues parts that are short.</li>
+<li>A pending build keeps the component quantities it was saved with, even if the bill of materials changes later.</li>
+<li>A saved build can be corrected with <strong>Edit</strong> (see above), or voided and built again. A pending build is also completed with <strong>Complete build</strong> on the build itself.</li>
+</ul>
+<h2 id="pg-inv-process">Disassemble / Process Items<a class="man-hash" href="#pg-inv-process" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A <em>processing order</em> takes items out of stock, puts the resulting items in, and spreads the cost over them. Use it to:</p>
+<ul>
+<li><strong>take an assembly or a finished item apart</strong> (disassembly or unbuild), for example a trade-in PC broken into parts;</li>
+<li><strong>break a box or kit into single units</strong> for separate sale (de-kitting or break-bulk), for example a box of 50 flash drives;</li>
+<li><strong>process raw material into several products</strong> (co-products and by-products), with labor and overhead added.</li>
+</ul>
+<p><strong>Where to find it:</strong> Inventory &gt; Disassemble / Process Items (opens the <strong>Processing Orders</strong> list). Also the <strong>Run</strong> buttons of the formulas, the <strong>Disassemble</strong> or <strong>Process / break down</strong> button of the Inventory Center, the <strong>Disassemble (unbuild)</strong> button of Build Assemblies and the Home dashboard <strong>Quick actions</strong>.</p>
+<h4 id="s-the-list_4">The list<a class="man-hash" href="#s-the-list_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The list shows the orders from 90 days ago to 30 days ahead: <strong>Date</strong>, <strong>No.</strong>, <strong>Type</strong>, <strong>Formula</strong>, <strong>Site</strong>, <strong>Inputs</strong>, <strong>Outputs</strong>, <strong>Variance qty</strong> (the input quantity less the output quantity), <strong>Total cost</strong> (users who may view costs), <strong>Status</strong> (<strong>Completed</strong>, <strong>Pending</strong> or <strong>Void</strong>) and <strong>By</strong>. Filter by <strong>From</strong>, <strong>To</strong>, <strong>Type</strong>, <strong>Status</strong> and <strong>Search</strong> (number, item, formula or memo). The buttons are <strong>New processing order</strong>, <strong>Formulas</strong>, <strong>Register</strong> (the <a href="#pg-rpt-processing_register">Processing &amp; Disassembly Register</a>) and <strong>Export</strong>.</p>
+<h4 id="s-fields-the-top-of-the-form">Fields: the top of the form<a class="man-hash" href="#s-fields-the-top-of-the-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Process type</strong></td>
+<td><strong>Disassembly / Unbuild</strong>, <strong>De-kitting / Break-bulk</strong> or <strong>Co-product / By-product</strong>. The help text explains it.</td>
+</tr>
+<tr>
+<td><strong>Load lines from</strong></td>
+<td>A formula (<strong>Formula: ...</strong>) or an assembly's bill of materials (<strong>Unbuild assembly (bill of materials): ...</strong>). Leave <strong>— none: enter the lines below —</strong> to type the lines yourself.</td>
+</tr>
+<tr>
+<td><strong>Batches / units</strong></td>
+<td>How many batches of the formula, or how many assemblies to take apart.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The processing date.</td>
+</tr>
+<tr>
+<td><strong>Processing site (inputs)</strong></td>
+<td>The site the inputs are taken from.</td>
+</tr>
+<tr>
+<td><strong>Receive outputs at</strong></td>
+<td>The site the outputs go to. <strong>Same site</strong> when left empty.</td>
+</tr>
+<tr>
+<td><strong>Reference no.</strong></td>
+<td>Your reference. The number the order will get is shown beside it, for example No. PRC-00006.</td>
+</tr>
+<tr>
+<td><strong>Cost allocation method</strong></td>
+<td>How the cost is shared (see the methods under <a href="#pg-inv-formulas">Processing Formulas</a>).</td>
+</tr>
+<tr>
+<td><strong>Variance account (difference)</strong></td>
+<td>Shown for the two variance methods: the account for the difference. <strong>— default —</strong> uses the module default (5100 Inventory Adjustments and Shrinkage in the demo).</td>
+</tr>
+<tr>
+<td><strong>Memo</strong>, <strong>Class</strong></td>
+<td>A note and the class.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields-the-three-grids">Fields: the three grids<a class="man-hash" href="#s-fields-the-three-grids" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Inputs (consumed):</strong> <strong>Item</strong>, <strong>Description</strong>, <strong>Planned</strong> (the quantity the formula or bill of materials called for), <strong>Qty</strong> (the actual quantity used), <strong>On hand at site</strong> (in red when short), <strong>Est. unit cost</strong> and <strong>Est. cost</strong>. The <strong>Total inputs</strong> row adds up the quantities as you type. Stocked items are issued at their average cost; services and non-stock items are charged at their standard cost.</p>
+<p><strong>Additional processing costs (optional):</strong> <strong>Account credited</strong>, <strong>Description</strong> and <strong>Amount</strong>, for labor, machine time or overhead. The account is credited, that is, the cost is absorbed into the outputs.</p>
+<p><strong>Outputs (produced):</strong> <strong>Item</strong>, <strong>Description</strong>, <strong>Role</strong>, <strong>Planned</strong>, <strong>Qty</strong> (the actual quantity produced), <strong>Basis</strong>, <strong>Share of cost</strong>, <strong>Allocated cost</strong> and <strong>Unit cost</strong>. The <strong>Running total</strong> row adds up the quantities and the allocated cost. Under it, <strong>Variance qty (inputs less outputs)</strong> is the total input quantity less the total output quantity, worked out as you type: in red when less came out than went in (a loss in processing, such as trimmings or evaporation), in green when more came out. After a preview the next row compares the allocated cost with the <strong>Total cost to allocate</strong>.</p>
+<p>You may type an <strong>Allocated cost</strong> or a <strong>Unit cost</strong> on an output: entering one works out the other from the quantity. Typing a cost on a co-product switches the method to <strong>Manual amounts</strong>, so the figures you entered are the ones posted and any difference goes to the variance account. On a by-product or scrap line, the unit cost you type is its value per unit.</p>
+<h4 id="s-step-by-step-run-a-formula">Step by step: run a formula<a class="man-hash" href="#s-step-by-step-run-a-formula" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Processing Formulas (Multi-Output BOM)</strong> and click <strong>Run</strong> on the formula (or choose it in <strong>Load lines from</strong>).</li>
+<li>Type the number of <strong>Batches / units</strong> and click <strong>Load lines</strong>. The lines are filled from the formula, multiplied by the batches, and the allocation is shown at once.</li>
+<li>Check the <strong>Processing site (inputs)</strong> and <strong>Receive outputs at</strong>.</li>
+<li>Change the output <strong>Qty</strong> to what was really produced, if it differs from <strong>Planned</strong>. The difference shows as the yield.</li>
+<li>Click <strong>Preview allocation</strong> to see the <strong>Cost allocation preview</strong>: input materials, additional costs, total cost to allocate, by-products and scrap, allocated to outputs and, for the variance methods, <strong>Variance posted (loss / (gain))</strong>. The preview uses today's average costs; posting uses the average cost at the time of posting.</li>
+<li>Click <strong>Save and post</strong> (or <strong>Save &amp; New</strong>). The message "... posted: inputs issued, outputs received at their allocated cost." appears.</li>
+</ol>
+<h4 id="s-step-by-step-take-an-assembly-apart-without-a-formula">Step by step: take an assembly apart without a formula<a class="man-hash" href="#s-step-by-step-take-an-assembly-apart-without-a-formula" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New processing order</strong>.</li>
+<li>In <strong>Load lines from</strong>, choose <strong>Unbuild assembly (bill of materials): SET-OFFICE ...</strong> and type the number of assemblies in <strong>Batches / units</strong>.</li>
+<li>Click <strong>Load lines</strong>. The assembly becomes the input and its stocked components the outputs; labor on the bill of materials is not recovered. The method is set to <strong>Relative standard cost</strong>.</li>
+<li>Check the lines and click <strong>Save and post</strong>.</li>
+</ol>
+<h4 id="s-step-by-step-save-a-pending-order-and-complete-it">Step by step: save a pending order and complete it<a class="man-hash" href="#s-step-by-step-save-a-pending-order-and-complete-it" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>When an input is short, <strong>Save and post</strong> gives "Not enough stock at the processing site: ... Save the order as pending, or transfer or receive the items first." An order dated before today is also checked on its own date: it may not take stock that only came in later, nor so much that the site would go below zero on a later date, for example "CARCASS (need 96.67, have 71.48 on 10/01/2026 without going below zero on a later date; the rest came in after it)". Date the order on or after the bill that brought the stock in.</li>
+<li>Click <strong>Save as pending</strong>. The order is saved, does not affect inventory or the books, and shows its amounts as estimates.</li>
+<li>When the inputs are in, open the order. In the box "When the inputs are available at the processing site, complete the order here.", check the <strong>Processing date</strong> and click <strong>Complete and post</strong>.</li>
+</ol>
+<h4 id="s-the-saved-order">The saved order<a class="man-hash" href="#s-the-saved-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The page shows the order's details (date, number, status, type, method, formula × batches, sites, reference, memo, who entered and approved it), the <strong>Inputs (consumed)</strong>, the <strong>Additional processing costs</strong>, and the <strong>Outputs (produced) and cost allocation</strong> with the <strong>Yield</strong> of each output (actual against planned, red when below 100%). The inputs grid ends with a <strong>Total inputs</strong> line (quantity and cost), the outputs grid with a <strong>Total outputs</strong> line (quantity, the allocation percentages, which add up to 100%, and the cost allocated), then a <strong>Variance qty</strong> line, the input quantity less the output quantity, and a <strong>Variance</strong> line: the inputs and additional costs less the outputs. The variance is 0.00 when the whole cost was allocated, and is highlighted when it is not, for example with the <strong>Current average cost</strong> or <strong>Manual amounts</strong> method, where the difference is posted to the variance account. A completed order also shows the <strong>General ledger entries created automatically</strong>. The <strong>Quantity summary</strong> box gives the <strong>Input quantity</strong>, the <strong>Output quantity</strong> and the <strong>Variance qty (inputs less outputs)</strong>; when the lines use different units of measure (boxes in, pieces out) it says so, since the quantities are added as entered. The <strong>Cost summary</strong> box gives input materials, additional costs, total cost, by-products and scrap, co-products and variance. Each input shows its <strong>Unit cost</strong> and <strong>Cost</strong>.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>A meat shop cuts 5.02 kg of pork into 2.3 kg of Pork Humba and 2.7 kg of Pork Menudo. Total inputs 5.02, total outputs 5, so the <strong>Variance qty (inputs less outputs)</strong> is 0.02 kg: the trimmings lost in cutting. The cost of the 5.02 kg is still spread over the two outputs.</p></div>
+<p>Its buttons:</p>
+<ul>
+<li><strong>Edit:</strong> changes the order (not on a voided one). Saving a posted order posts it again.</li>
+<li><strong>Run again:</strong> a new order with the same formula, batches and site.</li>
+<li><strong>Print:</strong> the <strong>PROCESSING ORDER</strong> printout. The inputs table gives each input's <strong>Qty</strong>, <strong>Unit cost</strong> and <strong>Cost</strong>; the <strong>Total inputs</strong> and <strong>Total outputs</strong> lines close the grids, and a small table at the right gives <strong>Inputs</strong>, <strong>Outputs</strong>, <strong>Variance (inputs less outputs)</strong> and <strong>Variance qty (inputs less outputs)</strong>, followed by the Prepared by, Processed by and Checked / approved by lines. Users who may not view costs get the quantities only, with the variance qty.</li>
+
+<li><strong>Void:</strong> keeps the document but takes the outputs back out of stock and returns the inputs.</li>
+<li><strong>Delete:</strong> removes it; its full content stays in the audit trail.</li>
+<li><strong>History</strong>, <strong>Back to list</strong>.</li>
+</ul>
+<h4 id="s-what-it-records_4">What it records<a class="man-hash" href="#s-what-it-records_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The inputs and additional costs are credited; the outputs are debited with their allocated cost. When PRC-00005 is completed (2 TRD-PC at ₱3,000.00 and ₱300.00 of labor, shared by relative sales value after the scrap):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory (4 RAM-8GB)</td>
+<td>₱3,131.69</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory (2 SSD-512)</td>
+<td>₱3,048.31</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory (8 SCRAP-KG by-product)</td>
+<td>₱120.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory (2 TRD-PC)</td>
+<td></td>
+<td>₱6,000.00</td>
+</tr>
+<tr>
+<td>5200 Direct Labor Absorbed</td>
+<td></td>
+<td>₱300.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>With <strong>Current average cost</strong> or <strong>Manual amounts</strong>, a difference between the cost and the outputs' values is posted to the variance account: a debit when the outputs are worth less (a loss), a credit when they are worth more (a gain).</p>
+<h4 id="s-good-to-know_7">Good to know<a class="man-hash" href="#s-good-to-know_7" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A supervisor must approve an order whose total cost is more than your <strong>Max check / bill payment / adjustment amount without approval</strong>.</li>
+<li>"Every input needs an item and a quantity greater than zero." and "Outputs must be inventory or assembly items."</li>
+<li id="sec-process-no-cost">An order is not posted while an input has no unit cost or average unit cost, or a co-product or by-product would be received at no cost: "The processing order cannot be posted with no unit cost: the input PORK-LOIN has no unit cost or average unit cost, and the outputs PORK-CHOP, PORK-WASTE would be received at no cost. ..." The input shows <strong>no unit cost</strong> in red in <strong>Est. unit cost</strong>, and the output's <strong>Unit cost</strong> box is outlined in red. Enter the unit cost of the input on its item form or receive it at its cost first, and give every co-product and by-product a share of the cost (scrap may stay at zero). <strong>Save as pending</strong> still works, and <strong>Complete and post</strong> is checked the same way. The check can be switched off with <strong>Block posting processing orders with no unit cost</strong> in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</li>
+<li>"This order cannot be voided: its outputs were already used, and stock would go below zero for ..." appears when the outputs were sold or used and negative stock is not allowed. When it is allowed, the void goes ahead with the warning "Its outputs were already used; stock is now negative for .... Record the missing receipt or adjustment."</li>
+<li>"A voided processing order cannot be edited."</li>
+<li>The costs of a pending order are estimates at today's average costs.</li>
+</ul>
+<h4 id="s-processing-and-the-average-cost">How processing orders move the average cost<a class="man-hash" href="#s-processing-and-the-average-cost" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A processing order is often where an item's average cost changes most, because it does two things at once: it takes the inputs out at their average cost, and it puts the outputs in at their share of that cost. Five things decide what it does to the averages.</p>
+<ol>
+<li><strong>The inputs go out at the average of all sites.</strong> Whatever the input's average is when the order is saved passes into the outputs. If the input's average is wrong, every output inherits it: a carcass at an overstated ₱462.69 instead of ₱225.00 makes every cut about twice as dear.</li>
+<li><strong>Each output takes its share of the cost.</strong> The share follows the <strong>Allocation method</strong> of the order or its formula: with <strong>Physical units</strong> or <strong>Weight / measure</strong> every kilo gets the same unit cost, trimmings as much as the chops; with <strong>Relative sales value</strong> the dearer cuts take more; with <strong>Fixed percentages</strong> the shares never change. When the input cost, the shares or the yields change from one order to the next, the unit cost of an output changes with them, and so does its average. A formula with relative sales value or fixed percentages keeps the unit costs steadier. With <strong>Current average cost (difference to variance)</strong> the outputs come in at their own average, which then does not move at all; the difference goes to the processing variance account.</li>
+<li><strong>Outputs received while they are below zero.</strong> When the counter sells cuts before the processing order is entered, the cuts go below zero at their last average. The order then settles that shortfall at its own unit cost and charges the difference to cost of goods sold (see <a href="#s-stock-below-zero">Stock below zero</a>). Before version 31 the difference stayed on the few units left and could multiply the average.</li>
+<li><strong>Inputs used before the bill is entered.</strong> The same happens to the input: processed before the supplier's bill is in, it goes below zero, and the bill settles the shortfall. Entering the bill first, or on the same date (the stock received is counted first on each date), keeps the cuts at the bill's cost.</li>
+<li><strong>Back-dated and edited orders.</strong> A saved order is costed at the averages of the moment it is saved, not of its date, and saving an old order again issues its inputs at today's average. <a href="manual.php?c=administration#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a> works every cost out again in date order.</li>
+</ol>
+<p>The <a href="#pg-rpt-avg_cost_changes">Average Cost Changes</a> report lists each of these as it happened, with the average before and after; tick <strong>Processing, disassembly and builds only</strong> to see the processing orders alone.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Version 31 fixes a fault that made averages jump after processing orders. A processing order that uses all of a bill leaves the site at zero, and Rebuild Data removed such zero rows from the quantities table. When the order or the bill was saved again later, the quantity at that site was not taken down, so the table held less than the movements (the Inventory Center showed "The quantity on hand (-4.81) differs from the total of its movements (91.86) by -96.67"), and every receipt after that divided the value by too small a quantity: bills at ₱225.00 showed averages of ₱625.64 and ₱462.69. The average is now always worked out on the quantity of the movements, and the upgrade script puts the quantities table right. Run <strong>Rebuild Data</strong> once after the upgrade so the orders and sales costed at the overstated averages are costed again.</p></div>
+<h2 id="pg-inv-physical_count">Physical Inventory Count<a class="man-hash" href="#pg-inv-physical_count" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>After you count the goods at a site, type the counted quantities here. The program compares them with the system quantities and posts the differences as one inventory adjustment with the reason "Count difference".</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Physical Inventory Count. Also the <strong>Enter counts</strong> button of the <a href="#pg-rpt-physical_worksheet">Physical Inventory Worksheet</a> and the Home dashboard <strong>Quick actions</strong>.</p>
+<h4 id="s-fields_5">Fields<a class="man-hash" href="#s-fields_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site</strong></td>
+<td>The site you counted. Changing it reloads the page.</td>
+</tr>
+<tr>
+<td><strong>Hide system quantities (blind count)</strong></td>
+<td>Tick it so the counter does not see the system quantities; the <strong>System qty</strong> and <strong>Difference</strong> columns are hidden.</td>
+</tr>
+<tr>
+<td><strong>Count date</strong></td>
+<td>The date of the count.</td>
+</tr>
+<tr>
+<td><strong>Counted by</strong></td>
+<td>The counter's name. It goes into the memo: "Physical count by ...".</td>
+</tr>
+<tr>
+<td><strong>Count sheet no.</strong></td>
+<td>The number of the count sheet.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class, if you use classes.</td>
+</tr>
+<tr>
+<td><strong>Counted</strong></td>
+<td>For each item, the quantity counted. Leave it blank to skip the item.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The grid lists every active inventory part and assembly with its <strong>Unit</strong>, <strong>Pref. vendor</strong>, <strong>System qty</strong> and, as you type, the <strong>Difference</strong> (negative in red).</p>
+<h4 id="s-step-by-step-count-a-site">Step by step: count a site<a class="man-hash" href="#s-step-by-step-count-a-site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Print blank worksheet</strong>. The <a href="#pg-rpt-physical_worksheet">Physical Inventory Worksheet</a> opens for the site with the system quantities hidden; print it and count.</li>
+<li>Open <strong>Inventory &gt; Physical Inventory Count</strong> and choose the <strong>Site</strong>.</li>
+<li>Type the <strong>Count date</strong>, <strong>Counted by</strong> and <strong>Count sheet no.</strong></li>
+<li>Type each counted quantity in <strong>Counted</strong>. Leave items you did not count blank.</li>
+<li>If the <strong>Supervisor approval</strong> box opens, ask a supervisor to type their username and password.</li>
+<li>Click <strong>Post count differences</strong>. The message "n count difference(s) posted." appears and the adjustment opens.</li>
+</ol>
+<h4 id="s-what-it-records_5">What it records<a class="man-hash" href="#s-what-it-records_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>One inventory adjustment for the site, with a line for each item whose count differs ("Count difference (counted x, system y)"). Missing goods are debited to 5100 Inventory Adjustments and Shrinkage and credited to 1200 Inventory at average cost; extra goods the reverse. The adjustment appears in the <a href="#pg-inv-adjust">adjustments list</a>.</p>
+<h4 id="s-good-to-know_8">Good to know<a class="man-hash" href="#s-good-to-know_8" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"No differences to post. Counted quantities match the system."</li>
+<li>The difference is worked out against the system quantity when you post, not when the page was opened. Stop sales and receipts at the site while you count, or post the count right after.</li>
+<li>A supervisor must approve when the differences are worth more than your amount limit.</li>
+<li>Users without the Create permission see blank lines in the <strong>Counted</strong> column instead of boxes.</li>
+</ul>
+<h2 id="pg-inv-change_prices">Change Item Prices<a class="man-hash" href="#pg-inv-change_prices" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Change Item Prices raises or lowers the sales price of many items at once, by a percentage or an amount, or sets it from cost with a markup.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Change Item Prices. Also <strong>Change prices by percentage</strong> on Set Item Prices and Levels.</p>
+<h4 id="s-fields_6">Fields<a class="man-hash" href="#s-fields_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item type</strong></td>
+<td><strong>All types</strong>, <strong>Inventory parts</strong>, <strong>Assemblies</strong>, <strong>Non-inventory parts</strong>, <strong>Services</strong> or <strong>Other charges</strong>.</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td><strong>All categories</strong> or one category.</td>
+</tr>
+<tr>
+<td><strong>Change</strong></td>
+<td><strong>Adjust the current price</strong>, or <strong>Set new price from cost (markup)</strong> (users who may view costs).</td>
+</tr>
+<tr>
+<td><strong>By</strong></td>
+<td>With <strong>Adjust the current price</strong>: <strong>Percent</strong> or <strong>Fixed amount</strong>.</td>
+</tr>
+<tr>
+<td><strong>Percent / amount (negative to lower)</strong></td>
+<td>The percentage or amount. Type a minus sign to lower prices. For a markup, the markup percentage on cost.</td>
+</tr>
+<tr>
+<td><strong>Round to nearest</strong></td>
+<td><strong>No rounding</strong>, <strong>0.05</strong>, <strong>1.00</strong>, <strong>10.00</strong> or <strong>100.00</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The table shows, for each active item of the chosen type and category, a tick box, the item name/code, display name, <strong>Category</strong>, <strong>Cost</strong> (average cost for stocked items; users who may view costs), <strong>Current price</strong> and <strong>New price</strong> (in blue when it changes).</p>
+<h4 id="s-step-by-step-raise-prices-by-a-percentage">Step by step: raise prices by a percentage<a class="man-hash" href="#s-step-by-step-raise-prices-by-a-percentage" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Change Item Prices</strong>.</li>
+<li>Choose the <strong>Item type</strong> and <strong>Category</strong>. The page reloads with those items.</li>
+<li>Choose <strong>Adjust the current price</strong>, <strong>Percent</strong>, type <code>5</code> and choose <strong>Round to nearest</strong> <code>1.00</code>.</li>
+<li>Click <strong>Preview</strong>. Check the <strong>New price</strong> column.</li>
+<li>Untick the items that should keep their price (the box in the heading ticks or unticks all).</li>
+<li>Click <strong>Apply to selected</strong> and confirm "Update the selected prices?". The message "n price(s) updated. New prices apply immediately on invoices, sales receipts, the POS and the Item Price List." appears.</li>
+</ol>
+<h4 id="s-step-by-step-price-from-cost">Step by step: price from cost<a class="man-hash" href="#s-step-by-step-price-from-cost" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose <strong>Set new price from cost (markup)</strong>.</li>
+<li>Type the markup, for example <code>40</code> for cost plus 40%.</li>
+<li>Click <strong>Preview</strong>, check, then <strong>Apply to selected</strong>.</li>
+</ol>
+<h4 id="s-good-to-know_9">Good to know<a class="man-hash" href="#s-good-to-know_9" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Select at least one item."</li>
+<li>Prices never go below 0.00.</li>
+<li>Changing a price does not change the value of stock already on hand, or documents already saved.</li>
+<li>Price levels that follow a percentage follow the new price; fixed level prices do not change.</li>
+<li>Each change is recorded in the audit trail with the old and new price.</li>
+<li>The <strong>Item Price List</strong> button opens the <a href="manual.php?c=customers#pg-rpt-item_price_list">Item Price List</a> report.</li>
+</ul>
+<h2 id="pg-inv-set_prices">Set Item Prices and Levels<a class="man-hash" href="#pg-inv-set_prices" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page shows one grid with the default selling price and every price level of many items, so you can set a whole price list in one pass and save it once.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Set Item Prices and Levels.</p>
+<p>Every company has ten price levels. As delivered they are <strong>Wholesale</strong> (−5%), <strong>VIP</strong> (−10%), <strong>Retail Plus</strong> (+5%) and <strong>Price Level 4</strong> to <strong>Price Level 10</strong> (0%, the same as the default price); the <strong>Rename price levels</strong> button at the top of the page gives them your own names (see below).</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item type</strong></td>
+<td>All types, or inventory parts, assemblies, non-inventory parts, services or other charges.</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>All categories or one.</td>
+</tr>
+<tr>
+<td><strong>Find (code, name or barcode)</strong></td>
+<td>Part of a code, name or barcode.</td>
+</tr>
+<tr>
+<td><strong>Items per page</strong></td>
+<td>50, 100, 250, 500 or <strong>All of them</strong>.</td>
+</tr>
+<tr>
+<td><strong>Include inactive items</strong></td>
+<td>Lists inactive items too, marked <strong>inactive</strong>.</td>
+</tr>
+<tr>
+<td><strong>Show</strong></td>
+<td>Applies the filters.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-grid">The grid<a class="man-hash" href="#s-the-grid" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The first columns are the item name/code, display name, <strong>Category</strong> and <strong>Cost</strong> (users who may view costs). Then:</p>
+<ul>
+<li><strong>Default price:</strong> the item's sales price. Type the new figure.</li>
+<li>One column per active price level, in the order of the levels, with its percentage under the name (<strong>same as default</strong> for 0%). An empty box follows the level's percentage of the default price; the figure it would use is shown in grey. Type a figure to fix that item's price on that level; clear it to go back to the percentage. With all ten levels active the grid is wide: it scrolls sideways inside its card, and the item columns stay in view.</li>
+</ul>
+<p>The note above the grid reminds you: "Prices exclude tax unless your items are set up tax-inclusive."</p>
+<h4 id="s-fill-a-column">Fill a column<a class="man-hash" href="#s-fill-a-column" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The box <strong>Fill a column</strong> writes figures into a whole column of the page in one go:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fill a column</strong></td>
+<td><strong>Default price</strong> or a price level.</td>
+</tr>
+<tr>
+<td><strong>With</strong></td>
+<td><strong>The level's own percentage of the default price</strong> (price level columns only), <strong>The default price, changed by a percentage</strong>, <strong>Cost plus a markup percentage</strong>, <strong>One figure for every row</strong> or <strong>Nothing (empty the column)</strong> (price level columns only).</td>
+</tr>
+<tr>
+<td><strong>Percent / figure</strong></td>
+<td>The percentage or figure.</td>
+</tr>
+<tr>
+<td><strong>Round to nearest</strong></td>
+<td>No rounding, 0.05, 1.00, 10.00 or 100.00.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Fill the column</strong>. "Filling a column only writes the figures into the boxes below. Nothing is saved until you press Save prices."</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p><strong>The level's own percentage</strong> and <strong>Nothing (empty the column)</strong> are for the price level columns: an emptied level follows its own percentage of the default price again. Every item keeps a default price, so both choices are greyed out while <strong>Default price</strong> is chosen, and a default price box left empty keeps the price the item already has.</p></div>
+<h4 id="s-rename-price-levels">Rename price levels<a class="man-hash" href="#s-rename-price-levels" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Rename price levels</strong> at the top of the page opens a panel with one box per level, <strong>Level 1</strong> to <strong>Level 10</strong>, each with its name, its percentage and an <strong>Active</strong> tick. It is for users with the Edit right on <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>, where the same levels can also be changed one at a time.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>The level's name as it will read everywhere: on this page, on the item form, on the customer's record, on the Item Price List and in the Modify Report fields. Up to 40 characters; two levels cannot have the same name.</td>
+</tr>
+<tr>
+<td>Percentage</td>
+<td>The level's percentage of the default price, between −100 and 1000. A negative figure is a discount (−5 = 5% below the default price), a positive one a mark-up, 0 the default price itself.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick to hide a level everywhere (the grid, the item form, the customer form, the price list). An inactive level keeps its prices and comes back when ticked again.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Save the price levels</strong>. The message <strong>Price levels saved:</strong> lists what changed, for example "Price Level 6 renamed Contractor, Contractor now -8%"; <strong>Nothing was changed: the price levels are already as shown.</strong> says so otherwise. The change is in the audit trail. Renaming a level does not change any price: the figures typed for the items stay, and customers assigned to the level keep it.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>A hardware store names level 6 <strong>Contractor</strong> at −8% and level 7 <strong>Senior citizen</strong> at −20%, keeps <strong>Price Level 8</strong> to <strong>Price Level 10</strong> inactive until they are needed, and assigns each contractor customer the Contractor level on the customer's record.</p></div>
+<h4 id="s-step-by-step-set-a-vip-price-list">Step by step: set a VIP price list<a class="man-hash" href="#s-step-by-step-set-a-vip-price-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Inventory &gt; Set Item Prices and Levels</strong> and choose the <strong>Item type</strong> or <strong>Category</strong>.</li>
+<li>To give VIP customers cost plus 30% on these items, choose <strong>Fill a column</strong> <strong>VIP</strong>, <strong>With</strong> <strong>Cost plus a markup percentage</strong>, type <code>30</code>, choose <strong>Round to nearest</strong> <code>10.00</code> and click <strong>Fill the column</strong>.</li>
+<li>Change single boxes by hand where needed, for example a VIP price of ₱36,500.00 for LAP-001.</li>
+<li>Type a <strong>Reason (recorded in the audit trail)</strong>, for example <code>New price list, effective this month</code>.</li>
+<li>Click <strong>Save prices</strong> and confirm. The message "n default price(s) and n price level figure(s) saved. New prices apply immediately on invoices, sales receipts, the POS and the Item Price List." appears.</li>
+<li>If the items run over several pages, move to the next page and repeat. "Only the items on this page are saved."</li>
+</ol>
+<p><strong>Start again</strong> throws away what you typed and reloads the page.</p>
+<h4 id="s-good-to-know_10">Good to know<a class="man-hash" href="#s-good-to-know_10" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"A price cannot be less than nothing (...)."</li>
+<li>"Nothing was changed: the prices on this page are already what is shown."</li>
+<li>A figure equal to the level's percentage price is not kept as a fixed price, unless the item already had a fixed price there.</li>
+<li>Saving needs the Create or Edit permission on this page.</li>
+<li>Price levels themselves (names, percentages, active) are set with <strong>Rename price levels</strong> on this page or under <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>; a customer's level is chosen on the customer (see <a href="manual.php?c=customers#pg-cust-center">Customer Center</a>).</li>
+</ul>
+<h2 id="s-inventory-reports">Inventory reports<a class="man-hash" href="#s-inventory-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The inventory reports are under <strong>Inventory &gt; Reports</strong>. They use the common report tools (<strong>Refresh</strong>, <strong>Columns</strong>, <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong>, <strong>Memorize</strong>, and clicking a figure to see its detail), explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>. Cost and value columns are shown only to users who may view costs. Most of them list only active items and active sites, and a user limited to some sites sees only those.</p>
+<h3 id="pg-rpt-qoh_by_site">Quantity on Hand by Site<a class="man-hash" href="#pg-rpt-qoh_by_site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>One line per stocked item with the quantity at each site in its own column and the <strong>Total</strong>. Use it to see at a glance where your stock is.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Quantity on Hand by Site. Also the <strong>Quantity on Hand by Site</strong> button of the Inventory Site List.</p>
+<p>Filters: <strong>As of</strong>, <strong>Item</strong>, <strong>Site</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong>. <strong>As of</strong> is today when the report opens, showing the quantities on hand now; choose an earlier date to see what each site held at the end of that day, worked out from every receipt, sale, transfer, adjustment and build up to and including it. <strong>Item</strong> limits the report to one item. <strong>Site</strong> shows that site's column only (and its total), for example Gabi KMF without the other sites. <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> keep the items of one category, one kind or one supplier (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>). Click an item code to open it in the Inventory Center.</p>
+<p><strong>Exclude zero qty</strong> leaves out the items with nothing on hand at the sites shown: with a <strong>Site</strong> chosen, the items that site does not hold; with all sites, the items no site holds. The totals are not changed by it.</p>
+<h3 id="pg-rpt-inv_valuation_summary">Inventory Valuation Summary<a class="man-hash" href="#pg-rpt-inv_valuation_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The quantity and value of every stocked item as of a date, with its share of the total and its value at selling price. Use it at month end to support the inventory balance in the balance sheet.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Valuation Summary.</p>
+<p>Filters: <strong>As of</strong>, <strong>Inventory site</strong> and <strong>Item</strong>. Leave <strong>Inventory site</strong> on <strong>All</strong> for the whole company, or choose a site to value only its stock. The columns:</p>
+<p>The report can also be narrowed by <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>On hand</strong></td>
+<td>Quantity at all sites on the date, or at the chosen site.</td>
+</tr>
+<tr>
+<td><strong>Avg cost</strong></td>
+<td>Asset value ÷ on hand.</td>
+</tr>
+<tr>
+<td><strong>Asset value</strong></td>
+<td>The book value of the item on the date.</td>
+</tr>
+<tr>
+<td><strong>% of tot asset</strong></td>
+<td>Its share of the total asset value.</td>
+</tr>
+<tr>
+<td><strong>Sales price</strong></td>
+<td>Today's sales price.</td>
+</tr>
+<tr>
+<td><strong>Retail value</strong></td>
+<td>On hand × sales price.</td>
+</tr>
+<tr>
+<td><strong>% of tot retail</strong></td>
+<td>Its share of the total retail value.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Users who may design reports can add the item's own fields as columns with <strong>Modify Report</strong> (see <a href="manual.php?c=home-and-reports#sec-modify-report">Modifying a report</a>), among them <strong>Gross profit per unit (price less average cost)</strong>, <strong>Gross profit % per unit</strong>, <strong>Markup % on average cost</strong>, <strong>Category</strong>, <strong>Preferred supplier</strong>, <strong>Reorder point</strong> and <strong>Maximum stock</strong>. For a report that anybody can shape, use the <a href="#pg-rpt-inv_custom">Customized Inventory Report</a>.</p>
+<p>The line above the table gives the balance of the inventory asset account(s) in the ledger on the date and says whether it "agrees with the total asset value". If it "differs", look for journal entries posted directly to the inventory account. Click an item to open its valuation detail up to the date.</p>
+<p>With a site chosen, the note names the site instead: the quantities are that site's, and each is valued at the item's weighted average cost of all sites, because the cost of an item is averaged across the sites (the same rule as <a href="#pg-rpt-inv_valuation_site">Inventory Valuation Summary by Site</a>). The ledger comparison is for the whole company only.</p>
+<h3 id="pg-rpt-inv_valuation_site">Inventory Valuation Summary by Site<a class="man-hash" href="#pg-rpt-inv_valuation_site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same valuation, grouped by site, with a total for each site.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Valuation Summary by Site.</p>
+<p>Filters: <strong>As of</strong> and <strong>Site</strong>. Columns: <strong>Site / item</strong>, <strong>Description</strong>, <strong>On hand</strong>, <strong>Avg cost</strong>, <strong>Asset value</strong> and <strong>Retail value</strong>. As the note says, "Site values use each item's weighted average cost (costs are averaged across all sites)."</p>
+<p>The report can also be narrowed by <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-inv_valuation_detail">Inventory Valuation Detail<a class="man-hash" href="#pg-rpt-inv_valuation_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every movement of each item in a period, with the running quantity, average cost and value. Use it to trace how an item's cost changed or to find a transaction.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Valuation Detail. Also the <strong>Valuation detail</strong> button of the Inventory Center, and clicking an item on the Inventory Valuation Summary.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>From</strong>, <strong>To</strong>, <strong>Item</strong> and <strong>Site</strong>. For each item the report shows an <strong>Opening</strong> line, one line per movement (<strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (click to open), <strong>Name</strong> of the customer or vendor, <strong>Site</strong> code, <strong>Qty</strong>, <strong>Cost</strong>, <strong>On hand</strong>, <strong>Avg cost</strong>, <strong>Asset value</strong>) and a <strong>Total</strong> line.</p>
+<p>The report can also be narrowed by <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>For BAG-001 in September 2026: opening 19 at ₱500.00 (₱9,500.00), the damage adjustment ADJ-00001 −2 (−₱1,000.00), the POS sale POS-000002 −1 (−₱500.00), closing 16 worth ₱8,000.00.</p></div>
+<h3 id="pg-rpt-avg_cost_changes">Average Cost Changes<a class="man-hash" href="#pg-rpt-avg_cost_changes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every transaction that changed an item's average cost, with the average before and after, the change and what caused it. Use it to find out why an average jumped: a processing order, a bill at another price, stock received while it was below zero, a back-dated entry, a value adjustment.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Average Cost Changes. Also the <strong>Average cost changes</strong> button of the Inventory Center, which opens it for the item and all dates.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>From</strong>, <strong>To</strong>, <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong>, <strong>Preferred supplier</strong>, <strong>Change of at least</strong> (any change, or 1% to 100% of the average before) and <strong>Processing, disassembly and builds only</strong>.</p>
+<p>For each item the report lists, in the order the costs were worked out (the order the transactions were entered): <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (click to open), <strong>Site</strong>, <strong>Qty</strong>, <strong>Unit cost</strong>, <strong>On hand before</strong> (all sites), <strong>Avg before</strong>, <strong>Avg after</strong>, <strong>Change</strong>, <strong>Change %</strong> and <strong>What moved it</strong>, then <strong>Average now</strong>. A change of 25% or more is shown in red. The cost columns are shown only to users who may view costs.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead><tr><th>What moved it</th><th>Means</th></tr></thead>
+<tbody>
+<tr><td>Received at a cost different from the average</td><td>A bill, item receipt or return at another price.</td></tr>
+<tr><td>Processing output at its share of the cost</td><td>An output of a processing order or disassembly; its unit cost is its share of the inputs and additional costs.</td></tr>
+<tr><td>Built at the cost of its components</td><td>An assembly built from its parts.</td></tr>
+<tr><td>Received while 3.00 short (below zero); the shortfall was settled at this cost</td><td>The item was below zero; the receipt settled the shortfall (see <a href="#s-stock-below-zero">Stock below zero</a>).</td></tr>
+<tr><td>Value adjustment</td><td>A value-only line of <a href="#pg-inv-adjust">Adjust Quantity/Value on Hand</a>.</td></tr>
+<tr><td>The last of the stock went out with the value left</td><td>The issue that brought the item to zero took out all the value left.</td></tr>
+<tr><td>Entered after later-dated movements; ...</td><td>A back-dated entry: it was costed at the average of the day it was entered. Rebuild Data costs it again in date order.</td></tr>
+</tbody>
+</table></div>
+<p>The report can be opened by the roles that may open the Inventory Valuation Detail.</p>
+<h3 id="pg-rpt-stock_status_item">Inventory Stock Status by Item<a class="man-hash" href="#pg-rpt-stock_status_item" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What you have, what is committed, what is coming, and what to order. Use it every week to plan purchases and builds.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Stock Status by Item. The line under <strong>Items at or below reorder point</strong> on the Home dashboard opens it too.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This quarter</strong>; used only for <strong>Sales / week</strong>) and <strong>Item</strong>. The columns:</p>
+<p>The report can also be narrowed by <strong>Site</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Reorder pt</strong></td>
+<td>The reorder point; for an assembly, the larger of the reorder and build points.</td>
+</tr>
+<tr>
+<td><strong>On hand</strong></td>
+<td>Quantity at all sites now.</td>
+</tr>
+<tr>
+<td><strong>On sales order</strong></td>
+<td>Still to deliver on open sales orders.</td>
+</tr>
+<tr>
+<td><strong>Available</strong></td>
+<td>On hand less on sales order.</td>
+</tr>
+<tr>
+<td><strong>Order / build</strong></td>
+<td><strong>Reorder</strong> or <strong>Build</strong> when Available plus On PO is at or below the reorder point.</td>
+</tr>
+<tr>
+<td><strong>Suggested qty</strong></td>
+<td>Maximum stock less Available less On PO.</td>
+</tr>
+<tr>
+<td><strong>On PO</strong>, <strong>Next delivery</strong></td>
+<td>Still to receive on open purchase orders, and the earliest expected date.</td>
+</tr>
+<tr>
+<td><strong>Sales / week</strong></td>
+<td>Net quantity sold per week over the chosen dates.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rows to reorder or build are highlighted. The <strong>Create purchase order</strong> button at the bottom starts a purchase order (<a href="manual.php?c=vendors#pg-vend-purchase_orders">Create Purchase Orders</a>).</p>
+<h3 id="pg-rpt-stock_status_vendor">Inventory Stock Status by Vendor<a class="man-hash" href="#pg-rpt-stock_status_vendor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same figures grouped by preferred vendor, so you can order from each supplier in one purchase order.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Stock Status by Vendor.</p>
+<p>Filters: <strong>Dates</strong> and <strong>Vendor</strong>. Items without a preferred vendor come first under <strong>(no preferred vendor)</strong>. Beside each vendor's name, <strong>create PO</strong> starts a purchase order to that vendor.</p>
+<p>The report can also be narrowed by <strong>Site</strong>, <strong>Category</strong> and <strong>Item type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-stock_status_site">Inventory Stock Status by Site<a class="man-hash" href="#pg-rpt-stock_status_site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The stock status of each item at each site, to see where a store is short while another has stock.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Stock Status by Site.</p>
+<p>Filters: <strong>Dates</strong>, <strong>Item</strong> and <strong>Site</strong>. Each item is a group with one line per site that has stock, sales orders or purchase orders. A site where <strong>Available</strong> is below zero is highlighted and marked <strong>Short</strong>: cover it with a <a href="#pg-inv-transfers">transfer</a> from another site or order more. Reorder points and suggested quantities are not shown per site.</p>
+<p>The report can also be narrowed by <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-physical_worksheet">Physical Inventory Worksheet<a class="man-hash" href="#pg-rpt-physical_worksheet" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A count sheet listing every stocked item with a blank line to write the count on.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Physical Inventory Worksheet. Also <strong>Print blank worksheet</strong> on the Physical Inventory Count page.</p>
+<p>Filters: <strong>As of</strong>, <strong>Site</strong> (blank for all sites) and <strong>Hide system quantities (blind count)</strong>. <strong>As of</strong> is today when the report opens, and <strong>On hand (system)</strong> is then the quantity on hand now. Choose an earlier date to print the system quantities of that day: every receipt, sale, transfer and adjustment up to the end of that date is counted, so a count taken on that day can be compared with what the books said then. The note under the title says which date the quantities are of. Columns: <strong>Item</strong>, <strong>Description</strong>, <strong>Pref. vendor</strong>, <strong>Unit</strong>, <strong>On hand (system)</strong> (blank on a blind count) and <strong>Physical count</strong>. The heading line has spaces for "Counted by" and "Date". Print it with <strong>Print / PDF</strong>; after the count, the <strong>Enter counts</strong> button opens <a href="#pg-inv-physical_count">Physical Inventory Count</a> for the site.</p>
+<p>The report can also be narrowed by <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-pending_builds">Pending Builds<a class="man-hash" href="#pg-rpt-pending_builds" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The builds saved as pending because components were short, with what is still missing.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Pending Builds. Also the <strong>Pending Builds</strong> button on Build Assemblies.</p>
+<p>The report can also be narrowed by <strong>Item</strong> and <strong>Category</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filter: <strong>Site</strong>. Columns: <strong>Date</strong>, <strong>Build ref.</strong> (click to open the build and complete it), <strong>Assembly</strong>, <strong>Site</strong>, <strong>Qty to build</strong>, <strong>Missing components</strong> (for example "MON-024 (short 7)", or <strong>Ready to build</strong> when nothing is short any more) and <strong>Memo</strong>.</p>
+<h3 id="pg-rpt-pending_builds_site">Pending Builds by Site<a class="man-hash" href="#pg-rpt-pending_builds_site" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same list grouped by site.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Pending Builds by Site.</p>
+<p>The report can also be narrowed by <strong>Item</strong> and <strong>Category</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-processing_register">Processing &amp; Disassembly Register<a class="man-hash" href="#pg-rpt-processing_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every processing order of a period with its inputs, outputs and costs.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Processing &amp; Disassembly Register. Also the <strong>Register</strong> button of the Processing Orders list.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>Site</strong>, <strong>Process type</strong>, <strong>Formula</strong> and <strong>Status</strong>. Columns: <strong>Date</strong>, <strong>Num</strong>, <strong>Type</strong>, <strong>Formula</strong> (with the number of batches), <strong>Site</strong>, <strong>Inputs</strong>, <strong>Outputs</strong>, <strong>Variance qty</strong> (input quantity less output quantity; <strong>Input qty</strong> and <strong>Output qty</strong> can be added in <strong>Modify Report</strong>), <strong>Input materials</strong>, <strong>Added costs</strong>, <strong>Total cost</strong>, <strong>By-products &amp; scrap</strong>, <strong>Co-products</strong>, <strong>Variance</strong>, <strong>Allocation</strong> and <strong>Status</strong>. Pending orders show estimated amounts in grey and are left out of the totals; voided orders are listed for reference.</p>
+<h3 id="pg-rpt-coproduct_costs">Co-product &amp; By-product Cost Allocation<a class="man-hash" href="#pg-rpt-coproduct_costs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>How the cost of each completed processing order was shared among its outputs, item by item.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Co-product &amp; By-product Cost Allocation.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This fiscal year</strong>), <strong>Item</strong>, <strong>Site</strong>, <strong>Process type</strong> and <strong>Output role</strong>. A pie chart shows the allocated cost by output item (with more than six items, the five largest and <strong>Other</strong>) to users who may view costs. The table is grouped by output item: <strong>Date</strong>, <strong>Num</strong>, <strong>Type</strong>, <strong>Role</strong>, <strong>Qty</strong>, <strong>U/M</strong>, <strong>Method</strong>, <strong>Basis</strong> (<strong>auto</strong> when the item's own price or cost was used), <strong>Share of order cost</strong>, <strong>Allocated cost</strong> and <strong>Unit cost</strong>, with a total for each item. Use it to explain the cost of refurbished or processed goods.</p>
+<p>The report can also be narrowed by <strong>Category</strong> and <strong>Item type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-process_yield">Processing Yield Analysis<a class="man-hash" href="#pg-rpt-process_yield" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Planned against actual quantities of completed processing orders, to see whether a process yields what the formula expects.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Processing Yield Analysis. Also the <strong>Yield analysis</strong> button of a used formula.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This fiscal year</strong>), <strong>Item</strong>, <strong>Site</strong>, <strong>Formula</strong> and <strong>Show</strong> (<strong>Summary by formula and item</strong> or <strong>Every order</strong>). Lines are grouped by formula; orders loaded from an assembly's bill of materials come under <strong>Assembly bills of materials / other</strong>. Lines typed in by hand have no planned quantity and are left out. Columns: <strong>Item</strong>, <strong>Line</strong> (<strong>Input</strong> or the output role), <strong>Orders</strong>, <strong>Date</strong>, <strong>Num</strong>, <strong>Planned qty</strong>, <strong>Actual qty</strong>, <strong>Difference</strong> and <strong>Actual vs planned</strong>. Planned quantities come from the formula or bill of materials times the batches run. Rows more than 2% off plan are highlighted.</p>
+<p>The report can also be narrowed by <strong>Category</strong> and <strong>Item type</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-negative_inventory">Negative Inventory Listing<a class="man-hash" href="#pg-rpt-negative_inventory" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The items whose quantity at a site is below zero. Negative quantities distort average cost and cost of goods sold, so clear this report regularly.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Negative Inventory Listing.</p>
+<p>The report can also be narrowed by <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p>Filters: <strong>As of</strong> and <strong>Site</strong>. <strong>As of</strong> is today when the report opens: the list shows the quantities on hand now. Choose an earlier date to see which items were below zero on that day, from every movement up to the end of that date; <strong>Last issue</strong> is then the last document up to that date that took the item out. Columns: <strong>Item</strong> (click for the Inventory Center), <strong>Description</strong>, <strong>Site</strong>, <strong>On hand</strong> and <strong>Last issue</strong>, the last document that took the item out at that site (click to open it). For each line, record the missing item receipt, transfer or adjustment. "No data for these settings." means there is no negative stock.</p>
+<h3 id="pg-rpt-inv_no_movement">No. of Days Inventory Has No Movement<a class="man-hash" href="#pg-rpt-inv_no_movement" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>How long each stocked item has gone without being sold to a customer: the date of its last sale and the number of days since, with its last movement of any kind. Use it to find slow and dead stock before it spoils or loses its value, and to plan promotions and returns to suppliers.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; No. of Days Inventory Has No Movement.</p>
+<p>Filters: <strong>As of</strong> (today as delivered), <strong>Inventory site</strong>, <strong>Category</strong>, <strong>Not sold for at least</strong> (<strong>Any number of days</strong>, 30, 60, 90, 180 days or 1 year) and <strong>Items</strong> (<strong>Only items in stock</strong>, as delivered, or <strong>All items, in stock or not</strong>). With a site chosen, only the sales and movements at that site count.</p>
+<p>The report can also be narrowed by <strong>Item</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>On hand</strong></td>
+<td>The quantity on the date (at the site, if one is chosen).</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>That quantity at average cost; shown to users who may view costs.</td>
+</tr>
+<tr>
+<td><strong>Last sold</strong></td>
+<td>The date of the last invoice, sales receipt or POS sale of the item, or <strong>Never sold</strong>.</td>
+</tr>
+<tr>
+<td><strong>Days not sold</strong></td>
+<td>Days from the last sale to the <strong>As of</strong> date. An item never sold counts from the day it first came in.</td>
+</tr>
+<tr>
+<td><strong>Age</strong></td>
+<td>An extra column (tick it on the Columns tab of <strong>Modify Report</strong>): the band, under 30 days, 30-89 days, 90-179 days, 180-364 days or over a year.</td>
+</tr>
+<tr>
+<td><strong>Last movement (any)</strong></td>
+<td>The last change of quantity of any kind: a receipt, a transfer, an adjustment, a build or a sale.</td>
+</tr>
+<tr>
+<td><strong>Days since any movement</strong></td>
+<td>An extra column too: days from that movement to the date.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The items longest without a sale come first, and items 90 days or more without a sale are marked with an amber edge. Click an item to open it in the Inventory Center.</p>
+<h3 id="pg-rpt-inv_custom">Customized Inventory Report<a class="man-hash" href="#pg-rpt-inv_custom" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>One line per inventory part or assembly, with the columns you choose: the item's own details, its stock and value, its prices and the profit per unit, and what was sold and bought in a period, among them the <strong>gross profit amount</strong> and the <strong>gross profit percentage</strong> of each item. Add a column, take one out, and memorize the report as you shaped it.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Customized Inventory Report. It is given to the roles that may open the Inventory Valuation Summary.</p>
+<p>Filters: <strong>Dates</strong> (this month as delivered; the sales and purchases are those of the period, the stock and value those at its end), <strong>Item</strong>, <strong>Inventory site</strong>, <strong>Category</strong>, <strong>Item type</strong>, <strong>Preferred supplier</strong>, and <strong>Items</strong>: <strong>Active items</strong>, <strong>Active items in stock</strong>, <strong>Items sold in the period</strong> or <strong>Active and inactive items</strong>.</p>
+<h4 id="s-choosing-the-columns">Choosing the columns<a class="man-hash" href="#s-choosing-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click the <strong>Columns</strong> box. The columns are in groups; tick the ones to print and untick the ones to leave out, then click <strong>Show</strong> (or just close the list). <strong>Tick all</strong> and <strong>Clear</strong> work on the whole list, and the search box at the top finds a column by name. With nothing ticked, the box reads <strong>Standard columns</strong>. Every user who may open the report can choose its columns; columns that show costs are offered only to users who may view costs.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Group</th>
+<th>Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Item</td>
+<td><strong>Item</strong>, <strong>Description</strong>, <strong>Sales description</strong>, <strong>Purchase description</strong>, <strong>Barcode</strong>, <strong>Category</strong>, <strong>Item type</strong>, <strong>Unit</strong>, <strong>Preferred supplier</strong>, <strong>Tax code</strong>, <strong>Status</strong>, <strong>Reorder point</strong>, <strong>Maximum stock</strong></td>
+</tr>
+<tr>
+<td>Stock and value at the end of the period</td>
+<td><strong>On hand</strong>, <strong>Below reorder point by</strong>, <strong>Average cost</strong>, <strong>Asset value</strong>, <strong>% of total asset value</strong>, <strong>Sales price</strong>, <strong>Retail value</strong>, <strong>% of total retail value</strong>, <strong>Gross profit in stock (retail less asset value)</strong></td>
+</tr>
+<tr>
+<td>Profit per unit</td>
+<td><strong>Purchase cost</strong>, <strong>Gross profit per unit</strong> (sales price less average cost), <strong>Gross profit % per unit</strong> (of the sales price), <strong>Markup % on cost</strong> (of the average cost)</td>
+</tr>
+<tr>
+<td>Sales in the period</td>
+<td><strong>Qty sold</strong>, <strong>Sales amount</strong>, <strong>Average selling price</strong>, <strong>Cost of sales</strong>, <strong>Gross profit</strong> (sales amount less cost of sales), <strong>Gross profit %</strong> (of the sales amount), <strong>% of total sales</strong>, <strong>Last sold</strong></td>
+</tr>
+<tr>
+<td>Purchases in the period</td>
+<td><strong>Qty bought</strong>, <strong>Purchase amount</strong>, <strong>Last bought</strong> (what came into stock from suppliers; a bill made from an item receipt is counted once)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The standard columns are <strong>Item</strong>, <strong>Description</strong>, <strong>Category</strong>, <strong>Unit</strong>, <strong>On hand</strong>, <strong>Average cost</strong>, <strong>Asset value</strong>, <strong>Sales price</strong>, <strong>Gross profit per unit</strong>, <strong>Gross profit % per unit</strong>, <strong>Qty sold</strong>, <strong>Sales amount</strong>, <strong>Gross profit</strong> and <strong>Gross profit %</strong>. The <strong>TOTAL</strong> line adds up the quantities and amounts; its <strong>Gross profit %</strong> is the total gross profit over the total sales. Click an item for the Inventory Center, a sales amount for <a href="manual.php?c=customers#pg-rpt-sales_item_detail">Sales by Item Detail</a>, and an asset value for the <a href="#pg-rpt-inv_valuation_detail">Inventory Valuation Detail</a>.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>To see which frozen products earn the most this year, choose <strong>Dates</strong> <strong>This fiscal year</strong>, <strong>Category</strong> Frozen Products and <strong>Items</strong> <strong>Items sold in the period</strong>. In <strong>Columns</strong>, keep <strong>Item</strong>, <strong>Description</strong>, <strong>Qty sold</strong>, <strong>Sales amount</strong>, <strong>Gross profit</strong> and <strong>Gross profit %</strong>, untick the others, and click <strong>Show</strong>. Click the <strong>Gross profit</strong> heading to sort the items by it.</p></div>
+<h4 id="s-changing-the-design-and-keeping-it">Changing the design and keeping it<a class="man-hash" href="#s-changing-the-design-and-keeping-it" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Memorize</strong> keeps the report with its filters and columns, for you or shared with others (see <a href="manual.php?c=home-and-reports#pg-home-memorized">Memorized Reports</a>); <strong>Export to spreadsheet</strong> and <strong>Print / PDF</strong> take the columns on the screen.</li>
+<li>Users who may design reports also have <strong>Modify Report</strong>: the order and headings of the columns, their widths, fonts, the heading and the footer, the page, and saved layouts (see <a href="manual.php?c=home-and-reports#sec-modify-report">Modifying a report</a>). The <strong>Columns</strong> box keeps the order a layout gives the columns.</li>
+</ul>
+<h3 id="pg-rpt-inv_movement_summary">Inventory Movement Summary Report<a class="man-hash" href="#pg-rpt-inv_movement_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>How the stock of each item moved over a period: what it had at the start, what came in, what went out and what it had at the end. Use it to explain the change in stock from one date to another, site by site, and to trace any figure to the transactions behind it.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Movement Summary Report. It is given to the roles that may open No. of Days Inventory Has No Movement.</p>
+<p>Filters: <strong>Dates</strong> with a <strong>From date and time</strong> and a <strong>To date and time</strong> (this month as delivered), <strong>Item</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Category</strong>, <strong>Cashier</strong> and <strong>Shift</strong>. The site, class and item filters narrow the beginning balance and the movements alike. With <strong>Class</strong>, the movements of the transactions (or the lines) of that class count; <strong>(Unclassified)</strong> keeps those without a class. The times, the cashier and the shift are explained in <a href="#sec-inv-movement-times">Dates with times, cashier and shift</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item code</strong>, <strong>Item description</strong></td>
+<td>The inventory part or assembly. Click the code to open it in the Inventory Center.</td>
+</tr>
+<tr>
+<td><strong>Beg. balance</strong></td>
+<td>The ending inventory of the day before the <strong>From</strong> date: every movement up to the end of that day.</td>
+</tr>
+<tr>
+<td><strong>In</strong></td>
+<td>What came into stock in the period: Write Checks and Cash Vouchers with inventory (whether the quantity is positive or negative), Receive Items, Receive Items and Enter Bills, Transfer Inventory to the site, Adjust Quantity (the quantity added), Build Assemblies (the assembled items) and Disassemble / Process Items (the outputs).</td>
+</tr>
+<tr>
+<td><strong>Out</strong></td>
+<td>What went out of stock in the period: Create Invoices, Create Batch Invoices, Enter Sales Receipts, POS sales (and statement charges), less credit memos and POS returns that restock, Transfer Inventory from the site, Adjust Quantity (the quantity taken off), Build Assemblies (the component items), Disassemble / Process Items (the inputs consumed) and Supplier Debit Memos.</td>
+</tr>
+<tr>
+<td><strong>Ending balance</strong></td>
+<td>The ending inventory of the <strong>To</strong> date: <strong>Beg. balance</strong> + <strong>In</strong> - <strong>Out</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only transactions dated within the range count in <strong>In</strong> and <strong>Out</strong>, and voided transactions are left out. The <strong>TOTAL</strong> line adds up the four columns. With every site, a transfer counts as <strong>In</strong> at the site it went to and as <strong>Out</strong> at the site it left, so it does not change the total; with one site chosen, only that site's side counts. Only the items with a figure are listed, inactive items that moved included.</p>
+<p>Every figure, the <strong>TOTAL</strong> line included, can be drilled down: click it to open <a href="#pg-rpt-inv_movement_txns">Inventory Movement Transactions</a> with the source transactions of that figure.</p>
+<h4 id="sec-inv-movement-times">Dates with times, cashier and shift<a class="man-hash" href="#sec-inv-movement-times" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A business open 24 hours with three shifts (for example 12:01 AM - 8:00 AM, 8:01 AM - 2:00 PM and 2:01 PM - 12:00 AM) can see the beginning inventory, the movements and the ending inventory of each shift. Each date has a time box beside it:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Box</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From date and time</strong></td>
+<td>The time the period starts, from the beginning of that minute. Empty means the start of the day.</td>
+</tr>
+<tr>
+<td><strong>To date and time</strong></td>
+<td>The time the period ends, to the end of that minute. Empty means the end of the day. For 2:01 PM - 12:00 AM, type the To date as the next day at 12:00 AM, or leave the To time empty.</td>
+</tr>
+<tr>
+<td><strong>Cashier</strong></td>
+<td>A cashier: the site becomes the outlet the cashier worked at in the period (the site of the terminal of the cashier's shifts, or the cashier's default POS site), so the report shows the stock the cashier is answerable for.</td>
+</tr>
+<tr>
+<td><strong>Shift</strong></td>
+<td>One POS shift (the list shows the cashier, the terminal, its site, and the time it was opened and closed): the dates and times are set to the moment the shift was opened and the moment it was closed (now, for a shift still open), with its cashier and site. Change the dates afterwards if needed; they are kept.</td>
+</tr>
+</tbody>
+</table></div>
+<p>How a transaction is placed in time: on its own date, at the time of day it was recorded. A POS sale is recorded as it is rung up, so it falls in the shift that made it. A delivery entered later and dated an earlier day counts on that day, at the time of day it was entered. The ending inventory of one shift is always the beginning inventory of the next, and the IN and OUT of the three shifts add up to those of the whole day. The heading shows the dates with their times (<strong>10/09/2026 08:01 AM through 10/09/2026 02:00 PM</strong>), and a drill-down keeps the times and shows the <strong>Time recorded</strong> of each transaction.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Hotdogs started September with 15 packs. 100 came in (purchases, a transfer and an adjustment) and 87 went out (sales, a transfer out and a build). The report shows Beg. balance 15, In 100, Out 87 and Ending balance 28. Click <strong>100</strong> to see the purchases, the transfer and the adjustment that make it up.</p></div>
+<h3 id="pg-rpt-inv_movement_detail">Inventory Movement Detailed Report<a class="man-hash" href="#pg-rpt-inv_movement_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same movements as the summary, with <strong>In</strong> and <strong>Out</strong> split by the kind of transaction, so you can see how much of the change came from purchases, transfers, adjustments, builds, processing, sales and returns to suppliers.</p>
+<p><strong>Where to find it:</strong> Inventory &gt; Reports &gt; Inventory Movement Detailed Report. It is given to the same roles as the summary.</p>
+<p>Filters: as the summary, <strong>Dates</strong> with their times, <strong>Item</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Category</strong>, <strong>Cashier</strong> and <strong>Shift</strong> (see <a href="#sec-inv-movement-times">Dates with times, cashier and shift</a>).</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Group</th>
+<th>Column</th>
+<th>What it counts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><strong>Beg. balance</strong></td>
+<td>The ending inventory of the day before the <strong>From</strong> date</td>
+</tr>
+<tr>
+<td>IN</td>
+<td><strong>Purchases</strong></td>
+<td>Write Checks and Cash Vouchers with inventory, positive or negative; Receive Items; Receive Items and Enter Bills</td>
+</tr>
+<tr>
+<td>IN</td>
+<td><strong>Transfer inventory</strong></td>
+<td>Transfer Inventory into the site</td>
+</tr>
+<tr>
+<td>IN</td>
+<td><strong>Adjust quantity</strong></td>
+<td>Adjust Quantity/Value on Hand, the positive differences (physical counts and opening quantities included)</td>
+</tr>
+<tr>
+<td>IN</td>
+<td><strong>Build assemblies</strong></td>
+<td>Build Assemblies: the assembled items</td>
+</tr>
+<tr>
+<td>IN</td>
+<td><strong>Disassemble / process items</strong></td>
+<td>Disassemble / Process Items: the outputs</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Sales</strong></td>
+<td>Create Invoices, Create Batch Invoices, Enter Sales Receipts and POS sales, less credit memos and POS returns that restock</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Transfer inventory</strong></td>
+<td>Transfer Inventory out of the site</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Adjust quantity</strong></td>
+<td>Adjust Quantity/Value on Hand, the negative differences</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Build assemblies</strong></td>
+<td>Build Assemblies: the component items used</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Disassemble / process items</strong></td>
+<td>Disassemble / Process Items: the inputs consumed</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td><strong>Supplier debit memo</strong></td>
+<td>Supplier Debit Memos that return items</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Ending balance</strong></td>
+<td>The sum of <strong>Beg. balance</strong> and every IN and OUT column</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>IN</strong> and <strong>OUT</strong> headings stand over their columns. The OUT columns are negative, as the quantities left the stock, so <strong>Ending balance</strong> is the plain sum of the line. A check that takes items back (a negative quantity) reads negative under <strong>Purchases</strong>. The <strong>TOTAL</strong> line adds up every column, and an empty cell means no movement of that kind. <strong>Export to spreadsheet</strong> names the columns with their group (<strong>IN - Transfer inventory</strong>, <strong>OUT - Transfer inventory</strong>).</p>
+<p>Click any figure to open its source transactions in <a href="#pg-rpt-inv_movement_txns">Inventory Movement Transactions</a>.</p>
+<h3 id="pg-rpt-inv_movement_txns">Inventory Movement Transactions<a class="man-hash" href="#pg-rpt-inv_movement_txns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The source transactions behind a figure of the <a href="#pg-rpt-inv_movement_summary">Inventory Movement Summary Report</a>, the <a href="#pg-rpt-inv_movement_detail">Inventory Movement Detailed Report</a> or the <a href="manual.php?c=customers#pg-rpt-sales_inv_movement">Sales Report Through Inventory Movement</a>. It is not in the menu: it opens when you click a figure, with that figure's item, dates, site, class and kind of movement already chosen.</p>
+<p>Filters: <strong>Dates</strong> with their times, <strong>Item</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Category</strong>, <strong>Movement</strong> and <strong>Cashier</strong>. <strong>Movement</strong> says which movements are listed: <strong>Beginning balance</strong> and <strong>Ending balance</strong> (every movement up to the date), <strong>All IN</strong>, <strong>All OUT</strong>, <strong>Delivery</strong> and <strong>Withdrawals</strong> (IN and OUT without the sales documents), or one kind (for example <strong>IN: Purchases</strong> or <strong>OUT: Supplier debit memo</strong>).</p>
+<p>Columns: <strong>Type</strong>, <strong>Date</strong>, <strong>Time recorded</strong> (when the report has times), <strong>Num</strong> (click it to open the transaction), <strong>Name</strong>, <strong>Site</strong>, <strong>Movement</strong> and <strong>Qty</strong> (in positive, out negative), item by item with a total per item and a <strong>TOTAL</strong> line that equals the figure you clicked. <strong>Class</strong>, <strong>Entered by</strong> and <strong>Cost</strong> (for users who may view costs) can be added with <strong>Modify Report</strong>.</p>

@@ -1,0 +1,1139 @@
+<p>The Fixed Assets module keeps the register of everything the company owns and uses for more than a year: buildings, machines, vehicles, computers, furniture. It records how each asset was bought, charges depreciation every month, removes the asset from the books when it is sold or scrapped, and keeps the history of every repair and every preventive maintenance task. All of it posts to the general ledger through the same engine as the rest of GSMaRT Construction System, so the balance sheet always agrees with the register.</p>
+<h2 id="s-how-the-fixed-assets-module-works">How the Fixed Assets module works<a class="man-hash" href="#s-how-the-fixed-assets-module-works" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Before you enter the first asset, set up these lists once, in this order:</p>
+<ol>
+<li><strong>Chart of Accounts.</strong> Every category needs three accounts: the asset account (for example 1530 Transportation Equipment), its accumulated depreciation account (1535 Accumulated Depreciation - Transportation) and a depreciation expense account (6090 Depreciation Expense). See <a href="manual.php?c=chart-of-accounts">Chart of Accounts</a>.</li>
+<li><strong>Module Default Accounts.</strong> The account <strong>Gain / Loss on Disposal of Assets</strong> (4300 Gain (Loss) on Disposal of Assets in the demo) must be set, or disposals stop with a message. See <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>.</li>
+<li><strong><a href="#pg-fa-categories">Asset Categories</a>.</strong> A category groups similar assets and decides the three accounts they post to, plus the method and useful life that new assets start with.</li>
+<li><strong><a href="#pg-fa-locations">Asset Locations</a>.</strong> Where the assets are kept. Locations let you list, report and depreciate one branch or building at a time.</li>
+</ol>
+<p>Then the day-to-day work is:</p>
+<ul>
+<li>Add each asset in the <a href="#pg-fa-register">Fixed Asset Register</a>. The same form can record the purchase (a check, a bill, or an opening balance).</li>
+<li>At each month end, post depreciation in <a href="#pg-fa-depreciation">Run Depreciation</a>.</li>
+<li>Record repairs and servicing in <a href="#pg-fa-maintenance">Asset Maintenance</a>, and schedule recurring work (change oil, registration renewal, cleaning) in <a href="#pg-fa-pm">Preventive Maintenance</a>.</li>
+<li>When an asset is sold, scrapped or donated, record it in <a href="#pg-fa-disposal">Dispose of Assets</a>.</li>
+</ul>
+<h3 id="s-the-depreciation-methods">The depreciation methods<a class="man-hash" href="#s-the-depreciation-methods" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Each asset uses one of four methods. Depreciation is always charged by month. For the three time-based methods, the program works out the charge for each <em>asset year</em> (the twelve months starting with the month the asset was acquired) and charges one-twelfth of it every month; an asset acquired on any day of July is depreciated for the whole of July. Units of production charges each month for the units used in it. Net book value (cost less accumulated depreciation) never goes below the salvage value.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Method</th>
+<th>How the charge is worked out</th>
+<th>Demo example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Straight-line</td>
+<td>(Cost less salvage) spread evenly over the useful life in months</td>
+<td>FA-00001, ₱7,500.00 a month</td>
+</tr>
+<tr>
+<td>Declining balance</td>
+<td>Net book value times (multiplier ÷ life); switches to straight-line when that gives more</td>
+<td>FA-00002, ₱40,000.00 a month in year 1</td>
+</tr>
+<tr>
+<td>Sum-of-the-years'-digits</td>
+<td>(Cost less salvage) times remaining years ÷ sum of the years</td>
+<td>FA-00003, ₱2,500.00 a month in year 1</td>
+</tr>
+<tr>
+<td>Units of production</td>
+<td>(Cost less salvage) ÷ estimated total output, times the units used in the month</td>
+<td>FA-00004, ₱1.50 per unit</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The Packaging Machine PM-500 cost ₱500,000.00, has a salvage value of ₱50,000.00 and a useful life of 5 years, straight-line. It depreciates ₱450,000.00 over 60 months: ₱90,000.00 a year, ₱7,500.00 a month. The Delivery Van (L300) cost ₱1,200,000.00 with a salvage value of ₱200,000.00 over 5 years, declining balance with a multiplier of 2: the rate is 2 ÷ 5 = 40%, so year 1 is ₱480,000.00, or ₱40,000.00 a month.</p></div>
+<p>For declining balance and sum-of-the-years'-digits the life is counted in whole years. In the last month of a time-based life the program charges whatever is left down to the salvage value, so rounding never leaves a few centavos behind.</p>
+<h3 id="s-asset-statuses">Asset statuses<a class="man-hash" href="#s-asset-statuses" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Active</strong>: in service and still depreciating.</li>
+<li><strong>Fully Depreciated</strong>: the net book value has reached the salvage value. The asset stays in service (it still appears under <strong>In service</strong>) but no more depreciation is charged.</li>
+<li><strong>Disposed</strong>: sold, scrapped or donated. It no longer depreciates and is left out of the lists of assets in service.</li>
+</ul>
+<h2 id="pg-fa-register">Fixed Asset Register<a class="man-hash" href="#pg-fa-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Fixed Asset Register is the list of all fixed assets with their cost, accumulated depreciation and net book value. You also add new assets here, open an asset to see its depreciation schedule, correct it, and record the usage of units-of-production assets.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Fixed Asset Register. The <strong>Asset register</strong> button on Run Depreciation and Asset Locations also opens it, and the number of assets on Asset Locations opens it filtered to that location.</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>In service</strong> (the default: active and fully depreciated assets), <strong>Fully depreciated</strong>, <strong>Disposed</strong> or <strong>All</strong></td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Shows only the assets of one asset category</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><strong>All locations</strong>, one location, or <strong>(No location)</strong> for assets without one</td>
+</tr>
+</tbody>
+</table></div>
+<p>The list refreshes as soon as you change a filter. When one location is chosen and you may open Run Depreciation, a <strong>Run depreciation for this location</strong> button appears beside the filters.</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Asset no.</strong></td>
+<td>The number given by the program (FA-00001, FA-00002 ...). Click it to open the asset.</td>
+</tr>
+<tr>
+<td><strong>Description</strong>, <strong>Category</strong>, <strong>Location</strong></td>
+<td>As entered on the asset</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The asset's default class. Shown only when classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Acquired</strong></td>
+<td>The acquisition date</td>
+</tr>
+<tr>
+<td><strong>Method</strong>, <strong>Life</strong></td>
+<td>The depreciation method and the useful life in years</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>The acquisition cost</td>
+</tr>
+<tr>
+<td><strong>Accum. dep.</strong></td>
+<td>Opening accumulated depreciation plus all depreciation posted (voided runs are left out)</td>
+</tr>
+<tr>
+<td><strong>Net book value</strong></td>
+<td>Cost less accumulated depreciation</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, <strong>Fully Depreciated</strong> or <strong>Disposed</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Total</strong> row adds up the cost, accumulated depreciation and net book value of the assets listed.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New asset</strong> opens a blank asset form (needs the create permission on this page).</li>
+<li><strong>Run depreciation</strong> opens <a href="#pg-fa-depreciation">Run Depreciation</a>.</li>
+</ul>
+<h3 id="s-adding-an-asset">Adding an asset<a class="man-hash" href="#s-adding-an-asset" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The new asset form has four parts: the asset itself, its depreciation settings, how it was acquired, and notes.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Description</strong></td>
+<td>The name of the asset, for example Delivery Van (L300). Required.</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>The asset category. Required. On a new asset, choosing a category fills in its default <strong>Method</strong> and <strong>Useful life (years)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Serial / plate no.</strong></td>
+<td>Serial number, plate number or property tag</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td>Where the asset is kept, from the Asset Locations list. <strong>Manage locations</strong> opens that list in a new tab.</td>
+</tr>
+<tr>
+<td><strong>Site</strong></td>
+<td>The inventory site (branch) the asset belongs to. Its disposal entry and its maintenance bills and checks are recorded under this site.</td>
+</tr>
+<tr>
+<td><strong>Default class</strong></td>
+<td>The class this asset's depreciation is recorded under when Run Depreciation is posted with no class chosen. Shown only when classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Vendor</strong></td>
+<td>The supplier. Required when the purchase is recorded as a bill; used as the payee of the check.</td>
+</tr>
+<tr>
+<td><strong>Acquired date</strong></td>
+<td>The date the asset was bought or put in service. Depreciation starts with this month.</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>The acquisition cost, net of VAT. Must be more than zero.</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Straight-line</strong>, <strong>Declining balance</strong>, <strong>Units of production</strong> or <strong>Sum-of-the-years'-digits</strong></td>
+</tr>
+<tr>
+<td><strong>Useful life (years)</strong></td>
+<td>Must be more than zero. Decimals are allowed.</td>
+</tr>
+<tr>
+<td><strong>Salvage (residual) value</strong></td>
+<td>The value expected at the end of the life. Depreciation stops there.</td>
+</tr>
+<tr>
+<td><strong>Rate multiplier (2 = double)</strong></td>
+<td>Declining balance only. 2 gives double-declining balance, 1.5 gives 150%.</td>
+</tr>
+<tr>
+<td><strong>Estimated total output</strong> and <strong>Unit</strong></td>
+<td>Units of production only: the total the asset is expected to produce in its life (units, hours, kilometers) and the name of the unit</td>
+</tr>
+<tr>
+<td><strong>Record the purchase</strong></td>
+<td>How the purchase is recorded in the books (see below)</td>
+</tr>
+<tr>
+<td><strong>Bank account</strong></td>
+<td>Paid now only: the bank or credit card account the check is drawn on</td>
+</tr>
+<tr>
+<td><strong>Payee (if no vendor)</strong></td>
+<td>Paid now only: the name printed on the check when no vendor is chosen</td>
+</tr>
+<tr>
+<td><strong>Vendor's invoice no.</strong></td>
+<td>On account only: the supplier's invoice number, kept as the bill's reference</td>
+</tr>
+<tr>
+<td><strong>Accumulated depreciation to date</strong></td>
+<td>Existing asset only: depreciation already recorded before you started using GSMaRT</td>
+</tr>
+<tr>
+<td><strong>Depreciation recorded through</strong></td>
+<td>Existing asset only: the date that accumulated depreciation runs to. Required when the accumulated depreciation is more than zero.</td>
+</tr>
+<tr>
+<td><strong>Cost is net of 12% input VAT (VAT added)</strong></td>
+<td>Paid now or on account: tick it to add 12% input VAT on top of the cost</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the purchase transaction (check, bill or opening balance)</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Anything worth keeping about the asset</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Record the purchase</strong> box has four choices:</p>
+<ul>
+<li><strong>Paid now (Write Checks)</strong>: the program writes a check from the chosen bank account.</li>
+<li><strong>On account (Enter Bills)</strong>: the program enters a bill for the vendor, with the vendor's terms and due date. You pay it later in <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a>.</li>
+<li><strong>Existing asset (opening balance)</strong>: for an asset the company already owned before it started using GSMaRT. The program writes an opening balance entry.</li>
+<li><strong>Already recorded elsewhere</strong>: no entry is made. Use it when the purchase was already recorded, for example in a check written in Write Checks.</li>
+</ul>
+<h4 id="s-step-by-step-add-an-asset-bought-by-check">Step by step: add an asset bought by check<a class="man-hash" href="#s-step-by-step-add-an-asset-bought-by-check" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Fixed Asset Register</strong> and click <strong>New asset</strong>.</li>
+<li>Type the <strong>Description</strong>, for example Packaging Machine PM-500.</li>
+<li>Choose the <strong>Category</strong>, for example Machinery and Equipment. The method and life fill in from the category.</li>
+<li>Type the <strong>Serial / plate no.</strong> and choose the <strong>Location</strong>, <strong>Site</strong>, <strong>Default class</strong> and <strong>Vendor</strong>.</li>
+<li>Enter the <strong>Acquired date</strong> and the <strong>Cost</strong>.</li>
+<li>Check the <strong>Method</strong>, <strong>Useful life (years)</strong> and <strong>Salvage (residual) value</strong>, and change them if this asset is different.</li>
+<li>Under <strong>How was the asset acquired?</strong>, leave <strong>Record the purchase</strong> on <strong>Paid now (Write Checks)</strong> and choose the <strong>Bank account</strong>.</li>
+<li>Tick <strong>Cost is net of 12% input VAT (VAT added)</strong> if the supplier charged VAT.</li>
+<li>Click <strong>Save asset</strong> (or <strong>Save asset &amp; New</strong> to enter the next asset). The program gives the asset its number and opens it.</li>
+</ol>
+<h4 id="s-step-by-step-add-an-asset-bought-on-account">Step by step: add an asset bought on account<a class="man-hash" href="#s-step-by-step-add-an-asset-bought-on-account" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Follow steps 1 to 6 above, and make sure the <strong>Vendor</strong> is chosen.</li>
+<li>Set <strong>Record the purchase</strong> to <strong>On account (Enter Bills)</strong>.</li>
+<li>Type the <strong>Vendor's invoice no.</strong> and tick the VAT box if it applies.</li>
+<li>Click <strong>Save asset</strong>. The bill appears in <strong>Vendors &gt; Enter Bills</strong> and in Pay Bills, due according to the vendor's payment terms.</li>
+</ol>
+<h4 id="s-step-by-step-add-an-asset-the-company-already-owned">Step by step: add an asset the company already owned<a class="man-hash" href="#s-step-by-step-add-an-asset-the-company-already-owned" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Follow steps 1 to 6 above. Enter the original <strong>Acquired date</strong> and the original <strong>Cost</strong>.</li>
+<li>Set <strong>Record the purchase</strong> to <strong>Existing asset (opening balance)</strong>.</li>
+<li>Enter the <strong>Accumulated depreciation to date</strong> and the <strong>Depreciation recorded through</strong> date, for example the last day of the month before you started using the program.</li>
+<li>Click <strong>Save asset</strong>. The months up to the <strong>Depreciation recorded through</strong> date are treated as already depreciated; Run Depreciation continues from the month after.</li>
+</ol>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>To load many assets at once, use <a href="manual.php?c=administration#pg-admin-import">Import from CSV</a>. Imported assets are added without an accounting entry unless you ask for an opening balance entry for them.</p></div>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Paid now (Write Checks)</strong> writes a check (numbered in the check series):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The category's asset account, for example 1520 Machinery and Equipment</td>
+<td>Cost</td>
+<td></td>
+</tr>
+<tr>
+<td>1300 Input Tax (only when the VAT box is ticked)</td>
+<td>12% of cost</td>
+<td></td>
+</tr>
+<tr>
+<td>The chosen bank account, for example 1010 Cash in Bank - BDO Checking</td>
+<td></td>
+<td>Cost plus VAT</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>On account (Enter Bills)</strong> enters a bill with the same debits and a credit to 2000 Accounts Payable for the vendor.</p>
+<p><strong>Existing asset (opening balance)</strong> writes an opening balance journal entry:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The category's asset account</td>
+<td>Cost</td>
+<td></td>
+</tr>
+<tr>
+<td>The category's accumulated depreciation account</td>
+<td></td>
+<td>Accumulated depreciation to date</td>
+</tr>
+<tr>
+<td>3900 Opening Balance Equity</td>
+<td></td>
+<td>Cost less accumulated depreciation</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Already recorded elsewhere</strong> records nothing in the ledger. In every case the asset is added to the register with status <strong>Active</strong>.</p>
+<h3 id="s-viewing-an-asset">Viewing an asset<a class="man-hash" href="#s-viewing-an-asset" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Click an asset number to open it. The left card shows the asset's details, the accumulated depreciation, the net book value and the status. <strong>(source)</strong> beside the acquisition date opens the check, bill or opening balance that recorded the purchase. On the right, the <strong>Annual schedule</strong> shows how much each asset year will depreciate (for time-based methods), and <strong>Depreciation posted</strong> lists every depreciation entry with its period, entry number, units and amount. An opening balance row appears first when the asset was entered with accumulated depreciation.</p>
+<p>The buttons at the top:</p>
+<ul>
+<li><strong>Edit</strong> opens the asset form.</li>
+<li><strong>Dispose</strong> opens <a href="#pg-fa-disposal">Dispose of Assets</a> with this asset chosen. Hidden for disposed assets.</li>
+<li><strong>Compare methods</strong> opens the <a href="#pg-rpt-fa_schedule">Depreciation Schedule by Asset</a> report for this asset.</li>
+<li><strong>Back</strong> returns to the register.</li>
+</ul>
+<p>For a declining balance asset the <strong>Method</strong> line also shows the rate, for example "2× straight-line rate = 40.00%". For a units-of-production asset it shows the estimated total output and the rate per unit. When the estimates were changed after depreciation started, a <strong>Change in estimate</strong> line shows from when, the net book value and the number of months the new basis uses.</p>
+<h4 id="s-step-by-step-record-the-usage-of-a-units-of-production-asset">Step by step: record the usage of a units-of-production asset<a class="man-hash" href="#s-step-by-step-record-the-usage-of-a-units-of-production-asset" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A units-of-production asset is depreciated only for months with a usage figure. You can enter it on the asset or directly on Run Depreciation.</p>
+<ol>
+<li>Open the asset from the register.</li>
+<li>In the <strong>Record usage (meter reading / production count)</strong> card, enter the <strong>Year</strong>, the <strong>Month</strong> and the <strong>Units used</strong> in that month (not the meter reading itself).</li>
+<li>Click <strong>Save</strong>. The last 24 months entered are listed under the button. Entering a month again replaces its figure.</li>
+</ol>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The usage for depreciation is separate from the odometer or running hours kept for maintenance. The meter reading on a maintenance record or a preventive maintenance task does not feed depreciation.</p></div>
+<h3 id="s-editing-an-asset">Editing an asset<a class="man-hash" href="#s-editing-an-asset" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Open the asset and click <strong>Edit</strong>. What you may change depends on whether depreciation has already been posted.</p>
+<p><strong>Before any depreciation is posted</strong> you may change everything, including the <strong>Acquired date</strong> and the <strong>Cost</strong>. When the purchase was recorded by this form (a check, a bill or an opening balance), the program corrects that transaction too, so the ledger stays in step with the asset. A note under the fields links to that transaction.</p>
+<p><strong>After depreciation is posted</strong> (or when the asset has opening accumulated depreciation):</p>
+<ul>
+<li>The <strong>Acquired date</strong> and the <strong>Cost</strong> are locked. To correct them, void the depreciation entries first in Run Depreciation, then edit the asset.</li>
+<li>The <strong>Category</strong> cannot change.</li>
+<li>A change to the method, the useful life, the salvage value, the multiplier or the estimated total output is a <em>change in estimate</em>. A <strong>Changes apply from (change in estimate)</strong> date appears. The program leaves past depreciation as it is and spreads the remaining net book value over the rest of the new useful life, starting with the later of the month you enter and the month after the last depreciation posted.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The Delivery Van was depreciated for July and August 2026 (₱80,000.00). In September you decide its life is 8 years, not 5. Edit the asset, change <strong>Useful life (years)</strong> to 8 and leave <strong>Changes apply from</strong> on today's date. From September 2026, the net book value of ₱1,120,000.00 less the ₱200,000.00 salvage value is depreciated, still by declining balance, over the remaining 94 months (96 months less the 2 already passed).</p></div>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Asset numbers come from the asset number series (FA-00001, FA-00002 ...). You cannot type your own number on the form.</li>
+<li>Changing the location of an asset is a normal edit; there is no transfer entry, because the location does not change the accounts.</li>
+<li>Messages you may see: "Enter the description and a useful life greater than zero.", "Choose the asset category.", "Enter the acquisition date and cost.", "Enter the estimated total units for units-of-production depreciation.", "Choose the bank account for the check.", "Choose the vendor for the bill.", "Enter the date depreciation was recorded through.", "The new salvage value is higher than the remaining net book value.", "The category cannot change after depreciation has been posted.", "The cost cannot be lower than the salvage value."</li>
+<li>When you correct the cost of an asset whose purchase check or bill was changed by hand in the meantime, the program cannot find the asset line and says: "The purchase was recorded on ..., and its asset line no longer matches the old cost. Correct that transaction first, then the asset."</li>
+<li>Paying by check is subject to your amount limit (<strong>Max check / bill payment / adjustment amount without approval</strong> in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>). This form has no supervisor approval box. If the cost is above your limit and you do not have the Approve permission on Write Checks, the program stops with "Supervisor approval is required ...". Ask a user who may approve checks to add the asset, or write the check in <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a> and add the asset with <strong>Already recorded elsewhere</strong>.</li>
+<li>Voiding or deleting the purchase check or bill does not remove the asset; it only removes the <strong>(source)</strong> link. The register has no delete button, so an asset entered by mistake stays in the register: correct it instead, while no depreciation is posted.</li>
+<li>Every addition and change is written to the audit trail, including changes in estimate with their effective date.</li>
+</ul>
+<h2 id="pg-fa-depreciation">Run Depreciation<a class="man-hash" href="#pg-fa-depreciation" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Run Depreciation posts the monthly depreciation of all assets in one journal entry. Do it once a month, after the month has ended and before you print the month's financial statements.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Run Depreciation. The <strong>Run depreciation</strong> button on the Fixed Asset Register and the <strong>Run Depreciation</strong> quick action on the Home page open it too.</p>
+<p>The page opens on the previous month. In the demo, today is 09/27/2026, so it opens on August 2026, which has already been posted: every asset shows <strong>posted</strong> and the <strong>Total to post</strong> is 0.00.</p>
+<p>Choose another month in <strong>Period</strong> to see what can be posted for it. Each asset shows the depreciation the program has worked out, ticked and ready to post.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Period</strong></td>
+<td>The month to depreciate. The entry is dated the last day of that month, as the note beside the filters says ("Entries are dated 08/31/2026.").</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td><strong>All locations</strong>, one location, or <strong>(No location)</strong>. Only the assets of the chosen location are listed and posted.</td>
+</tr>
+<tr>
+<td>Tick box</td>
+<td>Tick the assets to post. The box in the header ticks or clears all of them. Assets already posted for the period have no box, nor do time-based assets with nothing to post.</td>
+</tr>
+<tr>
+<td><strong>Asset</strong>, <strong>Category</strong>, <strong>Location</strong>, <strong>Default class</strong>, <strong>Method</strong>, <strong>Cost</strong></td>
+<td>The asset's details. <strong>Default class</strong> is shown only when classes are in use.</td>
+</tr>
+<tr>
+<td><strong>Accumulated</strong></td>
+<td>The accumulated depreciation before this run</td>
+</tr>
+<tr>
+<td><strong>Usage this month</strong></td>
+<td>Units-of-production assets only: the units used in the period. Type it here or on the asset.</td>
+</tr>
+<tr>
+<td><strong>Depreciation</strong></td>
+<td>The amount to post, or <strong>posted</strong> when the period was already done for this asset</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Warnings: "N earlier month(s) not yet depreciated", "enter usage first", "fully depreciated"</td>
+</tr>
+<tr>
+<td><strong>Memo (optional)</strong></td>
+<td>The memo of the entry. Left blank, it reads "Depreciation for August 2026" (with " - location" when one location is chosen).</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Choose a class to record the whole entry under it, or leave <strong>Class: each asset's own default class</strong> to record every asset under its default class. Shown when classes are set up.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-post-the-months-depreciation">Step by step: post the month's depreciation<a class="man-hash" href="#s-step-by-step-post-the-months-depreciation" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Run Depreciation</strong>.</li>
+<li>Check the <strong>Period</strong>. Change it if you are not posting last month.</li>
+<li>For each units-of-production asset, type the units used in <strong>Usage this month</strong>. Click <strong>Save usage only</strong> if you want to keep the figures and post later.</li>
+<li>Read the <strong>Notes</strong> column. If an asset has earlier months not yet depreciated, post those months first (choose the earlier <strong>Period</strong> and post it).</li>
+<li>Untick any asset you do not want to depreciate this time.</li>
+<li>Type a <strong>Memo</strong> and choose a <strong>Class</strong> if needed.</li>
+<li>Click <strong>Post depreciation</strong>. The program posts one journal entry and shows "Depreciation of 57,650.00 posted for 4 asset(s): debit Depreciation Expense, credit Accumulated Depreciation."</li>
+</ol>
+<h4 id="s-step-by-step-depreciate-one-location-at-a-time">Step by step: depreciate one location at a time<a class="man-hash" href="#s-step-by-step-depreciate-one-location-at-a-time" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose the <strong>Location</strong> at the top of the page, or click <strong>Run depreciation for this location</strong> in the Fixed Asset Register.</li>
+<li>Post as above. Only that location's assets are listed and posted, and the memo names the location.</li>
+<li>Choose the next location and post again.</li>
+</ol>
+<h4 id="s-step-by-step-undo-a-depreciation-run">Step by step: undo a depreciation run<a class="man-hash" href="#s-step-by-step-undo-a-depreciation-run" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>In <strong>Posted depreciation</strong>, click the entry number (for example JE-00002).</li>
+<li>Click <strong>Void</strong> (the entry stays, marked VOID, with no effect on the ledger) or <strong>Delete</strong> (the entry is removed; a full copy stays in the audit trail).</li>
+<li>Type the reason and confirm.</li>
+</ol>
+<p>The assets in that run can then be depreciated again for that period. An asset that had become <strong>Fully Depreciated</strong> through that run goes back to <strong>Active</strong>.</p>
+<h4 id="s-the-posted-entry">The posted entry<a class="man-hash" href="#s-the-posted-entry" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Open a run from <strong>Posted depreciation</strong> to see it. The view shows the lines as they were posted and the <strong>General ledger entries created automatically</strong>. The buttons are <strong>Print</strong>, <strong>Void</strong>, <strong>Delete</strong>, <strong>History</strong> and <strong>Back to list</strong>. A depreciation entry cannot be edited; void it and post again instead.</p>
+<p><strong>Print</strong> shows the entry as a journal voucher titled DEPRECIATION, with Prepared by, Checked by and Approved by lines. Click <strong>Print</strong> on that page to send it to the printer.</p>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The program adds up the depreciation of the selected assets by category (and by class) and writes one pair of lines for each: a debit to the category's depreciation expense account and a credit to its accumulated depreciation account. The August 2026 run of the demo:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6090 Depreciation Expense</td>
+<td>₱57,650.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1555 Accumulated Depreciation - Computer and POS</td>
+<td></td>
+<td>₱2,500.00</td>
+</tr>
+<tr>
+<td>1525 Accumulated Depreciation - Machinery</td>
+<td></td>
+<td>₱15,150.00</td>
+</tr>
+<tr>
+<td>1535 Accumulated Depreciation - Transportation</td>
+<td></td>
+<td>₱40,000.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>The entry takes its number from the journal entry series (JE-00001, JE-00002 ...). For each asset the program also records the period, the units used and the amount, which appear on the asset under <strong>Depreciation posted</strong>. An asset whose net book value reaches its salvage value becomes <strong>Fully Depreciated</strong>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Categories that share the same expense and accumulated depreciation accounts are posted on one pair of lines. In the demo, Machinery and Equipment (₱7,500.00) and Production Machinery (usage-based) (₱7,650.00) both use 6090 and 1525, so the entry shows one pair of ₱15,150.00. The line description names only one of the two categories.</p></div>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A period can be posted only once per asset. To post it again, void or delete the run first.</li>
+<li>The program never catches up skipped months by itself. If you skip a month, the <strong>Notes</strong> column warns you; choose the skipped month and post it.</li>
+<li>A units-of-production asset without a usage figure for the period is skipped, with the warning "Skipped FA-00004 (enter the meter reading / production count first)".</li>
+<li>A disposed asset is depreciated up to its disposal month and not after.</li>
+<li>Messages: "Select the assets to depreciate." (nothing ticked), "Nothing to post for this period." (every ticked asset had nothing to charge).</li>
+<li>The entry is dated the last day of the period. If that date is on or before the closing date, only users with the special permission to change closed periods can post it. See <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</li>
+<li>Posting needs the create permission on this page; voiding and deleting need the delete permission; printing needs the print permission.</li>
+</ul>
+<h2 id="pg-fa-disposal">Dispose of Assets<a class="man-hash" href="#pg-fa-disposal" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Use Dispose of Assets when an asset leaves the company: it is sold, traded in, scrapped, donated or lost. The program brings the depreciation up to date, removes the asset's cost and accumulated depreciation from the books, records the money received, and posts the gain or loss.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Dispose of Assets. The <strong>Dispose</strong> button on an asset opens it with that asset chosen.</p>
+<p>The page opens with an empty <strong>Asset</strong> box and today as the <strong>Disposal date</strong>. Below is the list of <strong>Disposed assets</strong> with their cost, proceeds and disposal entry.</p>
+<p>When you choose an asset, its cost, accumulated depreciation, net book value and method appear, with the disposal form.</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Asset</strong></td>
+<td>The asset to dispose of. Only assets in service are listed.</td>
+</tr>
+<tr>
+<td><strong>Disposal date</strong></td>
+<td>The date of the sale or disposal. It cannot be before the acquisition date.</td>
+</tr>
+<tr>
+<td>Warning and <strong>Post them first (prorated to the disposal month)</strong></td>
+<td>Shown when months up to the disposal month are not yet depreciated, with an estimate of the amount. Leave it ticked to post those months before the disposal.</td>
+</tr>
+<tr>
+<td><strong>How / why (sold, scrapped, donated…)</strong></td>
+<td>Required. It becomes part of the entry's memo and the audit trail, for example "Sold to ABC Trading Corp."</td>
+</tr>
+<tr>
+<td><strong>Proceeds received</strong></td>
+<td>The money received. Leave 0 for an asset scrapped or donated.</td>
+</tr>
+<tr>
+<td><strong>Received into</strong></td>
+<td>The account the money went into: a bank account or an Other Current Asset account. The default is 1050 Undeposited Funds.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the disposal entry. It starts with the asset's default class.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-dispose-of-an-asset">Step by step: dispose of an asset<a class="man-hash" href="#s-step-by-step-dispose-of-an-asset" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Dispose of Assets</strong> (or open the asset and click <strong>Dispose</strong>).</li>
+<li>Choose the <strong>Asset</strong> and set the <strong>Disposal date</strong>. The page reloads with the asset's figures.</li>
+<li>If the yellow warning appears, leave <strong>Post them first (prorated to the disposal month)</strong> ticked so the depreciation is complete up to the disposal month.</li>
+<li>Type <strong>How / why</strong>, the <strong>Proceeds received</strong> and choose <strong>Received into</strong>.</li>
+<li>Click <strong>Record disposal</strong> and confirm "Dispose of this asset?".</li>
+<li>The program shows the Asset Disposal entry. The asset's status becomes <strong>Disposed</strong>.</li>
+</ol>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>If the catch-up box was ticked, the program first posts one depreciation entry for each month not yet depreciated, up to and including the disposal month (memo "Depreciation to disposal date - FA-00002"). Then it posts the Asset Disposal entry:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The category's accumulated depreciation account</td>
+<td>Accumulated depreciation</td>
+<td></td>
+</tr>
+<tr>
+<td>The <strong>Received into</strong> account</td>
+<td>Proceeds</td>
+<td></td>
+</tr>
+<tr>
+<td>4300 Gain (Loss) on Disposal of Assets</td>
+<td>Loss, if any</td>
+<td>Gain, if any</td>
+</tr>
+<tr>
+<td>The category's asset account</td>
+<td></td>
+<td>Cost</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The Delivery Van (cost ₱1,200,000.00) is sold on 09/30/2026 for ₱1,050,000.00. With September depreciated, its accumulated depreciation is ₱120,000.00 and its net book value ₱1,080,000.00. The entry debits 1535 Accumulated Depreciation - Transportation ₱120,000.00, 1050 Undeposited Funds ₱1,050,000.00 and 4300 Gain (Loss) on Disposal of Assets ₱30,000.00 (the loss), and credits 1530 Transportation Equipment ₱1,200,000.00.</p></div>
+<p>The disposal entry is recorded under the asset's site and numbered in the journal entry series. When the buyer paid straight into the bank, choose the bank account in <strong>Received into</strong>. When you leave 1050 Undeposited Funds, the proceeds are not listed among the payments to deposit in <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>; deposit them there as a line of <strong>Other receipts</strong> with <strong>From account</strong> 1050 Undeposited Funds.</p>
+<h4 id="s-step-by-step-undo-a-disposal">Step by step: undo a disposal<a class="man-hash" href="#s-step-by-step-undo-a-disposal" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>In <strong>Disposed assets</strong>, click the entry in the <strong>Entry</strong> column (or open it from the asset's status line).</li>
+<li>Click <strong>Void</strong> or <strong>Delete</strong>, type the reason and confirm.</li>
+</ol>
+<p>The asset goes back to <strong>Active</strong> and its disposal date and proceeds are cleared. The catch-up depreciation entries are separate entries and stay posted; void them in <a href="#pg-fa-depreciation">Run Depreciation</a> if they should go too.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Messages: "Choose an asset in service.", "The disposal date is before the acquisition date.", "Enter how and why the asset was disposed of.", "Choose the account that received the proceeds." (proceeds entered without an account).</li>
+<li>The gain or loss uses the default account <strong>Gain / Loss on Disposal of Assets</strong>. If it is not set, the program says so; set it in <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>.</li>
+<li>For a units-of-production asset, the catch-up only posts months that have a usage figure, and the estimate in the warning shows 0.00. Enter the usage for the missing months first (on the asset or in Run Depreciation).</li>
+<li>Recording a disposal needs the create permission on this page.</li>
+</ul>
+<h2 id="pg-fa-maintenance">Asset Maintenance<a class="man-hash" href="#pg-fa-maintenance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Asset Maintenance keeps the history of every repair, servicing, inspection and upgrade of an asset: the supplier, the spare parts (with part, serial and model numbers for warranty claims), the labor, pictures of the parts, and the cost. When you save a record, the program also records the payment in the books as a bill, a check or a cash voucher, so maintenance is entered only once.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Asset Maintenance. It is also a Home page quick action, and <strong>Maintenance records</strong> on Preventive Maintenance opens it.</p>
+<p>The list shows the records of the last twelve months (and the next 30 days), void records left out.</p>
+<h4 id="s-the-filters_1">The filters<a class="man-hash" href="#s-the-filters_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong>, <strong>To</strong></td>
+<td>The maintenance dates to list</td>
+</tr>
+<tr>
+<td><strong>Asset</strong>, <strong>Location</strong></td>
+<td>One asset, or the assets of one location</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td><strong>Repair</strong>, <strong>Preventive maintenance</strong>, <strong>Inspection / testing</strong> or <strong>Upgrade / overhaul</strong></td>
+</tr>
+<tr>
+<td><strong>Supplier</strong></td>
+<td>Records of one supplier</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Completed and in progress</strong> (the default), <strong>Completed</strong>, <strong>In progress</strong> or <strong>Void</strong></td>
+</tr>
+<tr>
+<td><strong>Search (record, asset, part no., serial, model)</strong></td>
+<td>Finds records by record number, description, problem, reference, asset, or any part's number, description, serial or model</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Show</strong> to apply the filters.</p>
+<h4 id="s-the-columns_1">The columns<a class="man-hash" href="#s-the-columns_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Date</strong>, <strong>Record</strong> (a picture icon shows when pictures are attached), <strong>Asset</strong>, <strong>Type</strong>, <strong>Work done</strong>, <strong>Supplier</strong>, <strong>Parts</strong>, <strong>Labor</strong>, <strong>Total</strong>, <strong>Paid through</strong> (the bill, check or cash voucher, marked "(void)" when voided) and <strong>Status</strong>. The last row counts the records and totals the parts, labor and cost (void records are not counted).</p>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New maintenance record</strong> opens a blank record.</li>
+<li><strong>Preventive maintenance</strong> opens <a href="#pg-fa-pm">Preventive Maintenance</a>. It turns red and shows the number of tasks due, for example <strong>Preventive maintenance (2 due)</strong>.</li>
+<li><strong>Export</strong> downloads the list as a CSV file that opens in a spreadsheet (needs the print permission).</li>
+</ul>
+<h3 id="s-entering-a-maintenance-record">Entering a maintenance record<a class="man-hash" href="#s-entering-a-maintenance-record" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-fields_3">Fields<a class="man-hash" href="#s-fields_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed asset</strong></td>
+<td>The asset repaired or serviced. Type part of its name or number. The location and last meter reading appear under the box. Required.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the work. Required.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td><strong>Repair</strong>, <strong>Preventive maintenance</strong>, <strong>Inspection / testing</strong> or <strong>Upgrade / overhaul</strong></td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Completed</strong>, or <strong>In progress (post the cost later)</strong> for work not yet finished</td>
+</tr>
+<tr>
+<td><strong>Supplier of the parts / service</strong></td>
+<td>The supplier. Required when the cost is entered as a bill.</td>
+</tr>
+<tr>
+<td><strong>Performed by (mechanic, technician, shop)</strong></td>
+<td>Who did the work</td>
+</tr>
+<tr>
+<td><strong>Supplier's invoice / job order no.</strong></td>
+<td>The supplier's document number, kept as the reference of the bill or check</td>
+</tr>
+<tr>
+<td><strong>Meter reading</strong></td>
+<td>The odometer or running hours at the time of the work. It updates the asset's current meter reading (the reading only moves forward).</td>
+</tr>
+<tr>
+<td><strong>Problem reported / reason</strong></td>
+<td>Why the work was needed</td>
+</tr>
+<tr>
+<td><strong>Downtime (days)</strong></td>
+<td>How long the asset was out of use</td>
+</tr>
+<tr>
+<td><strong>Next service date</strong></td>
+<td>For your reference; shown on the record. To be reminded, set up a task in Preventive Maintenance.</td>
+</tr>
+<tr>
+<td><strong>Maintenance description (work done, including what the labor was for)</strong></td>
+<td>What was done. Required when labor is entered.</td>
+</tr>
+<tr>
+<td><strong>Preventive maintenance task this completes</strong></td>
+<td>One of the asset's preventive maintenance tasks. Saving the record as <strong>Completed</strong> acknowledges the task and moves it to its next due date.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Spare parts and materials</strong> grid (one line per part; click <strong>Add part</strong>, <strong>Add 5 parts</strong> or <strong>Add 10 parts</strong> for more lines, and the square plus button at the end of a line to insert one above it):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Part no.</strong>, <strong>Description</strong>, <strong>Brand</strong></td>
+<td>The part. The description is required on a line that has a part number or cost.</td>
+</tr>
+<tr>
+<td><strong>Serial no.</strong>, <strong>Model no.</strong>, <strong>Size</strong></td>
+<td>Details that identify the part for warranty claims and re-ordering</td>
+</tr>
+<tr>
+<td><strong>Qty</strong>, <strong>Unit</strong>, <strong>Unit cost</strong></td>
+<td>Quantity (blank counts as 1), unit (for example pc) and cost per unit, net of VAT</td>
+</tr>
+<tr>
+<td><strong>Amount</strong>, <strong>Warranty until</strong></td>
+<td>Qty times unit cost (worked out for you) and the end of the part's warranty</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Labor</strong> grid (click <strong>Add labor line</strong>, <strong>Add 5 lines</strong> or <strong>Add 10 lines</strong> for more lines):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Work done</strong></td>
+<td>The job, for example Remove and install radiator and water pump. Required on every labor line.</td>
+</tr>
+<tr>
+<td><strong>Worker / mechanic</strong></td>
+<td>Who did it</td>
+</tr>
+<tr>
+<td><strong>Charge</strong></td>
+<td><strong>By the hour</strong> (man-hours times rate) or <strong>Bulk charge</strong> (one agreed amount)</td>
+</tr>
+<tr>
+<td><strong>Man-hours</strong>, <strong>Rate per hour</strong>, <strong>Amount</strong></td>
+<td>For <strong>By the hour</strong>, the amount is worked out. For <strong>Bulk charge</strong>, type the amount.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Disbursement (linked to accounting)</strong>:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>How is it paid?</strong></td>
+<td><strong>On account: enter a Bill (pay later in Pay Bills)</strong>, <strong>Paid by check: write a Check Voucher</strong>, <strong>Paid in cash: petty cash / revolving fund Cash Voucher</strong>, or <strong>No entry: already recorded elsewhere, or no cost</strong></td>
+</tr>
+<tr>
+<td><strong>Bank account</strong></td>
+<td>Check only: the account the check is drawn on</td>
+</tr>
+<tr>
+<td><strong>Cash account (petty cash, revolving fund)</strong></td>
+<td>Cash voucher only: the cash fund that paid</td>
+</tr>
+<tr>
+<td><strong>Parts charged to</strong>, <strong>Labor charged to</strong></td>
+<td>The expense accounts. They start with the first active expense account whose name contains "Repair" (6030 Repairs and Maintenance in the demo).</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>The class of the payment. On a new record it takes the asset's default class.</td>
+</tr>
+<tr>
+<td><strong>Costs are net of 12% VAT (add input VAT)</strong></td>
+<td>Tick it when the supplier charged VAT: 12% is added to the parts and the labor</td>
+</tr>
+<tr>
+<td><strong>Supervisor approval</strong></td>
+<td>For a check or cash voucher above your amount limit</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Pictures of the materials and parts</strong>: choose one or more JPG, PNG, GIF or WEBP files, up to 8 MB each, and type a caption under each preview. <strong>Notes</strong> holds anything else. The box on the right totals <strong>Parts</strong>, <strong>Labor</strong>, <strong>Input VAT 12%</strong> and <strong>Total cost</strong>.</p>
+<h4 id="s-step-by-step-record-a-repair-paid-on-account">Step by step: record a repair paid on account<a class="man-hash" href="#s-step-by-step-record-a-repair-paid-on-account" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Asset Maintenance</strong> and click <strong>New maintenance record</strong>.</li>
+<li>Choose the <strong>Fixed asset</strong>, for example Delivery Van (L300) (FA-00002), and set the <strong>Date</strong>, <strong>Type</strong> and <strong>Status</strong>.</li>
+<li>Choose the <strong>Supplier of the parts / service</strong> and fill in <strong>Performed by</strong>, the job order number and the <strong>Meter reading</strong>.</li>
+<li>Describe the <strong>Problem reported / reason</strong> and the <strong>Maintenance description</strong>.</li>
+<li>Enter each spare part in <strong>Spare parts and materials</strong>.</li>
+<li>Enter each labor line in <strong>Labor</strong>, choosing <strong>By the hour</strong> or <strong>Bulk charge</strong>.</li>
+<li>Under <strong>How is it paid?</strong>, leave <strong>On account: enter a Bill (pay later in Pay Bills)</strong>. Check the expense accounts and the VAT box.</li>
+<li>Add pictures if you have them.</li>
+<li>Click <strong>Save record</strong>. The message tells you which document was created, for example "Maintenance record MNT-00001 saved: Bill BILL-00003 for 12,500.00 was created."</li>
+</ol>
+<h4 id="s-step-by-step-record-work-that-is-still-in-progress">Step by step: record work that is still in progress<a class="man-hash" href="#s-step-by-step-record-work-that-is-still-in-progress" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Enter the record as above, with <strong>Status</strong> set to <strong>In progress (post the cost later)</strong>.</li>
+<li>Save it. No bill, check or cash voucher is made yet.</li>
+<li>When the work is done, open the record, click <strong>Edit</strong>, change <strong>Status</strong> to <strong>Completed</strong>, complete the parts and labor, and save. The payment is recorded now.</li>
+</ol>
+<h4 id="s-viewing-a-record">Viewing a record<a class="man-hash" href="#s-viewing-a-record" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click the record number to open it. The top card shows the asset, date, type, status, supplier, performer, reference, location, meter reading, downtime, next service date, the preventive task done, the class and who entered it. Below are the spare parts (a <strong>Warranty until</strong> date still in the future shows in green), the labor, the pictures (click one to open it full size), the <strong>Cost</strong> box, and the <strong>Accounting</strong> box with the document that paid the cost and its ledger lines. When the cost is an unpaid bill, <strong>Pay this bill</strong> opens Pay Bills for the supplier.</p>
+<p>The buttons are <strong>Edit</strong> (not for void records), <strong>Print</strong>, <strong>Void</strong>, <strong>Delete</strong> and <strong>Back to list</strong>.</p>
+<p><strong>Print</strong> gives the ASSET MAINTENANCE RECORD: the asset and its serial or plate number, the supplier and reference, the problem and the work done, the parts and labor tables, the total cost, and signature lines.</p>
+<h4 id="s-step-by-step-change-or-cancel-a-record">Step by step: change or cancel a record<a class="man-hash" href="#s-step-by-step-change-or-cancel-a-record" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>To change it</strong>, click <strong>Edit</strong>, make the changes and save. The bill, check or cash voucher is updated to match. If you choose another <strong>How is it paid?</strong>, the old document is voided and a new one is created. Pictures are removed with the <strong>Remove</strong> link under each one on the edit form.</li>
+<li><strong>To void it</strong>, click <strong>Void</strong>, type the reason and click <strong>Void maintenance record</strong>. The record and its details stay, marked void, and its bill, check or cash voucher is voided.</li>
+<li><strong>To delete it</strong>, click <strong>Delete</strong>, type the reason and click <strong>Delete maintenance record</strong>. The record, its pictures and its accounting document are removed. A full copy is kept in the audit trail.</li>
+</ul>
+<h4 id="s-what-it-records_3">What it records<a class="man-hash" href="#s-what-it-records_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>On a record with parts of ₱11,000.00 and labor of ₱1,500.00, paid on account with no VAT, the program enters a bill for the supplier:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6030 Repairs and Maintenance (parts)</td>
+<td>₱11,000.00</td>
+<td></td>
+</tr>
+<tr>
+<td>6030 Repairs and Maintenance (labor)</td>
+<td>₱1,500.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2000 Accounts Payable</td>
+<td></td>
+<td>₱12,500.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>With the VAT box ticked, 12% of the parts and labor is also debited to 1300 Input Tax. A check credits the bank account instead of Accounts Payable; a cash voucher credits the cash fund. The bill uses the supplier's terms, is dated the maintenance date and is recorded under the asset's site. It is a normal bill: it appears in Enter Bills, Pay Bills and the payables reports.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Recording the payment needs permission on the page of the document: create (or edit) on <a href="manual.php?c=vendors#pg-vend-bills">Enter Bills</a> for a bill, on <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a> for a check, on <a href="manual.php?c=banking#pg-bank-cash_voucher">Cash Voucher</a> for a cash voucher. Without it the program says "Your role cannot create a Bill. Ask someone who can, or save the record with "No entry" and have accounting record the payment."</li>
+<li>A check or cash voucher above your amount limit needs supervisor approval (the <strong>Supervisor approval</strong> box).</li>
+<li>Messages: "Choose the fixed asset that was repaired or maintained.", "Describe the maintenance that was done, or enter the parts and labor.", "Enter the maintenance description: what the labor was for.", "Enter the parts or the labor cost, or choose "No entry" when there is nothing to pay.", "Choose the supplier: a bill is owed to a supplier.", "Choose the bank account the check is drawn on.", "Choose the cash account the voucher is paid from.", "The preventive maintenance task belongs to another asset.", "... is not a picture. Upload JPG, PNG, GIF or WEBP files."</li>
+<li>A paid bill or a reconciled check blocks voiding or deleting the record until the payment is dealt with.</li>
+<li>The <strong>Parts charged to</strong> and <strong>Labor charged to</strong> lists also offer Fixed Asset accounts. Charging a cost to an asset account does not change the asset's cost in the register, so the register and the ledger would no longer agree.</li>
+</ul>
+<h2 id="pg-fa-pm">Preventive Maintenance<a class="man-hash" href="#pg-fa-pm" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Preventive Maintenance keeps the recurring tasks that fall due by date, by meter reading, or both: vehicle registration renewal, insurance renewal, change oil, tune-up, cleaning of air-conditioning units, computers and solar panels, calibration, permits. A task that is due keeps reminding everyone who may open this page until someone acknowledges that it is complete. A repeating task then moves to its next due date.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Preventive Maintenance. It also opens from the bell in the top bar, from the <strong>Asset maintenance due</strong> card on the Home page, from the reminder pop-up, and from the <strong>Preventive maintenance</strong> button on Asset Maintenance.</p>
+<p>The three cards at the top count the active tasks: <strong>Overdue</strong> (past their due date or meter), <strong>Due soon</strong> (inside their reminder period) and <strong>Upcoming</strong> (scheduled, not reminding yet). Click a card to see those tasks.</p>
+<h4 id="s-how-a-task-becomes-due">How a task becomes due<a class="man-hash" href="#s-how-a-task-becomes-due" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>By date</strong>: a task starts reminding the chosen number of days before its due date (<strong>Due in 20 days</strong>) and becomes overdue the day after (<strong>3 days overdue</strong>).</li>
+<li><strong>By meter</strong>: a task starts reminding when the asset's current meter reading is within 10% of the meter interval of the due reading, and becomes overdue when the reading reaches it. For a change oil every 5,000 km due at 50,000 km, it reminds from 49,500 km.</li>
+<li>A task with both a date and a meter takes whichever is more urgent.</li>
+</ul>
+<h4 id="s-the-tabs">The tabs<a class="man-hash" href="#s-the-tabs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Every tab can be narrowed with the <strong>Asset</strong>, <strong>Location</strong> and <strong>Kind of task</strong> filters.</p>
+<p><strong>Reminding now</strong> lists the overdue and due tasks, the most urgent first. Overdue rows have a red edge and due rows an orange edge.</p>
+<p><strong>Upcoming</strong> lists the active tasks that are not reminding yet.</p>
+<p><strong>All tasks</strong> lists every task, including stopped and finished ones.</p>
+<p><strong>Completed</strong> is the log of every task acknowledged as complete: <strong>Completed</strong> (date), <strong>Asset</strong>, <strong>Task</strong>, <strong>Was due</strong> (in red when done late), <strong>Meter</strong>, <strong>Remarks</strong>, <strong>Acknowledged by</strong> and <strong>Record</strong> (the maintenance record, when the task was done through one). The <strong>Kind of task</strong> filter does not apply to this tab.</p>
+<p>The task lists show <strong>Asset</strong> (with its description and location), <strong>Task</strong> (with its notes), <strong>Due</strong> (the date, and the due meter with the current reading), <strong>State</strong>, <strong>Repeats</strong>, <strong>Last done</strong> and <strong>Responsible</strong>, followed by the <strong>Completed</strong> button, the edit button (pencil) and the delete button (trash).</p>
+<h3 id="s-adding-a-task">Adding a task<a class="man-hash" href="#s-adding-a-task" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Click <strong>New task</strong>. The form opens above the tabs.</p>
+<h4 id="s-fields_4">Fields<a class="man-hash" href="#s-fields_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed asset</strong></td>
+<td>The asset. Required.</td>
+</tr>
+<tr>
+<td><strong>Kind of task</strong></td>
+<td><strong>Vehicle registration renewal</strong>, <strong>Insurance renewal</strong>, <strong>Change oil</strong>, <strong>Tune-up / servicing</strong>, <strong>Cleaning (air-con, computers, solar panels ...)</strong>, <strong>Inspection / calibration / testing</strong>, <strong>Permit / license renewal</strong> or <strong>Other maintenance</strong>. Choosing one fills in the task name if you have not typed one.</td>
+</tr>
+<tr>
+<td><strong>Task (what has to be done)</strong></td>
+<td>For example LTO registration renewal, or Change oil and filter. Left blank, the kind of task is used.</td>
+</tr>
+<tr>
+<td><strong>Next due date</strong></td>
+<td>When the task is next due</td>
+</tr>
+<tr>
+<td><strong>Remind (days before)</strong></td>
+<td>How many days before the due date it starts reminding (0 to 365; 14 by default)</td>
+</tr>
+<tr>
+<td><strong>Repeats</strong></td>
+<td>Tick it for a recurring task. Untick it for a one-time task, which is finished once acknowledged.</td>
+</tr>
+<tr>
+<td><strong>Every</strong></td>
+<td>The date interval, for example 3 month(s) or 1 year(s). Units: day(s), week(s), month(s), year(s).</td>
+</tr>
+<tr>
+<td><strong>or every (meter: km, hours)</strong></td>
+<td>The meter interval, for example 5000</td>
+</tr>
+<tr>
+<td><strong>Next due at meter reading</strong></td>
+<td>The meter reading at which the task is next due. Leave blank for a task by date only. Required when a meter interval is entered.</td>
+</tr>
+<tr>
+<td><strong>Meter reading of the asset now</strong></td>
+<td>The asset's current odometer or running hours, and the unit (km, hours). It updates the asset's reading. The last reading is shown in grey.</td>
+</tr>
+<tr>
+<td><strong>Person responsible</strong></td>
+<td>Who takes care of it</td>
+</tr>
+<tr>
+<td><strong>Notes (office to go to, requirements, supplier ...)</strong></td>
+<td>For example Bring the OR/CR and the emission test result</td>
+</tr>
+<tr>
+<td><strong>Active (keeps reminding)</strong></td>
+<td>On the edit form only. Untick it to stop the task without deleting it.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-add-a-recurring-task">Step by step: add a recurring task<a class="man-hash" href="#s-step-by-step-add-a-recurring-task" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>New task</strong>.</li>
+<li>Choose the <strong>Fixed asset</strong> and the <strong>Kind of task</strong>, and check the <strong>Task</strong> name.</li>
+<li>Enter the <strong>Next due date</strong> and <strong>Remind (days before)</strong>.</li>
+<li>Leave <strong>Repeats</strong> ticked and enter <strong>Every</strong> (for example 12 month(s)), or a meter interval with the <strong>Next due at meter reading</strong>, or both.</li>
+<li>Enter the current meter reading if the task goes by meter, the <strong>Person responsible</strong> and any <strong>Notes</strong>.</li>
+<li>Click <strong>Save task</strong> (or <strong>Save task &amp; New</strong>). The message tells you when it starts reminding, for example "Task saved. It starts reminding 14 day(s) before 10/17/2026."</li>
+</ol>
+<p>To change a task, click its pencil button. The form opens as <strong>Edit task</strong>.</p>
+<h4 id="s-step-by-step-acknowledge-a-task-as-complete">Step by step: acknowledge a task as complete<a class="man-hash" href="#s-step-by-step-acknowledge-a-task-as-complete" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Completed</strong> on the task's row. The dialog <strong>Acknowledge the task as complete</strong> opens.</li>
+<li>Enter the <strong>Date completed</strong> (it cannot be in the future).</li>
+<li>Enter the <strong>Meter reading</strong>. It is required when the task repeats by meter.</li>
+<li>Type the <strong>Remarks</strong> (official receipt number, who did it, findings).</li>
+<li>Tick <strong>Then record the parts, labor and payment in Asset Maintenance</strong> if there is a cost to record.</li>
+<li>Click <strong>Task is complete</strong>.</li>
+</ol>
+<p>The task is written to the <strong>Completed</strong> log and its reminder stops. A repeating task moves to its next due date: counted from the due date when the work was done on time or early, from the completion date when it was late. The next due meter is the reading entered plus the meter interval. A one-time task is finished. If you ticked the last box, a new maintenance record opens for the asset.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>When the work has a cost, you can instead create the maintenance record first and choose the task in <strong>Preventive maintenance task this completes</strong>. Saving the record as <strong>Completed</strong> acknowledges the task in one step and links the record in the log.</p></div>
+<h4 id="s-the-reminders">The reminders<a class="man-hash" href="#s-the-reminders" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>The bell</strong> in the top bar shows the number of tasks due or overdue. Click it to open this page on <strong>Reminding now</strong>. With nothing due, the bell is quiet.</li>
+<li><strong>The pop-up</strong> "Maintenance due: N tasks" appears after you log in, once a day, and again whenever the list of due tasks changes. <strong>Later</strong> closes it; <strong>Open Preventive Maintenance</strong> opens this page. It does not appear on this page itself.</li>
+<li><strong>The Home page card</strong> "Asset maintenance due" lists up to 12 due tasks with their state and date, and an <strong>Open</strong> button.</li>
+</ul>
+<p>The reminders are shown to every user who may open Preventive Maintenance, and they stay until the task is acknowledged as complete. Disposed assets never remind.</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Delete</strong> (trash button) removes a task that was never completed. A task with completed entries is stopped instead, and its log stays: "The task was stopped. Its 1 completed entries stay in the log."</li>
+<li>Messages: "Choose the fixed asset.", "Enter when the task is next due: a date, a meter reading, or both.", "Enter the meter reading at which the task is next due.", "Enter the meter reading: this task repeats by km.", "The completion date cannot be in the future."</li>
+<li>If a task should no longer repeat by meter, clear <strong>or every (meter: km, hours)</strong> before unticking <strong>Repeats</strong>; the meter interval is kept otherwise.</li>
+<li>Adding tasks needs the create permission, editing and acknowledging need the edit permission, deleting needs the delete permission.</li>
+<li>The <a href="#pg-rpt-fa_pm_upcoming">Upcoming Preventive Maintenance</a> and <a href="#pg-rpt-fa_pm_log">Completed Preventive Maintenance</a> reports print these lists.</li>
+</ul>
+<h2 id="pg-fa-categories">Asset Categories<a class="man-hash" href="#pg-fa-categories" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Asset categories group similar assets and decide which accounts they post to. The category also gives new assets their default depreciation method and useful life.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Asset Categories.</p>
+<p>The list on the left shows each category with its three account codes (<strong>Asset / Accum. / Expense</strong>), <strong>Default method</strong>, default <strong>Life</strong> and the number of <strong>Assets</strong> in it. Inactive categories are shown in grey. The form on the right adds a new category.</p>
+<h4 id="s-fields_5">Fields<a class="man-hash" href="#s-fields_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>The category name, for example Transportation Equipment. Required.</td>
+</tr>
+<tr>
+<td><strong>Asset account</strong></td>
+<td>The Fixed Asset account the cost is debited to, for example 1530 Transportation Equipment</td>
+</tr>
+<tr>
+<td><strong>Accumulated depreciation account</strong></td>
+<td>The Fixed Asset account credited by depreciation, for example 1535 Accumulated Depreciation - Transportation</td>
+</tr>
+<tr>
+<td><strong>Depreciation expense account</strong></td>
+<td>The expense account debited by depreciation, for example 6090 Depreciation Expense. Expense, Other Expense and Cost of Goods Sold accounts are offered.</td>
+</tr>
+<tr>
+<td><strong>Default method</strong></td>
+<td>The method a new asset in this category starts with</td>
+</tr>
+<tr>
+<td><strong>Default life (years)</strong></td>
+<td>The useful life a new asset starts with (at least 0.5)</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop offering the category on the asset form. Its assets are not affected.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-add-or-change-a-category">Step by step: add or change a category<a class="man-hash" href="#s-step-by-step-add-or-change-a-category" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Asset Categories</strong>.</li>
+<li>To add one, fill in the <strong>New category</strong> form. To change one, click <strong>Edit</strong> on its row; the form becomes <strong>Edit category</strong>.</li>
+<li>Enter the <strong>Name</strong> and choose the three accounts.</li>
+<li>Choose the <strong>Default method</strong> and <strong>Default life (years)</strong>.</li>
+<li>Click <strong>Save category</strong> (or <strong>Save category &amp; New</strong>). <strong>Cancel</strong> leaves the edit form.</li>
+</ol>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>All three accounts are required: "Enter the name and all three accounts."</li>
+<li>Create the accounts first in the <a href="manual.php?c=chart-of-accounts">Chart of Accounts</a>. Asset and accumulated depreciation accounts must be of the type Fixed Asset to appear in the lists.</li>
+<li>The accounts are read from the category each time depreciation is run or an asset is disposed of. Changing the accounts of a category that already has assets sends their later depreciation and disposals to the new accounts, while their cost and past depreciation stay in the old ones. Prefer a new category, or move the balances with a journal entry.</li>
+<li>The default method and life only fill in the form of a new asset; changing them does not change existing assets.</li>
+<li>Categories cannot be deleted. Make an unused one inactive.</li>
+</ul>
+<h2 id="pg-fa-locations">Asset Locations<a class="man-hash" href="#pg-fa-locations" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Asset Locations is the list behind the <strong>Location</strong> box of every asset: a branch, a building, a room, a vehicle yard. The Fixed Asset Register, the asset reports, Asset Maintenance, Preventive Maintenance and Run Depreciation can all be filtered by location.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Asset Locations. The <strong>Manage locations</strong> link on the asset form opens it in a new tab.</p>
+<p>The list shows each location with the number of <strong>Assets in service</strong> (click it to open the register filtered to that location), their total <strong>Cost</strong>, and whether it is <strong>Active</strong>.</p>
+<h4 id="s-fields_6">Fields<a class="man-hash" href="#s-fields_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Location name</strong></td>
+<td>For example Head Office, Cordova Plant, Motor Pool. Required, and it must be unique.</td>
+</tr>
+<tr>
+<td><strong>Active (offered on the asset form)</strong></td>
+<td>Untick it to stop offering the location on new assets. Assets already there keep it.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-add-rename-or-delete-a-location">Step by step: add, rename or delete a location<a class="man-hash" href="#s-step-by-step-add-rename-or-delete-a-location" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>Fixed Assets &gt; Asset Locations</strong>.</li>
+<li>To add a location, type the <strong>Location name</strong> and click <strong>Save location</strong> (or <strong>Save location &amp; New</strong>).</li>
+<li>To rename one, click <strong>Edit</strong>, change the name and click <strong>Save location</strong>. The new name is written on every asset at that location.</li>
+<li>To delete one, click <strong>Delete</strong> on its row and confirm. The link appears only when the location has no assets in service.</li>
+</ol>
+<h4 id="s-good-to-know_6">Good to know<a class="man-hash" href="#s-good-to-know_6" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A location that still has assets, including disposed ones, cannot be deleted: "Main Warehouse still has assets. Move them to another location first, or make the location inactive."</li>
+<li>Messages: "Enter the name of the location.", "There is already a location named ...".</li>
+</ul>
+<h2 id="s-fixed-asset-reports">Fixed asset reports<a class="man-hash" href="#s-fixed-asset-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The fixed asset reports are under <strong>Fixed Assets &gt; Reports</strong> in the sidebar and in the Report Center. Their common tools (Refresh, Columns, Print / PDF, Export to spreadsheet, Email link, Modify Report, Memorize, and clicking a figure to see the detail) are explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>. Most of them have a <strong>Location</strong> filter with <strong>(No location)</strong> for assets without one.</p>
+<h3 id="pg-rpt-fa_register">Fixed Asset Register Report<a class="man-hash" href="#pg-rpt-fa_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The register of assets as of a date, with their cost, salvage value, accumulated depreciation and net book value. Use it at month end or year end to support the fixed asset accounts on the balance sheet.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Fixed Asset Register Report.</p>
+<p><strong>The filters:</strong> <strong>As of</strong>, <strong>Asset category</strong> and <strong>Location</strong>.</p>
+<p><strong>The columns:</strong> <strong>Asset no.</strong> (click to open the asset), <strong>Description</strong>, <strong>Category</strong>, <strong>Location</strong>, <strong>Acquired</strong>, <strong>Method</strong>, <strong>Life (yrs)</strong>, <strong>Cost</strong>, <strong>Salvage</strong>, <strong>Accum. dep.</strong> and <strong>Net book value</strong>, with a <strong>TOTAL</strong> row. The report lists the assets acquired on or before the date and not disposed of by then. Accumulated depreciation includes opening accumulated depreciation and the depreciation posted for months up to the as-of month.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Run it as of the last day of a month after posting that month's depreciation. The <strong>Cost</strong> total should equal the balance of the asset accounts and the <strong>Accum. dep.</strong> total the balance of the accumulated depreciation accounts on the balance sheet.</p></div>
+<h3 id="pg-rpt-fa_schedule">Depreciation Schedule by Asset<a class="man-hash" href="#pg-rpt-fa_schedule" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Compares straight-line, double-declining balance and sum-of-the-years'-digits year by year for one asset, or for any figures you type in. Use it to choose a method before adding an asset, or to explain an asset's depreciation.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Depreciation Schedule by Asset, or <strong>Compare methods</strong> on an asset.</p>
+<p><strong>The filters:</strong> <strong>Asset</strong>, or with <strong>Asset</strong> on <strong>All</strong>, the <strong>Cost</strong>, <strong>Salvage</strong> and <strong>Life (years)</strong> of an example asset. Left blank, the example uses a cost of ₱500,000.00, a salvage value of ₱50,000.00 and 5 years.</p>
+<p><strong>The columns:</strong> <strong>Year</strong>, the yearly depreciation by <strong>Straight-line</strong>, <strong>Double-declining balance</strong> and <strong>Sum-of-the-years'-digits</strong>, and the net book value at the end of each year under each method (<strong>NBV (SL)</strong>, <strong>NBV (DDB)</strong>, <strong>NBV (SYD)</strong>). The note above the table gives the depreciable cost, the double-declining rate and, for a units-of-production asset, the rate per unit.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The comparison always uses a multiplier of 2 for declining balance and whole years for the life, whatever the asset's own settings. All three methods depreciate the same total; only the timing differs.</p></div>
+<h3 id="pg-rpt-fa_by_category">Depreciation by Category<a class="man-hash" href="#pg-rpt-fa_by_category" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The depreciation posted in a period, by category and asset. Use it to check the depreciation expense of the month or year and to see which assets it came from.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Depreciation by Category.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this fiscal year by default), <strong>From</strong>, <strong>To</strong>, <strong>Asset category</strong> and <strong>Location</strong>.</p>
+<p><strong>The columns:</strong> <strong>Category / asset</strong> (grouped by category with a total for each), <strong>Method</strong>, <strong>Units used</strong> (units-of-production assets) and <strong>Depreciation</strong>. Only depreciation entries dated in the period and not voided are counted; opening accumulated depreciation is not.</p>
+<h3 id="pg-rpt-fa_additions">Additions and Disposals<a class="man-hash" href="#pg-rpt-fa_additions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The assets acquired and the assets disposed of in a period. Use it for the fixed asset movement schedule of the financial statements.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Additions and Disposals.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong> and <strong>Location</strong>.</p>
+<p>The report can also be narrowed by <strong>Asset category</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>The columns:</strong> Two sections. <strong>Additions</strong> lists each asset acquired in the period with its <strong>Category</strong>, <strong>Date</strong> and <strong>Cost</strong>, and <strong>Total additions</strong>. <strong>Disposals</strong> lists each asset disposed of in the period with its <strong>Cost</strong>, <strong>Accum. dep.</strong>, <strong>Proceeds</strong> and <strong>Gain / (loss)</strong>, and <strong>Total disposals</strong>.</p>
+<h3 id="pg-rpt-fa_maint_history">Maintenance History<a class="man-hash" href="#pg-rpt-fa_maint_history" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every maintenance record in a period with its cost and the document that paid it. Use it to review what was spent on repairs and servicing.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Maintenance History.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Class</strong>, <strong>Asset</strong>, <strong>Location</strong> and <strong>Type</strong> (repair, preventive maintenance, inspection, upgrade).</p>
+<p><strong>The columns:</strong> <strong>Date</strong>, <strong>Record</strong> (click to open it), <strong>Asset</strong>, <strong>Location</strong>, <strong>Type</strong>, <strong>Work done</strong>, <strong>Supplier</strong>, <strong>Reference</strong>, <strong>Parts</strong>, <strong>Labor</strong>, <strong>VAT</strong>, <strong>Total</strong> and <strong>Paid through</strong>. Void records are left out.</p>
+<h3 id="pg-rpt-fa_maint_cost">Maintenance Cost by Asset<a class="man-hash" href="#pg-rpt-fa_maint_cost" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The maintenance cost of each asset in a period, most expensive first, compared with what the asset cost. An asset whose maintenance keeps climbing is a candidate for replacement.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Maintenance Cost by Asset.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Class</strong>, <strong>Asset category</strong>, <strong>Location</strong> and <strong>Type</strong>.</p>
+<p><strong>The columns:</strong> <strong>Asset</strong> (click to open its maintenance records), <strong>Category</strong>, <strong>Location</strong>, <strong>Jobs</strong> (number of records), <strong>Repairs</strong> (records of the type Repair), <strong>Parts</strong>, <strong>Labor</strong>, <strong>Total cost</strong> (before VAT), <strong>% of cost</strong> (the period's maintenance as a percentage of the asset's cost), <strong>Downtime (days)</strong> and <strong>Last job</strong>.</p>
+<h3 id="pg-rpt-fa_maint_parts">Spare Parts Used<a class="man-hash" href="#pg-rpt-fa_maint_parts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every spare part recorded on maintenance records in a period, with its identifying numbers, supplier and warranty. Use it to follow up warranty claims and to see which parts are replaced often.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Spare Parts Used.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Asset</strong> and <strong>Location</strong>.</p>
+<p><strong>The columns:</strong> <strong>Date</strong>, <strong>Record</strong>, <strong>Asset</strong>, <strong>Part no.</strong>, <strong>Description</strong>, <strong>Brand</strong>, <strong>Serial no.</strong>, <strong>Model no.</strong>, <strong>Size</strong>, <strong>Qty</strong>, <strong>Unit</strong>, <strong>Unit cost</strong>, <strong>Amount</strong>, <strong>Supplier</strong> and <strong>Warranty until</strong>.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>To find one part across all records, use the <strong>Search</strong> box of the <a href="#pg-fa-maintenance">Asset Maintenance</a> list: it searches part numbers, descriptions, serials and models.</p></div>
+<h3 id="pg-rpt-fa_maint_labor">Maintenance Labor<a class="man-hash" href="#pg-rpt-fa_maint_labor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every labor line of the maintenance records in a period: the work, who did it, the man-hours and the charge.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Maintenance Labor.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Asset</strong> and <strong>Location</strong>.</p>
+<p><strong>The columns:</strong> <strong>Date</strong>, <strong>Record</strong>, <strong>Asset</strong>, <strong>Work done</strong>, <strong>Worker / mechanic</strong> (the record's <strong>Performed by</strong> when no worker was typed on the line), <strong>Charge</strong> (<strong>By the hour</strong> or <strong>Bulk charge</strong>), <strong>Man-hours</strong>, <strong>Rate</strong>, <strong>Amount</strong> and <strong>Supplier</strong>. The total row adds up the man-hours (bulk charges have none) and the amounts.</p>
+<h3 id="pg-rpt-fa_pm_upcoming">Upcoming Preventive Maintenance<a class="man-hash" href="#pg-rpt-fa_pm_upcoming" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The preventive maintenance tasks that are overdue, due now, or coming up. Print it for the person responsible, or to plan the month's servicing.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Upcoming Preventive Maintenance, or <strong>Upcoming report</strong> on Preventive Maintenance.</p>
+<p><strong>The filters:</strong> <strong>Asset</strong>, <strong>Location</strong>, <strong>Kind of task</strong>, and <strong>Show</strong>: <strong>Overdue and due now</strong>, <strong>Due within 30 days</strong>, <strong>Due within 90 days</strong>, <strong>Due within a year</strong> or <strong>Every active task</strong>. Overdue and due tasks are always included.</p>
+<p><strong>The columns:</strong> <strong>Asset</strong>, <strong>Location</strong>, <strong>Task</strong> (click it to open the asset's tasks), <strong>Kind</strong>, <strong>Due date</strong>, <strong>Due at meter</strong>, <strong>State</strong>, <strong>Repeats</strong>, <strong>Last done</strong>, <strong>Responsible</strong> and <strong>Notes</strong>. Overdue tasks are shown in red. The note above the table counts the overdue, due and upcoming tasks.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>When the report first opens, the <strong>Show</strong> box displays <strong>Overdue and due now</strong>, but the report lists the tasks due within 90 days. Choose the option you want and click <strong>Refresh</strong>.</p></div>
+<h3 id="pg-rpt-fa_pm_log">Completed Preventive Maintenance<a class="man-hash" href="#pg-rpt-fa_pm_log" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The tasks acknowledged as complete in a period, and whether they were done on time.</p>
+<p><strong>Where to find it:</strong> Fixed Assets &gt; Reports &gt; Completed Preventive Maintenance.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Asset</strong> and <strong>Location</strong>.</p>
+<p><strong>The columns:</strong> <strong>Completed</strong>, <strong>Asset</strong>, <strong>Location</strong>, <strong>Task</strong>, <strong>Was due</strong>, <strong>Timing</strong> ("5 day(s) late", "2 day(s) early" or "on the due date"), <strong>Meter</strong>, <strong>Remarks</strong>, <strong>Acknowledged by</strong>, <strong>Maintenance record</strong> (click to open it) and <strong>Cost</strong> (the total of that record). The note above the table counts the tasks completed and how many were late.</p>

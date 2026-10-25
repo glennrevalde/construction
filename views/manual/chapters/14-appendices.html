@@ -1,0 +1,2844 @@
+<p>These appendices collect the reference material you look up rather than read from start to finish: what every kind of transaction does to the books, what the installed roles can do, how document numbers work, what the program's messages mean, what the system administrator needs to know, and a glossary.</p>
+<h2 id="app-posting">Appendix A. What each transaction records<a class="man-hash" href="#app-posting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every transaction you save is turned into general ledger lines and, for stocked items, into inventory movements. The rules are fixed in the program: you choose the accounts (through Module Default Accounts, items, tax codes and asset categories), but you never type the posting of an invoice or a bill yourself. This appendix lists, for every kind of transaction, the accounts it debits and credits, what it does to stock and to customer or vendor balances, and the page where you enter it.</p>
+<h3 id="s-how-to-read-this-appendix">How to read this appendix<a class="man-hash" href="#s-how-to-read-this-appendix" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>The account names are those of the standard chart of accounts of a contractor delivered with the program. Your company posts to the accounts chosen under <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>, on each item in the <a href="manual.php?c=inventory#pg-inv-items">Item List</a>, on each tax code in <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a> and on each asset category.</li>
+<li>Prices and amounts on sales and purchase forms are VAT-exclusive. VAT is worked out on each line and posted to the account of the line's tax code (in the demo, 2100 Output Tax on sales and 1300 Input Tax on purchases).</li>
+<li><em>Stocked items</em> are items of the types <strong>Inventory part</strong> and <strong>Inventory assembly</strong>. Only they have a quantity on hand and a value. Non-inventory parts, services and other charges post to accounts only.</li>
+<li>A stocked item leaves stock at its <em>weighted-average cost</em>: the book value of the item divided by the quantity on hand, over all sites. A sale that brings the quantity to zero takes all the value that is left.</li>
+<li>A <em>customer balance</em> is what 1100 Accounts Receivable holds for that customer and its jobs. A <em>vendor balance</em> is what 2000 Accounts Payable holds for that vendor.</li>
+<li>Every ledger line carries the class of the transaction (see The class on a transaction, at the end of this appendix).</li>
+</ul>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>To see the entry of any saved transaction, open it. The box <strong>General ledger entries created automatically</strong> lists every line with its account, memo, class, debit and credit. On sales documents (invoices, sales receipts, statement and finance charges, credit memos, POS sales and returns) the box is shown only to users who have the special permission <strong>View costs and margins</strong>, because it shows the cost of goods sold.</p></div>
+<h3 id="s-where-the-accounts-come-from">Where the accounts come from<a class="man-hash" href="#s-where-the-accounts-come-from" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The table lists every setting of <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>, the account it points to in the demo company, and what uses it.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Default account</th>
+<th>Demo account</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accounts Receivable</td>
+<td>1100 Accounts Receivable</td>
+<td>Invoices, statement and finance charges, credit memos, payments, refunds</td>
+</tr>
+<tr>
+<td>Undeposited Funds</td>
+<td>1050 Undeposited Funds</td>
+<td>Payments and sales receipts waiting to be deposited</td>
+</tr>
+<tr>
+<td>Default Sales Income</td>
+<td>4000 Sales</td>
+<td>Sales lines whose item has no income account</td>
+</tr>
+<tr>
+<td>Sales Returns and Allowances</td>
+<td>4050 Sales Returns and Allowances</td>
+<td>Credit memos and POS returns</td>
+</tr>
+<tr>
+<td>Sales Discounts</td>
+<td>4060 Sales Discounts</td>
+<td>Early-payment discounts in Receive Payments</td>
+</tr>
+<tr>
+<td>Finance Charge Income</td>
+<td>4100 Finance Charge Income</td>
+<td>Finance charges</td>
+</tr>
+<tr>
+<td>Reimbursable Expense Income</td>
+<td>4110 Reimbursable Expense Income</td>
+<td>Billable costs added to an invoice</td>
+</tr>
+<tr>
+<td>Creditable Withholding Tax</td>
+<td>1310 Creditable Withholding Tax</td>
+<td>Tax a customer withholds from a payment</td>
+</tr>
+<tr>
+<td>Output Tax</td>
+<td>2100 Output Tax</td>
+<td>Sales VAT when the tax code names no account</td>
+</tr>
+<tr>
+<td>Accounts Payable</td>
+<td>2000 Accounts Payable</td>
+<td>Bills, item receipts, debit memos, bill payments</td>
+</tr>
+<tr>
+<td>Input Tax</td>
+<td>1300 Input Tax</td>
+<td>Purchase VAT when the tax code names no account</td>
+</tr>
+<tr>
+<td>Purchase Discounts</td>
+<td>5050 Purchase Discounts</td>
+<td>Discounts taken in Pay Bills</td>
+</tr>
+<tr>
+<td>Default Purchases / Expense</td>
+<td>6110 Purchases - Non-inventory</td>
+<td>Purchase lines whose item has no expense or cost account</td>
+</tr>
+<tr>
+<td>Inventory Asset</td>
+<td>1200 Inventory</td>
+<td>Stocked items with no asset account of their own</td>
+</tr>
+<tr>
+<td>Cost of Goods Sold</td>
+<td>5000 Cost of Goods Sold</td>
+<td>Cost of stocked items sold, when the item names none</td>
+</tr>
+<tr>
+<td>Inventory Adjustment (Shrinkage)</td>
+<td>5100 Inventory Adjustments and Shrinkage</td>
+<td>Adjustments and physical counts</td>
+</tr>
+<tr>
+<td>Processing / Disassembly Variance</td>
+<td>5100 Inventory Adjustments and Shrinkage</td>
+<td>Differences on processing orders</td>
+</tr>
+<tr>
+<td>Item Group Price Variance</td>
+<td>4070 Item Group Price Variance</td>
+<td>Group price less the prices of the items, on item groups sold</td>
+</tr>
+<tr>
+<td>Processing Labor &amp; Overhead Absorbed</td>
+<td>5200 Direct Labor Absorbed</td>
+<td>Listed on the page; no posting rule reads it</td>
+</tr>
+<tr>
+<td>Cash on Hand (Register)</td>
+<td>1001 Cash on Hand - Store Registers</td>
+<td>Proposed as the cash account of new POS terminals</td>
+</tr>
+<tr>
+<td>Cash Over and Short</td>
+<td>6200 Cash Over and Short</td>
+<td>Drawer differences when a register is closed</td>
+</tr>
+<tr>
+<td>Card Clearing</td>
+<td>1060 Card Clearing</td>
+<td>Card and other non-cash tenders whose payment method names no account</td>
+</tr>
+<tr>
+<td>E-wallet Clearing</td>
+<td>1065 E-wallet Clearing</td>
+<td>E-wallet tenders whose method names no account</td>
+</tr>
+<tr>
+<td>Bank / Merchant Charges</td>
+<td>6080 Bank and Merchant Charges</td>
+<td>Service charges, merchant fees on settlements</td>
+</tr>
+<tr>
+<td>Interest Income</td>
+<td>4200 Interest Income</td>
+<td>Interest earned entered in Reconcile</td>
+</tr>
+<tr>
+<td>Retained Earnings</td>
+<td>3200 Retained Earnings</td>
+<td>Earlier years' profit on the balance sheet</td>
+</tr>
+<tr>
+<td>Opening Balance Equity</td>
+<td>3900 Opening Balance Equity</td>
+<td>Opening stock and opening asset balances</td>
+</tr>
+<tr>
+<td>Gain / Loss on Disposal of Assets</td>
+<td>4300 Gain (Loss) on Disposal of Assets</td>
+<td>Asset disposals</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>If a default account the transaction needs is not set, saving stops with the message <em>The default account "..." is not set. Set it under Financial Set-up &amp; Reports &gt; Module Default Accounts.</em> Nothing is saved until the account is chosen.</p></div>
+<p>There is no year-end closing entry to make. The balance sheet shows the net income of earlier fiscal years inside Retained Earnings, and the income statement starts again at the beginning of each fiscal year.</p>
+<h3 id="s-overview">Overview<a class="man-hash" href="#s-overview" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Transaction</th>
+<th>Entered on</th>
+<th>Number</th>
+<th>Posts to the ledger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estimate</td>
+<td><a href="manual.php?c=customers#pg-cust-estimates">Create Estimates</a></td>
+<td>EST-</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Sales Order</td>
+<td><a href="manual.php?c=customers#pg-cust-sales_orders">Create Sales Orders</a></td>
+<td>SO-</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Invoice</td>
+<td><a href="manual.php?c=customers#pg-cust-invoices">Create Invoices</a></td>
+<td>INV-</td>
+<td>Yes, unless pending</td>
+</tr>
+<tr>
+<td>Sales Receipt</td>
+<td><a href="manual.php?c=customers#pg-cust-sales_receipts">Enter Sales Receipts</a></td>
+<td>SR-</td>
+<td>Yes, unless pending</td>
+</tr>
+<tr>
+<td>Statement Charge</td>
+<td><a href="manual.php?c=customers#pg-cust-statement_charges">Enter Statement Charges</a></td>
+<td>SC-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Finance Charge</td>
+<td><a href="manual.php?c=customers#pg-cust-finance_charges">Assess Finance Charges</a></td>
+<td>FC-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Customer Payment</td>
+<td><a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a></td>
+<td>PMT-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Credit Memo</td>
+<td><a href="manual.php?c=customers#pg-cust-credit_memos">Create Credit Memos/Refunds</a></td>
+<td>CM-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Customer Refund</td>
+<td><a href="manual.php?c=customers#pg-cust-credit_memos">Create Credit Memos/Refunds</a></td>
+<td>Check series</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Purchase Order</td>
+<td><a href="manual.php?c=vendors#pg-vend-purchase_orders">Create Purchase Orders</a></td>
+<td>PO-</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Item Receipt</td>
+<td><a href="manual.php?c=vendors#pg-vend-receive_items">Receive Items</a></td>
+<td>IR-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Bill</td>
+<td><a href="manual.php?c=vendors#pg-vend-bills">Enter Bills</a></td>
+<td>BILL-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Supplier Debit Memo</td>
+<td><a href="manual.php?c=vendors#pg-vend-debit_memos">Supplier Debit Memos</a></td>
+<td>DM-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Bill Payment</td>
+<td><a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a></td>
+<td>Check series (AAP- when it applies an advance)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Advance to Supplier</td>
+<td><a href="manual.php?c=vendors#pg-vend-advances">Advances to Suppliers</a></td>
+<td>ADV-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Check</td>
+<td><a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a></td>
+<td>Check series</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cash Voucher</td>
+<td><a href="manual.php?c=banking#pg-bank-cash_voucher">Cash Voucher</a></td>
+<td>CAV-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Deposit</td>
+<td><a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a></td>
+<td>DEP-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td><a href="manual.php?c=banking#pg-bank-transfers">Transfer Funds</a></td>
+<td>TRF-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Journal Entry</td>
+<td><a href="manual.php?c=chart-of-accounts#pg-coa-journal">Make Journal Entries</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Opening Balance</td>
+<td><a href="manual.php?c=chart-of-accounts#pg-coa-journal">Make Journal Entries</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Inventory Adjustment</td>
+<td><a href="manual.php?c=inventory#pg-inv-adjust">Adjust Quantity/Value on Hand</a></td>
+<td>ADJ-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Inventory Transfer</td>
+<td><a href="manual.php?c=inventory#pg-inv-transfers">Transfer Inventory</a></td>
+<td>IT-</td>
+<td>Stock only</td>
+</tr>
+<tr>
+<td>Build Assembly</td>
+<td><a href="manual.php?c=inventory#pg-inv-build">Build Assemblies</a></td>
+<td>BLD-</td>
+<td>Yes, unless pending</td>
+</tr>
+<tr>
+<td>Processing Order</td>
+<td><a href="manual.php?c=inventory#pg-inv-process">Disassemble / Process Items</a></td>
+<td>PRC-</td>
+<td>Yes, unless pending</td>
+</tr>
+<tr>
+<td>Depreciation</td>
+<td><a href="manual.php?c=fixed-assets#pg-fa-depreciation">Run Depreciation</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Asset Disposal</td>
+<td><a href="manual.php?c=fixed-assets#pg-fa-disposal">Dispose of Assets</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POS Sale</td>
+<td><a href="manual.php?c=point-of-sale#pg-pos-register">POS Register</a></td>
+<td>POS-</td>
+<td>Yes, unless suspended</td>
+</tr>
+<tr>
+<td>POS Return</td>
+<td><a href="manual.php?c=point-of-sale#pg-pos-receipts">POS Receipts, Returns &amp; Voids</a></td>
+<td>POS-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cash Over/Short</td>
+<td><a href="manual.php?c=point-of-sale#pg-pos-shifts">Shifts, Cash Drops &amp; Readings</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Service Charge</td>
+<td><a href="manual.php?c=banking#pg-bank-reconcile">Reconcile</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Interest Earned</td>
+<td><a href="manual.php?c=banking#pg-bank-reconcile">Reconcile</a></td>
+<td>JE-</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table></div>
+<p>The names in the first column are the ones the program shows in lists, in Find and in the Type column of reports. Numbering is explained in <a href="#app-numbers">Appendix C</a>.</p>
+<h3 id="s-sales-and-receivables">Sales and receivables<a class="man-hash" href="#s-sales-and-receivables" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-estimate-and-sales-order">Estimate and Sales Order<a class="man-hash" href="#s-estimate-and-sales-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-estimates">Create Estimates</a> and <a href="manual.php?c=customers#pg-cust-sales_orders">Create Sales Orders</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> nothing. The view of the document says <em>Non-posting document: it records a commitment and does not affect the ledger.</em></li>
+<li><strong>Stock:</strong> nothing moves. The quantities of an open sales order that are not yet invoiced count as <em>on sales order</em> in the stock status reports and the Inventory Center.</li>
+<li><strong>Balances:</strong> no effect on the customer's balance.</li>
+<li><strong>Status:</strong> an estimate is <strong>Pending</strong>, becomes <strong>Accepted</strong> when it is turned into a sales order or partly invoiced, and <strong>Closed</strong> when it is fully invoiced or closed with <strong>Close</strong>. A sales order is <strong>Open</strong>, then <strong>Partially filled</strong>, then <strong>Closed</strong> when every line is invoiced or closed.</li>
+</ul>
+<h4 id="s-invoice">Invoice<a class="man-hash" href="#s-invoice" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-invoices">Create Invoices</a>. Invoices are also made by <a href="manual.php?c=customers#pg-cust-batch_invoices">Create Batch Invoices</a> and by a charge sale on the <a href="manual.php?c=point-of-sale#pg-pos-register">POS Register</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td>Invoice total, VAT included</td>
+<td></td>
+</tr>
+<tr>
+<td>Income account of each item (for example 4000 Sales, 4010 Service Income)</td>
+<td></td>
+<td>Line amount</td>
+</tr>
+<tr>
+<td>2100 Output Tax (the tax code's account)</td>
+<td></td>
+<td>VAT of the lines</td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold (the item's cost account)</td>
+<td>Average cost of stocked items</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory (the item's asset account)</td>
+<td></td>
+<td>Average cost of stocked items</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> stocked items leave the <strong>Inventory site</strong> of the invoice (or the site of the line) at their average cost. The cost is stored on the line and shows in the <strong>Cost</strong> column for users who may view costs.</li>
+<li><strong>Balances:</strong> the customer's balance goes up by the invoice total. The invoice stays open until payments or credits are applied to it.</li>
+<li><strong>Special lines:</strong> a discount item is posted as a debit to its own income account (4060 Sales Discounts for DISC-10 and DISC-AMT); a payment item such as DOWNPMT (Down Payment Received) debits 1050 Undeposited Funds and lowers the amount charged to Accounts Receivable; billable costs added from bills and checks credit 4110 Reimbursable Expense Income; a subtotal line posts nothing; a group item is entered as the separate items it holds.</li>
+<li><strong>Pending:</strong> an invoice saved with <strong>Pending (non-posting until marked final)</strong> ticked posts nothing (see Pending transactions, later in this appendix).</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>ABC Trading Corp. is invoiced for one LAP-001 Laptop 14-inch i5 16GB at ₱39,990.00 plus 12% VAT, and the laptop's average cost is ₱32,000.00. The invoice debits 1100 Accounts Receivable ₱44,788.80, credits 4000 Sales ₱39,990.00 and 2100 Output Tax ₱4,798.80, and debits 5000 Cost of Goods Sold and credits 1200 Inventory ₱32,000.00. One laptop leaves the Main Warehouse, and ABC Trading Corp.'s balance goes up by ₱44,788.80.</p></div>
+<h4 id="s-sales-receipt">Sales Receipt<a class="man-hash" href="#s-sales-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-sales_receipts">Enter Sales Receipts</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> the same as an invoice, except that the total is debited to the <strong>Deposit to</strong> account instead of Accounts Receivable. The default is 1050 Undeposited Funds; you can also choose a bank account or another current asset.</li>
+<li><strong>Stock:</strong> stocked items leave the <strong>Inventory site</strong> at average cost.</li>
+<li><strong>Balances:</strong> no effect on the customer's balance: the sale is paid on the spot.</li>
+<li><strong>Later:</strong> a sales receipt deposited to 1050 Undeposited Funds waits in <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a> until you deposit it.</li>
+</ul>
+<h4 id="s-statement-charge">Statement Charge<a class="man-hash" href="#s-statement-charge" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-statement_charges">Enter Statement Charges</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 1100 Accounts Receivable, credit the income account of each item (for example 4100 Finance Charge Income for LATE-FEE Late Payment Fee, 4020 Delivery Income for DEL-FEE Delivery Fee), and credit Output Tax for any VAT.</li>
+<li><strong>Stock:</strong> statement charges are meant for services and other charges. A stocked item on one would leave stock like on an invoice.</li>
+<li><strong>Balances:</strong> the customer's balance goes up. The charge appears on the next statement and can be paid in Receive Payments.</li>
+</ul>
+<h4 id="s-finance-charge">Finance Charge<a class="man-hash" href="#s-finance-charge" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Made on <a href="manual.php?c=customers#pg-cust-finance_charges">Assess Finance Charges</a>, one for each customer you select.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 1100 Accounts Receivable, credit 4100 Finance Charge Income. No VAT.</li>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> the customer's balance goes up. The charge is due on the assessment date.</li>
+</ul>
+<h4 id="s-customer-payment">Customer Payment<a class="man-hash" href="#s-customer-payment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a>, or as a payment at the counter on the <a href="manual.php?c=point-of-sale#pg-pos-register">POS Register</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deposit to account (default 1050 Undeposited Funds)</td>
+<td>Amount received</td>
+<td></td>
+</tr>
+<tr>
+<td>4060 Sales Discounts</td>
+<td>Early-payment discount</td>
+<td></td>
+</tr>
+<tr>
+<td>1310 Creditable Withholding Tax (or the tax's own account)</td>
+<td>Income tax withheld by the customer (1% / 2%)</td>
+<td></td>
+</tr>
+<tr>
+<td>1315 Creditable VAT Withheld (or the tax's own account)</td>
+<td>VAT withheld by the customer (5%)</td>
+<td></td>
+</tr>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td></td>
+<td>Amount received plus discount plus withholding</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> the customer's balance goes down by the amount received plus the discount and withholding. The invoices the payment is applied to become <strong>Partially paid</strong> or <strong>Paid</strong>. An amount received but not applied stays on the payment as an unapplied credit.</li>
+<li><strong>Taxes withheld:</strong> each type ticked in the <strong>Withholding</strong> box is kept with its base, rate and ATC; the 1% / 2% and the 5% go to different accounts, as the BIR requires (an income-tax credit, and a VAT credit for 2550Q Item 16). A payment saved before the types were kept posts its withholding to 1310.</li>
+<li><strong>Applying credits:</strong> using an existing credit memo or unapplied payment on the same screen posts nothing new; it only records which invoice the credit pays.</li>
+<li><strong>At the POS:</strong> a payment taken at the counter debits the terminal's cash account for cash, or the clearing account of the payment method, and is applied to the customer's oldest open invoices first.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>ABC Trading Corp. pays the ₱44,788.80 invoice by check and withholds 1% of the VAT-exclusive amount, ₱399.90. You enter <strong>Amount received</strong> ₱44,388.90, and on the invoice line <strong>Withholding</strong> ₱399.90 and <strong>Payment</strong> ₱44,388.90. The payment debits 1050 Undeposited Funds ₱44,388.90 and 1310 Creditable Withholding Tax ₱399.90, and credits 1100 Accounts Receivable ₱44,788.80. The invoice is paid in full.</p></div>
+<h4 id="s-credit-memo">Credit Memo<a class="man-hash" href="#s-credit-memo" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=customers#pg-cust-credit_memos">Create Credit Memos/Refunds</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4050 Sales Returns and Allowances</td>
+<td>Line amounts</td>
+<td></td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td>VAT of the lines</td>
+<td></td>
+</tr>
+<tr>
+<td>1100 Accounts Receivable</td>
+<td></td>
+<td>Credit memo total</td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td>Average cost of goods returned to stock</td>
+<td></td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td></td>
+<td>Average cost of goods returned to stock</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> only when <strong>Return goods to stock</strong> is ticked: stocked items come back into the <strong>Return to site</strong> (or the inventory site of the credit memo) at the item's current average cost. Without the tick, only the first three lines are posted.</li>
+<li><strong>Balances:</strong> the customer's balance goes down. What happens to the credit depends on the choice under <strong>What to do with this credit</strong>: keep it as an available credit, apply it to an invoice now, or give a refund.</li>
+</ul>
+<h4 id="s-customer-refund">Customer Refund<a class="man-hash" href="#s-customer-refund" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Recorded with the <strong>Refund</strong> button of a credit memo or of a payment that has an unapplied credit, on <a href="manual.php?c=customers#pg-cust-credit_memos">Create Credit Memos/Refunds</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 1100 Accounts Receivable, credit the <strong>Pay from account</strong> (a bank or cash account).</li>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> the customer's balance goes back up by the refund, which uses up the credit.</li>
+<li><strong>Rules:</strong> the refund cannot be more than the available credit. A refund cannot be edited: void it and record a new one. A refund above your amount limit needs supervisor approval.</li>
+</ul>
+<h3 id="s-purchases-and-payables">Purchases and payables<a class="man-hash" href="#s-purchases-and-payables" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-purchase-order">Purchase Order<a class="man-hash" href="#s-purchase-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=vendors#pg-vend-purchase_orders">Create Purchase Orders</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> nothing. It is a non-posting document.</li>
+<li><strong>Stock:</strong> nothing moves. The quantities not yet received count as <em>on purchase order</em> in the stock status reports.</li>
+<li><strong>Balances:</strong> no effect on the vendor's balance.</li>
+<li><strong>Status:</strong> <strong>Open</strong>, <strong>Partially filled</strong> as items are received, <strong>Closed</strong> when every line is received or closed.</li>
+</ul>
+<h4 id="s-item-receipt">Item Receipt<a class="man-hash" href="#s-item-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=vendors#pg-vend-receive_items">Receive Items</a>, when goods arrive before the vendor's bill.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 1200 Inventory (the item's asset account) for stocked items, or the item's expense account for other items, and credit 2000 Accounts Payable. An item receipt carries no VAT.</li>
+<li><strong>Stock:</strong> stocked items come into the receiving site at the cost on the receipt, and the average cost is worked out again.</li>
+<li><strong>Balances:</strong> the vendor's balance goes up at once: open item receipts are part of Accounts Payable and of the A/P aging.</li>
+<li><strong>Editing:</strong> an item receipt not billed yet can be edited; it is posted again (stock, Inventory and Accounts Payable) and the purchase order follows the new quantities received.</li>
+<li><strong>Later:</strong> <a href="manual.php?c=vendors#pg-vend-bill_received">Enter Bill for Received Items</a> turns the same record into a bill with a new BILL- number. The quantities stay as received; the cost and the VAT can change, and inventory value and the payable are adjusted to the billed cost.</li>
+</ul>
+<h4 id="s-bill">Bill<a class="man-hash" href="#s-bill" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=vendors#pg-vend-bills">Enter Bills</a>, <a href="manual.php?c=vendors#pg-vend-receive_bill">Receive Items and Enter Bills</a> or <a href="manual.php?c=vendors#pg-vend-bill_received">Enter Bill for Received Items</a>. <a href="manual.php?c=vendors#pg-vend-receipts">Receipt Management</a>, the <a href="manual.php?c=fixed-assets#pg-fa-register">Fixed Asset Register</a> and <a href="manual.php?c=fixed-assets#pg-fa-maintenance">Asset Maintenance</a> can also create bills.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account of each line on the <strong>Expenses</strong> tab</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory, for stocked items on the <strong>Items</strong> tab</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>Expense account of other items (else their cost account, else 6110)</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>1300 Input Tax</td>
+<td>VAT of the lines</td>
+<td></td>
+</tr>
+<tr>
+<td>2000 Accounts Payable</td>
+<td></td>
+<td>Bill total</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> stocked items come into the site of the line (or the <strong>Default site for items</strong>) at the bill's cost, and the item's average cost is worked out again.</li>
+<li><strong>Balances:</strong> the vendor's balance goes up. The bill stays open until it is paid in Pay Bills or a debit memo is applied to it.</li>
+<li><strong>Billable costs:</strong> a line marked billable to a Customer:Job is offered on that customer's next invoice.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>TechDistributors Inc. bills 5 MOU-001 Wireless Mouse at ₱350.00. The bill debits 1200 Inventory ₱1,750.00 and 1300 Input Tax ₱210.00, and credits 2000 Accounts Payable ₱1,960.00. Five mice come into stock, and the vendor's balance goes up by ₱1,960.00.</p></div>
+<h4 id="s-supplier-debit-memo">Supplier Debit Memo<a class="man-hash" href="#s-supplier-debit-memo" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=vendors#pg-vend-debit_memos">Supplier Debit Memos</a>, for goods returned to a supplier, price or billing corrections and allowances.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 2000 Accounts Payable for the total; credit the account of each expense line, 1200 Inventory for stocked items returned, and 1300 Input Tax for the VAT.</li>
+<li><strong>Stock:</strong> stocked items leave the site of the line at the amount on the debit memo.</li>
+<li><strong>Balances:</strong> the vendor's balance goes down. The available amount is applied to the supplier's bills on the debit memo's own page or under Credits in Pay Bills; applying it posts nothing further.</li>
+</ul>
+<h4 id="s-bill-payment">Bill Payment<a class="man-hash" href="#s-bill-payment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Made on <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a>. One bill payment is recorded for each vendor.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2000 Accounts Payable</td>
+<td>Payment plus discount plus taxes withheld</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Payment account</strong> (bank or credit card, default 1010 Cash in Bank - BDO Checking)</td>
+<td></td>
+<td>Payment</td>
+</tr>
+<tr>
+<td>5050 Purchase Discounts</td>
+<td></td>
+<td>Discount taken</td>
+</tr>
+<tr>
+<td>2110 Withholding Tax Payable (or the tax's own account)</td>
+<td></td>
+<td>Income tax withheld (1% / 2%)</td>
+</tr>
+<tr>
+<td>2115 VAT Withheld Payable (or the tax's own account)</td>
+<td></td>
+<td>VAT withheld (5%)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> the vendor's balance goes down, and the bills paid become <strong>Partially paid</strong> or <strong>Paid</strong>. Supplier credits used on the same screen only link the credit to the bill.</li>
+<li><strong>Rules:</strong> a bill payment can be edited (date, account, check number, the bills it pays, the amounts and the taxes withheld); the vendor stays the same. A payment above your amount limit needs supervisor approval.</li>
+<li><strong>Taxes withheld:</strong> each type ticked in the <strong>Withholding</strong> column is kept with the bill, its base (net of VAT), rate and ATC, for <a href="manual.php?c=bir-reports#pg-bir-form_2307">BIR Form 2307</a> and the <a href="manual.php?c=bir-reports#sec-bir-reports">BIR Reports</a>.</li>
+<li><strong>Advance applied:</strong> when <strong>Use advance</strong> is used, the advance is applied as a bill payment of its own (AAP-00001 ...): debit 2000 Accounts Payable, credit 1410 Advances to Suppliers.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>a ₱112,000.00 bill (₱100,000.00 plus VAT) paid less 1% and 5% withheld: debit 2000 Accounts Payable ₱112,000.00; credit 1010 Cash in Bank ₱106,000.00, 2110 Withholding Tax Payable ₱1,000.00 and 2115 VAT Withheld Payable ₱5,000.00.</p></div>
+<h4 id="s-advance-to-supplier">Advance to Supplier<a class="man-hash" href="#s-advance-to-supplier" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=vendors#pg-vend-advances">Advances to Suppliers</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Advance account</strong> (default 1410 Advances to Suppliers)</td>
+<td>Amount paid</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Paid from</strong> (bank or credit card)</td>
+<td></td>
+<td>Amount paid</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Balances:</strong> not part of Accounts Payable: the vendor's balance and the A/P aging do not change until the advance is applied to a bill in Pay Bills.</li>
+<li><strong>Rules:</strong> it can be edited, but not below what was applied; it is voided only after its applications are voided.</li>
+</ul>
+<h4 id="s-check">Check<a class="man-hash" href="#s-check" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=banking#pg-bank-write_checks">Write Checks</a> or as a quick entry in <a href="manual.php?c=banking#pg-bank-register">Use Register</a>. <a href="manual.php?c=vendors#pg-vend-receipts">Receipt Management</a>, the <a href="manual.php?c=fixed-assets#pg-fa-register">Fixed Asset Register</a> and <a href="manual.php?c=fixed-assets#pg-fa-maintenance">Asset Maintenance</a> can also write checks.</p>
+<ul>
+<li><strong>Ledger:</strong> debit the lines exactly as on a bill (expense accounts, 1200 Inventory for stocked items, the expense account of other items) and 1300 Input Tax; credit the <strong>Bank / credit card account</strong> the check is drawn on. A "check" drawn on 2050 Company Credit Card records a card charge.</li>
+<li><strong>Stock:</strong> stocked items on the <strong>Items</strong> tab come into stock like on a bill.</li>
+<li><strong>Balances:</strong> a check does not go through Accounts Payable, so the vendor's balance does not change. Pay open bills with Pay Bills instead.</li>
+<li><strong>Rules:</strong> a check above your amount limit needs supervisor approval. Lines to accounts marked <strong>With SL</strong> need a name, or a payee on the check.</li>
+</ul>
+<h4 id="s-cash-voucher">Cash Voucher<a class="man-hash" href="#s-cash-voucher" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=banking#pg-bank-cash_voucher">Cash Voucher</a>, for petty cash, revolving fund and other cash payments. <a href="manual.php?c=fixed-assets#pg-fa-maintenance">Asset Maintenance</a> can also make one.</p>
+<ul>
+<li><strong>Ledger:</strong> the account lines exactly as entered (debit or credit), plus one credit to the <strong>Cash account</strong> (for example 1005 Petty Cash Fund) for the cash amount. The debits less the credits of the lines must equal the cash amount.</li>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> a line to 1100 Accounts Receivable must name a customer and changes that customer's balance; a line to 2000 Accounts Payable must name a supplier and changes that supplier's balance.</li>
+</ul>
+<h3 id="s-banking">Banking<a class="man-hash" href="#s-banking" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-deposit">Deposit<a class="man-hash" href="#s-deposit" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a> or as a quick entry in <a href="manual.php?c=banking#pg-bank-register">Use Register</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deposit to</strong> bank account</td>
+<td>Total less cash back</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Cash back goes to</strong> account</td>
+<td>Cash back amount</td>
+<td></td>
+</tr>
+<tr>
+<td>1050 Undeposited Funds</td>
+<td></td>
+<td>Each payment and sales receipt deposited</td>
+</tr>
+<tr>
+<td>Terminal cash account (1001)</td>
+<td></td>
+<td>Cash of each POS shift deposited</td>
+</tr>
+<tr>
+<td>Clearing account (1060, 1065, 1070)</td>
+<td></td>
+<td>Card or e-wallet settlement</td>
+</tr>
+<tr>
+<td>6080 Bank and Merchant Charges</td>
+<td>Merchant fee deducted</td>
+<td></td>
+</tr>
+<tr>
+<td>Account of each other receipt</td>
+<td></td>
+<td>Amount of the receipt</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> none.</li>
+<li><strong>Balances:</strong> no effect on customer balances: the payments deposited already lowered them.</li>
+<li><strong>POS cash:</strong> the amount of a closed POS shift is the counted cash, less the opening float (which stays in the drawer), plus the cash drops. When the shift's closing entries are corrected later, the deposit's line for the shift follows.</li>
+<li><strong>Later:</strong> a deposit can be edited (payments and shifts taken off or added, other receipts, date, account); it is posted again.</li>
+</ul>
+<h4 id="s-transfer">Transfer<a class="man-hash" href="#s-transfer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=banking#pg-bank-transfers">Transfer Funds</a> or as a quick entry in <a href="manual.php?c=banking#pg-bank-register">Use Register</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> debit the <strong>Transfer funds to</strong> account, credit the <strong>Transfer funds from</strong> account. It does not touch income or expenses.</li>
+<li><strong>Stock and balances:</strong> none.</li>
+</ul>
+<h4 id="s-service-charge-and-interest-earned">Service Charge and Interest Earned<a class="man-hash" href="#s-service-charge-and-interest-earned" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Recorded by <a href="manual.php?c=banking#pg-bank-reconcile">Reconcile</a> when you finish a reconciliation with a <strong>Service charge</strong> or <strong>Interest earned</strong> amount.</p>
+<ul>
+<li><strong>Service Charge:</strong> debit the account chosen beside it (default 6080 Bank and Merchant Charges), credit the bank account.</li>
+<li><strong>Interest Earned:</strong> debit the bank account, credit the account chosen beside it (default 4200 Interest Income).</li>
+<li>Both are dated on the dates you enter beside them, take their numbers from the JE- series, and are marked cleared in the reconciliation straight away.</li>
+<li>A reconciliation saved for later keeps the two amounts but posts nothing. <strong>Undo last</strong> voids the two entries and keeps their amounts on the reopened reconciliation, so they are posted once more when it is finished.</li>
+</ul>
+<h3 id="s-general-ledger">General ledger<a class="man-hash" href="#s-general-ledger" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-journal-entry">Journal Entry<a class="man-hash" href="#s-journal-entry" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=chart-of-accounts#pg-coa-journal">Make Journal Entries</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> every line exactly as entered, debit or credit. The debits must equal the credits, and an entry needs at least two lines.</li>
+<li><strong>Names:</strong> a line to 1100 Accounts Receivable needs a customer and changes that customer's balance; a line to 2000 Accounts Payable needs a vendor and changes that vendor's balance; a line to an account marked <strong>With SL</strong> needs a customer, supplier, employee or other name.</li>
+<li><strong>Stock:</strong> none. A journal entry to 1200 Inventory changes the ledger but not the quantities or values of items, so the inventory valuation reports will no longer agree with the ledger. Use <a href="manual.php?c=inventory#pg-inv-adjust">Adjust Quantity/Value on Hand</a> for stock.</li>
+</ul>
+<h4 id="s-opening-balance">Opening Balance<a class="man-hash" href="#s-opening-balance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=chart-of-accounts#pg-coa-journal">Make Journal Entries</a> with <strong>Opening balance entry</strong> ticked. It posts like a journal entry and is listed with the journal entries.</p>
+<ul>
+<li>The <a href="manual.php?c=fixed-assets#pg-fa-register">Fixed Asset Register</a> also makes one when a new asset is saved with <strong>Record the purchase</strong> set to <strong>Existing asset (opening balance)</strong>: debit the category's asset account for the cost, credit 3900 Opening Balance Equity for the cost less the opening accumulated depreciation, and credit the accumulated depreciation account for the opening accumulated depreciation. <a href="manual.php?c=administration#pg-admin-import">Import from CSV</a> does the same for imported fixed assets.</li>
+<li>Opening stock is not an opening balance entry: it is an inventory adjustment against 3900 Opening Balance Equity (see below).</li>
+</ul>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>For customers' and vendors' opening balances, enter one line per customer to 1100 Accounts Receivable (or per vendor to 2000 Accounts Payable) with the name on the line, balanced against 3900 Opening Balance Equity. The names are required on those lines.</p></div>
+<h3 id="s-inventory">Inventory<a class="man-hash" href="#s-inventory" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-inventory-adjustment">Inventory Adjustment<a class="man-hash" href="#s-inventory-adjustment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=inventory#pg-inv-adjust">Adjust Quantity/Value on Hand</a>. <a href="manual.php?c=inventory#pg-inv-physical_count">Physical Inventory Count</a> posts its differences as an inventory adjustment, and the <a href="manual.php?c=inventory#pg-inv-items">Item List</a> posts one when a new stocked item is saved with a <strong>Quantity on hand</strong>.</p>
+<ul>
+<li><strong>Quantity added:</strong> debit 1200 Inventory, credit the <strong>Adjustment account</strong> (default 5100 Inventory Adjustments and Shrinkage), at the item's average cost.</li>
+<li><strong>Quantity removed:</strong> debit the adjustment account, credit 1200 Inventory, at the item's average cost.</li>
+<li><strong>Value changed (Total value):</strong> debit or credit 1200 Inventory against the adjustment account for the difference, with no change in quantity. Only users who may view costs can adjust values.</li>
+<li><strong>Opening quantity from the Item List:</strong> debit 1200 Inventory for the <strong>Total value</strong> entered, credit 3900 Opening Balance Equity.</li>
+<li><strong>Stock:</strong> the quantity changes at the site of the adjustment, and the average cost is worked out again.</li>
+<li><strong>Editing:</strong> an adjustment can be edited; it is taken off the books, worked out again against the stock without it, and posted again under the same number.</li>
+</ul>
+<h4 id="s-inventory-transfer">Inventory Transfer<a class="man-hash" href="#s-inventory-transfer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=inventory#pg-inv-transfers">Transfer Inventory</a>.</p>
+<ul>
+<li><strong>Ledger:</strong> nothing, because both sites use the same inventory account. The page confirms <em>Quantities moved without changing total inventory value.</em></li>
+<li><strong>Stock:</strong> the quantity leaves the <strong>from</strong> site at the item's average cost and arrives at the <strong>to</strong> site with the same value.</li>
+<li><strong>Editing:</strong> a transfer can be edited (date, sites, lines); the stock moves again.</li>
+</ul>
+<h4 id="s-build-assembly">Build Assembly<a class="man-hash" href="#s-build-assembly" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=inventory#pg-inv-build">Build Assemblies</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200 Inventory, assembly item</td>
+<td>Total cost of the components</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory, stocked components</td>
+<td></td>
+<td>Average cost of each component</td>
+</tr>
+<tr>
+<td>Expense account of non-stock components</td>
+<td></td>
+<td>Quantity times the item's cost</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> the components leave the build site and the assembly comes in at their total cost.</li>
+<li><strong>Example:</strong> building one SET-OFFICE Office Monitor Set takes one each of MON-024, KEY-001, MOU-001 and CAB-HDMI out of stock at average cost, and credits 5200 Direct Labor Absorbed ₱150.00 for LAB-ASM Assembly Labor (per set).</li>
+<li><strong>Pending:</strong> a build saved with <strong>Save as pending build</strong> posts nothing until <strong>Complete build</strong>.</li>
+<li><strong>Editing:</strong> a build can be edited (assembly, site, quantity, date); a completed build is posted again, a pending one stays pending unless it is completed on the same save.</li>
+</ul>
+<h4 id="s-processing-order">Processing Order<a class="man-hash" href="#s-processing-order" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Entered on <a href="manual.php?c=inventory#pg-inv-process">Disassemble / Process Items</a>, for disassembly, de-kitting and co-product processing.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asset account of each input item</td>
+<td></td>
+<td>Average cost of the inputs</td>
+</tr>
+<tr>
+<td>Expense account of non-stock inputs</td>
+<td></td>
+<td>Quantity times the item's cost</td>
+</tr>
+<tr>
+<td>Account of each additional cost line (for example 5200)</td>
+<td></td>
+<td>Amount of the cost</td>
+</tr>
+<tr>
+<td>Asset account of each output item</td>
+<td>Cost allocated to the output</td>
+<td></td>
+</tr>
+<tr>
+<td>Processing variance account (default 5100)</td>
+<td>Difference, if any</td>
+<td>Difference, if any</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Stock:</strong> the inputs leave the processing site and the outputs come in at their allocated cost.</li>
+<li><strong>Variance:</strong> only the valuation methods (current average cost, manual amounts) leave a difference between the total cost and the value of the outputs.</li>
+<li><strong>Pending:</strong> an order saved with <strong>Save as pending</strong> posts nothing until <strong>Complete and post</strong>.</li>
+</ul>
+<h3 id="s-fixed-assets">Fixed assets<a class="man-hash" href="#s-fixed-assets" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-depreciation">Depreciation<a class="man-hash" href="#s-depreciation" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Posted by <a href="manual.php?c=fixed-assets#pg-fa-depreciation">Run Depreciation</a>, dated the last day of the month.</p>
+<ul>
+<li><strong>Ledger:</strong> for each asset category and class, debit the category's depreciation expense account (6090 Depreciation Expense in the demo) and credit its accumulated depreciation account (for example 1555 Accumulated Depreciation - Computer and POS).</li>
+<li><strong>Assets:</strong> the month is marked as run for each asset. An asset whose net book value reaches its salvage value becomes fully depreciated.</li>
+<li><strong>Undoing:</strong> voiding or deleting the entry frees the month, so it can be run again.</li>
+</ul>
+<h4 id="s-asset-disposal">Asset Disposal<a class="man-hash" href="#s-asset-disposal" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Posted by <a href="manual.php?c=fixed-assets#pg-fa-disposal">Dispose of Assets</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accumulated depreciation account</td>
+<td>All depreciation to date</td>
+<td></td>
+</tr>
+<tr>
+<td>Asset account</td>
+<td></td>
+<td>Cost of the asset</td>
+</tr>
+<tr>
+<td><strong>Received into</strong> account (default 1050)</td>
+<td>Proceeds received</td>
+<td></td>
+</tr>
+<tr>
+<td>4300 Gain (Loss) on Disposal of Assets</td>
+<td>Loss</td>
+<td>Gain</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Assets:</strong> the asset is marked disposed. When asked, the page first runs the missing months of depreciation up to the disposal date.</li>
+<li><strong>Undoing:</strong> voiding or deleting the disposal makes the asset active again.</li>
+</ul>
+<h4 id="s-asset-purchases-and-maintenance">Asset purchases and maintenance<a class="man-hash" href="#s-asset-purchases-and-maintenance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A new asset in the <a href="manual.php?c=fixed-assets#pg-fa-register">Fixed Asset Register</a> is recorded as a check (<strong>Paid now (Write Checks)</strong>), a bill (<strong>On account (Enter Bills)</strong>) or an opening balance, each debiting the category's asset account; or nothing, with <strong>Already recorded elsewhere</strong>.</li>
+<li>A record in <a href="manual.php?c=fixed-assets#pg-fa-maintenance">Asset Maintenance</a> is paid through a bill, a check or a cash voucher that debits the <strong>Parts charged to</strong> and <strong>Labor charged to</strong> accounts (proposed: the account whose name contains "Repair", 6030 Repairs and Maintenance in the demo) and, with VAT, 1300 Input Tax.</li>
+</ul>
+<h3 id="s-point-of-sale">Point of Sale<a class="man-hash" href="#s-point-of-sale" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<h4 id="s-pos-sale">POS Sale<a class="man-hash" href="#s-pos-sale" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Completed on the <a href="manual.php?c=point-of-sale#pg-pos-register">POS Register</a>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account of each tender</td>
+<td>Amount paid with it</td>
+<td></td>
+</tr>
+<tr>
+<td>Income account of each item</td>
+<td></td>
+<td>Line amount</td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td></td>
+<td>VAT of the lines</td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td>Average cost of stocked items</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td></td>
+<td>Average cost of stocked items</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Tenders:</strong> cash is debited to the terminal's cash account (1001 Cash on Hand - Store Registers for both demo counters). Other payment methods debit their own clearing account: in the demo, Credit/Debit Card to 1060 Card Clearing, GCash and Maya to 1065 E-wallet Clearing, Gift Voucher to 2120 Gift Vouchers Outstanding, P.O. Card to 1070 P.O. Card Clearing and Bank to 1010 Cash in Bank - BDO Checking.</li>
+<li><strong>Stock:</strong> stocked items leave the site of the terminal at average cost.</li>
+<li><strong>Balances:</strong> no effect on customer balances, even when a customer is named on the sale.</li>
+<li><strong>Suspended sales</strong> (<strong>Suspend</strong>) post nothing until they are recalled and completed. A sale completed with <strong>Charge to account</strong> is saved as an invoice instead (see Invoice), and a payment at the counter as a customer payment.</li>
+</ul>
+<h4 id="s-pos-return">POS Return<a class="man-hash" href="#s-pos-return" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Processed on <a href="manual.php?c=point-of-sale#pg-pos-receipts">POS Receipts, Returns &amp; Voids</a>, always with supervisor approval.</p>
+<ul>
+<li><strong>Ledger:</strong> debit 4050 Sales Returns and Allowances and 2100 Output Tax; credit the account of the refund method (cash: the terminal's cash account).</li>
+<li><strong>Stock:</strong> when <strong>Goods can be resold (back to store stock)</strong> is ticked, the items come back into the store's site; when it is not, they go to the damaged-goods site. Either way they come back at the current average cost: debit 1200 Inventory, credit 5000 Cost of Goods Sold. If no damaged-goods site exists, items that cannot be resold do not come back into stock.</li>
+</ul>
+<h4 id="s-cash-overshort">Cash Over/Short<a class="man-hash" href="#s-cash-overshort" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Posted by <a href="manual.php?c=point-of-sale#pg-pos-shifts">Shifts, Cash Drops &amp; Readings</a> when a register is closed and the cash counted differs from the expected cash.</p>
+<ul>
+<li><strong>Short:</strong> debit 6200 Cash Over and Short, credit the terminal's cash account.</li>
+<li><strong>Over:</strong> debit the terminal's cash account, credit 6200 Cash Over and Short.</li>
+<li><strong>Example:</strong> Makati Counter 1 is ₱50.00 short: 6200 Cash Over and Short is debited and 1001 Cash on Hand - Store Registers credited ₱50.00.</li>
+</ul>
+<h3 id="s-voiding-versus-deleting">Voiding versus deleting<a class="man-hash" href="#s-voiding-versus-deleting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Both are done from the view of a saved transaction with the <strong>Void</strong> and <strong>Delete</strong> buttons. Both need the <strong>Delete/Void</strong> right on the page, a reason (<strong>Reason (required, recorded in the audit trail)</strong>), and a date after the closing date.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>What happens</th>
+<th>Void</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The document</td>
+<td>Stays, marked <strong>VOID</strong> with the reason, date and user</td>
+<td>Is removed</td>
+</tr>
+<tr>
+<td>Ledger and stock</td>
+<td>Everything it posted is taken out</td>
+<td>Everything it posted is taken out</td>
+</tr>
+<tr>
+<td>Its number</td>
+<td>Stays in use</td>
+<td>Is not given out again</td>
+</tr>
+<tr>
+<td>Available for</td>
+<td>Posting transactions only</td>
+<td>All, except POS sales, returns and over/short</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>Full copy with the reason</td>
+<td>Full copy with the reason</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>A voided transaction cannot be edited or voided again. It still appears in lists and reports as void, and in <a href="manual.php?c=administration#pg-rpt-voided_deleted_detail">Voided and Deleted Transactions Detail</a>.</li>
+<li>Estimates, sales orders and purchase orders cannot be voided (they post nothing); delete them, or use <strong>Close</strong> to stop expecting the rest.</li>
+<li>Voiding or deleting is refused while:</li>
+<li>payments or credits are applied to the invoice, statement charge, finance charge or bill (remove them first by editing the payment or credit);</li>
+<li>the payment or sales receipt is included in a deposit (void the deposit first);</li>
+<li>the credit memo or payment has been refunded (void the refund first);</li>
+<li>the estimate, sales order or purchase order has been converted or received in part (close it instead).</li>
+<li>Voiding or deleting a payment or credit releases the invoices it paid, which become open again.</li>
+<li>Voiding or deleting a check, bill payment or customer refund above your amount limit, and voiding any POS sale or return, needs supervisor approval.</li>
+<li>A transaction cleared in a bank reconciliation can be changed, voided or deleted only by a user with the closed-period permission. The change is listed on the <a href="manual.php?c=banking#pg-rpt-recon_discrepancy">Reconciliation Discrepancy</a> report.</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Item receipts, inventory adjustments, inventory transfers, builds and finance charges cannot be changed after they are saved, so they have no <strong>Edit</strong> button. To correct one, void it and enter it again. Deposits and bill payments can be edited.</p></div>
+<h3 id="s-pending-transactions">Pending transactions<a class="man-hash" href="#s-pending-transactions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Some transactions can be saved first and posted later. While they wait they are <em>pending</em>: they post nothing to the ledger and move no stock.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Transaction</th>
+<th>How to save as pending</th>
+<th>How to post it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invoice, sales receipt</td>
+<td>Tick <strong>Pending (non-posting until marked final)</strong></td>
+<td><strong>Mark as final</strong>, then save</td>
+</tr>
+<tr>
+<td>Build assembly</td>
+<td><strong>Save as pending build</strong></td>
+<td><strong>Complete build</strong></td>
+</tr>
+<tr>
+<td>Processing order</td>
+<td><strong>Save as pending</strong></td>
+<td><strong>Complete and post</strong></td>
+</tr>
+<tr>
+<td>POS sale</td>
+<td><strong>Suspend</strong></td>
+<td><strong>Recall</strong>, then <strong>Complete sale</strong></td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>A pending invoice is not part of the customer's balance or the A/R aging, is not offered in Receive Payments, and is not checked against the credit limit until it is marked final. A pending sales receipt is not offered in Make Deposits.</li>
+<li>The view of a pending invoice or sales receipt says <em>This transaction is pending. It does not affect the books or inventory until it is marked final.</em></li>
+<li>Pending invoices and sales receipts are listed on the Pending Sales report and counted on the Home dashboard; pending builds on the Pending Builds reports; pending processing orders on the Processing &amp; Disassembly Register.</li>
+<li>A pending build or processing order can be saved even when the components or inputs are short; completing it checks the stock again.</li>
+<li>Pending documents take their number when they are first saved.</li>
+</ul>
+<h3 id="s-the-closing-date">The closing date<a class="man-hash" href="#s-the-closing-date" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The closing date protects the periods you have finished. It is set in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a> in the box <strong>Books closed through (blank = open)</strong>.</p>
+<p>Once a closing date is set, a user without the special permission <strong>Can change transactions on/before the closing date or already reconciled</strong> cannot:</p>
+<ul>
+<li>save a transaction dated on or before the closing date;</li>
+<li>edit, void or delete a transaction dated on or before it, or move it to a later date;</li>
+<li>import transactions or opening stock dated on or before it.</li>
+</ul>
+<p>The messages are <em>The books are closed through 07/08/2026. You do not have permission to record transactions dated on or before the closing date.</em> and <em>This transaction is dated on or before the closing date (07/08/2026) and cannot be changed.</em> Administrators, the Company Owner and the Super Admin always have the permission; of the installed roles, no other role has it.</p>
+<ul>
+<li>A memorized transaction set to be entered automatically on a date in the closed period stops, and is set back to <strong>Remind me when it is due</strong>.</li>
+<li>The same permission is needed to change a transaction cleared in a bank reconciliation, whatever its date.</li>
+</ul>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>After each month-end close, make a backup, check the reports, and then move the closing date to the last day of that month.</p></div>
+<h3 id="s-the-class-on-a-transaction">The class on a transaction<a class="man-hash" href="#s-the-class-on-a-transaction" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A class is your own way of splitting the books (branches, departments, projects). The classes are kept in the <a href="manual.php?c=chart-of-accounts#pg-coa-classes">Class List</a>.</p>
+<ul>
+<li>Every transaction form has a <strong>Class</strong> box. The class is copied to every ledger line the transaction posts, so every financial report can be filtered by class and the "by Class" statements show one column per class.</li>
+<li>On journal entries and cash vouchers a line can have its own class; a line without one takes the class at the top.</li>
+<li>When you save a transaction without a class, a window <strong>No class selected</strong> warns that it will be saved as <strong>Unclassified</strong>. Choose <strong>Choose a class</strong> to go back, or <strong>Continue saving</strong>. The window does not appear while the Class List is empty.</li>
+<li>On the POS Register a sale starts with the user's default class (set in Company, Security &amp; Closing Date) or else the terminal's default class, and the class is kept for the next sale.</li>
+<li>Run Depreciation posts each asset under its own default class when no class is chosen on the run.</li>
+<li>A class already used on transactions cannot be deleted; make it inactive instead. Reports list entries without a class as <strong>(Unclassified)</strong>.</li>
+</ul>
+<h2 id="app-roles">Appendix B. Default roles and what they can do<a class="man-hash" href="#app-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A new installation starts with nine roles, and a company created on the platform copies the roles of the company it is copied from. Administrators can change their page access in <a href="manual.php?c=administration#pg-admin-page_access">Page Access Configuration</a> and their rights and special permissions in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>, but the installed roles cannot be deleted. <a href="manual.php?c=administration#pg-admin-effective_access">Effective Access (View as User)</a> shows what one user can really do and why.</p>
+<h3 id="s-the-rights-on-a-page">The rights on a page<a class="man-hash" href="#s-the-rights-on-a-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Open:</strong> the user can open the page and see its records (the page is <em>allowed</em> for the role).</li>
+<li><strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Print/Export</strong>, <strong>Approve:</strong> what the user can do on a page they can open. <strong>Approve</strong> lets the user approve other users' actions that need supervisor approval, and their own.</li>
+</ul>
+<p>A user with several roles gets everything any of the roles gives. A user override set for one user and one page always wins over the roles.</p>
+<h3 id="s-the-installed-roles">The installed roles<a class="man-hash" href="#s-the-installed-roles" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Role</th>
+<th>What it is for</th>
+<th>Demo user</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Administrator</td>
+<td>Everything in every module, including user accounts, roles, page access, the closing date and the audit trail</td>
+<td>admin (System Administrator)</td>
+</tr>
+<tr>
+<td>Accountant</td>
+<td>Financial Set-up &amp; Reports, Fixed Assets, Banking and reconciliation, all module reports and the financial statements</td>
+<td>accountant (Ana Cruz)</td>
+</tr>
+<tr>
+<td>A/R Clerk</td>
+<td>Customers module transactions and the Customer and Receivables reports</td>
+<td>arclerk (Ben Garcia)</td>
+</tr>
+<tr>
+<td>A/P Clerk</td>
+<td>Vendors module transactions, Pay Bills and the Vendors and Payables reports</td>
+<td>apclerk (Carla Lim)</td>
+</tr>
+<tr>
+<td>Inventory Clerk</td>
+<td>Items, sites, receiving, adjustments, builds, processing, stock counts and quantity reports</td>
+<td>invclerk (Dan Villanueva)</td>
+</tr>
+<tr>
+<td>Sales Representative</td>
+<td>Estimates, sales orders, invoices and the Sales reports</td>
+<td>salesrep (Maria Santos)</td>
+</tr>
+<tr>
+<td>Cashier</td>
+<td>POS sales, returns and cash drops at the assigned terminal only</td>
+<td>cashier1 (Ella Ramos)</td>
+</tr>
+<tr>
+<td>POS Supervisor</td>
+<td>Everything a cashier can do, plus approvals and X- and Z-readings</td>
+<td>supervisor (Fred Tan)</td>
+</tr>
+<tr>
+<td>Auditor</td>
+<td>View-only access to all transactions, reports and the audit trail</td>
+<td>auditor (Grace Uy)</td>
+</tr>
+</tbody>
+</table></div>
+<p>In the demo company the admin user logs in with the password Admin@12345 (and must change it at once) and the other demo users with Demo@12345. Change these passwords, or deactivate the users you do not need, before real use.</p>
+<h3 id="s-administrator">Administrator<a class="man-hash" href="#s-administrator" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Pages:</strong> every page of every module, with every right, including Approve.</li>
+<li><strong>Special permissions:</strong> all of them, without limits.</li>
+<li><strong>Sites:</strong> all sites.</li>
+</ul>
+<p>The Company Owner and a Super Admin working inside the company have the same full authority whatever their roles say, and no role or user override can lock them out.</p>
+<h3 id="s-accountant">Accountant<a class="man-hash" href="#s-accountant" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>All Home pages (Dashboard, Report Center, Memorized Reports, Saved Report Layouts, Search, Find)</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Financial Set-up &amp; Reports</td>
+<td>Every page and report, including Make Journal Entries and Module Default Accounts</td>
+<td>Open, Create, Edit, Delete/Void, Print/Export</td>
+</tr>
+<tr>
+<td>Fixed Assets</td>
+<td>Every page and report</td>
+<td>Open, Create, Edit, Delete/Void, Print/Export</td>
+</tr>
+<tr>
+<td>Banking</td>
+<td>Every page and report, including Reconcile</td>
+<td>Open, Create, Edit, Delete/Void, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Customer Center, Create Invoices, Receive Payments, every report</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>Vendor Center, Bill Tracker, Enter Bills, Pay Bills, Advances to Suppliers, every report</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>BIR Reports</td>
+<td>Withholding Tax Table, Print BIR Form 2307 and every BIR report</td>
+<td>Open, Create, Edit, Delete/Void, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Inventory Center, Item List, Category List, U/M Set List, Processing Formulas, Adjust Quantity/Value on Hand, Disassemble / Process Items, every report</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>Every POS report</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>System Administration</td>
+<td>Utilities: Verify &amp; Rebuild Data</td>
+<td>Open, Print/Export</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Accountant can run the checks on the Utilities page but not <strong>Rebuild data</strong>, which needs Edit.</p>
+<h3 id="s-ar-clerk">A/R Clerk<a class="man-hash" href="#s-ar-clerk" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>All Home pages</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Customer Center, Create Estimates, Create Sales Orders, Create Invoices, Create Batch Invoices, Enter Sales Receipts, Enter Statement Charges, Create Statements, Assess Finance Charges, Set Up Forecast, Receive Payments, Create Credit Memos/Refunds</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>The 12 Customer and Receivables Reports (A/R Aging to Item Price List)</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Item List</td>
+<td>Open</td>
+</tr>
+</tbody>
+</table></div>
+<p>The A/R Clerk cannot void or delete, and does not see the Sales Reports group.</p>
+<h3 id="s-ap-clerk">A/P Clerk<a class="man-hash" href="#s-ap-clerk" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>All Home pages</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>Vendor Center, Bill Tracker, Enter Bills, Supplier Debit Memos, Pay Bills, Receipt Management, Create Purchase Orders, Receive Items and Enter Bills, Receive Items, Enter Bill for Received Items</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>Advances to Suppliers</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>The Vendors and Payables Reports</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Item List</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>BIR Reports</td>
+<td>Print BIR Form 2307, Summary of Taxes Withheld from Vendors/Suppliers, Expanded Withholding Tax Register, VAT Withholding Register, Withholding Tax Remittances</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>BIR Reports</td>
+<td>Withholding Tax Table</td>
+<td>Open</td>
+</tr>
+</tbody>
+</table></div>
+<p>The A/P Clerk cannot void or delete.</p>
+<h3 id="s-inventory-clerk">Inventory Clerk<a class="man-hash" href="#s-inventory-clerk" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>All Home pages</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Item List, Inventory Site List, U/M Set List, Processing Formulas, Transfer Inventory, Adjust Quantity/Value on Hand, Build Assemblies, Disassemble / Process Items</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Category List</td>
+<td>Open, Create, Edit, Delete, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>Inventory Center, Physical Inventory Count</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>Receive Items</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Vendors</td>
+<td>Create Purchase Orders</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Inventory reports</td>
+<td>Quantity on Hand by Site, the three Stock Status reports, Physical Inventory Worksheet, Pending Builds, Pending Builds by Site, Processing &amp; Disassembly Register, Processing Yield Analysis, Negative Inventory Listing, No. of Days Inventory Has No Movement, Inventory Movement Summary Report, Inventory Movement Detailed Report (and the Inventory Movement Transactions they open)</td>
+<td>Open, Print/Export</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Inventory Clerk can print count sheets but cannot post a physical count, because adjusting stock and counting it are kept apart. The valuation reports are not included.</p>
+<h3 id="s-sales-representative">Sales Representative<a class="man-hash" href="#s-sales-representative" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>All Home pages</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Create Estimates, Create Sales Orders, Create Invoices</td>
+<td>Open, Create, Edit, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Customer Center</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Customers</td>
+<td>Every Sales Report (Sales Report Through Inventory Movement included) and Item Price List</td>
+<td>Open, Print/Export</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="s-cashier">Cashier<a class="man-hash" href="#s-cashier" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>Home Dashboard</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>POS Register; Shifts, Cash Drops &amp; Readings</td>
+<td>Open, Create, Print/Export</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>POS Receipts, Returns &amp; Voids</td>
+<td>Open, Create, Delete/Void, Print/Export</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>Ending Inventory - POS Cashier (their own shifts)</td>
+<td>Open, Print/Export</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Sites:</strong> the role is limited to the Makati Store (ST1) and the Cebu Store (ST2). The demo user cashier1 is limited further to the Makati Store and the terminal POS-01 Makati Counter 1.</li>
+<li>Voids, returns, X-readings and closing the register always need a supervisor's approval.</li>
+</ul>
+<h3 id="s-pos-supervisor">POS Supervisor<a class="man-hash" href="#s-pos-supervisor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td>Home Dashboard, Report Center</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>POS Register; Shifts, Cash Drops &amp; Readings; POS Receipts, Returns &amp; Voids; Approval Codes</td>
+<td>Open, Create, Edit, Delete/Void, Print/Export, Approve</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>POS Terminals</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Point of Sale</td>
+<td>The 9 POS reports</td>
+<td>Open, Print/Export</td>
+</tr>
+</tbody>
+</table></div>
+<p>The role itself covers all sites; the demo user supervisor is limited to the Makati Store and POS-01.</p>
+<h3 id="s-auditor">Auditor<a class="man-hash" href="#s-auditor" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Area</th>
+<th>Pages</th>
+<th>Rights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Every module</td>
+<td>Every page and report, including Audit Trail, Transaction History and the audit reports</td>
+<td>Open, Print/Export</td>
+</tr>
+<tr>
+<td>Not included</td>
+<td>POS Register; Shifts, Cash Drops &amp; Readings; the setup pages of System Administration; the Company pages</td>
+<td>None</td>
+</tr>
+</tbody>
+</table></div>
+<p>The pages left out are User Accounts, User Role Configuration, Page Access Configuration, Effective Access, Company, Security &amp; Closing Date, Utilities, Import from CSV, Backup &amp; Restore, Multi-Company Setup, Company Profile &amp; Code, Employees &amp; Users and Join Requests.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>A few pages open on a new entry when you click them in the menu: Receive Payments, Pay Bills, Make Deposits, Transfer Funds and Adjust Quantity/Value on Hand. A user who may only view them (the Accountant, the Auditor) sees <strong>Access denied</strong> there. Open those transactions from the Customer Center, the Vendor Center, a report or <a href="manual.php?c=home-and-reports#pg-home-find">Find</a> instead.</p></div>
+<h3 id="s-special-permissions">Special permissions<a class="man-hash" href="#s-special-permissions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Special permissions are set per role in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>. The labels are the ones shown there.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Special permission</th>
+<th>What it allows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View costs and margins</td>
+<td>See item costs, average costs, cost of goods sold and margins in reports, the Inventory Center, the Item List, the price pages and processing orders; adjust inventory values; see the ledger entries of sales documents</td>
+</tr>
+<tr>
+<td>View bank balances outside Banking</td>
+<td>See bank balances on the Home dashboard, in the Chart of Accounts, on Transfer Funds and in the bank-balance columns of reports</td>
+</tr>
+<tr>
+<td>Max discount % without approval</td>
+<td>The largest discount a user may give on a line (or with a percentage discount item) on estimates, sales orders, invoices, sales receipts and at the POS</td>
+</tr>
+<tr>
+<td>Max price change % without approval</td>
+<td>How far a line's price may differ from the item's standard or price-level price on the same documents</td>
+</tr>
+<tr>
+<td>Max check / bill payment / adjustment amount without approval</td>
+<td>The largest check, cash voucher, bill payment, customer refund, inventory adjustment, count difference or processing order a user may save alone, and the largest check, bill payment or refund they may void or delete</td>
+</tr>
+<tr>
+<td>Can exceed customer credit limits</td>
+<td>Save an invoice (with a reason) or a POS charge sale that takes a customer over the credit limit</td>
+</tr>
+<tr>
+<td>Can change the Chart of Accounts and default accounts</td>
+<td>Add, change and delete accounts, and change Module Default Accounts (with Edit on that page)</td>
+</tr>
+<tr>
+<td>Can change transactions on/before the closing date or already reconciled</td>
+<td>Work in the closed period and change transactions cleared in a bank reconciliation</td>
+</tr>
+<tr>
+<td>Can design report layouts (fonts, headings and footers, columns and rows) and save or share them</td>
+<td>Use the <strong>Modify Report</strong> button on reports, save and share layouts, and choose the layout a report opens with</td>
+</tr>
+</tbody>
+</table></div>
+<p>How the values work:</p>
+<ul>
+<li>A Yes/No permission is granted when any of the user's roles grants it.</li>
+<li>A limit is the highest value among the user's roles. A blank limit in any role means no limit. A limit that none of the user's roles sets counts as 0: every discount, price change or amount then needs approval.</li>
+<li>Going over a limit does not stop the user: the form asks for <strong>Supervisor approval</strong>, and a user who has <strong>Approve</strong> on that page types their username and password. A user who has Approve on the page approves their own action. Nobody can approve with their own password otherwise (<em>You cannot approve your own transaction.</em>).</li>
+<li>Of the installed roles only the Administrator and the POS Supervisor (on the POS pages) have <strong>Approve</strong>. Approvals for the clerks therefore come from an Administrator, unless you give Approve to another role.</li>
+<li>Administrators, the Company Owner and the Super Admin have every special permission with no limits.</li>
+</ul>
+<p>The values each role is installed with:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Role</th>
+<th>Granted</th>
+<th>Limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accountant</td>
+<td>View costs, View bank balances, Chart of Accounts changes, Design report layouts</td>
+<td>Amount: no limit; discount 0%; price change 0%</td>
+</tr>
+<tr>
+<td>A/R Clerk</td>
+<td>None</td>
+<td>Amount ₱50,000.00; discount 10%; price change 5%</td>
+</tr>
+<tr>
+<td>A/P Clerk</td>
+<td>View costs</td>
+<td>Amount ₱100,000.00</td>
+</tr>
+<tr>
+<td>Inventory Clerk</td>
+<td>None</td>
+<td>Amount ₱20,000.00</td>
+</tr>
+<tr>
+<td>Sales Representative</td>
+<td>None</td>
+<td>Discount 5%; price change 0%</td>
+</tr>
+<tr>
+<td>Cashier</td>
+<td>None</td>
+<td>Discount 5%; price change 0%; amount 0</td>
+</tr>
+<tr>
+<td>POS Supervisor</td>
+<td>None</td>
+<td>Discount 30%; price change 20%; amount ₱20,000.00</td>
+</tr>
+<tr>
+<td>Auditor</td>
+<td>View costs, View bank balances</td>
+<td>None set</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="s-duties-kept-apart">Duties kept apart<a class="man-hash" href="#s-duties-kept-apart" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>When a user (or a role) would be able to create or edit on both pages of one of these pairs, User Accounts and User Role Configuration show a segregation-of-duties warning, and you must tick a box to save anyway:</p>
+<ul>
+<li>Vendor Center and Pay Bills (creating vendors and paying bills);</li>
+<li>Receive Payments and Reconcile (receiving customer payments and reconciling the bank account);</li>
+<li>Adjust Quantity/Value on Hand and Physical Inventory Count (adjusting inventory and counting it);</li>
+<li>Enter Bills and Write Checks (entering bills and writing checks);</li>
+<li>POS Register and Make Deposits (selling at the POS and depositing the cash).</li>
+</ul>
+<h3 id="s-sites">Sites<a class="man-hash" href="#s-sites" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A role can cover all sites or only the sites ticked for it, and a user can be limited to certain sites and POS terminals in <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>. When both are set, the user works only in the sites that both allow. Users limited to sites see only those sites in lists, site pickers and site-based reports, and saving a transaction for another site is refused.</p>
+<h2 id="app-numbers">Appendix C. Number series and document numbers<a class="man-hash" href="#app-numbers" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every transaction and a few records get a number from a <em>series</em>: a prefix, then a running number filled with zeros. Each company has its own series.</p>
+<h3 id="s-the-series">The series<a class="man-hash" href="#s-the-series" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Series</th>
+<th>First number</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EST-</td>
+<td>EST-00001</td>
+<td>Estimates</td>
+</tr>
+<tr>
+<td>SO-</td>
+<td>SO-00001</td>
+<td>Sales orders</td>
+</tr>
+<tr>
+<td>INV-</td>
+<td>INV-00001</td>
+<td>Invoices, including batch invoices and POS charge sales</td>
+</tr>
+<tr>
+<td>SR-</td>
+<td>SR-00001</td>
+<td>Sales receipts</td>
+</tr>
+<tr>
+<td>SC-</td>
+<td>SC-00001</td>
+<td>Statement charges</td>
+</tr>
+<tr>
+<td>FC-</td>
+<td>FC-00001</td>
+<td>Finance charges</td>
+</tr>
+<tr>
+<td>PMT-</td>
+<td>PMT-00001</td>
+<td>Customer payments</td>
+</tr>
+<tr>
+<td>CM-</td>
+<td>CM-00001</td>
+<td>Credit memos</td>
+</tr>
+<tr>
+<td>PO-</td>
+<td>PO-00001</td>
+<td>Purchase orders</td>
+</tr>
+<tr>
+<td>IR-</td>
+<td>IR-00001</td>
+<td>Item receipts</td>
+</tr>
+<tr>
+<td>BILL-</td>
+<td>BILL-00001</td>
+<td>Bills</td>
+</tr>
+<tr>
+<td>DM-</td>
+<td>DM-00001</td>
+<td>Supplier debit memos</td>
+</tr>
+<tr>
+<td>ADV-</td>
+<td>ADV-00001</td>
+<td>Advances to suppliers</td>
+</tr>
+<tr>
+<td>AAP-</td>
+<td>AAP-00001</td>
+<td>Advances applied to bills (bill payments made out of an advance)</td>
+</tr>
+<tr>
+<td>(none)</td>
+<td>1001</td>
+<td>Checks, bill payments and customer refunds</td>
+</tr>
+<tr>
+<td>CAV-</td>
+<td>CAV-00001</td>
+<td>Cash vouchers</td>
+</tr>
+<tr>
+<td>DEP-</td>
+<td>DEP-00001</td>
+<td>Deposits</td>
+</tr>
+<tr>
+<td>TRF-</td>
+<td>TRF-00001</td>
+<td>Fund transfers</td>
+</tr>
+<tr>
+<td>JE-</td>
+<td>JE-00001</td>
+<td>Journal entries, opening balances, depreciation, asset disposals, cash over/short, service charges, interest earned</td>
+</tr>
+<tr>
+<td>ADJ-</td>
+<td>ADJ-00001</td>
+<td>Inventory adjustments, physical counts, opening stock</td>
+</tr>
+<tr>
+<td>IT-</td>
+<td>IT-00001</td>
+<td>Inventory transfers</td>
+</tr>
+<tr>
+<td>BLD-</td>
+<td>BLD-00001</td>
+<td>Assembly builds</td>
+</tr>
+<tr>
+<td>PRC-</td>
+<td>PRC-00001</td>
+<td>Processing orders</td>
+</tr>
+<tr>
+<td>POS-</td>
+<td>POS-000001</td>
+<td>POS sales and returns</td>
+</tr>
+<tr>
+<td>FA-</td>
+<td>FA-00001</td>
+<td>Fixed asset numbers</td>
+</tr>
+<tr>
+<td>MNT-</td>
+<td>MNT-00001</td>
+<td>Asset maintenance records</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="s-how-numbers-are-given">How numbers are given<a class="man-hash" href="#s-how-numbers-are-given" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>A number is taken when the transaction is first saved, never when the form is opened. The form shows the next number as a hint, for example <em>INV-00024 (auto)</em> in the <strong>Number</strong> box.</li>
+<li>If saving fails (a message in red), no number is used up.</li>
+<li>The counter only goes forward. A voided transaction keeps its number; a deleted one leaves a gap, and the number is not given out again. A suspended POS sale removed with <strong>Cancel suspended sale</strong> is deleted, so it also leaves a gap in the POS- series.</li>
+<li>Because checks, bill payments and customer refunds share one series, a bill payment made by bank transfer or card also takes the next check number.</li>
+<li>Changing a transaction's date does not change its number. When an item receipt is turned into a bill with <a href="manual.php?c=vendors#pg-vend-bill_received">Enter Bill for Received Items</a>, the record gets the next BILL- number in place of its IR- number.</li>
+<li>A new company created on the platform starts every series again from 1.</li>
+</ul>
+<h3 id="s-typing-your-own-number">Typing your own number<a class="man-hash" href="#s-typing-your-own-number" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>On these forms you can type a number instead of taking the automatic one, both when entering and when editing:</p>
+<ul>
+<li><strong>Number</strong> on estimates, sales orders, invoices, sales receipts, statement charges, credit memos, purchase orders, bills and supplier debit memos;</li>
+<li><strong>Check no.</strong> on Write Checks;</li>
+<li><strong>Entry no.</strong> on Make Journal Entries;</li>
+<li><strong>CAV entry no.</strong> on Cash Voucher.</li>
+</ul>
+<p>Leave the box blank to get the next number. A number you type does not move the counter.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Only the cash voucher checks that a typed number is not used already (<em>CAV entry no. ... is already used. Leave the number blank to get the next one.</em>). On the other forms the program accepts a number that is already in use, and a typed number that is ahead of the counter will be given out again later. Type your own numbers only when you must match a pre-printed form, and check the list first.</p></div>
+<p>All other transactions (payments, bill payments, deposits, transfers, item receipts, adjustments, transfers of stock, builds, processing orders, POS transactions and the entries the program makes) are always numbered automatically.</p>
+<h3 id="s-pos-receipt-numbers-and-z-reading-numbers">POS receipt numbers and Z-reading numbers<a class="man-hash" href="#s-pos-receipt-numbers-and-z-reading-numbers" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>Every POS terminal has its own receipt series: the <strong>Receipt prefix</strong> set in <a href="manual.php?c=point-of-sale#pg-pos-terminals">POS Terminals</a> followed by an 8-digit number, for example MK1-00000001 for Makati Counter 1 and CB1-00000001 for Cebu Counter 1. New terminals are offered the prefix OR-.</li>
+<li>Sales, returns, charge sales and payments taken at the counter each take the next receipt number of the terminal, in addition to their own transaction number.</li>
+<li>Z-readings are numbered per terminal (#1, #2 ...) when the register is closed.</li>
+<li>The prefix can be changed on the POS Terminals page. The running number cannot be reset there (<em>Receipt numbers are sequential per terminal and cannot be reset here.</em>).</li>
+</ul>
+<h3 id="s-can-the-series-be-changed">Can the series be changed?<a class="man-hash" href="#s-can-the-series-be-changed" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Not from within the program. There is no page for the prefixes or the next numbers of the series; they are kept in the <code>sequences</code> table of the company database. A system administrator with access to the database (phpMyAdmin or Navicat) can change a prefix or the next number there, for example to start at the next number of your pre-printed invoices.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Make a backup before changing the table, and never set a next number at or below a number already used: the program would give out duplicate numbers.</p></div>
+<h3 id="s-other-codes">Other codes<a class="man-hash" href="#s-other-codes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Company Code:</strong> with several companies, each company has a code such as ABD-7K2QX (see <a href="#app-glossary">Appendix F</a>). It is not a document number and cannot be chosen; the Company Owner or the Super Admin can only regenerate it.</li>
+<li><strong>Codes you choose yourself:</strong> account codes, item codes, customer and vendor names, site codes and terminal codes are typed by you and must be unique.</li>
+</ul>
+<h2 id="app-messages">Appendix D. Messages and what to do<a class="man-hash" href="#app-messages" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Messages appear in three places: in a red box at the top of the form you were saving (nothing was saved, and what you typed is still on the form), in a coloured bar at the top of the next page, and on the log-in page. The table lists the messages you are most likely to meet first. Where a message contains a name, number or amount, it is shown here with an example or with "...".</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message or problem</th>
+<th>Why</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid username or password. 3 attempt(s) left before the account is locked.</td>
+<td>The username or the password is wrong</td>
+<td>Check Caps Lock and type again. Ask your administrator if you have forgotten the password</td>
+</tr>
+<tr>
+<td>You were logged out after a period of inactivity.</td>
+<td>Nothing was done for longer than the session timeout (30 minutes in the demo)</td>
+<td>Log in again. Anything not yet saved is lost, so save before leaving the computer</td>
+</tr>
+<tr>
+<td>Access denied: You do not have permission to open (page).</td>
+<td>Your roles do not allow the page, or the action, for example "to create on Receive Payments"</td>
+<td>Ask your administrator to change your role or page access. The attempt is recorded in the audit trail</td>
+</tr>
+<tr>
+<td>Supervisor approval is required: 12.00% discount on LAP-001. Ask a supervisor to enter their username and password below.</td>
+<td>The discount, price change or amount is over your limit, or the action (void, return, reading) always needs approval</td>
+<td>A supervisor types their username and password in <strong>Supervisor approval</strong> and you save again</td>
+</tr>
+<tr>
+<td>The books are closed through 07/08/2026. You do not have permission to record transactions dated on or before the closing date.</td>
+<td>The date is in a closed period</td>
+<td>Use a date after the closing date, or ask a user with the closed-period permission</td>
+</tr>
+<tr>
+<td>Choose a customer. / Choose a vendor.</td>
+<td>The form was saved without the name</td>
+<td>Choose the customer or vendor at the top of the form</td>
+</tr>
+<tr>
+<td>Add at least one line. / Add at least one expense or item line.</td>
+<td>The form has no lines with an item or account</td>
+<td>Enter at least one line</td>
+</tr>
+<tr>
+<td>Credit limit exceeded: balance 230,000.00 + this invoice 44,788.80 &gt; limit 250,000.00. Enter a reason to override the limit.</td>
+<td>The invoice takes the customer over the credit limit</td>
+<td>Type the reason in <strong>Credit limit override reason</strong> and save; or save the invoice as pending</td>
+</tr>
+<tr>
+<td>Credit limit exceeded: ... You are not allowed to exceed customer credit limits.</td>
+<td>As above, and you lack the permission to exceed limits</td>
+<td>Ask for a payment first, save as pending, or ask a user who can exceed limits</td>
+</tr>
+<tr>
+<td>Your password has expired. Please choose a new one.</td>
+<td>The password is older than the expiry period (90 days in the demo)</td>
+<td>Choose a new password on the Change password page</td>
+</tr>
+<tr>
+<td>Too many failed attempts. The account is now locked.</td>
+<td>The wrong password was typed too many times (5 in the demo)</td>
+<td>Ask an administrator to unlock the account</td>
+</tr>
+<tr>
+<td>This account is locked. Only an administrator can unlock it.</td>
+<td>The account was locked earlier</td>
+<td>An administrator uses <strong>Unlock account</strong> in User Accounts</td>
+</tr>
+<tr>
+<td>No class selected (window)</td>
+<td>The transaction is being saved without a class</td>
+<td>Choose <strong>Choose a class</strong> and pick one, or <strong>Continue saving</strong> to save it unclassified</td>
+</tr>
+<tr>
+<td>Your session expired or the form was already submitted. Go back, refresh the page and try again.</td>
+<td>The page was open too long, you logged in again elsewhere, or you pressed Save twice</td>
+<td>Go back, reload the page, check whether the record was saved, and enter it again if not</td>
+</tr>
+<tr>
+<td>Payments or credits have been applied to it. Remove them first (edit the payment or credit).</td>
+<td>You tried to void or delete a paid invoice or bill</td>
+<td>Edit or void the payment or credit first</td>
+</tr>
+<tr>
+<td>You applied 50,000.00 but received only 44,388.90. Lower the payments on the invoices, or correct the amount received.</td>
+<td>The amounts on the invoice lines add up to more than <strong>Amount received</strong></td>
+<td>Correct the amounts</td>
+</tr>
+<tr>
+<td>The amount applied to INV-00012 is more than its open balance (44,788.80).</td>
+<td>Payment, discount, withholding and credit on one line exceed what is open</td>
+<td>Lower the amounts on that line</td>
+</tr>
+<tr>
+<td>Enter a reason for voiding. / Enter a reason for deleting.</td>
+<td>The reason box was left empty</td>
+<td>Type the reason; it is kept in the audit trail</td>
+</tr>
+<tr>
+<td>A voided transaction cannot be edited.</td>
+<td>The transaction is void</td>
+<td>Enter a new transaction instead</td>
+</tr>
+<tr>
+<td>This transaction is dated on or before the closing date (07/08/2026) and cannot be changed.</td>
+<td>The transaction is in a closed period</td>
+<td>Correct it with a new transaction after the closing date, or ask a user with the closed-period permission</td>
+</tr>
+<tr>
+<td>This transaction has been cleared in a bank reconciliation. You do not have permission to change it.</td>
+<td>The transaction's bank line is reconciled</td>
+<td>Ask a user with the closed-period permission; the change will show on the Reconciliation Discrepancy report</td>
+</tr>
+<tr>
+<td>Approval failed: the supervisor username or password is wrong.</td>
+<td>The approver's details are wrong</td>
+<td>The supervisor types them again. Failed approvals are recorded</td>
+</tr>
+<tr>
+<td>You cannot approve your own transaction.</td>
+<td>You typed your own username as approver</td>
+<td>Another user must approve</td>
+</tr>
+<tr>
+<td>(username) is not allowed to approve on this page.</td>
+<td>The approver has no Approve right on this page</td>
+<td>Ask a user who has it, such as a POS Supervisor on the POS pages or an Administrator</td>
+</tr>
+<tr>
+<td>The approval code is not valid. Ask the supervisor for a new code.</td>
+<td>No such approval code</td>
+<td>Check the letters, or ask the supervisor to generate a new code on Point of Sale &gt; Approval Codes</td>
+</tr>
+<tr>
+<td>That approval code was already used. Each code works once: ask the supervisor for a new one.</td>
+<td>The code was spent on an earlier save</td>
+<td>Ask for a new code</td>
+</tr>
+<tr>
+<td>That approval code has expired. Ask the supervisor for a new one.</td>
+<td>The code's time ran out</td>
+<td>Ask for a new code</td>
+</tr>
+<tr>
+<td>That approval code was issued for another user.</td>
+<td>The supervisor limited the code to someone else</td>
+<td>Ask for a code for your username</td>
+</tr>
+<tr>
+<td>That approval code is for (page), not for this page.</td>
+<td>The code was limited to another page</td>
+<td>Ask for a code for this page, or for any page</td>
+</tr>
+<tr>
+<td>There is already a category called "...". To put the two together, delete one and move its items to the other.</td>
+<td>Two categories cannot have the same name</td>
+<td>Use another name, or delete one category and move its items to the other</td>
+</tr>
+<tr>
+<td>(n) item(s) are in "...". Choose where they go before deleting it.</td>
+<td>The category still has items</td>
+<td>Choose another category or No category in Move its items to</td>
+</tr>
+<tr>
+<td>The cash of this shift was already deposited (...). Void or delete that deposit first, correct the shift, then deposit it again.</td>
+<td>The closing entries of a deposited shift cannot change</td>
+<td>Void the deposit, correct the shift, deposit it again</td>
+</tr>
+<tr>
+<td>Debits (1,000.00) must equal credits (900.00).</td>
+<td>The journal entry does not balance</td>
+<td>Correct the amounts</td>
+</tr>
+<tr>
+<td>A journal entry needs at least two lines.</td>
+<td>Only one line was filled in</td>
+<td>Add the other side of the entry</td>
+</tr>
+<tr>
+<td>Lines posted to Accounts Receivable need a customer name. / Lines posted to Accounts Payable need a vendor name.</td>
+<td>A/R and A/P lines must name who owes or is owed</td>
+<td>Choose the name on the line</td>
+</tr>
+<tr>
+<td>The account (code - name) is marked "With SL", so the line posting to it needs a name: choose a customer, supplier, employee or other name.</td>
+<td>The account keeps a subsidiary ledger</td>
+<td>Choose a name on the line, or a payee for the whole check or voucher</td>
+</tr>
+<tr>
+<td>The default account "Undeposited Funds" is not set. Set it under Financial Set-up &amp; Reports &gt; Module Default Accounts.</td>
+<td>A module default account is empty</td>
+<td>An accountant sets it in Module Default Accounts</td>
+</tr>
+<tr>
+<td>It is included in deposit DEP-00001. Remove it from the deposit first.</td>
+<td>The payment or sales receipt was deposited</td>
+<td>Void the deposit first</td>
+</tr>
+<tr>
+<td>It has already been converted or received in part. Close it instead.</td>
+<td>You tried to delete an estimate, sales order or purchase order that was used</td>
+<td>Use <strong>Close</strong> instead</td>
+</tr>
+<tr>
+<td>It has been refunded (1001). Void the refund first.</td>
+<td>The credit memo or payment was refunded</td>
+<td>Void the refund, then the credit memo or payment</td>
+</tr>
+<tr>
+<td>A line that was already used on another document cannot be removed. Close the line instead.</td>
+<td>The line was invoiced or received on another document</td>
+<td>Tick the line's <strong>Closed</strong> box instead of removing it</td>
+</tr>
+<tr>
+<td>Refunds cannot be edited. Void it and record a new one.</td>
+<td>Refunds cannot be changed</td>
+<td>Void the refund and record it again</td>
+</tr>
+<tr>
+<td>You are receiving more than was ordered on (item). Tick "Allow over-receiving" to continue.</td>
+<td>The quantity is more than is still open on the purchase order</td>
+<td>Correct the quantity, or tick <strong>Allow over-receiving</strong></td>
+</tr>
+<tr>
+<td>Select at least one bill and enter the amount to pay.</td>
+<td>No bill was ticked in Pay Bills</td>
+<td>Tick the bills and enter the amounts</td>
+</tr>
+<tr>
+<td>Payment for (bill) is more than its open balance of 1,960.00.</td>
+<td>The payment, discount and credit exceed the bill</td>
+<td>Lower the amounts</td>
+</tr>
+<tr>
+<td>Not enough vendor credit available for (vendor).</td>
+<td>The credits entered exceed the supplier's available debit memos</td>
+<td>Lower the credit amounts</td>
+</tr>
+<tr>
+<td>Select the payments to deposit or enter other receipts.</td>
+<td>Nothing was chosen on Make Deposits</td>
+<td>Tick payments or shifts, or enter other receipts</td>
+</tr>
+<tr>
+<td>A selected payment was already deposited or changed. Refresh and try again.</td>
+<td>Someone else deposited or changed it meanwhile</td>
+<td>Reload the page</td>
+</tr>
+<tr>
+<td>The difference must be zero to finish. Current difference: 150.00.</td>
+<td>The cleared items do not agree with the statement</td>
+<td>Find the missing or wrong items, or use <strong>Save</strong> to finish later</td>
+</tr>
+<tr>
+<td>Debits less credits (900.00) must equal the cash amount (1,000.00).</td>
+<td>The voucher lines do not add up to the cash paid out</td>
+<td>Correct the lines or the cash amount</td>
+</tr>
+<tr>
+<td>The cash account is credited automatically for the cash amount. Do not enter it again in the account lines.</td>
+<td>The cash account was also entered as a line</td>
+<td>Remove that line</td>
+</tr>
+<tr>
+<td>CAV entry no. CAV-00005 is already used. Leave the number blank to get the next one.</td>
+<td>The typed voucher number exists</td>
+<td>Clear the number box</td>
+</tr>
+<tr>
+<td>Choose a payee or type a payee name. / Choose who the cash is paid to, or type the name.</td>
+<td>The check or voucher has no payee</td>
+<td>Choose the payee or type the name</td>
+</tr>
+<tr>
+<td>Not enough stock of LAP-001 at the source site (2).</td>
+<td>Moving stock below zero is switched off</td>
+<td>Transfer less, or receive the stock first</td>
+</tr>
+<tr>
+<td>There are not enough components at this site. Save the build as pending, or transfer / receive the components first.</td>
+<td>Components are short at the build site</td>
+<td>Use <strong>Save as pending build</strong>, or move or receive the components</td>
+</tr>
+<tr>
+<td>Not enough stock at the processing site: (items). Save the order as pending, or transfer or receive the items first.</td>
+<td>Inputs are short at the processing site</td>
+<td>Save as pending, or move or receive the inputs</td>
+</tr>
+<tr>
+<td>Not enough stock: LAP-001 at Main Warehouse has 3.00 on hand, and this would leave -2.00. Selling or moving stock below zero is switched off (System Administration &gt; Company, Security &amp; Closing Date).</td>
+<td>The invoice, sales receipt, POS sale or other document takes more than the site has, and selling below zero is not allowed</td>
+<td>Sell or move less, or record the missing receipt or transfer first</td>
+</tr>
+<tr>
+<td>Stock is now below zero: LAP-001 at Main Warehouse (-2.00).</td>
+<td>The document was saved and took more than the site had; selling below zero is allowed</td>
+<td>Record the missing receipt, transfer or adjustment; see the Negative Inventory Listing report</td>
+</tr>
+<tr>
+<td>Nothing was posted: already charged on or after 09/27/2026: ABC Trading Corp. (charged 09/27/2026).</td>
+<td>Assess Finance Charges was run again for customers already charged for that period</td>
+<td>Nothing to do; void the earlier charge first if it was wrong</td>
+</tr>
+<tr>
+<td>No differences to post. Counted quantities match the system.</td>
+<td>Every count equals the system quantity</td>
+<td>Nothing to do</td>
+</tr>
+<tr>
+<td>No changes entered. Type the new quantity or value for the items to adjust.</td>
+<td>No new quantity or value was typed</td>
+<td>Type the new figures</td>
+</tr>
+<tr>
+<td>Set up at least one inventory site before recording inventory transactions.</td>
+<td>The company has no active site</td>
+<td>Add a site in the Inventory Site List</td>
+</tr>
+<tr>
+<td>You are not allowed to record transactions for that site.</td>
+<td>Your account is limited to other sites</td>
+<td>Choose one of your sites, or ask your administrator</td>
+</tr>
+<tr>
+<td>Open a shift for this terminal first. / There is no open shift on this terminal.</td>
+<td>The POS has no open shift</td>
+<td>Open a shift in Shifts, Cash Drops &amp; Readings</td>
+</tr>
+<tr>
+<td>No POS terminal is assigned to you. Ask an administrator to set up a terminal and assign it to your account.</td>
+<td>No terminal you may use exists at your sites</td>
+<td>An administrator assigns a terminal in POS Terminals</td>
+</tr>
+<tr>
+<td>Payment is short by 70.88.</td>
+<td>The tenders are less than the sale total</td>
+<td>Take the rest of the payment</td>
+</tr>
+<tr>
+<td>Card, bank, e-wallet and voucher amounts are more than the total.</td>
+<td>Non-cash tenders exceed the total; change is given only from cash</td>
+<td>Lower the non-cash amounts</td>
+</tr>
+<tr>
+<td>(customer) is not an approved account customer for charges at the counter.</td>
+<td>The customer may not charge at the POS</td>
+<td>Take payment, or tick <strong>Approved account customer at the POS</strong> on the customer</td>
+</tr>
+<tr>
+<td>This charge would exceed the customer's credit limit of 60,000.00.</td>
+<td>The charge sale takes the customer over the limit</td>
+<td>Take payment, or ask a user who can exceed limits</td>
+</tr>
+<tr>
+<td>You cannot return more than was sold of MOU-001.</td>
+<td>The return quantity exceeds what is left to return on the sale</td>
+<td>Correct the quantity</td>
+</tr>
+<tr>
+<td>Count the drawer and enter the cash counted.</td>
+<td>The register was closed without a count</td>
+<td>Enter the counted cash</td>
+</tr>
+<tr>
+<td>The class chosen on this form no longer exists. Choose another class.</td>
+<td>The class was deleted while the form was open</td>
+<td>Choose another class</td>
+</tr>
+<tr>
+<td>The unit chosen on a line does not belong to that item's U/M set.</td>
+<td>The item was changed after the unit was chosen</td>
+<td>Choose the unit again</td>
+</tr>
+<tr>
+<td>Choose an item for every line that has a description or amount.</td>
+<td>A line has text or an amount but no item</td>
+<td>Choose the item, or clear the line</td>
+</tr>
+<tr>
+<td>Your registration is waiting for approval by your Company Owner. You can log in once it is approved.</td>
+<td>You joined with the Company Code and are not approved yet</td>
+<td>Wait for the Company Owner, or ask them to check Join Requests</td>
+</tr>
+<tr>
+<td>Your registration was not approved. Please contact your Company Owner.</td>
+<td>The Company Owner rejected the request</td>
+<td>Contact your Company Owner</td>
+</tr>
+<tr>
+<td>Invalid or inactive Company Code. Please verify the code with your Company Owner.</td>
+<td>The code is wrong, old, switched off or expired, or the company is inactive</td>
+<td>Ask your Company Owner for the current code</td>
+</tr>
+<tr>
+<td>Too many attempts from this computer. Please wait 15 minutes and try again.</td>
+<td>Too many wrong Company Codes from one computer</td>
+<td>Wait 15 minutes</td>
+</tr>
+<tr>
+<td>Too many failed log-in attempts from this computer. Please wait 15 minutes and try again.</td>
+<td>Too many unknown usernames from one computer</td>
+<td>Wait 15 minutes and check the username</td>
+</tr>
+<tr>
+<td>Your company's access is currently suspended. Please contact your Company Owner.</td>
+<td>The Super Admin switched the company off</td>
+<td>Contact your Company Owner</td>
+</tr>
+<tr>
+<td>This account is inactive. Contact your administrator.</td>
+<td>The account was deactivated</td>
+<td>Ask an administrator to activate it</td>
+</tr>
+<tr>
+<td>Please replace your temporary password before continuing.</td>
+<td>The password was set or reset by an administrator</td>
+<td>Choose your own password</td>
+</tr>
+<tr>
+<td>The new password must have at least 8 characters, a symbol.</td>
+<td>The new password breaks the password rules</td>
+<td>Choose a password that meets every rule listed on the page</td>
+</tr>
+<tr>
+<td>Your current password is incorrect. / Choose a password different from your current one.</td>
+<td>The current password is wrong, or the new one is the same</td>
+<td>Type them again</td>
+</tr>
+<tr>
+<td>That username is already taken. Please choose another.</td>
+<td>Usernames are unique on the whole system</td>
+<td>Choose another username</td>
+</tr>
+<tr>
+<td>Database update needed (page after log-in)</td>
+<td>New program files were installed but the database was not updated</td>
+<td>The system administrator runs the listed files (see Appendix E)</td>
+</tr>
+<tr>
+<td>Something went wrong (page)</td>
+<td>An unexpected error</td>
+<td>Go back and try again; report the time and what you did to the system administrator</td>
+</tr>
+<tr>
+<td>Memorized transaction "Office rent" was entered automatically for 09/01/2026.</td>
+<td>A memorized transaction fell due</td>
+<td>Check the transaction if needed</td>
+</tr>
+<tr>
+<td>... still has ... on hand (...). Only an inventory item with no balance can be made inactive: sell, transfer or adjust it to zero first.</td>
+<td>An inventory part or assembly with stock or a value cannot be made inactive</td>
+<td>Bring its stock and value to zero first (sell, transfer or adjust it)</td>
+</tr>
+<tr>
+<td>System accounts cannot be deleted. Make them inactive instead. / This account is in use. Make it inactive instead of deleting it.</td>
+<td>Accounts the modules use or that have entries cannot be deleted</td>
+<td>Make the account inactive</td>
+</tr>
+<tr>
+<td>You are not allowed to change the Chart of Accounts.</td>
+<td>You lack the Chart of Accounts permission</td>
+<td>Ask an accountant or administrator</td>
+</tr>
+<tr>
+<td>These roles combine duties that should be kept apart. Review the warning below and tick the box to save anyway.</td>
+<td>The roles break a segregation-of-duties rule</td>
+<td>Change the roles, or tick the box to accept the risk</td>
+</tr>
+<tr>
+<td>This is the last active administrator. / You cannot deactivate your own account.</td>
+<td>The company must keep an administrator</td>
+<td>Make another user an administrator first</td>
+</tr>
+<tr>
+<td>Choose a CSV file (.csv). In Excel: File &gt; Save As &gt; CSV (Comma delimited).</td>
+<td>The import file is not a CSV file</td>
+<td>Save the sheet as CSV and choose it again</td>
+</tr>
+<tr>
+<td>The checked file is no longer here. Choose the file and check it again.</td>
+<td>The checked file was removed (it is kept for a day) or you logged in again</td>
+<td>Choose the file and press <strong>Check the file</strong> again</td>
+</tr>
+<tr>
+<td>Type RESTORE in the box to confirm. Nothing has been changed.</td>
+<td>The restore was not confirmed</td>
+<td>Type RESTORE in capitals</td>
+</tr>
+<tr>
+<td>The backup file could not be created. Check that the storage/backups folder can be written to.</td>
+<td>The server cannot write the folder</td>
+<td>The system administrator fixes the folder's permissions</td>
+</tr>
+<tr>
+<td>Nothing to post for this period.</td>
+<td>Every asset is already depreciated for the month, or none is due</td>
+<td>Choose another month</td>
+</tr>
+<tr>
+<td>Transaction not found.</td>
+<td>The transaction was deleted, or the link is old</td>
+<td>Search for it with Find</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="app-sysadmin">Appendix E. For the system administrator<a class="man-hash" href="#app-sysadmin" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This appendix is for the person who installs and looks after the program. It needs access to the server, the database and the program folder.</p>
+<h3 id="s-requirements">Requirements<a class="man-hash" href="#s-requirements" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Component</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHP</td>
+<td>8.1 or newer (8.2 or newer recommended), with the pdo_mysql and mbstring extensions</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>MySQL 5.5.3 or newer, or MariaDB 5.5 or newer</td>
+</tr>
+<tr>
+<td>Web server</td>
+<td>Apache (the .htaccess files are included) or nginx</td>
+</tr>
+<tr>
+<td>Browser</td>
+<td>Any current browser</td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>Only to load Bootstrap from a CDN; see Offline use</td>
+</tr>
+</tbody>
+</table></div>
+<p>PHP and MySQL versions are separate: old XAMPP packages with MySQL 5.5 come with PHP 5, which cannot run this program. Install a current XAMPP, or point a PHP 8 installation at your MySQL 5.5 server.</p>
+<h3 id="s-installing">Installing<a class="man-hash" href="#s-installing" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>With XAMPP and phpMyAdmin:</p>
+<ol>
+<li>Unzip the folder into <code>C:\xampp\htdocs\</code>, so that you have <code>C:\xampp\htdocs\gsmart-construction\index.php</code>.</li>
+<li>Start Apache and MySQL in the XAMPP Control Panel.</li>
+<li>Open phpMyAdmin at <code>http://localhost/phpmyadmin</code> and choose <strong>Import</strong>.</li>
+<li>Choose <code>database/gsmart_construction_clean.sql</code> to start real work (the set-up lists and the user accounts, no client, project or transaction), or <code>database/gsmart_construction_sample.sql</code> for the sample contractor with four projects and a year of work. Click <strong>Go</strong>. Either file creates the company database <code>gsmart_construction</code> and the platform database <code>gsmart_construction_master</code>.</li>
+<li>If your MySQL user has a password, or you used another database name, edit <code>config/config.php</code>.</li>
+<li>Open <code>http://localhost/gsmart-construction/</code> and log in as admin with the password Admin@12345 (the other accounts are listed in README.md; the Super Admin is superadmin with Super@12345).</li>
+</ol>
+<p>From the command line, <code>php tools/install.php</code> does the same (see Command-line tools).</p>
+<h3 id="s-configuration-configconfigphp">Configuration: config/config.php<a class="man-hash" href="#s-configuration-configconfigphp" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>db: host, port, name, user, pass, charset</td>
+<td>The database connection (utf8mb4)</td>
+</tr>
+<tr>
+<td>app: name</td>
+<td>The program name shown on screen; left as "Accounting System", the program shows GSMaRT Construction System</td>
+</tr>
+<tr>
+<td>app: timezone</td>
+<td>The company time zone, Asia/Manila by default</td>
+</tr>
+<tr>
+<td>app: currency</td>
+<td>The currency sign, ₱</td>
+</tr>
+<tr>
+<td>app: debug</td>
+<td>Detailed error pages, switched on only by the environment variable <code>APP_DEBUG=1</code></td>
+</tr>
+<tr>
+<td>app: upload_dir</td>
+<td>Where uploaded receipts are kept (storage/receipts)</td>
+</tr>
+<tr>
+<td>master: name (optional)</td>
+<td>Another name for the platform database when several companies are set up</td>
+</tr>
+</tbody>
+</table></div>
+<p>The environment variables <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_NAME</code>, <code>DB_USER</code> and <code>DB_PASS</code> override the values in the file.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p><code>config/config.php</code> holds the database user and password. Never send it to anyone, never attach it to a support e-mail or a screenshot, and never place a copy where the web server can serve it. The .htaccess files (or the nginx rules) stop browsers from opening the config, app, database, modules, storage, tools and views folders; keep them in place.</p></div>
+<p>Settings that users change inside the program (company details, password rules, lockout, session timeout, finance charges, negative stock, the closing date) are in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>, not in this file.</p>
+<h3 id="s-upgrading-to-a-new-version">Upgrading to a new version<a class="man-hash" href="#s-upgrading-to-a-new-version" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ol>
+<li>Make a backup of the database (<a href="manual.php?c=administration#pg-admin-backup">Backup &amp; Restore</a>, phpMyAdmin Export, or <code>tools/export_sql.php</code>), and a copy of the program folder including <code>storage/</code> and <code>config/config.php</code>.</li>
+<li>Copy the new program files over the old ones. Keep your <code>config/config.php</code>.</li>
+<li>In phpMyAdmin (Import) or Navicat (Execute SQL File), select your company database and run the files in <code>database/migrations/</code> that you have not run yet, oldest first.</li>
+<li>Log in. If a file is still missing, the program stops after log-in with the page <strong>Database update needed</strong>, which names the files still to run, in order.</li>
+</ol>
+<p>GSMaRT Construction System 1.0 is delivered with the complete database and needs no upgrade file. Later versions put theirs in <code>database/migrations/</code>, each written for MySQL 5.5, keeping every record and safe to run twice.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Never import <code>database/gsmart_construction_sample.sql</code> or <code>database/gsmart_construction_clean.sql</code> over a database that is in use. Both drop and recreate every table: all your records would be replaced by the sample data. Upgrade only with the files in <code>database/migrations/</code>.</p></div>
+<ul>
+<li>With several companies, every company database needs the update. The Super Admin runs them with <strong>Companies &gt; Database updates</strong> on the platform pages, or you run <code>php tools/platform.php update-all</code>.</li>
+<li>After upgrading from a version with the older average costing, you may run <strong>Rebuild data</strong> once in <a href="manual.php?c=administration#pg-admin-utilities">Utilities: Verify &amp; Rebuild Data</a> to recost past sales. It is optional: new transactions use the current costing at once. Make a backup first, because the cost of past sales may change.</li>
+</ul>
+<h3 id="s-command-line-tools">Command-line tools<a class="man-hash" href="#s-command-line-tools" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Run them from the program folder, for example <code>php tools/install.php</code>. They refuse to run from a browser.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>php tools/install.php</code></td>
+<td>Creates the database (if missing), the tables, the audit trail protection triggers and the setup data. Stops if the database already has tables</td>
+</tr>
+<tr>
+<td><code>php tools/install.php --demo</code></td>
+<td>The same, plus sample transactions dated around the day you run it</td>
+</tr>
+<tr>
+<td><code>php tools/install.php --drop</code></td>
+<td>Drops and recreates the database first: deletes all data</td>
+</tr>
+<tr>
+<td><code>php tools/export_sql.php --out=backup-2026-09-30.sql</code></td>
+<td>Writes one complete, importable SQL file (tables, data and triggers)</td>
+</tr>
+<tr>
+<td><code>php tools/send_scheduled_reports.php</code></td>
+<td>E-mails the memorized reports that have a schedule; add <code>--company=N</code> for one company</td>
+</tr>
+<tr>
+<td><code>php tools/platform.php list</code></td>
+<td>Lists the companies, their status, database and Company Code</td>
+</tr>
+<tr>
+<td><code>php tools/platform.php reset-superadmin (username) (password)</code></td>
+<td>Gives a Super Admin a new password, unlocks the account and asks for a new password at log-in</td>
+</tr>
+<tr>
+<td><code>php tools/platform.php sync (company id)</code></td>
+<td>Rebuilds the platform's list of that company's usernames</td>
+</tr>
+<tr>
+<td><code>php tools/platform.php update-all</code></td>
+<td>Runs the pending upgrade files on every company database</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><code>tools/seed.php</code> (the chart of accounts, roles, users, lists and number series of a new installation), <code>tools/demo_data.php</code> (the sample transactions) and <code>tools/lib.php</code> are used by <code>install.php</code> and are not run on their own.</li>
+<li><code>export_sql.php</code> without <code>--out</code> writes to <code>database/gsmart_construction.sql</code>: give <code>--out</code> to choose the file. With several companies it also exports the platform database; <code>--no-master</code> leaves it out. Add <code>--no-create-db</code> to leave out the CREATE DATABASE and USE lines. It exports the database named in <code>config/config.php</code> (Company 1).</li>
+<li><code>platform.php</code> works only after multi-company has been set up.</li>
+</ul>
+<h4 id="s-scheduled-report-e-mails">Scheduled report e-mails<a class="man-hash" href="#s-scheduled-report-e-mails" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><code>send_scheduled_reports.php</code> sends every memorized report that has a daily, weekly or monthly schedule and an e-mail address, as a CSV attachment. Each report runs with the access of the user who memorized it; a report that user can no longer open is skipped. It uses PHP's <code>mail()</code>, so configure SMTP in <code>php.ini</code> (XAMPP: <code>sendmail.ini</code>). With several companies, one run sends the reports of every active company.</p>
+<p>Run it once a day:</p>
+<ul>
+<li>Linux (cron): <code>0 6 * * * php /path/to/gsmart-construction/tools/send_scheduled_reports.php</code></li>
+<li>Windows (Task Scheduler): create a daily task with the program <code>C:\xampp\php\php.exe</code> and the argument <code>C:\xampp\htdocs\gsmart-construction\tools\send_scheduled_reports.php</code>.</li>
+</ul>
+<h3 id="s-storage-folders">Storage folders<a class="man-hash" href="#s-storage-folders" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Everything users upload and every backup made inside the program is kept under <code>storage/</code>, which the web server must be able to write to and which browsers cannot open directly.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Folder</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>storage/backups</td>
+<td>Backups made on Backup &amp; Restore (.sql or .sql.gz), the safety backups made before each restore (before_restore_...) and uploaded backup files (uploaded_...)</td>
+</tr>
+<tr>
+<td>storage/receipts</td>
+<td>Receipts uploaded in Receipt Management</td>
+</tr>
+<tr>
+<td>storage/receipts/inbox</td>
+<td>E-mailed receipts waiting to be imported</td>
+</tr>
+<tr>
+<td>storage/company</td>
+<td>The company logo</td>
+</tr>
+<tr>
+<td>storage/maintenance</td>
+<td>Pictures of parts attached to maintenance records</td>
+</tr>
+<tr>
+<td>storage/imports</td>
+<td>CSV files that passed <strong>Check the file</strong> on Import from CSV, kept for a day so they can be imported</td>
+</tr>
+<tr>
+<td>storage/platform</td>
+<td>multi_company.json, the switch that turns multi-company on</td>
+</tr>
+<tr>
+<td>storage/companies/c002, c003 ...</td>
+<td>The same folders for every company after the first</td>
+</tr>
+</tbody>
+</table></div>
+<p>With several companies, Company 1 keeps the folders above and each other company has its own folder, named after its number (c002 for company 2). Include the whole <code>storage/</code> folder in your file backups.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Moving <code>storage/platform/multi_company.json</code> away switches multi-company off in an emergency: the program then runs as Company 1 alone. Put the file back to return.</p></div>
+<h3 id="s-backups">Backups<a class="man-hash" href="#s-backups" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Inside the program:</strong> <a href="manual.php?c=administration#pg-admin-backup">Backup &amp; Restore</a> writes the whole company database to one file in <code>storage/backups</code>, lists and downloads the backups, and restores one. A restore always makes a fresh backup of the current data first, and asks you to type RESTORE.</li>
+<li><strong>From the command line:</strong> <code>php tools/export_sql.php --out=FILE</code>.</li>
+<li><strong>phpMyAdmin:</strong> Export.</li>
+<li>With several companies, back up the platform database (<code>accounting_system_master</code>, or the name set in the config) together with the company databases.</li>
+</ul>
+<p>Whichever way you use, keep a copy away from the server.</p>
+<h3 id="s-offline-use">Offline use<a class="man-hash" href="#s-offline-use" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The pages load Bootstrap 5.3.3 and Bootstrap Icons 1.11.3 from cdn.jsdelivr.net. To run without internet, download both and place these files, as listed in <code>assets/vendor/README.txt</code>:</p>
+<ul>
+<li><code>assets/vendor/bootstrap/css/bootstrap.min.css</code></li>
+<li><code>assets/vendor/bootstrap/js/bootstrap.bundle.min.js</code></li>
+<li><code>assets/vendor/bootstrap-icons/font/bootstrap-icons.min.css</code></li>
+<li><code>assets/vendor/bootstrap-icons/font/fonts/bootstrap-icons.woff2</code></li>
+<li><code>assets/vendor/bootstrap-icons/font/fonts/bootstrap-icons.woff</code></li>
+</ul>
+<p>The program uses the local copies automatically when they are there.</p>
+<h3 id="s-web-server-notes">Web server notes<a class="man-hash" href="#s-web-server-notes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>Apache: the included .htaccess files block the program's internal folders and <code>.sql</code> and <code>.md</code> files.</li>
+<li>nginx: deny the folders app, config, database, modules, storage, tools and views, hidden files, and <code>.sql</code> and <code>.md</code> files, and pass <code>.php</code> files to PHP-FPM. The README has a sample configuration.</li>
+<li>Printing receipts to a Bluetooth roll printer needs the page to be opened on an <code>https://</code> address or on <code>http://localhost/</code>.</li>
+</ul>
+<h3 id="s-checklist-before-going-live">Checklist before going live<a class="man-hash" href="#s-checklist-before-going-live" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ol>
+<li>Import <code>accounting_system_clean.sql</code>, or run <code>php tools/install.php</code> without <code>--demo</code>.</li>
+<li>Change the admin password, and change or deactivate the demo users you do not need.</li>
+<li>Create a MySQL user just for this program (instead of root) and put it in <code>config/config.php</code>.</li>
+<li>Use HTTPS. The session cookie becomes secure automatically.</li>
+<li>Keep <code>APP_DEBUG</code> off.</li>
+<li>Enter the company details, password rules and session timeout in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</li>
+<li>Check the Chart of Accounts and <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a>, the tax codes, terms, sites, POS terminals and payment methods.</li>
+<li>Review the roles, page access and special permissions (Appendix B), and give every user their own account.</li>
+<li>Enter the opening balances and opening stock, then set the closing date to the day before you start.</li>
+<li>Make a backup before each month-end close and keep a copy off the server.</li>
+<li>With several companies: keep the Super Admin's password safe (a second Super Admin is a good idea), check that each company has a Company Owner, and back up the platform database with the company databases.</li>
+</ol>
+<h2 id="app-glossary">Appendix F. Glossary<a class="man-hash" href="#app-glossary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning in GSMaRT Construction System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accumulated depreciation</td>
+<td>The depreciation recorded so far on a fixed asset, kept in the asset category's accumulated depreciation account</td>
+</tr>
+<tr>
+<td>Approve (right)</td>
+<td>The right to approve, on a page, the actions of other users that need supervisor approval</td>
+</tr>
+<tr>
+<td>Assembly (Inventory assembly)</td>
+<td>A stocked item made from other items listed as its components; you make it with Build Assemblies</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>The permanent record of every change, void, deletion, log-in, denied page, approval and permission change; entries cannot be edited or deleted</td>
+</tr>
+<tr>
+<td>Average cost</td>
+<td>The book value of an item divided by its quantity on hand over all sites; stock leaves at this cost</td>
+</tr>
+<tr>
+<td>Billable cost</td>
+<td>An expense or item line on a bill or check marked for a Customer:Job, offered on that customer's next invoice</td>
+</tr>
+<tr>
+<td>Bill of materials</td>
+<td>The components of an assembly and the quantity of each needed for one unit</td>
+</tr>
+<tr>
+<td>Build point</td>
+<td>The quantity of an assembly at or below which more should be built</td>
+</tr>
+<tr>
+<td>By-product</td>
+<td>A secondary output of a processing order, valued at a fixed value per unit that is taken out of the cost first; the co-products share the rest</td>
+</tr>
+<tr>
+<td>Cash drop</td>
+<td>Cash taken out of a POS drawer during a shift and recorded on Shifts, Cash Drops &amp; Readings</td>
+</tr>
+<tr>
+<td>Cash voucher</td>
+<td>A payment of cash from a petty cash, revolving fund or other cash account, printed as a voucher</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>A label of your own (branch, department, project) put on a transaction and on every ledger line it posts, so reports can be split by it</td>
+</tr>
+<tr>
+<td>Clearing account</td>
+<td>An account that holds card or e-wallet sales until the provider pays them into the bank</td>
+</tr>
+<tr>
+<td>Closing date</td>
+<td>The date through which the books are closed; transactions on or before it cannot be recorded or changed without special permission</td>
+</tr>
+<tr>
+<td>Co-product</td>
+<td>A main product of a processing order; co-products share the cost left after by-products and scrap</td>
+</tr>
+<tr>
+<td>Company Code</td>
+<td>With several companies, the code (such as ABD-7K2QX) an employee types to join a company; it is never a password</td>
+</tr>
+<tr>
+<td>Company Owner</td>
+<td>With several companies, the user who manages a company's employees, join requests and Company Code, with full authority in that company</td>
+</tr>
+<tr>
+<td>Credit limit</td>
+<td>The largest balance a customer may owe; an invoice above it needs the permission to exceed limits and a reason</td>
+</tr>
+<tr>
+<td>Creditable withholding tax</td>
+<td>The part of a payment a customer withholds for the BIR, entered in Receive Payments and debited to 1310</td>
+</tr>
+<tr>
+<td>Customer:Job</td>
+<td>A customer with a job under it, shown as "ABC Trading Corp.:Office Renovation Project"; a job's balance counts in its customer's</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>Removing a transaction; its full copy stays in the audit trail</td>
+</tr>
+<tr>
+<td>Effective access</td>
+<td>What one user can really open and do, with the reason, shown on Effective Access (View as User)</td>
+</tr>
+<tr>
+<td>Employees &amp; Other Names</td>
+<td>The list of people and bodies that are neither customers nor suppliers, used as payees and on subsidiary ledgers</td>
+</tr>
+<tr>
+<td>Find</td>
+<td>The search for transactions in every module at once, by any combination of filters</td>
+</tr>
+<tr>
+<td>Fiscal year</td>
+<td>The accounting year; the month it starts is set in Company, Security &amp; Closing Date</td>
+</tr>
+<tr>
+<td>Forecast</td>
+<td>Expected sales per customer for a year, compared with actual sales in Forecast vs Actual by Customer</td>
+</tr>
+<tr>
+<td>Group item</td>
+<td>An item that stands for several items; on a form it is entered as those items</td>
+</tr>
+<tr>
+<td>Input tax</td>
+<td>VAT paid on purchases, debited to 1300 Input Tax</td>
+</tr>
+<tr>
+<td>Item receipt</td>
+<td>A record of goods received before the vendor's bill; it is later turned into a bill</td>
+</tr>
+<tr>
+<td>Job</td>
+<td>A project or sub-account of a customer (see Customer:Job)</td>
+</tr>
+<tr>
+<td>Layout</td>
+<td>A saved design of a report (columns, headings, fonts, footer, page); it can be shared and made the default</td>
+</tr>
+<tr>
+<td>Memorized report</td>
+<td>A report saved with its filters, which can be sent by e-mail on a schedule</td>
+</tr>
+<tr>
+<td>Memorized transaction</td>
+<td>A transaction saved as a model, entered again automatically or after a reminder on a schedule</td>
+</tr>
+<tr>
+<td>Module default accounts</td>
+<td>The accounts each module posts to when an item, tax code or form does not name one</td>
+</tr>
+<tr>
+<td>Negative stock</td>
+<td>A quantity on hand below zero, allowed only while the setting "Allow selling or moving stock below zero" is on, and listed on the Negative Inventory Listing</td>
+</tr>
+<tr>
+<td>Net book value</td>
+<td>The cost of a fixed asset less its accumulated depreciation</td>
+</tr>
+<tr>
+<td>Non-posting document</td>
+<td>An estimate, sales order or purchase order: it records a commitment and does not touch the ledger</td>
+</tr>
+<tr>
+<td>Opening Balance Equity</td>
+<td>The equity account (3900) that takes the other side of opening balances and opening stock</td>
+</tr>
+<tr>
+<td>Opening float</td>
+<td>The cash put in a POS drawer when a shift is opened</td>
+</tr>
+<tr>
+<td>Output tax</td>
+<td>VAT charged on sales, credited to 2100 Output Tax</td>
+</tr>
+<tr>
+<td>Page access</td>
+<td>Whether a role may open a page at all, set in Page Access Configuration</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>A saved invoice, sales receipt, build or processing order that does not post until it is marked final or completed</td>
+</tr>
+<tr>
+<td>Price level</td>
+<td>A named price list (such as Wholesale or VIP) given to a customer, as a percentage or as a price per item</td>
+</tr>
+<tr>
+<td>Processing order</td>
+<td>A transaction that turns input items into output items (disassembly, de-kitting, co-products) and shares the cost among the outputs</td>
+</tr>
+<tr>
+<td>Progress invoice</td>
+<td>An invoice for a percentage of an estimate</td>
+</tr>
+<tr>
+<td>Reconcile</td>
+<td>Matching an account's cleared items to the bank statement; cleared lines are protected afterwards</td>
+</tr>
+<tr>
+<td>Reorder point</td>
+<td>The quantity at or below which an item should be ordered again</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>A set of page access, rights, special permissions and sites given to users</td>
+</tr>
+<tr>
+<td>Sales rep</td>
+<td>The person credited with a sale, used in the Sales by Rep reports</td>
+</tr>
+<tr>
+<td>Scrap</td>
+<td>Waste from a processing order, valued like a by-product at a fixed value per unit, often zero</td>
+</tr>
+<tr>
+<td>Segregation of duties</td>
+<td>Keeping apart duties that one person should not hold together; the program warns when roles combine them</td>
+</tr>
+<tr>
+<td>Shift</td>
+<td>A cashier's working period on a POS terminal, from opening float to Z-reading</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>A place where stock is kept (warehouse, store, stockroom, van, damaged goods); quantities are kept per site</td>
+</tr>
+<tr>
+<td>Special permission</td>
+<td>A permission beyond page rights, such as viewing costs or a maximum discount, set per role</td>
+</tr>
+<tr>
+<td>Statement charge</td>
+<td>A charge added to a customer's account without an invoice, shown on the next statement</td>
+</tr>
+<tr>
+<td>Subsidiary ledger</td>
+<td>The entries of one name on the accounts marked With SL, shown by the Subsidiary Ledger report</td>
+</tr>
+<tr>
+<td>Super Admin</td>
+<td>With several companies, the platform administrator who manages every company and can open any of them</td>
+</tr>
+<tr>
+<td>Supervisor approval</td>
+<td>A second person's username and password, typed on the form, for an action above a user's limits</td>
+</tr>
+<tr>
+<td>Suspended sale</td>
+<td>A POS sale put aside to be recalled later; it posts nothing</td>
+</tr>
+<tr>
+<td>Tax code</td>
+<td>A VAT treatment on a line (VAT12, ZR zero-rated, EX VAT-exempt, NT non-taxable) with its rate and accounts</td>
+</tr>
+<tr>
+<td>Tender</td>
+<td>One way a POS customer pays (cash, card, e-wallet, voucher); a sale can have several</td>
+</tr>
+<tr>
+<td>Terminal</td>
+<td>A POS counter, with its site, cash account, receipt prefix and assigned users</td>
+</tr>
+<tr>
+<td>Terms</td>
+<td>The payment terms of a customer or vendor (such as Net 30 or 2% 10 Net 30), which set the due date and early-payment discount</td>
+</tr>
+<tr>
+<td>U/M set</td>
+<td>A set of units of measure for items, with a base unit in which stock and costs are kept (such as pc, dozen, box of 24)</td>
+</tr>
+<tr>
+<td>Unclassified</td>
+<td>A transaction or ledger line with no class</td>
+</tr>
+<tr>
+<td>Undeposited Funds</td>
+<td>The account (1050) that holds payments and sales receipts until Make Deposits moves them to the bank</td>
+</tr>
+<tr>
+<td>User override</td>
+<td>A page setting for one user that wins over all of that user's roles</td>
+</tr>
+<tr>
+<td>VAT-exclusive</td>
+<td>Prices and amounts on forms are before VAT; VAT is added on each line</td>
+</tr>
+<tr>
+<td>Void</td>
+<td>Cancelling a transaction while keeping it, marked VOID, with its effect on the ledger and stock removed</td>
+</tr>
+<tr>
+<td>With SL</td>
+<td>A mark on an account in the Chart of Accounts: every entry to it must name a customer, supplier, employee or other name</td>
+</tr>
+<tr>
+<td>X-reading</td>
+<td>A mid-shift summary of a POS terminal's sales and tenders; the register stays open</td>
+</tr>
+<tr>
+<td>Z-reading</td>
+<td>The closing reading of a POS shift, with the cash counted and the over or short; it is numbered per terminal</td>
+</tr>
+</tbody>
+</table></div>

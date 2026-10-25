@@ -1,0 +1,3456 @@
+{
+ "chapters": [
+  {
+   "num": 1,
+   "slug": "getting-started",
+   "title": "Getting Started",
+   "file": "01-getting-started.html",
+   "public": true,
+   "blurb": "Logging in, your password, the main screen, forms, lists and printouts, voiding, the closing date and access rights.",
+   "sections": [
+    {
+     "id": "s-about-this-manual",
+     "t": "About this manual",
+     "l": 2
+    },
+    {
+     "id": "s-before-you-start",
+     "t": "Before you start",
+     "l": 2
+    },
+    {
+     "id": "sec-login",
+     "t": "Logging in",
+     "l": 2
+    },
+    {
+     "id": "sec-password",
+     "t": "Your password",
+     "l": 2
+    },
+    {
+     "id": "s-logging-out-and-the-automatic-time-out",
+     "t": "Logging out and the automatic time-out",
+     "l": 2
+    },
+    {
+     "id": "sec-main-screen",
+     "t": "The main screen",
+     "l": 2
+    },
+    {
+     "id": "s-the-top-bar",
+     "t": "The top bar",
+     "l": 3
+    },
+    {
+     "id": "s-the-menu-of-modules",
+     "t": "The menu of modules",
+     "l": 3
+    },
+    {
+     "id": "s-the-title-bar-of-a-page",
+     "t": "The title bar of a page",
+     "l": 3
+    },
+    {
+     "id": "s-messages-at-the-top-of-the-page",
+     "t": "Messages at the top of the page",
+     "l": 3
+    },
+    {
+     "id": "s-the-modules-at-a-glance",
+     "t": "The modules at a glance",
+     "l": 2
+    },
+    {
+     "id": "s-working-with-forms",
+     "t": "Working with forms",
+     "l": 2
+    },
+    {
+     "id": "s-opening-a-form",
+     "t": "Opening a form",
+     "l": 3
+    },
+    {
+     "id": "s-typing-in-the-boxes",
+     "t": "Typing in the boxes",
+     "l": 3
+    },
+    {
+     "id": "s-drop-downs-you-can-type-in",
+     "t": "Drop-downs you can type in",
+     "l": 3
+    },
+    {
+     "id": "s-the-lines-of-a-transaction",
+     "t": "The lines of a transaction",
+     "l": 3
+    },
+    {
+     "id": "s-saving",
+     "t": "Saving",
+     "l": 3
+    },
+    {
+     "id": "sec-negative-stock",
+     "t": "Stock below zero: the Yes / No question",
+     "l": 3
+    },
+    {
+     "id": "sec-memorize-form",
+     "t": "Memorize Transaction and Load Memorized Transaction",
+     "l": 3
+    },
+    {
+     "id": "s-the-class-box-and-the-no-class-selected-question",
+     "t": "The Class box and the \"No class selected\" question",
+     "l": 3
+    },
+    {
+     "id": "s-supervisor-approval",
+     "t": "Supervisor approval",
+     "l": 3
+    },
+    {
+     "id": "s-pending-transactions",
+     "t": "Pending transactions",
+     "l": 3
+    },
+    {
+     "id": "s-questions-before-an-action",
+     "t": "Questions before an action",
+     "l": 3
+    },
+    {
+     "id": "s-lists-saved-transactions-and-printouts",
+     "t": "Lists, saved transactions and printouts",
+     "l": 2
+    },
+    {
+     "id": "s-transaction-lists",
+     "t": "Transaction lists",
+     "l": 3
+    },
+    {
+     "id": "s-a-saved-transaction",
+     "t": "A saved transaction",
+     "l": 3
+    },
+    {
+     "id": "s-printing-and-saving-as-pdf",
+     "t": "Printing and saving as PDF",
+     "l": 3
+    },
+    {
+     "id": "s-voiding-and-deleting",
+     "t": "Voiding and deleting",
+     "l": 2
+    },
+    {
+     "id": "s-the-closing-date",
+     "t": "The closing date",
+     "l": 2
+    },
+    {
+     "id": "sec-access",
+     "t": "Access: what you can open and do",
+     "l": 2
+    },
+    {
+     "id": "s-who-does-what",
+     "t": "Who does what",
+     "l": 2
+    },
+    {
+     "id": "sec-phone",
+     "t": "Using GSMaRT Construction System on a phone or tablet",
+     "l": 2
+    },
+    {
+     "id": "s-if-something-goes-wrong",
+     "t": "If something goes wrong",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 2,
+   "slug": "home-and-reports",
+   "title": "Home, Finding Things and Working with Reports",
+   "file": "02-home-and-reports.html",
+   "public": false,
+   "blurb": "The Home dashboard, Search and Find, the Report Center, and every tool of the report pages, including the Modify Report panel.",
+   "sections": [
+    {
+     "id": "pg-home-dashboard",
+     "t": "Home Dashboard",
+     "l": 2
+    },
+    {
+     "id": "pg-home-search",
+     "t": "Search",
+     "l": 2
+    },
+    {
+     "id": "pg-home-find",
+     "t": "Find",
+     "l": 2
+    },
+    {
+     "id": "s-the-simple-tab",
+     "t": "The Simple tab",
+     "l": 3
+    },
+    {
+     "id": "s-the-advanced-tab",
+     "t": "The Advanced tab",
+     "l": 3
+    },
+    {
+     "id": "s-the-results",
+     "t": "The results",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-find",
+     "t": "Find Results",
+     "l": 3
+    },
+    {
+     "id": "pg-home-reports",
+     "t": "Report Center",
+     "l": 2
+    },
+    {
+     "id": "sec-reports",
+     "t": "Working with reports",
+     "l": 2
+    },
+    {
+     "id": "s-the-parts-of-a-report-page",
+     "t": "The parts of a report page",
+     "l": 3
+    },
+    {
+     "id": "s-opening-a-report",
+     "t": "Opening a report",
+     "l": 3
+    },
+    {
+     "id": "s-choosing-the-dates-and-filters",
+     "t": "Choosing the dates and filters",
+     "l": 3
+    },
+    {
+     "id": "sec-related-filters",
+     "t": "Filters on related records",
+     "l": 3
+    },
+    {
+     "id": "s-sorting",
+     "t": "Sorting",
+     "l": 3
+    },
+    {
+     "id": "s-drilling-down-to-the-detail",
+     "t": "Drilling down to the detail",
+     "l": 3
+    },
+    {
+     "id": "s-charts",
+     "t": "Charts",
+     "l": 3
+    },
+    {
+     "id": "s-print-pdf",
+     "t": "Print / PDF",
+     "l": 3
+    },
+    {
+     "id": "s-export-to-spreadsheet",
+     "t": "Export to spreadsheet",
+     "l": 3
+    },
+    {
+     "id": "s-email-link",
+     "t": "Email link",
+     "l": 3
+    },
+    {
+     "id": "s-columns-for-users-who-design-reports",
+     "t": "Columns (for users who design reports)",
+     "l": 3
+    },
+    {
+     "id": "s-layouts-for-users-who-do-not-design-reports",
+     "t": "Layouts (for users who do not design reports)",
+     "l": 3
+    },
+    {
+     "id": "s-memorize",
+     "t": "Memorize",
+     "l": 3
+    },
+    {
+     "id": "sec-modify-report",
+     "t": "Modifying a report",
+     "l": 3
+    },
+    {
+     "id": "s-saving-sharing-and-deleting-a-layout",
+     "t": "Saving, sharing and deleting a layout",
+     "l": 3
+    },
+    {
+     "id": "s-good-to-know-about-reports",
+     "t": "Good to know about reports",
+     "l": 3
+    },
+    {
+     "id": "pg-home-memorized",
+     "t": "Memorized Reports",
+     "l": 2
+    },
+    {
+     "id": "pg-home-report_layouts",
+     "t": "Saved Report Layouts",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 3,
+   "slug": "construction",
+   "title": "Construction Projects: from Tender to Close-out",
+   "file": "03-construction.html",
+   "public": false,
+   "blurb": "Projects, contracts, estimates, budgets, schedule, site reports, workforce, equipment, materials, subcontracts, billing, revenue, cost allocation, approvals, close-out and the project reports.",
+   "sections": [
+    {
+     "id": "s-cs-flow",
+     "t": "The life of a project",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-center",
+     "t": "Project Center and the project workspace",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-projects",
+     "t": "Project Set-up",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-clients",
+     "t": "Clients",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-contracts",
+     "t": "Contracts",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-opportunities",
+     "t": "Leads & Tenders",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-estimates",
+     "t": "Estimates",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-boq",
+     "t": "BOQ & Schedule of Values",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-budgets",
+     "t": "Project Budgets",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-schedule",
+     "t": "Schedule & Gantt Chart",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-milestones",
+     "t": "Milestones & Deliverables",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-eot",
+     "t": "Extension of Time",
+     "l": 2
+    },
+    {
+     "id": "pg-plan-cost_codes",
+     "t": "Cost Codes",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-change_orders",
+     "t": "Change Orders & Claims",
+     "l": 2
+    },
+    {
+     "id": "pg-site-daily",
+     "t": "Daily Site Reports",
+     "l": 2
+    },
+    {
+     "id": "pg-site-inspections",
+     "t": "Quality Inspections",
+     "l": 2
+    },
+    {
+     "id": "pg-site-ncr",
+     "t": "Nonconformance Reports",
+     "l": 2
+    },
+    {
+     "id": "pg-site-safety",
+     "t": "Safety Records",
+     "l": 2
+    },
+    {
+     "id": "pg-labor-workers",
+     "t": "Workers",
+     "l": 2
+    },
+    {
+     "id": "pg-labor-trades",
+     "t": "Trades & Rates",
+     "l": 2
+    },
+    {
+     "id": "pg-labor-timesheets",
+     "t": "Attendance & Timesheets",
+     "l": 2
+    },
+    {
+     "id": "pg-labor-payroll",
+     "t": "Payroll Runs",
+     "l": 2
+    },
+    {
+     "id": "pg-labor-advances",
+     "t": "Cash Advances",
+     "l": 2
+    },
+    {
+     "id": "pg-equip-register",
+     "t": "Equipment Register",
+     "l": 2
+    },
+    {
+     "id": "pg-equip-dispatch",
+     "t": "Dispatch & Booking",
+     "l": 2
+    },
+    {
+     "id": "pg-equip-logs",
+     "t": "Usage Logs & Charges",
+     "l": 2
+    },
+    {
+     "id": "pg-proc-requests",
+     "t": "Material Requests",
+     "l": 2
+    },
+    {
+     "id": "pg-proc-canvass",
+     "t": "Canvass & Quotations",
+     "l": 2
+    },
+    {
+     "id": "pg-proc-receiving",
+     "t": "Delivery Inspection",
+     "l": 2
+    },
+    {
+     "id": "pg-proc-materials",
+     "t": "Issues, Returns & Transfers",
+     "l": 2
+    },
+    {
+     "id": "pg-proc-stock",
+     "t": "Project Materials Ledger",
+     "l": 2
+    },
+    {
+     "id": "pg-subk-register",
+     "t": "Subcontractors",
+     "l": 2
+    },
+    {
+     "id": "pg-subk-contracts",
+     "t": "Subcontract Agreements",
+     "l": 2
+    },
+    {
+     "id": "pg-subk-billings",
+     "t": "Subcontractor Billings",
+     "l": 2
+    },
+    {
+     "id": "pg-pbill-billings",
+     "t": "Progress Billings",
+     "l": 2
+    },
+    {
+     "id": "pg-pbill-revenue",
+     "t": "Revenue Recognition",
+     "l": 2
+    },
+    {
+     "id": "pg-pbill-collections",
+     "t": "Collections by Project",
+     "l": 2
+    },
+    {
+     "id": "pg-pbill-retention",
+     "t": "Retention Monitor",
+     "l": 2
+    },
+    {
+     "id": "pg-cost-allocations",
+     "t": "Shared Cost Allocation",
+     "l": 2
+    },
+    {
+     "id": "pg-cost-rules",
+     "t": "Allocation Rules",
+     "l": 2
+    },
+    {
+     "id": "pg-cost-assign",
+     "t": "Cost Code Assignment",
+     "l": 2
+    },
+    {
+     "id": "pg-appr-inbox",
+     "t": "My Approvals",
+     "l": 2
+    },
+    {
+     "id": "pg-appr-routes",
+     "t": "Approval Routes",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-documents",
+     "t": "Documents & Drawings",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-rfis",
+     "t": "RFIs, Submittals & Transmittals",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-logs",
+     "t": "Risks, Issues & Meetings",
+     "l": 2
+    },
+    {
+     "id": "pg-proj-closeout",
+     "t": "Close-out, Punch List & Warranty",
+     "l": 2
+    },
+    {
+     "id": "pg-portal-client",
+     "t": "Client Portal",
+     "l": 2
+    },
+    {
+     "id": "pg-portal-sub",
+     "t": "Subcontractor Portal",
+     "l": 2
+    },
+    {
+     "id": "s-cs-reports",
+     "t": "Project reports and dashboards",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-cs_settings",
+     "t": "Construction Settings",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 4,
+   "slug": "chart-of-accounts",
+   "title": "Financial Set-up & Reports: Chart of Accounts and the General Ledger",
+   "file": "03-chart-of-accounts.html",
+   "public": false,
+   "blurb": "Accounts, classes, names, budgets, journal entries, default accounts, the set-up lists, the financial statements and the comparative statements.",
+   "sections": [
+    {
+     "id": "pg-coa-accounts",
+     "t": "Chart of Accounts",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-classes",
+     "t": "Class List",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-names",
+     "t": "Employees & Other Names",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-memorized_txns",
+     "t": "Memorized Transactions",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-budgets",
+     "t": "Set Up Budgets",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-journal",
+     "t": "Make Journal Entries",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-default_accounts",
+     "t": "Module Default Accounts",
+     "l": 2
+    },
+    {
+     "id": "pg-coa-lists",
+     "t": "Terms, Tax Codes & Other Lists",
+     "l": 2
+    },
+    {
+     "id": "s-financial-reports",
+     "t": "Financial reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-trial_balance",
+     "t": "Trial Balance",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-balance_sheet",
+     "t": "Balance Sheet",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-balance_sheet_class",
+     "t": "Balance Sheet by Class",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-trial_balance_range",
+     "t": "Trial Balance by Date Range",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-trial_balance_totals",
+     "t": "Trial Balance of Totals",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-balance_sheet_range",
+     "t": "Balance Sheet by Date Range",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-budget_income",
+     "t": "Income Statement vs Budget",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-budget_balance",
+     "t": "Balance Sheet vs Budget",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-income_statement",
+     "t": "Income Statement",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-income_statement_class",
+     "t": "Income Statement by Class",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_is_month",
+     "t": "Comparative Income Statement by Month",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_is_quarter",
+     "t": "Comparative Income Statement by Quarter",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_is_year",
+     "t": "Comparative Income Statement by Year",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_is_custom",
+     "t": "Comparative Income Statement by Custom Range",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_bs_month",
+     "t": "Comparative Balance Sheet by Month",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_bs_quarter",
+     "t": "Comparative Balance Sheet by Quarter",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_bs_year",
+     "t": "Comparative Balance Sheet by Year",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cmp_bs_custom",
+     "t": "Comparative Balance Sheet by Custom Date",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-cash_flow",
+     "t": "Statement of Cash Flows",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-general_ledger",
+     "t": "General Ledger",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-subsidiary_ledger",
+     "t": "Subsidiary Ledger",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-schedule_of_accounts",
+     "t": "Schedule of Accounts",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-journal",
+     "t": "Journal",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 5,
+   "slug": "fixed-assets",
+   "title": "Fixed Assets",
+   "file": "04-fixed-assets.html",
+   "public": false,
+   "blurb": "The asset register, depreciation, disposals, maintenance and preventive maintenance, with their reports.",
+   "sections": [
+    {
+     "id": "s-how-the-fixed-assets-module-works",
+     "t": "How the Fixed Assets module works",
+     "l": 2
+    },
+    {
+     "id": "s-the-depreciation-methods",
+     "t": "The depreciation methods",
+     "l": 3
+    },
+    {
+     "id": "s-asset-statuses",
+     "t": "Asset statuses",
+     "l": 3
+    },
+    {
+     "id": "pg-fa-register",
+     "t": "Fixed Asset Register",
+     "l": 2
+    },
+    {
+     "id": "s-adding-an-asset",
+     "t": "Adding an asset",
+     "l": 3
+    },
+    {
+     "id": "s-viewing-an-asset",
+     "t": "Viewing an asset",
+     "l": 3
+    },
+    {
+     "id": "s-editing-an-asset",
+     "t": "Editing an asset",
+     "l": 3
+    },
+    {
+     "id": "pg-fa-depreciation",
+     "t": "Run Depreciation",
+     "l": 2
+    },
+    {
+     "id": "pg-fa-disposal",
+     "t": "Dispose of Assets",
+     "l": 2
+    },
+    {
+     "id": "pg-fa-maintenance",
+     "t": "Asset Maintenance",
+     "l": 2
+    },
+    {
+     "id": "s-entering-a-maintenance-record",
+     "t": "Entering a maintenance record",
+     "l": 3
+    },
+    {
+     "id": "pg-fa-pm",
+     "t": "Preventive Maintenance",
+     "l": 2
+    },
+    {
+     "id": "s-adding-a-task",
+     "t": "Adding a task",
+     "l": 3
+    },
+    {
+     "id": "pg-fa-categories",
+     "t": "Asset Categories",
+     "l": 2
+    },
+    {
+     "id": "pg-fa-locations",
+     "t": "Asset Locations",
+     "l": 2
+    },
+    {
+     "id": "s-fixed-asset-reports",
+     "t": "Fixed asset reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-fa_register",
+     "t": "Fixed Asset Register Report",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_schedule",
+     "t": "Depreciation Schedule by Asset",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_by_category",
+     "t": "Depreciation by Category",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_additions",
+     "t": "Additions and Disposals",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_maint_history",
+     "t": "Maintenance History",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_maint_cost",
+     "t": "Maintenance Cost by Asset",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_maint_parts",
+     "t": "Spare Parts Used",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_maint_labor",
+     "t": "Maintenance Labor",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_pm_upcoming",
+     "t": "Upcoming Preventive Maintenance",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-fa_pm_log",
+     "t": "Completed Preventive Maintenance",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 6,
+   "slug": "customers",
+   "title": "Customers and Receivables",
+   "file": "05-customers.html",
+   "public": false,
+   "blurb": "Customers and jobs, estimates, sales orders, invoices, receipts, statements, payments, credit memos and the sales reports.",
+   "sections": [
+    {
+     "id": "s-how-a-sale-moves-through-the-program",
+     "t": "How a sale moves through the program",
+     "l": 2
+    },
+    {
+     "id": "s-lists-to-set-up-first",
+     "t": "Lists to set up first",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-center",
+     "t": "Customer Center",
+     "l": 2
+    },
+    {
+     "id": "s-working-with-sales-forms",
+     "t": "Working with sales forms",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-estimates",
+     "t": "Create Estimates",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-sales_orders",
+     "t": "Create Sales Orders",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-invoices",
+     "t": "Create Invoices",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-batch_invoices",
+     "t": "Create Batch Invoices",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-sales_receipts",
+     "t": "Enter Sales Receipts",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-statement_charges",
+     "t": "Enter Statement Charges",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-statements",
+     "t": "Create Statements",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-finance_charges",
+     "t": "Assess Finance Charges",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-forecast",
+     "t": "Set Up Forecast",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-payments",
+     "t": "Receive Payments",
+     "l": 2
+    },
+    {
+     "id": "pg-cust-credit_memos",
+     "t": "Create Credit Memos/Refunds",
+     "l": 2
+    },
+    {
+     "id": "s-customer-and-receivables-reports",
+     "t": "Customer and receivables reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-ar_aging_summary",
+     "t": "A/R Aging Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-ar_aging_detail",
+     "t": "A/R Aging Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-customer_balance_summary",
+     "t": "Customer Balance Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-customer_balance_detail",
+     "t": "Customer Balance Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-open_invoices",
+     "t": "Open Invoices",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-collections",
+     "t": "Collections Report",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-avg_days_summary",
+     "t": "Average Days to Pay Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-avg_days_detail",
+     "t": "Average Days to Pay",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-ar_graph",
+     "t": "Accounts Receivable Graph",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-unbilled_costs",
+     "t": "Unbilled Cost by Job",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-txn_list_customer",
+     "t": "Transaction List by Customer",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-item_price_list",
+     "t": "Item Price List",
+     "l": 3
+    },
+    {
+     "id": "s-sales-reports",
+     "t": "Sales reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-sales_customer_summary",
+     "t": "Sales by Customer Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-forecast_vs_actual",
+     "t": "Forecast vs Actual by Customer",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_customer_detail",
+     "t": "Sales by Customer Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-income_customer_summary",
+     "t": "Income by Customer Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-income_customer_detail",
+     "t": "Income by Customer Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_item_summary",
+     "t": "Sales by Item Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_item_detail",
+     "t": "Sales by Item Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_item_group",
+     "t": "Sales by Item Group",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_rep_summary",
+     "t": "Sales by Rep Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_rep_detail",
+     "t": "Sales by Rep Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inventory_sales_site",
+     "t": "Inventory Sales by Site",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-sales_inv_movement",
+     "t": "Sales Report Through Inventory Movement",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pending_sales",
+     "t": "Pending Sales",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-open_so_customer",
+     "t": "Open Sales Orders by Customer",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-open_so_item",
+     "t": "Open Sales Orders by Item",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 7,
+   "slug": "vendors",
+   "title": "Vendors and Payables",
+   "file": "06-vendors.html",
+   "public": false,
+   "blurb": "Vendors, bills, debit memos, paying bills less the taxes withheld, advances, receipts, purchase orders and receiving items, with the payables reports.",
+   "sections": [
+    {
+     "id": "s-how-purchasing-works",
+     "t": "How purchasing works",
+     "l": 2
+    },
+    {
+     "id": "s-the-accounts-used",
+     "t": "The accounts used",
+     "l": 3
+    },
+    {
+     "id": "pg-vend-center",
+     "t": "Vendor Center",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-bill_tracker",
+     "t": "Bill Tracker",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-bills",
+     "t": "Enter Bills",
+     "l": 2
+    },
+    {
+     "id": "s-entering-a-bill",
+     "t": "Entering a bill",
+     "l": 3
+    },
+    {
+     "id": "s-after-saving-the-bill",
+     "t": "After saving: the bill",
+     "l": 3
+    },
+    {
+     "id": "pg-vend-debit_memos",
+     "t": "Supplier Debit Memos",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-pay_bills",
+     "t": "Pay Bills",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-receipts",
+     "t": "Receipt Management",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-purchase_orders",
+     "t": "Create Purchase Orders",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-receive_bill",
+     "t": "Receive Items and Enter Bills",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-receive_items",
+     "t": "Receive Items",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-bill_received",
+     "t": "Enter Bill for Received Items",
+     "l": 2
+    },
+    {
+     "id": "pg-vend-advances",
+     "t": "Advances to Suppliers",
+     "l": 2
+    },
+    {
+     "id": "s-vendor-and-payables-reports",
+     "t": "Vendor and payables reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-ap_aging_summary",
+     "t": "A/P Aging Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-ap_aging_detail",
+     "t": "A/P Aging Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-vendor_balance_summary",
+     "t": "Vendor Balance Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-vendor_balance_detail",
+     "t": "Vendor Balance Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-unpaid_bills",
+     "t": "Unpaid Bills Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-txn_list_vendor",
+     "t": "Transaction List by Vendor",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-vendor_contacts",
+     "t": "Vendor Contact List",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-expenses_vendor_summary",
+     "t": "Expenses by Vendor Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-expenses_vendor_detail",
+     "t": "Expenses by Vendor Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-vendor_advances",
+     "t": "Advances to Suppliers",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 8,
+   "slug": "inventory",
+   "title": "Inventory",
+   "file": "07-inventory.html",
+   "public": false,
+   "blurb": "Items of every type, sites, units of measure, transfers, adjustments, assemblies, processing, counts and prices.",
+   "sections": [
+    {
+     "id": "s-how-inventory-is-kept",
+     "t": "How inventory is kept",
+     "l": 2
+    },
+    {
+     "id": "s-stock-below-zero",
+     "t": "Stock below zero",
+     "l": 3
+    },
+    {
+     "id": "s-who-sees-costs",
+     "t": "Who sees costs",
+     "l": 3
+    },
+    {
+     "id": "s-how-items-are-shown-in-the-lists",
+     "t": "How items are shown in the lists",
+     "l": 3
+    },
+    {
+     "id": "s-the-inventory-menu",
+     "t": "The Inventory menu",
+     "l": 3
+    },
+    {
+     "id": "pg-inv-center",
+     "t": "Inventory Center",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-items",
+     "t": "Item List",
+     "l": 2
+    },
+    {
+     "id": "s-the-item-types",
+     "t": "The item types",
+     "l": 3
+    },
+    {
+     "id": "s-the-list",
+     "t": "The list",
+     "l": 3
+    },
+    {
+     "id": "s-the-item-form",
+     "t": "The item form",
+     "l": 3
+    },
+    {
+     "id": "pg-inv-categories",
+     "t": "Category List",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-sites",
+     "t": "Inventory Site List",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-uom",
+     "t": "U/M Set List",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-formulas",
+     "t": "Processing Formulas (Multi-Output BOM)",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-transfers",
+     "t": "Transfer Inventory",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-adjust",
+     "t": "Adjust Quantity/Value on Hand",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-build",
+     "t": "Build Assemblies",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-process",
+     "t": "Disassemble / Process Items",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-physical_count",
+     "t": "Physical Inventory Count",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-change_prices",
+     "t": "Change Item Prices",
+     "l": 2
+    },
+    {
+     "id": "pg-inv-set_prices",
+     "t": "Set Item Prices and Levels",
+     "l": 2
+    },
+    {
+     "id": "s-inventory-reports",
+     "t": "Inventory reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-qoh_by_site",
+     "t": "Quantity on Hand by Site",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_valuation_summary",
+     "t": "Inventory Valuation Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_valuation_site",
+     "t": "Inventory Valuation Summary by Site",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_valuation_detail",
+     "t": "Inventory Valuation Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-avg_cost_changes",
+     "t": "Average Cost Changes",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-stock_status_item",
+     "t": "Inventory Stock Status by Item",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-stock_status_vendor",
+     "t": "Inventory Stock Status by Vendor",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-stock_status_site",
+     "t": "Inventory Stock Status by Site",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-physical_worksheet",
+     "t": "Physical Inventory Worksheet",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pending_builds",
+     "t": "Pending Builds",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pending_builds_site",
+     "t": "Pending Builds by Site",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-processing_register",
+     "t": "Processing & Disassembly Register",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-coproduct_costs",
+     "t": "Co-product & By-product Cost Allocation",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-process_yield",
+     "t": "Processing Yield Analysis",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-negative_inventory",
+     "t": "Negative Inventory Listing",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_no_movement",
+     "t": "No. of Days Inventory Has No Movement",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_custom",
+     "t": "Customized Inventory Report",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_movement_summary",
+     "t": "Inventory Movement Summary Report",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_movement_detail",
+     "t": "Inventory Movement Detailed Report",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-inv_movement_txns",
+     "t": "Inventory Movement Transactions",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 9,
+   "slug": "point-of-sale",
+   "title": "Point of Sale",
+   "file": "08-point-of-sale.html",
+   "public": false,
+   "blurb": "The register, shifts and readings, receipts, returns and voids, terminals, receipt printers and the POS reports.",
+   "sections": [
+    {
+     "id": "s-how-the-point-of-sale-works",
+     "t": "How the Point of Sale works",
+     "l": 2
+    },
+    {
+     "id": "s-a-day-at-the-counter",
+     "t": "A day at the counter",
+     "l": 3
+    },
+    {
+     "id": "s-before-you-start-selling",
+     "t": "Before you start selling",
+     "l": 3
+    },
+    {
+     "id": "pg-pos-register",
+     "t": "POS Register",
+     "l": 2
+    },
+    {
+     "id": "s-the-receipt",
+     "t": "The receipt",
+     "l": 3
+    },
+    {
+     "id": "pg-pos-shifts",
+     "t": "Shifts, Cash Drops & Readings",
+     "l": 2
+    },
+    {
+     "id": "pg-pos-receipts",
+     "t": "POS Receipts, Returns & Voids",
+     "l": 2
+    },
+    {
+     "id": "pg-pos-approval_codes",
+     "t": "Approval Codes",
+     "l": 2
+    },
+    {
+     "id": "pg-pos-terminals",
+     "t": "POS Terminals",
+     "l": 2
+    },
+    {
+     "id": "s-point-of-sale-reports",
+     "t": "Point of Sale reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-pos_sales_txn",
+     "t": "POS Sales by Transaction No. (detail)",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_sales_item",
+     "t": "POS Sales by Item",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_sales_category",
+     "t": "POS Sales by Category",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_sales_cashier",
+     "t": "POS Sales by Cashier & Payment Method",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_sales_hour",
+     "t": "POS Sales by Hour",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_daily_summary",
+     "t": "POS Daily Sales Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_readings",
+     "t": "X- and Z-Reading Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_discount_log",
+     "t": "POS Discount Log",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_void_log",
+     "t": "POS Void and Refund Log",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_sales_item_group",
+     "t": "POS Sales by Item Group",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-pos_ending_inventory",
+     "t": "Ending Inventory - POS Cashier",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 10,
+   "slug": "banking",
+   "title": "Banking",
+   "file": "09-banking.html",
+   "public": false,
+   "blurb": "Checks, cash vouchers, the register, deposits, fund transfers and bank reconciliation.",
+   "sections": [
+    {
+     "id": "pg-bank-write_checks",
+     "t": "Write Checks",
+     "l": 2
+    },
+    {
+     "id": "pg-bank-cash_voucher",
+     "t": "Cash Voucher",
+     "l": 2
+    },
+    {
+     "id": "pg-bank-register",
+     "t": "Use Register",
+     "l": 2
+    },
+    {
+     "id": "pg-bank-deposits",
+     "t": "Make Deposits",
+     "l": 2
+    },
+    {
+     "id": "pg-bank-transfers",
+     "t": "Transfer Funds",
+     "l": 2
+    },
+    {
+     "id": "pg-bank-reconcile",
+     "t": "Reconcile",
+     "l": 2
+    },
+    {
+     "id": "s-banking-reports",
+     "t": "Banking reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-recon_summary",
+     "t": "Reconciliation Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-recon_detail",
+     "t": "Reconciliation Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-recon_discrepancy",
+     "t": "Reconciliation Discrepancy",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-check_register",
+     "t": "Check Register",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 11,
+   "slug": "bir-reports",
+   "title": "BIR Reports: Withholding Taxes and VAT",
+   "file": "10-bir-reports.html",
+   "public": false,
+   "blurb": "Withholding taxes on payments, the Withholding Tax Table, BIR Form 2307, and the withholding tax and VAT reports.",
+   "sections": [
+    {
+     "id": "s-the-taxes-at-a-glance",
+     "t": "The taxes at a glance",
+     "l": 2
+    },
+    {
+     "id": "s-the-accounts-used",
+     "t": "The accounts used",
+     "l": 3
+    },
+    {
+     "id": "pg-bir-wht_table",
+     "t": "Withholding Tax Table",
+     "l": 2
+    },
+    {
+     "id": "pg-bir-form_2307",
+     "t": "Print BIR Form 2307",
+     "l": 2
+    },
+    {
+     "id": "sec-bir-reports",
+     "t": "BIR Reports",
+     "l": 2
+    },
+    {
+     "id": "pg-rpt-bir_wht_summary",
+     "t": "Summary of Taxes Withheld from Vendors/Suppliers",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_ewt_register",
+     "t": "Expanded Withholding Tax Register (1% / 2%)",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_remittance",
+     "t": "Withholding Tax Remittances (0619-E, 1601-EQ, 1600-VT)",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_vat_withholding",
+     "t": "VAT Withholding Register (1600-VT)",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_sales_register",
+     "t": "Output VAT / Sales Register",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_purchase_register",
+     "t": "Input VAT / Purchases Register",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_cvat_withheld",
+     "t": "Creditable VAT Withheld Schedule (2550Q Schedule 3)",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-bir_2550q",
+     "t": "Quarterly VAT Return Worksheet (2550Q)",
+     "l": 3
+    },
+    {
+     "id": "s-filing-calendar",
+     "t": "Filing calendar",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 12,
+   "slug": "administration",
+   "title": "System Administration",
+   "file": "11-administration.html",
+   "public": false,
+   "blurb": "Users, roles and page access, company settings, utilities, CSV import, backup and restore, and the audit trail.",
+   "sections": [
+    {
+     "id": "s-how-access-works",
+     "t": "How access works",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-users",
+     "t": "User Accounts",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-roles",
+     "t": "User Role Configuration",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-page_access",
+     "t": "Page Access Configuration",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-effective_access",
+     "t": "Effective Access (View as User)",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-settings",
+     "t": "Company, Security & Closing Date",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-utilities",
+     "t": "Utilities: Verify & Rebuild Data",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-import",
+     "t": "Import from CSV",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-backup",
+     "t": "Backup & Restore",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-multi_company",
+     "t": "Multi-Company Setup",
+     "l": 2
+    },
+    {
+     "id": "s-audit-reports",
+     "t": "Audit reports",
+     "l": 2
+    },
+    {
+     "id": "pg-admin-audit_trail",
+     "t": "Audit Trail",
+     "l": 3
+    },
+    {
+     "id": "pg-admin-txn_history",
+     "t": "Transaction History",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-voided_deleted_summary",
+     "t": "Voided and Deleted Transactions Summary",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-voided_deleted_detail",
+     "t": "Voided and Deleted Transactions Detail",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-user_activity",
+     "t": "User Activity",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-login_history",
+     "t": "Login History",
+     "l": 3
+    },
+    {
+     "id": "pg-rpt-user_access",
+     "t": "User Access and Permission Changes",
+     "l": 3
+    }
+   ]
+  },
+  {
+   "num": 13,
+   "slug": "company-owner",
+   "title": "Your Company: Company Owner and Employees",
+   "file": "12-company-owner.html",
+   "public": true,
+   "blurb": "For the Company Owner and employees: the Company Code, joining, approving employees and managing users.",
+   "sections": [
+    {
+     "id": "s-how-several-companies-work",
+     "t": "How several companies work",
+     "l": 2
+    },
+    {
+     "id": "s-who-is-who",
+     "t": "Who is who",
+     "l": 3
+    },
+    {
+     "id": "s-what-makes-the-company-owner-different",
+     "t": "What makes the Company Owner different",
+     "l": 3
+    },
+    {
+     "id": "s-the-company-owners-first-log-in",
+     "t": "The Company Owner's first log-in",
+     "l": 2
+    },
+    {
+     "id": "s-what-a-new-company-already-has",
+     "t": "What a new company already has",
+     "l": 3
+    },
+    {
+     "id": "s-getting-the-new-company-ready",
+     "t": "Getting the new company ready",
+     "l": 3
+    },
+    {
+     "id": "pg-company-profile",
+     "t": "Company Profile & Code",
+     "l": 2
+    },
+    {
+     "id": "pg-company-users",
+     "t": "Employees & Users",
+     "l": 2
+    },
+    {
+     "id": "sec-joining",
+     "t": "Joining your company with the Company Code",
+     "l": 2
+    },
+    {
+     "id": "pg-company-join_requests",
+     "t": "Join Requests",
+     "l": 2
+    },
+    {
+     "id": "sec-multi-login",
+     "t": "Logging in when there are several companies",
+     "l": 2
+    },
+    {
+     "id": "sec-switch-company",
+     "t": "Working in two companies",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 14,
+   "slug": "super-admin",
+   "title": "Super Admin: Managing Several Companies",
+   "file": "13-super-admin.html",
+   "public": false,
+   "blurb": "For the Super Admin: creating and managing companies, each with its own database, and the platform settings.",
+   "sections": [
+    {
+     "id": "s-how-the-platform-works",
+     "t": "How the platform works",
+     "l": 2
+    },
+    {
+     "id": "s-turning-on-several-companies",
+     "t": "Turning on several companies",
+     "l": 3
+    },
+    {
+     "id": "sec-sa-login",
+     "t": "Logging in as the Super Admin",
+     "l": 2
+    },
+    {
+     "id": "pf-companies",
+     "t": "Companies",
+     "l": 2
+    },
+    {
+     "id": "pf-new",
+     "t": "New company",
+     "l": 2
+    },
+    {
+     "id": "pf-company",
+     "t": "Company Details",
+     "l": 2
+    },
+    {
+     "id": "sec-inside-company",
+     "t": "Working inside a company",
+     "l": 2
+    },
+    {
+     "id": "pf-updates",
+     "t": "Database updates",
+     "l": 2
+    },
+    {
+     "id": "pf-admins",
+     "t": "Super Admins",
+     "l": 2
+    },
+    {
+     "id": "pf-settings",
+     "t": "Platform settings",
+     "l": 2
+    },
+    {
+     "id": "pf-audit",
+     "t": "Platform audit log",
+     "l": 2
+    },
+    {
+     "id": "pf-account",
+     "t": "My account",
+     "l": 2
+    },
+    {
+     "id": "s-when-something-goes-wrong",
+     "t": "When something goes wrong",
+     "l": 2
+    }
+   ]
+  },
+  {
+   "num": 15,
+   "slug": "appendices",
+   "title": "Appendices",
+   "file": "14-appendices.html",
+   "public": false,
+   "blurb": "What each transaction records, default roles, number series, messages and what to do, administrator notes and a glossary.",
+   "sections": [
+    {
+     "id": "app-posting",
+     "t": "Appendix A. What each transaction records",
+     "l": 2
+    },
+    {
+     "id": "s-how-to-read-this-appendix",
+     "t": "How to read this appendix",
+     "l": 3
+    },
+    {
+     "id": "s-where-the-accounts-come-from",
+     "t": "Where the accounts come from",
+     "l": 3
+    },
+    {
+     "id": "s-overview",
+     "t": "Overview",
+     "l": 3
+    },
+    {
+     "id": "s-sales-and-receivables",
+     "t": "Sales and receivables",
+     "l": 3
+    },
+    {
+     "id": "s-purchases-and-payables",
+     "t": "Purchases and payables",
+     "l": 3
+    },
+    {
+     "id": "s-banking",
+     "t": "Banking",
+     "l": 3
+    },
+    {
+     "id": "s-general-ledger",
+     "t": "General ledger",
+     "l": 3
+    },
+    {
+     "id": "s-inventory",
+     "t": "Inventory",
+     "l": 3
+    },
+    {
+     "id": "s-fixed-assets",
+     "t": "Fixed assets",
+     "l": 3
+    },
+    {
+     "id": "s-point-of-sale",
+     "t": "Point of Sale",
+     "l": 3
+    },
+    {
+     "id": "s-voiding-versus-deleting",
+     "t": "Voiding versus deleting",
+     "l": 3
+    },
+    {
+     "id": "s-pending-transactions",
+     "t": "Pending transactions",
+     "l": 3
+    },
+    {
+     "id": "s-the-closing-date",
+     "t": "The closing date",
+     "l": 3
+    },
+    {
+     "id": "s-the-class-on-a-transaction",
+     "t": "The class on a transaction",
+     "l": 3
+    },
+    {
+     "id": "app-roles",
+     "t": "Appendix B. Default roles and what they can do",
+     "l": 2
+    },
+    {
+     "id": "s-the-rights-on-a-page",
+     "t": "The rights on a page",
+     "l": 3
+    },
+    {
+     "id": "s-the-installed-roles",
+     "t": "The installed roles",
+     "l": 3
+    },
+    {
+     "id": "s-administrator",
+     "t": "Administrator",
+     "l": 3
+    },
+    {
+     "id": "s-accountant",
+     "t": "Accountant",
+     "l": 3
+    },
+    {
+     "id": "s-ar-clerk",
+     "t": "A/R Clerk",
+     "l": 3
+    },
+    {
+     "id": "s-ap-clerk",
+     "t": "A/P Clerk",
+     "l": 3
+    },
+    {
+     "id": "s-inventory-clerk",
+     "t": "Inventory Clerk",
+     "l": 3
+    },
+    {
+     "id": "s-sales-representative",
+     "t": "Sales Representative",
+     "l": 3
+    },
+    {
+     "id": "s-cashier",
+     "t": "Cashier",
+     "l": 3
+    },
+    {
+     "id": "s-pos-supervisor",
+     "t": "POS Supervisor",
+     "l": 3
+    },
+    {
+     "id": "s-auditor",
+     "t": "Auditor",
+     "l": 3
+    },
+    {
+     "id": "s-special-permissions",
+     "t": "Special permissions",
+     "l": 3
+    },
+    {
+     "id": "s-duties-kept-apart",
+     "t": "Duties kept apart",
+     "l": 3
+    },
+    {
+     "id": "s-sites",
+     "t": "Sites",
+     "l": 3
+    },
+    {
+     "id": "app-numbers",
+     "t": "Appendix C. Number series and document numbers",
+     "l": 2
+    },
+    {
+     "id": "s-the-series",
+     "t": "The series",
+     "l": 3
+    },
+    {
+     "id": "s-how-numbers-are-given",
+     "t": "How numbers are given",
+     "l": 3
+    },
+    {
+     "id": "s-typing-your-own-number",
+     "t": "Typing your own number",
+     "l": 3
+    },
+    {
+     "id": "s-pos-receipt-numbers-and-z-reading-numbers",
+     "t": "POS receipt numbers and Z-reading numbers",
+     "l": 3
+    },
+    {
+     "id": "s-can-the-series-be-changed",
+     "t": "Can the series be changed?",
+     "l": 3
+    },
+    {
+     "id": "s-other-codes",
+     "t": "Other codes",
+     "l": 3
+    },
+    {
+     "id": "app-messages",
+     "t": "Appendix D. Messages and what to do",
+     "l": 2
+    },
+    {
+     "id": "app-sysadmin",
+     "t": "Appendix E. For the system administrator",
+     "l": 2
+    },
+    {
+     "id": "s-requirements",
+     "t": "Requirements",
+     "l": 3
+    },
+    {
+     "id": "s-installing",
+     "t": "Installing",
+     "l": 3
+    },
+    {
+     "id": "s-configuration-configconfigphp",
+     "t": "Configuration: config/config.php",
+     "l": 3
+    },
+    {
+     "id": "s-upgrading-to-a-new-version",
+     "t": "Upgrading to a new version",
+     "l": 3
+    },
+    {
+     "id": "s-command-line-tools",
+     "t": "Command-line tools",
+     "l": 3
+    },
+    {
+     "id": "s-storage-folders",
+     "t": "Storage folders",
+     "l": 3
+    },
+    {
+     "id": "s-backups",
+     "t": "Backups",
+     "l": 3
+    },
+    {
+     "id": "s-offline-use",
+     "t": "Offline use",
+     "l": 3
+    },
+    {
+     "id": "s-web-server-notes",
+     "t": "Web server notes",
+     "l": 3
+    },
+    {
+     "id": "s-checklist-before-going-live",
+     "t": "Checklist before going live",
+     "l": 3
+    },
+    {
+     "id": "app-glossary",
+     "t": "Appendix F. Glossary",
+     "l": 2
+    }
+   ]
+  }
+ ],
+ "pages": {
+  "home.dashboard": [
+   "home-and-reports",
+   "pg-home-dashboard"
+  ],
+  "home.search": [
+   "home-and-reports",
+   "pg-home-search"
+  ],
+  "home.find": [
+   "home-and-reports",
+   "pg-home-find"
+  ],
+  "rpt.find": [
+   "home-and-reports",
+   "pg-rpt-find"
+  ],
+  "home.reports": [
+   "home-and-reports",
+   "pg-home-reports"
+  ],
+  "home.memorized": [
+   "home-and-reports",
+   "pg-home-memorized"
+  ],
+  "home.report_layouts": [
+   "home-and-reports",
+   "pg-home-report_layouts"
+  ],
+  "coa.accounts": [
+   "chart-of-accounts",
+   "pg-coa-accounts"
+  ],
+  "coa.classes": [
+   "chart-of-accounts",
+   "pg-coa-classes"
+  ],
+  "coa.names": [
+   "chart-of-accounts",
+   "pg-coa-names"
+  ],
+  "coa.memorized_txns": [
+   "chart-of-accounts",
+   "pg-coa-memorized_txns"
+  ],
+  "coa.budgets": [
+   "chart-of-accounts",
+   "pg-coa-budgets"
+  ],
+  "coa.journal": [
+   "chart-of-accounts",
+   "pg-coa-journal"
+  ],
+  "coa.default_accounts": [
+   "chart-of-accounts",
+   "pg-coa-default_accounts"
+  ],
+  "coa.lists": [
+   "chart-of-accounts",
+   "pg-coa-lists"
+  ],
+  "rpt.trial_balance": [
+   "chart-of-accounts",
+   "pg-rpt-trial_balance"
+  ],
+  "rpt.balance_sheet": [
+   "chart-of-accounts",
+   "pg-rpt-balance_sheet"
+  ],
+  "rpt.balance_sheet_class": [
+   "chart-of-accounts",
+   "pg-rpt-balance_sheet_class"
+  ],
+  "rpt.trial_balance_range": [
+   "chart-of-accounts",
+   "pg-rpt-trial_balance_range"
+  ],
+  "rpt.trial_balance_totals": [
+   "chart-of-accounts",
+   "pg-rpt-trial_balance_totals"
+  ],
+  "rpt.balance_sheet_range": [
+   "chart-of-accounts",
+   "pg-rpt-balance_sheet_range"
+  ],
+  "rpt.budget_income": [
+   "chart-of-accounts",
+   "pg-rpt-budget_income"
+  ],
+  "rpt.budget_balance": [
+   "chart-of-accounts",
+   "pg-rpt-budget_balance"
+  ],
+  "rpt.income_statement": [
+   "chart-of-accounts",
+   "pg-rpt-income_statement"
+  ],
+  "rpt.income_statement_class": [
+   "chart-of-accounts",
+   "pg-rpt-income_statement_class"
+  ],
+  "rpt.cash_flow": [
+   "chart-of-accounts",
+   "pg-rpt-cash_flow"
+  ],
+  "rpt.general_ledger": [
+   "chart-of-accounts",
+   "pg-rpt-general_ledger"
+  ],
+  "rpt.subsidiary_ledger": [
+   "chart-of-accounts",
+   "pg-rpt-subsidiary_ledger"
+  ],
+  "rpt.schedule_of_accounts": [
+   "chart-of-accounts",
+   "pg-rpt-schedule_of_accounts"
+  ],
+  "rpt.journal": [
+   "chart-of-accounts",
+   "pg-rpt-journal"
+  ],
+  "fa.register": [
+   "fixed-assets",
+   "pg-fa-register"
+  ],
+  "fa.depreciation": [
+   "fixed-assets",
+   "pg-fa-depreciation"
+  ],
+  "fa.disposal": [
+   "fixed-assets",
+   "pg-fa-disposal"
+  ],
+  "fa.maintenance": [
+   "fixed-assets",
+   "pg-fa-maintenance"
+  ],
+  "fa.pm": [
+   "fixed-assets",
+   "pg-fa-pm"
+  ],
+  "fa.categories": [
+   "fixed-assets",
+   "pg-fa-categories"
+  ],
+  "fa.locations": [
+   "fixed-assets",
+   "pg-fa-locations"
+  ],
+  "rpt.fa_register": [
+   "fixed-assets",
+   "pg-rpt-fa_register"
+  ],
+  "rpt.fa_schedule": [
+   "fixed-assets",
+   "pg-rpt-fa_schedule"
+  ],
+  "rpt.fa_by_category": [
+   "fixed-assets",
+   "pg-rpt-fa_by_category"
+  ],
+  "rpt.fa_additions": [
+   "fixed-assets",
+   "pg-rpt-fa_additions"
+  ],
+  "rpt.fa_maint_history": [
+   "fixed-assets",
+   "pg-rpt-fa_maint_history"
+  ],
+  "rpt.fa_maint_cost": [
+   "fixed-assets",
+   "pg-rpt-fa_maint_cost"
+  ],
+  "rpt.fa_maint_parts": [
+   "fixed-assets",
+   "pg-rpt-fa_maint_parts"
+  ],
+  "rpt.fa_maint_labor": [
+   "fixed-assets",
+   "pg-rpt-fa_maint_labor"
+  ],
+  "rpt.fa_pm_upcoming": [
+   "fixed-assets",
+   "pg-rpt-fa_pm_upcoming"
+  ],
+  "rpt.fa_pm_log": [
+   "fixed-assets",
+   "pg-rpt-fa_pm_log"
+  ],
+  "cust.center": [
+   "customers",
+   "pg-cust-center"
+  ],
+  "cust.estimates": [
+   "customers",
+   "pg-cust-estimates"
+  ],
+  "cust.sales_orders": [
+   "customers",
+   "pg-cust-sales_orders"
+  ],
+  "cust.invoices": [
+   "customers",
+   "pg-cust-invoices"
+  ],
+  "cust.batch_invoices": [
+   "customers",
+   "pg-cust-batch_invoices"
+  ],
+  "cust.sales_receipts": [
+   "customers",
+   "pg-cust-sales_receipts"
+  ],
+  "cust.statement_charges": [
+   "customers",
+   "pg-cust-statement_charges"
+  ],
+  "cust.statements": [
+   "customers",
+   "pg-cust-statements"
+  ],
+  "cust.finance_charges": [
+   "customers",
+   "pg-cust-finance_charges"
+  ],
+  "cust.forecast": [
+   "customers",
+   "pg-cust-forecast"
+  ],
+  "cust.payments": [
+   "customers",
+   "pg-cust-payments"
+  ],
+  "cust.credit_memos": [
+   "customers",
+   "pg-cust-credit_memos"
+  ],
+  "rpt.ar_aging_summary": [
+   "customers",
+   "pg-rpt-ar_aging_summary"
+  ],
+  "rpt.ar_aging_detail": [
+   "customers",
+   "pg-rpt-ar_aging_detail"
+  ],
+  "rpt.customer_balance_summary": [
+   "customers",
+   "pg-rpt-customer_balance_summary"
+  ],
+  "rpt.customer_balance_detail": [
+   "customers",
+   "pg-rpt-customer_balance_detail"
+  ],
+  "rpt.open_invoices": [
+   "customers",
+   "pg-rpt-open_invoices"
+  ],
+  "rpt.collections": [
+   "customers",
+   "pg-rpt-collections"
+  ],
+  "rpt.avg_days_summary": [
+   "customers",
+   "pg-rpt-avg_days_summary"
+  ],
+  "rpt.avg_days_detail": [
+   "customers",
+   "pg-rpt-avg_days_detail"
+  ],
+  "rpt.ar_graph": [
+   "customers",
+   "pg-rpt-ar_graph"
+  ],
+  "rpt.unbilled_costs": [
+   "customers",
+   "pg-rpt-unbilled_costs"
+  ],
+  "rpt.txn_list_customer": [
+   "customers",
+   "pg-rpt-txn_list_customer"
+  ],
+  "rpt.item_price_list": [
+   "customers",
+   "pg-rpt-item_price_list"
+  ],
+  "rpt.sales_customer_summary": [
+   "customers",
+   "pg-rpt-sales_customer_summary"
+  ],
+  "rpt.forecast_vs_actual": [
+   "customers",
+   "pg-rpt-forecast_vs_actual"
+  ],
+  "rpt.sales_customer_detail": [
+   "customers",
+   "pg-rpt-sales_customer_detail"
+  ],
+  "rpt.income_customer_summary": [
+   "customers",
+   "pg-rpt-income_customer_summary"
+  ],
+  "rpt.income_customer_detail": [
+   "customers",
+   "pg-rpt-income_customer_detail"
+  ],
+  "rpt.sales_item_summary": [
+   "customers",
+   "pg-rpt-sales_item_summary"
+  ],
+  "rpt.sales_item_detail": [
+   "customers",
+   "pg-rpt-sales_item_detail"
+  ],
+  "rpt.sales_item_group": [
+   "customers",
+   "pg-rpt-sales_item_group"
+  ],
+  "rpt.sales_rep_summary": [
+   "customers",
+   "pg-rpt-sales_rep_summary"
+  ],
+  "rpt.sales_rep_detail": [
+   "customers",
+   "pg-rpt-sales_rep_detail"
+  ],
+  "rpt.inventory_sales_site": [
+   "customers",
+   "pg-rpt-inventory_sales_site"
+  ],
+  "rpt.sales_inv_movement": [
+   "customers",
+   "pg-rpt-sales_inv_movement"
+  ],
+  "rpt.pending_sales": [
+   "customers",
+   "pg-rpt-pending_sales"
+  ],
+  "rpt.open_so_customer": [
+   "customers",
+   "pg-rpt-open_so_customer"
+  ],
+  "rpt.open_so_item": [
+   "customers",
+   "pg-rpt-open_so_item"
+  ],
+  "vend.center": [
+   "vendors",
+   "pg-vend-center"
+  ],
+  "vend.bill_tracker": [
+   "vendors",
+   "pg-vend-bill_tracker"
+  ],
+  "vend.bills": [
+   "vendors",
+   "pg-vend-bills"
+  ],
+  "vend.debit_memos": [
+   "vendors",
+   "pg-vend-debit_memos"
+  ],
+  "vend.pay_bills": [
+   "vendors",
+   "pg-vend-pay_bills"
+  ],
+  "vend.receipts": [
+   "vendors",
+   "pg-vend-receipts"
+  ],
+  "vend.purchase_orders": [
+   "vendors",
+   "pg-vend-purchase_orders"
+  ],
+  "vend.receive_bill": [
+   "vendors",
+   "pg-vend-receive_bill"
+  ],
+  "vend.receive_items": [
+   "vendors",
+   "pg-vend-receive_items"
+  ],
+  "vend.bill_received": [
+   "vendors",
+   "pg-vend-bill_received"
+  ],
+  "vend.advances": [
+   "vendors",
+   "pg-vend-advances"
+  ],
+  "rpt.ap_aging_summary": [
+   "vendors",
+   "pg-rpt-ap_aging_summary"
+  ],
+  "rpt.ap_aging_detail": [
+   "vendors",
+   "pg-rpt-ap_aging_detail"
+  ],
+  "rpt.vendor_balance_summary": [
+   "vendors",
+   "pg-rpt-vendor_balance_summary"
+  ],
+  "rpt.vendor_balance_detail": [
+   "vendors",
+   "pg-rpt-vendor_balance_detail"
+  ],
+  "rpt.unpaid_bills": [
+   "vendors",
+   "pg-rpt-unpaid_bills"
+  ],
+  "rpt.txn_list_vendor": [
+   "vendors",
+   "pg-rpt-txn_list_vendor"
+  ],
+  "rpt.vendor_contacts": [
+   "vendors",
+   "pg-rpt-vendor_contacts"
+  ],
+  "rpt.expenses_vendor_summary": [
+   "vendors",
+   "pg-rpt-expenses_vendor_summary"
+  ],
+  "rpt.expenses_vendor_detail": [
+   "vendors",
+   "pg-rpt-expenses_vendor_detail"
+  ],
+  "rpt.vendor_advances": [
+   "vendors",
+   "pg-rpt-vendor_advances"
+  ],
+  "inv.center": [
+   "inventory",
+   "pg-inv-center"
+  ],
+  "inv.items": [
+   "inventory",
+   "pg-inv-items"
+  ],
+  "inv.categories": [
+   "inventory",
+   "pg-inv-categories"
+  ],
+  "inv.sites": [
+   "inventory",
+   "pg-inv-sites"
+  ],
+  "inv.uom": [
+   "inventory",
+   "pg-inv-uom"
+  ],
+  "inv.formulas": [
+   "inventory",
+   "pg-inv-formulas"
+  ],
+  "inv.transfers": [
+   "inventory",
+   "pg-inv-transfers"
+  ],
+  "inv.adjust": [
+   "inventory",
+   "pg-inv-adjust"
+  ],
+  "inv.build": [
+   "inventory",
+   "pg-inv-build"
+  ],
+  "inv.process": [
+   "inventory",
+   "pg-inv-process"
+  ],
+  "inv.physical_count": [
+   "inventory",
+   "pg-inv-physical_count"
+  ],
+  "inv.change_prices": [
+   "inventory",
+   "pg-inv-change_prices"
+  ],
+  "inv.set_prices": [
+   "inventory",
+   "pg-inv-set_prices"
+  ],
+  "rpt.qoh_by_site": [
+   "inventory",
+   "pg-rpt-qoh_by_site"
+  ],
+  "rpt.inv_valuation_summary": [
+   "inventory",
+   "pg-rpt-inv_valuation_summary"
+  ],
+  "rpt.inv_valuation_site": [
+   "inventory",
+   "pg-rpt-inv_valuation_site"
+  ],
+  "rpt.inv_valuation_detail": [
+   "inventory",
+   "pg-rpt-inv_valuation_detail"
+  ],
+  "rpt.stock_status_item": [
+   "inventory",
+   "pg-rpt-stock_status_item"
+  ],
+  "rpt.stock_status_vendor": [
+   "inventory",
+   "pg-rpt-stock_status_vendor"
+  ],
+  "rpt.stock_status_site": [
+   "inventory",
+   "pg-rpt-stock_status_site"
+  ],
+  "rpt.physical_worksheet": [
+   "inventory",
+   "pg-rpt-physical_worksheet"
+  ],
+  "rpt.pending_builds": [
+   "inventory",
+   "pg-rpt-pending_builds"
+  ],
+  "rpt.pending_builds_site": [
+   "inventory",
+   "pg-rpt-pending_builds_site"
+  ],
+  "rpt.processing_register": [
+   "inventory",
+   "pg-rpt-processing_register"
+  ],
+  "rpt.coproduct_costs": [
+   "inventory",
+   "pg-rpt-coproduct_costs"
+  ],
+  "rpt.process_yield": [
+   "inventory",
+   "pg-rpt-process_yield"
+  ],
+  "rpt.negative_inventory": [
+   "inventory",
+   "pg-rpt-negative_inventory"
+  ],
+  "rpt.inv_no_movement": [
+   "inventory",
+   "pg-rpt-inv_no_movement"
+  ],
+  "rpt.inv_custom": [
+   "inventory",
+   "pg-rpt-inv_custom"
+  ],
+  "rpt.inv_movement_summary": [
+   "inventory",
+   "pg-rpt-inv_movement_summary"
+  ],
+  "rpt.inv_movement_detail": [
+   "inventory",
+   "pg-rpt-inv_movement_detail"
+  ],
+  "rpt.inv_movement_txns": [
+   "inventory",
+   "pg-rpt-inv_movement_txns"
+  ],
+  "pos.register": [
+   "point-of-sale",
+   "pg-pos-register"
+  ],
+  "pos.shifts": [
+   "point-of-sale",
+   "pg-pos-shifts"
+  ],
+  "pos.receipts": [
+   "point-of-sale",
+   "pg-pos-receipts"
+  ],
+  "pos.approval_codes": [
+   "point-of-sale",
+   "pg-pos-approval_codes"
+  ],
+  "pos.terminals": [
+   "point-of-sale",
+   "pg-pos-terminals"
+  ],
+  "rpt.pos_sales_txn": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_txn"
+  ],
+  "rpt.pos_sales_item": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_item"
+  ],
+  "rpt.pos_sales_category": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_category"
+  ],
+  "rpt.pos_sales_cashier": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_cashier"
+  ],
+  "rpt.pos_sales_hour": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_hour"
+  ],
+  "rpt.pos_daily_summary": [
+   "point-of-sale",
+   "pg-rpt-pos_daily_summary"
+  ],
+  "rpt.pos_readings": [
+   "point-of-sale",
+   "pg-rpt-pos_readings"
+  ],
+  "rpt.pos_discount_log": [
+   "point-of-sale",
+   "pg-rpt-pos_discount_log"
+  ],
+  "rpt.pos_void_log": [
+   "point-of-sale",
+   "pg-rpt-pos_void_log"
+  ],
+  "rpt.pos_sales_item_group": [
+   "point-of-sale",
+   "pg-rpt-pos_sales_item_group"
+  ],
+  "rpt.pos_ending_inventory": [
+   "point-of-sale",
+   "pg-rpt-pos_ending_inventory"
+  ],
+  "bank.write_checks": [
+   "banking",
+   "pg-bank-write_checks"
+  ],
+  "bank.cash_voucher": [
+   "banking",
+   "pg-bank-cash_voucher"
+  ],
+  "bank.register": [
+   "banking",
+   "pg-bank-register"
+  ],
+  "bank.deposits": [
+   "banking",
+   "pg-bank-deposits"
+  ],
+  "bank.transfers": [
+   "banking",
+   "pg-bank-transfers"
+  ],
+  "bank.reconcile": [
+   "banking",
+   "pg-bank-reconcile"
+  ],
+  "rpt.recon_summary": [
+   "banking",
+   "pg-rpt-recon_summary"
+  ],
+  "rpt.recon_detail": [
+   "banking",
+   "pg-rpt-recon_detail"
+  ],
+  "rpt.recon_discrepancy": [
+   "banking",
+   "pg-rpt-recon_discrepancy"
+  ],
+  "rpt.check_register": [
+   "banking",
+   "pg-rpt-check_register"
+  ],
+  "bir.wht_table": [
+   "bir-reports",
+   "pg-bir-wht_table"
+  ],
+  "bir.form_2307": [
+   "bir-reports",
+   "pg-bir-form_2307"
+  ],
+  "rpt.bir_wht_summary": [
+   "bir-reports",
+   "pg-rpt-bir_wht_summary"
+  ],
+  "rpt.bir_ewt_register": [
+   "bir-reports",
+   "pg-rpt-bir_ewt_register"
+  ],
+  "rpt.bir_remittance": [
+   "bir-reports",
+   "pg-rpt-bir_remittance"
+  ],
+  "rpt.bir_vat_withholding": [
+   "bir-reports",
+   "pg-rpt-bir_vat_withholding"
+  ],
+  "rpt.bir_sales_register": [
+   "bir-reports",
+   "pg-rpt-bir_sales_register"
+  ],
+  "rpt.bir_purchase_register": [
+   "bir-reports",
+   "pg-rpt-bir_purchase_register"
+  ],
+  "rpt.bir_cvat_withheld": [
+   "bir-reports",
+   "pg-rpt-bir_cvat_withheld"
+  ],
+  "rpt.bir_2550q": [
+   "bir-reports",
+   "pg-rpt-bir_2550q"
+  ],
+  "admin.users": [
+   "administration",
+   "pg-admin-users"
+  ],
+  "admin.roles": [
+   "administration",
+   "pg-admin-roles"
+  ],
+  "admin.page_access": [
+   "administration",
+   "pg-admin-page_access"
+  ],
+  "admin.effective_access": [
+   "administration",
+   "pg-admin-effective_access"
+  ],
+  "admin.settings": [
+   "administration",
+   "pg-admin-settings"
+  ],
+  "admin.utilities": [
+   "administration",
+   "pg-admin-utilities"
+  ],
+  "admin.import": [
+   "administration",
+   "pg-admin-import"
+  ],
+  "admin.backup": [
+   "administration",
+   "pg-admin-backup"
+  ],
+  "admin.multi_company": [
+   "administration",
+   "pg-admin-multi_company"
+  ],
+  "admin.audit_trail": [
+   "administration",
+   "pg-admin-audit_trail"
+  ],
+  "admin.txn_history": [
+   "administration",
+   "pg-admin-txn_history"
+  ],
+  "rpt.voided_deleted_summary": [
+   "administration",
+   "pg-rpt-voided_deleted_summary"
+  ],
+  "rpt.voided_deleted_detail": [
+   "administration",
+   "pg-rpt-voided_deleted_detail"
+  ],
+  "rpt.user_activity": [
+   "administration",
+   "pg-rpt-user_activity"
+  ],
+  "rpt.login_history": [
+   "administration",
+   "pg-rpt-login_history"
+  ],
+  "rpt.user_access": [
+   "administration",
+   "pg-rpt-user_access"
+  ],
+  "company.profile": [
+   "company-owner",
+   "pg-company-profile"
+  ],
+  "company.users": [
+   "company-owner",
+   "pg-company-users"
+  ],
+  "company.join_requests": [
+   "company-owner",
+   "pg-company-join_requests"
+  ],
+  "rpt.cmp_is_month": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_is_month"
+  ],
+  "rpt.cmp_is_quarter": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_is_quarter"
+  ],
+  "rpt.cmp_is_year": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_is_year"
+  ],
+  "rpt.cmp_is_custom": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_is_custom"
+  ],
+  "rpt.cmp_bs_month": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_bs_month"
+  ],
+  "rpt.cmp_bs_quarter": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_bs_quarter"
+  ],
+  "rpt.cmp_bs_year": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_bs_year"
+  ],
+  "rpt.cmp_bs_custom": [
+   "chart-of-accounts",
+   "pg-rpt-cmp_bs_custom"
+  ],
+  "rpt.avg_cost_changes": [
+   "inventory",
+   "pg-rpt-avg_cost_changes"
+  ],
+  "admin.cs_settings": [
+   "construction",
+   "pg-admin-cs_settings"
+  ],
+  "home.exec_dashboard": [
+   "construction",
+   "pg-home-exec_dashboard"
+  ],
+  "home.pm_dashboard": [
+   "construction",
+   "pg-home-pm_dashboard"
+  ],
+  "home.fin_dashboard": [
+   "construction",
+   "pg-home-fin_dashboard"
+  ],
+  "proj.center": [
+   "construction",
+   "pg-proj-center"
+  ],
+  "proj.view": [
+   "construction",
+   "pg-proj-view"
+  ],
+  "proj.projects": [
+   "construction",
+   "pg-proj-projects"
+  ],
+  "proj.clients": [
+   "construction",
+   "pg-proj-clients"
+  ],
+  "proj.contracts": [
+   "construction",
+   "pg-proj-contracts"
+  ],
+  "proj.change_orders": [
+   "construction",
+   "pg-proj-change_orders"
+  ],
+  "proj.documents": [
+   "construction",
+   "pg-proj-documents"
+  ],
+  "proj.rfis": [
+   "construction",
+   "pg-proj-rfis"
+  ],
+  "proj.logs": [
+   "construction",
+   "pg-proj-logs"
+  ],
+  "proj.closeout": [
+   "construction",
+   "pg-proj-closeout"
+  ],
+  "plan.opportunities": [
+   "construction",
+   "pg-plan-opportunities"
+  ],
+  "plan.estimates": [
+   "construction",
+   "pg-plan-estimates"
+  ],
+  "plan.boq": [
+   "construction",
+   "pg-plan-boq"
+  ],
+  "plan.budgets": [
+   "construction",
+   "pg-plan-budgets"
+  ],
+  "plan.schedule": [
+   "construction",
+   "pg-plan-schedule"
+  ],
+  "plan.milestones": [
+   "construction",
+   "pg-plan-milestones"
+  ],
+  "plan.eot": [
+   "construction",
+   "pg-plan-eot"
+  ],
+  "plan.cost_codes": [
+   "construction",
+   "pg-plan-cost_codes"
+  ],
+  "site.daily": [
+   "construction",
+   "pg-site-daily"
+  ],
+  "site.inspections": [
+   "construction",
+   "pg-site-inspections"
+  ],
+  "site.ncr": [
+   "construction",
+   "pg-site-ncr"
+  ],
+  "site.safety": [
+   "construction",
+   "pg-site-safety"
+  ],
+  "labor.workers": [
+   "construction",
+   "pg-labor-workers"
+  ],
+  "labor.timesheets": [
+   "construction",
+   "pg-labor-timesheets"
+  ],
+  "labor.payroll": [
+   "construction",
+   "pg-labor-payroll"
+  ],
+  "labor.advances": [
+   "construction",
+   "pg-labor-advances"
+  ],
+  "labor.trades": [
+   "construction",
+   "pg-labor-trades"
+  ],
+  "equip.register": [
+   "construction",
+   "pg-equip-register"
+  ],
+  "equip.dispatch": [
+   "construction",
+   "pg-equip-dispatch"
+  ],
+  "equip.logs": [
+   "construction",
+   "pg-equip-logs"
+  ],
+  "proc.requests": [
+   "construction",
+   "pg-proc-requests"
+  ],
+  "proc.canvass": [
+   "construction",
+   "pg-proc-canvass"
+  ],
+  "proc.receiving": [
+   "construction",
+   "pg-proc-receiving"
+  ],
+  "proc.materials": [
+   "construction",
+   "pg-proc-materials"
+  ],
+  "proc.stock": [
+   "construction",
+   "pg-proc-stock"
+  ],
+  "subk.register": [
+   "construction",
+   "pg-subk-register"
+  ],
+  "subk.contracts": [
+   "construction",
+   "pg-subk-contracts"
+  ],
+  "subk.billings": [
+   "construction",
+   "pg-subk-billings"
+  ],
+  "pbill.billings": [
+   "construction",
+   "pg-pbill-billings"
+  ],
+  "pbill.revenue": [
+   "construction",
+   "pg-pbill-revenue"
+  ],
+  "pbill.collections": [
+   "construction",
+   "pg-pbill-collections"
+  ],
+  "pbill.retention": [
+   "construction",
+   "pg-pbill-retention"
+  ],
+  "cost.allocations": [
+   "construction",
+   "pg-cost-allocations"
+  ],
+  "cost.assign": [
+   "construction",
+   "pg-cost-assign"
+  ],
+  "cost.rules": [
+   "construction",
+   "pg-cost-rules"
+  ],
+  "appr.inbox": [
+   "construction",
+   "pg-appr-inbox"
+  ],
+  "appr.history": [
+   "construction",
+   "pg-appr-history"
+  ],
+  "appr.routes": [
+   "construction",
+   "pg-appr-routes"
+  ],
+  "portal.client": [
+   "construction",
+   "pg-portal-client"
+  ],
+  "portal.sub": [
+   "construction",
+   "pg-portal-sub"
+  ],
+  "rpt.cs_portfolio": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_income": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_cost_breakdown": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_budget_actual": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_commitments": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_eac": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_etc": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_cash_flow": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_forecast": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_wip": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_earned_billed": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_client_profit": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_billing": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_collections": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_ar_aging": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_retention": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_ap": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_materials": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_labor": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_productivity": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_equipment": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_subcon": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_allocations": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_supplier_spend": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_change_orders": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_contract_summary": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_evm": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_deliverables": [
+   "construction",
+   "s-cs-reports"
+  ],
+  "rpt.cs_qhse": [
+   "construction",
+   "s-cs-reports"
+  ]
+ },
+ "platform": {
+  "companies": [
+   "super-admin",
+   "pf-companies"
+  ],
+  "new": [
+   "super-admin",
+   "pf-new"
+  ],
+  "company": [
+   "super-admin",
+   "pf-company"
+  ],
+  "updates": [
+   "super-admin",
+   "pf-updates"
+  ],
+  "admins": [
+   "super-admin",
+   "pf-admins"
+  ],
+  "settings": [
+   "super-admin",
+   "pf-settings"
+  ],
+  "audit": [
+   "super-admin",
+   "pf-audit"
+  ],
+  "account": [
+   "super-admin",
+   "pf-account"
+  ]
+ },
+ "special": {
+  "auth.change_password": [
+   "getting-started",
+   "sec-password"
+  ],
+  "auth.denied": [
+   "getting-started",
+   "sec-access"
+  ],
+  "login": [
+   "getting-started",
+   "sec-login"
+  ],
+  "register": [
+   "company-owner",
+   "sec-joining"
+  ],
+  "platform.login": [
+   "super-admin",
+   "sec-sa-login"
+  ]
+ }
+}

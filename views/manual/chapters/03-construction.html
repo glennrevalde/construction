@@ -1,0 +1,239 @@
+<p>This chapter covers the construction side of GSMaRT Construction System: projects from the lead or tender to close-out, and everything that happens on and for them. The accounting chapters that follow describe the books those projects post to.</p>
+<p>The two sides are one system. A project <strong>is</strong> a class in the books (created with the project, with the project's code and name), a work item <strong>is</strong> a cost code carried on every ledger line, a client is a customer, a supplier or subcontractor is a vendor, materials are inventory items and every worker is also an employee name. So a timesheet approved on site is labor cost in the general ledger at once, a bill typed in accounting with a project's class lands in that project's cost reports, and the project reports read the same ledger as the financial statements.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The examples use the sample contractor, Sample Builders &amp; Development Corp., and its projects PRJ-0001 St. Benedict School Gymnasium, PRJ-0002 Northgate Residences Tower 2, PRJ-0003 C-5 Service Road Widening and PRJ-0004 Pacific Agri-Foods Warehouse.</p></div>
+
+<h2 id="s-cs-flow">The life of a project<a class="man-hash" href="#s-cs-flow" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<ol>
+<li><strong>Win the work.</strong> Record the lead or tender in <a href="#pg-plan-opportunities">Leads &amp; Tenders</a>, decide to bid, prepare the <a href="#pg-plan-estimates">estimate</a>.</li>
+<li><strong>Sign the contract.</strong> Enter it in <a href="#pg-proj-contracts">Contracts</a> with its amount, advance, retention, liquidated damages and bonds, and send it for approval.</li>
+<li><strong>Set up the project.</strong> <a href="#pg-proj-projects">Project Set-up</a> creates the project, its class and its stockyard. Add the <a href="#pg-plan-boq">BOQ</a>, turn the approved estimate into the <a href="#pg-plan-budgets">budget</a>, build the <a href="#pg-plan-schedule">schedule</a> and its <a href="#pg-plan-milestones">milestones</a>.</li>
+<li><strong>Build.</strong> Every day: <a href="#pg-labor-timesheets">timesheets</a>, <a href="#pg-site-daily">daily site reports</a> and <a href="#pg-equip-logs">equipment logs</a>. As needed: <a href="#pg-proc-requests">material requests</a>, <a href="#pg-proc-canvass">canvass</a>, purchase orders, deliveries and <a href="#pg-proc-materials">issues</a>; <a href="#pg-subk-contracts">subcontracts</a> and their <a href="#pg-subk-billings">billings</a>; <a href="#pg-proj-change_orders">change orders</a>; inspections and safety records.</li>
+<li><strong>Bill and collect.</strong> Each month a <a href="#pg-pbill-billings">progress billing</a> on the schedule of values, certified by the client and invoiced; payments received in accounting; <a href="#pg-pbill-revenue">revenue recognized</a> at month end; shared costs <a href="#pg-cost-allocations">allocated</a>.</li>
+<li><strong>Close.</strong> <a href="#pg-proj-closeout">Close-out</a>: punch list, final billing, retention release, warranty, and financial closure once nothing is left open.</li>
+</ol>
+<p>Documents that need someone's decision go through <a href="#pg-appr-inbox">approvals</a>. The route decides who approves at each step; nobody approves a document they submitted, and each step is kept with the name, date, time and comment.</p>
+
+<h2 id="pg-proj-center">Project Center and the project workspace<a class="man-hash" href="#pg-proj-center" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p><strong>Where to find it:</strong> Projects &gt; Project Center. The list shows the projects you may see (your own projects, or all of them if your role or your account allows it) with their progress, contract value, cost and status. The project picker at the top of every screen remembers the project you work on, so the lists of the other pages open on it.</p>
+<p>Click a project to open its <strong>workspace</strong> (<span id="pg-proj-view"></span>Project Workspace). The tabs show everything about it in one place:</p>
+<ul>
+<li><strong>Overview:</strong> contract value with variations, work completed, cost to date and committed, estimated final cost, projected profit and margin, collections and receivables, the project in figures, its status and what waits for approval.</li>
+<li><strong>Budget &amp; cost:</strong> budget against actual and committed by cost code, estimate at completion.</li>
+<li><strong>Schedule &amp; milestones</strong>, <strong>Billing &amp; collections</strong>, <strong>Materials, labor &amp; equipment</strong>, <strong>Quality &amp; safety</strong> and <strong>Documents &amp; records</strong>.</li>
+</ul>
+<p>The <strong>Record</strong> button opens the forms of the project (site report, timesheet, material request, billing and so on) with the project filled in.</p>
+
+<h2 id="pg-proj-projects">Project Set-up<a class="man-hash" href="#pg-proj-projects" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Creates and edits projects: code (the next number is offered), name, client, contract, location, project manager, site engineer and quantity surveyor, division, contract value, start and target finish dates, floor area, and how progress is measured (from the schedule, or a figure kept on the project).</p>
+<p><strong>What the program records:</strong> saving a new project creates its class in Financial Set-up &gt; Class List and, when asked, an inventory site for its stockyard, and adds the standard close-out checklist. The project's team (manager, engineer, QS and the members added) are the users who see it when Construction Settings limits each user to their own projects.</p>
+<p>The status follows the work: Planning, Mobilization, Active (set when the first site report is approved), On hold, Substantially completed, Completed, Under warranty and Closed. Closing goes through <a href="#pg-proj-closeout">Close-out</a>.</p>
+
+<h2 id="pg-proj-clients">Clients<a class="man-hash" href="#pg-proj-clients" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The clients are the customers of accounting: the same record, with its terms, TIN, the taxes it withholds (for example 2% for contractors, and 5% VAT for a government office) and a client class (government, private, corporate, institutional). A client's page shows its contracts, projects, billings and receivables.</p>
+
+<h2 id="pg-proj-contracts">Contracts<a class="man-hash" href="#pg-proj-contracts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A contract holds the client, title and client reference, scope, type (lump sum, unit price, cost-plus, time and materials, hybrid), the original amount net of VAT, the tax code and withholding taxes, payment terms, the advance and its recoupment percentage, the retention percentage and its cap, liquidated damages, warranty and defects liability periods, the key dates (signing, notice to proceed, commencement, completion) and its bonds and insurance.</p>
+<p><strong>Submit contract for approval</strong> sends it along its route (in the sample: Project Director, then General Manager). Once approved it is <strong>Active</strong>: its client, amount, type, advance and retention are locked, and its value changes only through <a href="#pg-proj-change_orders">change orders</a>. A project can be billed only when its contract is active.</p>
+
+<h2 id="pg-plan-opportunities">Leads &amp; Tenders<a class="man-hash" href="#pg-plan-opportunities" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The pipeline of work: each lead or tender with the client or prospect, source (PhilGEPS, referral, invitation to bid), estimated value and cost, probability, bid due date, status (lead, qualifying, bidding, submitted, won, lost, no bid), the bid or no-bid decision with its reasons, the bid security, and the tender document checklist. A won tender is turned into a project.</p>
+
+<h2 id="pg-plan-estimates">Estimates<a class="man-hash" href="#pg-plan-estimates" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>An estimate lists the cost of the work by category (materials, labor, equipment, subcontract, hauling, site preparation, utilities, permits, temporary facilities, site administration, project and corporate overhead, contingency) and cost code, with quantity, unit and unit cost. The contingency and markup percentages give the total price. Each estimate of a project or tender is a new version; an approved one is never edited.</p>
+<p>From an approved estimate, <strong>budget from estimate</strong> prepares the project's first budget, summed by cost code and cost type.</p>
+
+<h2 id="pg-plan-boq">BOQ &amp; Schedule of Values<a class="man-hash" href="#pg-plan-boq" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The bill of quantities as priced in the contract: item number, description, unit, quantity and unit rate, and the cost code each line belongs to. It is the schedule of values the <a href="#pg-pbill-billings">progress billings</a> are made on. A line that carries the work of one activity can be linked to it, so a billing ahead of that activity's verified progress is flagged. Lines of client-approved change orders are added by the program, marked as variations. A line that has been billed cannot be removed or lowered below what was billed.</p>
+
+<h2 id="pg-plan-budgets">Project Budgets<a class="man-hash" href="#pg-plan-budgets" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The budget of a project by cost code and cost type. It goes through its approval route (in the sample: project manager, project director, finance manager). The first approved budget is the <strong>baseline</strong>; later changes are <strong>revisions</strong> (a revision copies the budget in force; a client-approved change order prepares one for its cost impact). An approved budget is never edited, so the original and the current budget are always both available. Material requests, purchases and subcontracts are checked against the remaining budget of their cost code (Construction Settings decides whether going over warns or blocks).</p>
+
+<h2 id="pg-plan-schedule">Schedule &amp; Gantt Chart<a class="man-hash" href="#pg-plan-schedule" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The activities of a project, written as a work breakdown: WBS code (1.2 sits under 1), name, cost code, planned start and finish, weight, planned quantity and unit, budget man-hours, predecessors and milestones. Predecessors are written with the WBS code and, when needed, the type and lag: <code>2.1</code>, <code>2.1SS+10</code>, <code>2.3FF-5</code>. Loops are refused.</p>
+<p>The tabs:</p>
+<ul>
+<li><strong>Gantt chart</strong> by day, week or month, with the baseline under each bar and today's line.</li>
+<li><strong>Activities and logic:</strong> the grid of activities. <strong>Work out the critical path</strong> runs the forward and backward pass, sets the early dates, the total float and the critical activities. <strong>Set baseline</strong> keeps the planned dates for comparison.</li>
+<li><strong>Update progress:</strong> quantity done or percent, actual start and finish. Approved <a href="#pg-site-daily">daily site reports</a> update the progress by themselves.</li>
+<li><strong>Three-week look-ahead</strong> and <strong>Earned value</strong> (planned value, earned value, actual cost, CPI, SPI, estimate at completion).</li>
+</ul>
+<p>The physical progress of a project is the weighted progress of its activities.</p>
+
+<h2 id="pg-plan-milestones">Milestones &amp; Deliverables<a class="man-hash" href="#pg-plan-milestones" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Each milestone has its scope, scheduled date, billable value, measurement method, the person responsible and a different reviewer, whether the client must certify it, and its deliverables (accomplishment report, photos, inspection report, test results, engineer certification, signed acceptance, as-built drawings), each required or not.</p>
+<p>The steps: deliverables marked submitted, the milestone <strong>submitted</strong> by the person responsible, put <strong>under review</strong>, then <strong>accepted</strong> with the approved completion or <strong>rejected</strong> with the reason, and the client's certification recorded. A milestone becomes <strong>billable</strong> only when it is accepted, every required deliverable is accepted, its completion is 100% (or certified by the client) and the client's certification is in when the contract needs it. The program decides this; nobody ticks it by hand.</p>
+
+<h2 id="pg-plan-eot">Extension of Time<a class="man-hash" href="#pg-plan-eot" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Requests for more time with the cause (weather, client delay, variation, force majeure and others), the days requested and the decision: granted, partially granted or rejected. Days granted move the project's revised finish date.</p>
+
+<h2 id="pg-plan-cost_codes">Cost Codes<a class="man-hash" href="#pg-plan-cost_codes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The work items every cost is charged to (01 General Requirements, 03-300 Structural Concrete and so on), each with its usual cost type and, when wanted, the ledger account it is charged to. Cost codes are shared by all projects and are copied to a new company.</p>
+
+<h2 id="pg-proj-change_orders">Change Orders &amp; Claims<a class="man-hash" href="#pg-proj-change_orders" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A change order records a change to the work: type (client request, additional work, scope reduction, claim and others), who asked for it, the reason, its lines with price and cost by cost code, and its effect on time, labor, equipment and billing.</p>
+<ol>
+<li><strong>Submit for internal approval.</strong> The route depends on the amount (in the sample, from P1M the General Manager approves too).</li>
+<li>Record the <strong>client's approval</strong> with its date and reference (or the settlement amount of a claim). From that moment the change is part of the revised contract value, its lines join the schedule of values so they can be billed, the completion date moves by its days, and a budget revision is prepared for its cost.</li>
+</ol>
+<p>Pending change orders are shown beside the contract value but are not billable.</p>
+
+<h2 id="pg-site-daily">Daily Site Reports<a class="man-hash" href="#pg-site-daily" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>One report per project per day: weather in the morning and afternoon, site conditions, manpower and man-hours (offered from the day's timesheets), equipment used, materials used, the accomplishment of each activity (quantity, or percentage points for activities measured in percent), delays and their hours, safety observations, inspections, instructions received, issues, and photos.</p>
+<p>The report is written by the foreman or engineer and approved by the project manager. <strong>Approving it adds its accomplishment to the schedule.</strong> The form keeps a draft on the phone when the site has no signal and sends it later. The list warns about working days without a report.</p>
+
+<h2 id="pg-site-inspections">Quality Inspections<a class="man-hash" href="#pg-site-inspections" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Inspection and test plans, quality checklists (from the checklist templates), material tests, equipment safety checks, pre-pour and final inspections, each with the location, inspector, checklist, findings and result: passed, passed with conditions, failed. A failed inspection leads to a <a href="#pg-site-ncr">nonconformance report</a>.</p>
+
+<h2 id="pg-site-ncr">Nonconformance Reports<a class="man-hash" href="#pg-site-ncr" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A defect or deviation with the activity and cost code, the party responsible, the root cause, the corrective and preventive actions, the rework cost and the due date. Status: open, corrective action in progress, verified, closed. Open NCRs keep a project from being closed.</p>
+
+<h2 id="pg-site-safety">Safety Records<a class="man-hash" href="#pg-site-safety" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Incidents (with the persons involved, severity and lost-time hours), near misses, toolbox meetings and trainings (with attendees), PPE issuance, permits to work (with their validity), hazard observations and equipment safety checks. The Quality and Safety report gives the incident rate per 200,000 man-hours.</p>
+
+<h2 id="pg-labor-workers">Workers<a class="man-hash" href="#pg-labor-workers" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Each worker's trade, classification (direct labor, indirect labor, site staff, labor-only subcontractor, agency), daily or hourly rate, overtime and holiday multipliers, burden percentage (employer contributions and benefits), daily allowance, shift and break, assigned project, skills, certifications and safety documents. A worker from a labor-only contractor or agency names that supplier: their hours are recorded but their cost comes through the supplier's bill. Every worker is also an employee name in accounting, so payroll and cash advances show by name in the ledger.</p>
+
+<h2 id="pg-labor-trades">Trades &amp; Rates<a class="man-hash" href="#pg-labor-trades" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The trades (carpenter, mason, steelman, operator and others) with their usual daily rate, offered when a worker is added.</p>
+
+<h2 id="pg-labor-timesheets">Attendance &amp; Timesheets<a class="man-hash" href="#pg-labor-timesheets" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>One timesheet per project, day and shift: each worker's time in and out (or hours), break, activity and cost code, absent or holiday, remarks. The program works out regular and overtime hours, minutes late and undertime, and the cost at the worker's rate with burden and allowance.</p>
+<p><strong>Checks:</strong> a worker cannot be on two timesheets at overlapping times (on any project), nor over the maximum hours a day; attendance is not recorded for future days.</p>
+<p><strong>What the program records</strong> when the project manager approves it: a journal entry by project and cost code, Dr Direct Labor (or Site Supervision for indirect labor and site staff) and Labor Burden, Cr Accrued Payroll and the statutory contributions payable. An approved timesheet is corrected by reopening it with the reason.</p>
+
+<h2 id="pg-labor-payroll">Payroll Runs<a class="man-hash" href="#pg-labor-payroll" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A run gathers the approved timesheets of a pay period not yet paid: days, regular and overtime hours, gross pay, allowances, the cash advances to deduct and the other deductions (the employees' share of SSS, PhilHealth and Pag-IBIG, loans). It is approved (in the sample, chief accountant then finance manager) and posted: Dr Accrued Payroll by project, Cr Salaries and Wages Payable, Employee Advances and the contributions payable. The net pay is then paid in Banking (a check or a transfer to the payroll account). Payslips print from the run.</p>
+
+<h2 id="pg-labor-advances">Cash Advances<a class="man-hash" href="#pg-labor-advances" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A worker's request with the amount and purpose goes for approval (the request notes any amount still owed). Once approved it is <strong>released</strong> from a cash or bank account (a cash voucher, Dr Advances to Employees) and deducted in the next payroll run.</p>
+
+<h2 id="pg-equip-register">Equipment Register<a class="man-hash" href="#pg-equip-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every unit: type, make and model, plate or serial number, ownership (owned, rented, leased, with the lessor), the fixed asset record of an owned unit, how it is costed (a standard rate per operating hour and per idle hour, the rental bills, or actual costs), the meter (hours or km), fuel, the usual operator, insurance, inspection and registration dates, and the meter reading of the next service. Status: available, deployed, idle, under repair, off-hired, disposed.</p>
+
+<h2 id="pg-equip-dispatch">Dispatch &amp; Booking<a class="man-hash" href="#pg-equip-dispatch" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Books a unit for a project from one date to another, then records it going out and coming back with the meter readings. A unit is never booked on two projects at the same time, and a unit whose insurance expires before the dispatch starts cannot go out. The booking board shows the next two weeks of every unit.</p>
+
+<h2 id="pg-equip-logs">Usage Logs &amp; Charges<a class="man-hash" href="#pg-equip-logs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The daily log of a unit on a project: operating, idle and breakdown hours, meter at the start and end of the day, fuel, operator, activity and cost code. The unit must be dispatched to that project that day, works on one project a day and not more than 24 hours. The charge is the operating hours at the hourly rate plus the idle hours at the idle rate.</p>
+<p><strong>What the program records</strong> when the project manager approves it: Dr Equipment Costs Charged (project and cost code), Cr Equipment Cost Recovery (the company's), so each project carries the cost of the fleet it used while the fleet's own costs (fuel, repairs, depreciation) stay with the company.</p>
+
+<h2 id="pg-proc-requests">Material Requests<a class="man-hash" href="#pg-proc-requests" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The engineer or foreman requests materials for a project: items, quantities, cost codes and activity, the date needed, and whether they are delivered to the site (the project's stockyard) or to the warehouse. On submission the request is checked against the remaining budget of each cost code; a request over budget is flagged as high risk on its approval (or refused, if Construction Settings blocks it). The route depends on the amount (in the sample, the project manager, and from P100,000 also the purchasing manager).</p>
+<p>An approved request is canvassed, ordered, delivered and issued; its status follows: approved, partially ordered, ordered, issued, closed.</p>
+
+<h2 id="pg-proc-canvass">Canvass &amp; Quotations<a class="man-hash" href="#pg-proc-canvass" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A canvass starts from an approved material request. Each supplier's quotation is entered with its reference, delivery days, terms, validity and its price for each line. The comparison shows the total of each quotation, whether it is complete, the lowest price of each line and the lowest complete quotation.</p>
+<p><strong>Award</strong> chooses the supplier. Choosing anything but the lowest complete quotation, or buying on a single quotation, needs the reason. The award goes for approval by amount; once approved the program writes the <strong>purchase order</strong> in accounting, charged to the project and its cost codes and delivered where the request said.</p>
+
+<h2 id="pg-proc-receiving">Delivery Inspection<a class="man-hash" href="#pg-proc-receiving" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The purchase orders of the projects still to be received (late ones are marked), received in accounting's Receive Items or entered as the supplier's bill against the order, so stock and payables are recorded once. The deliveries of the last 60 days are listed for the quality check: the quantity accepted and rejected with the reason. A rejected quantity goes back to the supplier on a supplier debit memo.</p>
+
+<h2 id="pg-proc-materials">Issues, Returns &amp; Transfers<a class="man-hash" href="#pg-proc-materials" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<ul>
+<li><strong>Issue to project:</strong> materials taken from the warehouse or the stockyard for the work, by cost code and activity. The stock on hand is checked.</li>
+<li><strong>Return from project:</strong> unused materials back to stock; the project's cost is credited.</li>
+<li><strong>Use on site (consumption):</strong> when Construction Settings costs materials when used, the quantities used and wasted reported from site.</li>
+<li><strong>Transfer to another project:</strong> approved by the project manager of the giving project and the operations manager; the cost moves from one project to the other.</li>
+</ul>
+<p><strong>What the program records:</strong> with materials costed when issued, an issue is an inventory adjustment Dr Direct Materials (project, cost code), Cr Inventory. With materials costed when used, an issue moves the stock to the project's stockyard and the consumption charges the project.</p>
+
+<h2 id="pg-proc-stock">Project Materials Ledger<a class="man-hash" href="#pg-proc-stock" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>For each project and material: bought, issued, returned, used, wasted and transferred, and what is left at the stockyard (the material reconciliation), with the warehouse items at or below their reorder point.</p>
+
+<h2 id="pg-subk-register">Subcontractors<a class="man-hash" href="#pg-subk-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The subcontractors are suppliers of kind subcontractor: their trades, accreditation (PCAB licence) and its expiry, qualifications, rating, tax code and the withholding tax deducted from their payments. A subcontract cannot be submitted while the accreditation is expired.</p>
+
+<h2 id="pg-subk-contracts">Subcontract Agreements<a class="man-hash" href="#pg-subk-contracts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The work package, scope, items (quantity, unit, rate, cost code and the activity whose progress verifies it), retention, advance and its recoupment, tax code, dates and terms. On submission the items are checked against the budget. Once approved the agreement is active; it is changed only through a variation. The agreement's page shows what was billed, retained, recouped and paid. An advance is paid in Vendors &gt; Advances to Suppliers and recouped from the billings.</p>
+
+<h2 id="pg-subk-billings">Subcontractor Billings<a class="man-hash" href="#pg-subk-billings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The subcontractor's progress claim (entered here or sent through the <a href="#pg-portal-sub">subcontractor portal</a> with their invoice attached): quantities accomplished this period per item, back charges and penalties. The program works out the gross, retention, recoupment of the advance actually paid, VAT and the net.</p>
+<p><strong>Checks:</strong> the same invoice number is never recorded twice for a subcontractor (here or as a bill in accounting); no item past its contract quantity; no item billed more than 5 points ahead of the progress verified on site.</p>
+<p><strong>What the program records</strong> when it is approved (in the sample: QS, project manager, finance manager, and from P500,000 the General Manager): a bill, Dr Subcontract Costs + Input VAT, less Retention Payable, less back charges, Cr Accounts Payable, with the advance applied for the recoupment. The bill is paid in Pay Bills with the withholding tax. A completed subcontract's retention is released with a retention release billing.</p>
+
+<h2 id="pg-pbill-billings">Progress Billings<a class="man-hash" href="#pg-pbill-billings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The kinds of billing: progress on the schedule of values (percent or quantity per line), quantity-based for unit-price contracts, milestone (only billable milestones), time and materials, change order, final, advance (mobilization), and retention release.</p>
+<p>The billing shows each line's scheduled value, previous, this period and to date; the gross accomplishment; materials stored on site; the retention (up to its cap), the recoupment of the advance, other deductions, VAT, the tax the client is expected to withhold, and the amount due.</p>
+<p><strong>Checks:</strong> no line past 100% and no billing past the revised contract unless an authorized adjustment is recorded by someone with Approve on billings; a billing ahead of the verified physical progress is flagged.</p>
+<p>The steps:</p>
+<ol>
+<li><strong>Submit billing for approval</strong> (in the sample: project manager, QS, chief accountant, finance manager, General Manager).</li>
+<li><strong>Send out</strong> to the client.</li>
+<li><strong>Record the client's certificate</strong> with its date and reference. If the client certifies less than was applied for, the lines are scaled down and retention, recoupment and VAT worked out again. The program then makes the <strong>invoice</strong> in accounting.</li>
+<li>The client's payment is received in Customers &gt; Receive Payments, with the taxes the client withheld.</li>
+</ol>
+<p><strong>What the program records</strong> on the invoice of a progress billing: Dr Accounts Receivable for the amount due, Dr Retention Receivable, Dr Advances from Clients for the recoupment, Cr Progress Billings on Contracts (a contract liability) and Output VAT. An advance billing credits Advances from Clients; a retention release credits Retention Receivable. When revenue follows the billings (Construction Settings), the accomplishment is credited to Contract Revenue instead.</p>
+<p>The client representative can also certify billings in the <a href="#pg-portal-client">client portal</a>.</p>
+
+<h2 id="pg-pbill-revenue">Revenue Recognition<a class="man-hash" href="#pg-pbill-revenue" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>At each period end the revenue earned is worked out by the method in Construction Settings: percentage of completion by cost (cost to date over estimated total cost), by physical progress, at completion of the contract, or as billed. The recognition shows the contract value, estimated total cost, cost to date, percent complete, revenue earned to date, recognized before, this period, and the provision for a loss when the estimated cost is higher than the contract.</p>
+<p>Approved (in the sample by the chief accountant), it posts Dr Contract Assets, Cr Contract Revenue, and the loss provision when needed. Only the latest recognition of a project can be reversed. The Work-in-Progress report compares the revenue earned with the billings: under-billings and over-billings. When a project is completed, the progress billings are settled against the contract assets.</p>
+
+<h2 id="pg-pbill-collections">Collections by Project<a class="man-hash" href="#pg-pbill-collections" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The invoices of each project with what is collected, open and overdue, and the payments received with the taxes withheld. Payments themselves are entered in Customers &gt; Receive Payments.</p>
+
+<h2 id="pg-pbill-retention">Retention Monitor<a class="man-hash" href="#pg-pbill-retention" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Retention held by clients (receivable) and retention held from subcontractors (payable) by project, the advances not yet recouped, and when each retention falls due for release.</p>
+
+<h2 id="pg-cost-allocations">Shared Cost Allocation<a class="man-hash" href="#pg-cost-allocations" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Costs shared by several projects (the yard and warehouse, a crane serving two sites, the safety officer) are entered in accounting without a project, then allocated here: the source (a transaction or an amount of an expense account), the period, the basis (equal shares, man-hours, equipment hours, direct cost, materials, contract value, revenue, floor area, fixed shares or custom units from an allocation rule) and the projects. The program shows each project's share before it is approved.</p>
+<p>Approved (in the sample: chief accountant and finance manager), it posts a reclassification: Cr the expense account without a project, Dr the same account for each project. The same cost is never allocated twice. A posted allocation is reversed or <strong>reallocated</strong> (the new one replaces it when it is approved), never edited.</p>
+
+<h2 id="pg-cost-rules">Allocation Rules<a class="man-hash" href="#pg-cost-rules" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Named bases for allocations, and for fixed shares or custom units, the share of each project.</p>
+
+<h2 id="pg-cost-assign">Cost Code Assignment<a class="man-hash" href="#pg-cost-assign" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Project costs entered in accounting without a cost code (for example a check charged to a project's class), listed so each can be given its cost code. The shared expenses waiting to be allocated are listed too.</p>
+
+<h2 id="pg-appr-inbox">My Approvals<a class="man-hash" href="#pg-appr-inbox" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The documents waiting for you: the document, project, amount, the step and how long it has waited (overdue ones are marked). Open one to see it in full, then <strong>Approve</strong>, <strong>Return</strong> for correction, <strong>Reject</strong> (both need the reason, which is sent to the person who submitted it), <strong>Delegate</strong> the step to another user, or <strong>Escalate</strong> it to the General Manager and the owner. The count beside Approvals in the menu shows how many wait for you.</p>
+<p id="pg-appr-history"><strong>Approval History</strong> lists every request with each step taken, by whom and when, and can be exported.</p>
+
+<h2 id="pg-appr-routes">Approval Routes<a class="man-hash" href="#pg-appr-routes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A route is chosen by the kind of document, the amount (from and below), the project (or every project) and the risk (high-risk documents, such as a request over budget, can follow a stricter route). Each step is for a role, for one user, or for the project's own manager, engineer or quantity surveyor, with the hours before it is overdue. A document with no matching route needs one approval by a user with Approve on its page.</p>
+
+<h2 id="pg-proj-documents">Documents &amp; Drawings<a class="man-hash" href="#pg-proj-documents" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The document register of a project: drawings, specifications, BOQ, method statements, permits and others by discipline, each with its revisions (the file, notes, status and who approved it). The current revision is shown; superseded ones are kept.</p>
+
+<h2 id="pg-proj-rfis">RFIs, Submittals &amp; Transmittals<a class="man-hash" href="#pg-proj-rfis" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Requests for information, submittals, shop drawings, material submittals, transmittals and technical approvals: who sent them to whom, the date due, the response and its date, and the status (open, answered, approved, approved as noted, revise and resubmit, rejected, closed).</p>
+
+<h2 id="pg-proj-logs">Risks, Issues &amp; Meetings<a class="man-hash" href="#pg-proj-logs" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The project's registers: risks (probability, impact, cost and days at stake, response), issues, decisions, site instructions, correspondence, meeting minutes, delays and the diary.</p>
+
+<h2 id="pg-proj-closeout">Close-out, Punch List &amp; Warranty<a class="man-hash" href="#pg-proj-closeout" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<ul>
+<li><strong>Close-out checklist:</strong> the standard items (final accomplishment, punch list cleared, certificate of completion, as-built drawings, manuals and warranties, final billing and collection, retention release, subcontractors closed out, warranty registered, final cost reviewed), each pending, in progress, completed or waived.</li>
+<li><strong>Punch list and defects:</strong> location, description, party responsible, severity, due date, cost, and whether the warranty covers it. An item is closed only after it is rectified and verified.</li>
+<li><strong>Warranty:</strong> starts the defects liability period from the completion date.</li>
+<li><strong>Financial closure:</strong> the program lists what is still open: purchase orders, client and supplier balances, retention both ways, advances, pending approvals, unposted documents, punch items, checklist items, NCRs, active subcontracts and revenue not yet recognized. A project with open items is closed only as a documented exception approved along the closure route.</li>
+</ul>
+
+<h2 id="pg-portal-client">Client Portal<a class="man-hash" href="#pg-portal-client" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A client representative (a user linked to the client) sees only the client's own projects: progress and schedule, milestones, billings and statements, change orders, documents and site photos. They can certify a billing, approve or decline a change order, and send a message to the project manager.</p>
+
+<h2 id="pg-portal-sub">Subcontractor Portal<a class="man-hash" href="#pg-portal-sub" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A subcontractor's user sees their agreements with the progress verified on site, their billings and payments, and the retention held. They submit a progress billing with their invoice attached; the quantity surveyor and the project manager are notified to check it.</p>
+
+<h2 id="s-cs-reports">Project reports and dashboards<a class="man-hash" href="#s-cs-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p><strong>Where to find them:</strong> Reports &gt; Report Center, group Project Reports. Each report shows only the projects you may see and can be narrowed to one project, client, project manager or status; it prints, exports to a spreadsheet, can be memorized and e-mailed like every other report, and its Columns box shows the optional columns.</p>
+<ul>
+<li><strong>Project financials:</strong> Project Portfolio Summary, Project Income Statement, Project Cost Breakdown, Budget versus Actual Cost, Committed Costs and Open Purchase Orders, Estimate at Completion, Estimated Cost to Complete, Project Cash Flow Statement, Project Profitability Forecast, Work-in-Progress / Contract Position, Earned Revenue versus Billing, Client Profitability.</li>
+<li><strong>Billing and collections:</strong> Project Billing Statement, Project Collections Statement, Accounts Receivable Aging by Project, Retention Receivables.</li>
+<li><strong>Costs and resources:</strong> Project Accounts Payable, Material Consumption and Wastage, Worker Man-hours and Labor Cost, Labor Productivity, Equipment Utilization, Subcontractor Statement, Cost Allocations, Supplier Spend by Project.</li>
+<li><strong>Contracts and progress:</strong> Change Order Register, Contract Summary, Earned Value, Milestones and Deliverables, Quality and Safety.</li>
+</ul>
+<p id="pg-home-exec_dashboard">The <strong>Executive Dashboard</strong> shows the portfolio: contract value, estimated cost and profit, billings and collections, receivables, cash needed in the next 30 days, projects over budget or behind schedule, equipment and manpower, and the large approvals waiting. <span id="pg-home-pm_dashboard">The <strong>Project Manager Dashboard</strong> shows your approvals, deliverables pending, cost against budget, work ready to bill, manpower on site today, equipment, site issues and material requests in progress.</span> <span id="pg-home-fin_dashboard">The <strong>Finance Dashboard</strong> shows bank and cash balances, receivables and payables with their aging, collections expected in the next 30 days, retention both ways, the margins and receivables of each project, and the finance approvals waiting.</span></p>
+
+<h2 id="pg-admin-cs_settings">Construction Settings<a class="man-hash" href="#pg-admin-cs_settings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p><strong>Where to find it:</strong> System Administration &gt; Construction Settings.</p>
+<ul>
+<li><strong>Revenue recognition:</strong> percentage of completion by cost or by physical progress, at completion, or as the billings are certified. Changing it after revenue was recognized needs the reason.</li>
+<li><strong>When materials become project cost:</strong> when issued to the project, or when the site reports them used.</li>
+<li><strong>Billing past a line of the schedule of values:</strong> refuse (unless an authorized adjustment is recorded) or warn.</li>
+<li><strong>Requests and commitments past the budget:</strong> refuse until a revision is approved, or warn and flag the approval as high risk.</li>
+<li><strong>VAT on progress billings:</strong> on the accomplishment less the advance recouped, or on the gross accomplishment.</li>
+<li><strong>Who sees which project:</strong> only the project's team (and the users or roles marked all projects), or every user with access to the page.</li>
+<li><strong>Maker-checker:</strong> nobody approves what they submitted, or (small companies) allowed.</li>
+<li>The usual retention, regular hours a day, the most hours a worker can log in a day, when an approval step is overdue, and the project code prefix.</li>
+</ul>

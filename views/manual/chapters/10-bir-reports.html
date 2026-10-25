@@ -1,0 +1,505 @@
+<p>The BIR Reports module holds what GSMaRT Construction System needs for the company's withholding tax and VAT returns: the <strong>Withholding Tax Table</strong> that says how much is withheld, the <strong>BIR Form 2307</strong> certificate given to each supplier, and the reports from which the returns are prepared (2550Q, 1600-VT, 0619-E and 1601-EQ). The taxes themselves are withheld where the payments are made: in <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a> for what the company withholds from its suppliers, and in <a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a> for what customers withhold from the company.</p>
+<p>The rules and the worksheets follow the company's guide <em>VAT, Withholding Tax and Company Tax Returns</em> (prepared 08 October 2026).</p>
+<p>In the sidebar the module has three groups:</p>
+<ul>
+<li><strong>Transactions:</strong> Print BIR Form 2307.</li>
+<li><strong>Setup:</strong> Withholding Tax Table.</li>
+<li><strong>Reports</strong>, under the heading <strong>BIR Reports</strong>: Summary of Taxes Withheld from Vendors/Suppliers, Expanded Withholding Tax Register (1% / 2%), Withholding Tax Remittances (0619-E, 1601-EQ, 1600-VT), VAT Withholding Register (1600-VT), Output VAT / Sales Register, Input VAT / Purchases Register, Creditable VAT Withheld Schedule (2550Q Schedule 3) and Quarterly VAT Return Worksheet (2550Q). They are also listed in the <a href="manual.php?c=home-and-reports#pg-home-reports">Report Center</a> under <strong>BIR Reports</strong>.</li>
+</ul>
+<h2 id="s-the-taxes-at-a-glance">The taxes at a glance<a class="man-hash" href="#s-the-taxes-at-a-glance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Tax</th>
+<th>Who handles it</th>
+<th>Usual rate</th>
+<th>Where it goes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output VAT</td>
+<td>The VAT-registered seller</td>
+<td>12% of the VAT-exclusive taxable sale</td>
+<td>BIR 2550Q: output VAT</td>
+</tr>
+<tr>
+<td>Input VAT</td>
+<td>The eligible VAT-registered buyer</td>
+<td>Normally 12% of the eligible VAT-exclusive purchase</td>
+<td>BIR 2550Q: allowable input VAT</td>
+</tr>
+<tr>
+<td>VAT withheld</td>
+<td>A qualifying government buyer / withholding agent</td>
+<td>Generally 5% of the VAT-exclusive payment</td>
+<td>Buyer: 1600-VT. Seller: a VAT credit on 2550Q (Item 16)</td>
+</tr>
+<tr>
+<td>Creditable withholding on goods</td>
+<td>Government buyers and BIR-notified top withholding agents</td>
+<td>Generally 1% of the income payment</td>
+<td>Buyer: 0619-E / 1601-EQ. Seller: an income-tax credit</td>
+</tr>
+<tr>
+<td>Creditable withholding on services</td>
+<td>Government buyers and BIR-notified top withholding agents</td>
+<td>Generally 2% of the income payment</td>
+<td>Buyer: 0619-E / 1601-EQ. Seller: an income-tax credit</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>The 5% VAT withholding is not the VAT rate, and it is worked out on the amount <strong>net of VAT</strong>, never on the VAT itself. For a ₱112,000.00 invoice (₱100,000.00 plus ₱12,000.00 VAT) the 5% is ₱5,000.00 and the 1% ₱1,000.00; the supplier receives ₱106,000.00. The 1% / 2% are income tax, not VAT: they never reduce the VAT due and are never posted as input VAT.</p></div>
+<p>Who must withhold: government payors and the top withholding agents notified by the BIR withhold 1% on goods and 2% on services bought from their regular suppliers (RR 11-2018); government buyers also withhold 5% VAT on their qualifying VATable purchases. An ordinary private purchaser generally withholds neither. Check the thresholds (single purchases of ₱10,000.00 or less), the supplier's status and exemptions, and the special rates (0.5% under RR 24-2025, the rules of RR 9-2025 for registered business enterprises) before you withhold.</p>
+<h3 id="s-the-accounts-used">The accounts used<a class="man-hash" href="#s-the-accounts-used" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account (demo)</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2110 Withholding Tax Payable</td>
+<td>The 1% / 2% withheld from suppliers, until remitted with 0619-E and 1601-EQ</td>
+</tr>
+<tr>
+<td>2115 VAT Withheld Payable</td>
+<td>The 5% VAT withheld from suppliers, until remitted with 1600-VT</td>
+</tr>
+<tr>
+<td>1310 Creditable Withholding Tax</td>
+<td>The 1% / 2% customers withheld: a credit against the company's income tax</td>
+</tr>
+<tr>
+<td>1315 Creditable VAT Withheld</td>
+<td>The 5% VAT government customers withheld: a credit on the 2550Q (Item 16)</td>
+</tr>
+<tr>
+<td>2100 Output Tax, 1300 Input Tax</td>
+<td>The 12% VAT on sales and purchases, as before</td>
+</tr>
+</tbody>
+</table></div>
+<p>They are set in <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a> (Withholding Tax Payable (Expanded), VAT Withheld Payable, Creditable Withholding Tax, Creditable VAT Withheld). A tax of the Withholding Tax Table can have accounts of its own instead.</p>
+<h2 id="pg-bir-wht_table">Withholding Tax Table<a class="man-hash" href="#pg-bir-wht_table" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Withholding Tax Table is the guide to how much is deducted: every tax that can be withheld from a payment, with its rate and the base it is worked out on. It is flexible: taxes can be added, changed, made inactive or deleted at any time. The same page says whether the company is a withholding agent and holds the payor details printed on BIR Form 2307.</p>
+<p><strong>Where to find it:</strong> BIR Reports &gt; Withholding Tax Table. Viewing it needs access to the page; adding, changing and deleting need the create, edit and delete permissions (by default the Administrator and the Accountant).</p>
+<h4 id="s-the-withholding-agent-card">The withholding agent card<a class="man-hash" href="#s-the-withholding-agent-card" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>This company is a withholding agent</strong></td>
+<td>On: the company deducts withholding taxes when it pays its suppliers. <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a> shows the <strong>Withholding</strong> column and BIR Form 2307 is printed for the suppliers. Off: Pay Bills has no Withholding column (a payment that already withheld taxes keeps them when it is edited). On as delivered.</td>
+</tr>
+<tr>
+<td>Payor on BIR Form 2307</td>
+<td>The company name, TIN and address of System Administration &gt; Company, Security &amp; Closing Date, printed in Part II of the form</td>
+</tr>
+<tr>
+<td><strong>Payor zip code</strong></td>
+<td>Printed in Item 8A of the form</td>
+</tr>
+<tr>
+<td><strong>Authorized signatory</strong>, <strong>Title / designation</strong>, <strong>Signatory TIN</strong></td>
+<td>Printed over the signature line of the payor on the form</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Save</strong> to keep them; the change goes to the audit trail.</p>
+<h4 id="s-the-table">The table<a class="man-hash" href="#s-the-table" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td>The name of the tax, its code and when it applies</td>
+</tr>
+<tr>
+<td><strong>ATC</strong></td>
+<td>The BIR alphanumeric tax code printed on Form 2307 (for example WC158)</td>
+</tr>
+<tr>
+<td><strong>Rate</strong></td>
+<td>The percentage withheld</td>
+</tr>
+<tr>
+<td><strong>Kind</strong></td>
+<td><strong>Income tax withheld</strong> (the expanded withholding tax, 1% / 2%) or <strong>VAT withheld</strong> (the business tax, 5%). The kinds are kept apart in every report and on the form.</td>
+</tr>
+<tr>
+<td><strong>Worked out on</strong></td>
+<td><strong>Amount net of VAT</strong> (as the BIR asks for these rates) or <strong>Gross amount (VAT included)</strong></td>
+</tr>
+<tr>
+<td><strong>Used on</strong></td>
+<td><strong>Payments to suppliers</strong>, <strong>Payments from customers</strong> or <strong>Both</strong></td>
+</tr>
+<tr>
+<td><strong>Accounts</strong></td>
+<td>Where it posts: what is withheld from suppliers, and what customers withhold</td>
+</tr>
+<tr>
+<td><strong>Used</strong></td>
+<td>How many payment lines it was withheld on, and how many suppliers have it as a usual tax</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Active</strong>, or <strong>Inactive</strong> (no longer offered on new payments)</td>
+</tr>
+</tbody>
+</table></div>
+<p>As delivered, the table holds:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Type (code)</th>
+<th>ATC</th>
+<th>Rate</th>
+<th>Kind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WT on Goods (WT-GOODS)</td>
+<td>WC158</td>
+<td>1%</td>
+<td>Income tax withheld</td>
+</tr>
+<tr>
+<td>WT on Services (WT-SERVICES)</td>
+<td>WC160</td>
+<td>2%</td>
+<td>Income tax withheld</td>
+</tr>
+<tr>
+<td>WT on VAT (WT-VAT)</td>
+<td>WV010</td>
+<td>5%</td>
+<td>VAT withheld</td>
+</tr>
+</tbody>
+</table></div>
+<p>All three are worked out on the amount net of VAT and used on both sides. Check the ATCs against the BIR's current list for your company (corporations and individuals have different codes).</p>
+<h4 id="s-step-by-step-add-a-tax">Step by step: add a tax<a class="man-hash" href="#s-step-by-step-add-a-tax" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Add a withholding tax</strong>.</li>
+<li>Type the <strong>Name</strong>, a short <strong>Code</strong> of your own (unique), the <strong>BIR ATC</strong> and the <strong>Rate (%)</strong> (0.5 for 0.5%).</li>
+<li>Choose the <strong>Kind of tax</strong>, what it is <strong>Worked out on</strong> and where it is <strong>Used on</strong>.</li>
+<li>Leave the two account boxes on their default, or choose an account of its own.</li>
+<li>Type <strong>When it applies</strong>, the <strong>Order on the list</strong>, and click <strong>Save</strong>.</li>
+</ol>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>For example WT on Goods. Shown in Pay Bills, Receive Payments, the reports and on Form 2307</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>Your own short code, unique (WT-GOODS)</td>
+</tr>
+<tr>
+<td><strong>BIR ATC</strong></td>
+<td>The alphanumeric tax code (WC158, WC160, WV010 ...)</td>
+</tr>
+<tr>
+<td><strong>Rate (%)</strong></td>
+<td>Above 0 and up to 100</td>
+</tr>
+<tr>
+<td><strong>Kind of tax</strong></td>
+<td><strong>Income tax withheld (expanded)</strong> or <strong>Business tax withheld (VAT)</strong></td>
+</tr>
+<tr>
+<td><strong>Worked out on</strong></td>
+<td><strong>Amount net of VAT</strong> or <strong>Gross amount (VAT included)</strong></td>
+</tr>
+<tr>
+<td><strong>Used on</strong></td>
+<td><strong>Payments to suppliers</strong>, <strong>Payments from customers</strong> or <strong>Both</strong></td>
+</tr>
+<tr>
+<td><strong>Account for what is withheld from suppliers</strong></td>
+<td>A liability account; blank = the default (Withholding Tax Payable, or VAT Withheld Payable for VAT)</td>
+</tr>
+<tr>
+<td><strong>Account for what customers withhold</strong></td>
+<td>An asset account; blank = the default (Creditable Withholding Tax, or Creditable VAT Withheld for VAT)</td>
+</tr>
+<tr>
+<td><strong>When it applies</strong></td>
+<td>A note shown on the table</td>
+</tr>
+<tr>
+<td><strong>Order on the list</strong></td>
+<td>Smaller numbers first</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick to stop offering it on new payments</td>
+</tr>
+<tr>
+<td><strong>Reason for the change</strong></td>
+<td>On an edit; kept in the audit trail</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-changing-deactivating-and-deleting">Changing, deactivating and deleting<a class="man-hash" href="#s-changing-deactivating-and-deleting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Edit</strong> changes a tax. Payments already saved keep the rate and amount they were saved with; the new rate applies to payments from then on.</li>
+<li>Untick <strong>Active</strong> to stop offering a tax. A payment that used it still shows it.</li>
+<li>The bin button deletes a tax that has never been withheld on a payment (it is also taken off the suppliers and customers that had it as a usual tax). A tax already used stays on the table: "... has been used on ... payment line(s), so it stays on the table. Make it inactive instead."</li>
+<li>Messages: "Enter the code and the name of the withholding tax.", "The rate is a percentage above 0 and up to 100 (1 for 1%).", "Another withholding tax already has the code ...".</li>
+</ul>
+<h4 id="s-how-the-table-is-used">How the table is used<a class="man-hash" href="#s-how-the-table-is-used" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Vendor Center:</strong> each supplier's usual taxes (<strong>Withholding taxes</strong> on the vendor form), one, two or more.</li>
+<li><strong>Pay Bills:</strong> the <strong>Withholding</strong> column opens this table for each bill; tick one or more taxes (for example 1% and 5%). Each amount is worked out at once from the outstanding balance net of VAT and can be typed over. See <a href="manual.php?c=vendors#pg-vend-pay_bills">The Withholding column</a>.</li>
+<li><strong>Receive Payments:</strong> the taxes a customer withheld are ticked the same way.</li>
+<li>Each payment keeps its taxes by bill (or invoice) and type, with the base, rate and ATC. BIR Form 2307 and the reports below are made from them.</li>
+</ul>
+<h2 id="pg-bir-form_2307">Print BIR Form 2307<a class="man-hash" href="#pg-bir-form_2307" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>BIR Form 2307, the <em>Certificate of Creditable Tax Withheld at Source</em>, is given by the company to each supplier it withheld taxes from, for each quarter. GSMaRT Construction System prints it from the taxes withheld in Pay Bills in the quarter.</p>
+<p><strong>Where to find it:</strong> BIR Reports &gt; Print BIR Form 2307. The <strong>BIR Form 2307</strong> button of a bill payment with taxes withheld opens it for that supplier and quarter. Printing needs the print permission on the page.</p>
+<h4 id="s-the-page">The page<a class="man-hash" href="#s-the-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Choose the <strong>Supplier</strong>, the <strong>Year</strong> and the <strong>Quarter</strong>, and click <strong>Show</strong>. On the left, <strong>Suppliers with taxes withheld</strong> lists every supplier the company withheld from in the quarter, with its TIN, the income tax and VAT withheld, and whether its 2307 has been printed (<strong>Printed</strong> and the date, or <strong>Not yet printed</strong>). Click a supplier to see its certificate.</p>
+<p>A warning shows when the supplier or the company has no TIN.</p>
+<h4 id="s-what-the-certificate-holds">What the certificate holds<a class="man-hash" href="#s-what-the-certificate-holds" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The layout follows the official form (January 2018 ENCS):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What is printed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Item 1</td>
+<td><strong>For the Period From ... To ...</strong>: the first and last day of the quarter</td>
+</tr>
+<tr>
+<td>Part I - Payee Information</td>
+<td>Item 2 the supplier's TIN, Item 3 its registered name (the company name of the vendor, or its name), Item 4 its address</td>
+</tr>
+<tr>
+<td>Part II - Payor Information</td>
+<td>Item 6 the company's TIN, Item 7 its name, Item 8 its address, Item 8A the payor zip code</td>
+</tr>
+<tr>
+<td>Part III - Details of Monthly Income Payments and Taxes Withheld</td>
+<td>One line per tax with its <strong>ATC</strong>: the income payments (the tax bases, net of VAT) of the <strong>1st</strong>, <strong>2nd</strong> and <strong>3rd Month of the Quarter</strong>, their <strong>Total</strong> and the <strong>Tax Withheld for the Quarter</strong>; then <strong>Money Payments Subject to Withholding of Business Tax (Government &amp; Private)</strong> for the VAT withheld, each with a total</td>
+</tr>
+<tr>
+<td>Declaration and signatures</td>
+<td>The declaration of the form, the authorized signatory of the payor (from the Withholding Tax Table), and the <strong>CONFORME</strong> line for the payee</td>
+</tr>
+</tbody>
+</table></div>
+<p>The month of a payment is the month of the bill payment's date.</p>
+<h4 id="s-step-by-step-print-the-certificates-of-a-quarter">Step by step: print the certificates of a quarter<a class="man-hash" href="#s-step-by-step-print-the-certificates-of-a-quarter" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Go to <strong>BIR Reports &gt; Print BIR Form 2307</strong> and choose the <strong>Year</strong> and <strong>Quarter</strong>.</li>
+<li>To print one supplier's certificate, click it in the list, check the figures and click <strong>Print / PDF</strong>, then <strong>Print / Save as PDF</strong> on the print page.</li>
+<li>To print every supplier's certificate at once, click <strong>Print all</strong>: one certificate per page.</li>
+<li>Sign the certificates and give them to the suppliers.</li>
+</ol>
+<p>Each print is recorded in the audit trail (action <strong>print_2307</strong>), which is how the list and the <a href="#pg-rpt-bir_ewt_register">Expanded Withholding Tax Register</a> know that a supplier's 2307 was issued.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>in the demo, the bookkeeping fee of Accounting Partners &amp; Co. (APC-2231, ₱45,000.00 plus ₱5,400.00 VAT) was paid less 2% withheld on the ₱45,000.00: ₱900.00. Its 2307 shows one line, WT on Services 2%, ATC WC160, ₱45,000.00 in the month it was paid, and ₱900.00 withheld.</p></div>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Only payments that are not void count. A payment voided after the certificate was printed changes the certificate: print it again.</li>
+<li>The certificate uses the bases and amounts saved on the payments: correct a wrong amount by editing the bill payment.</li>
+<li>The amounts customers withheld from the company are on the 2307 forms they give you; record them in Receive Payments and follow them with the <a href="#pg-rpt-bir_cvat_withheld">Creditable VAT Withheld Schedule</a> and the <a href="#pg-rpt-bir_ewt_register">Expanded Withholding Tax Register</a> (taxes withheld by customers).</li>
+</ul>
+<h2 id="sec-bir-reports">BIR Reports<a class="man-hash" href="#sec-bir-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The reports follow the worksheets of the guide (Forms A to F). Each one prints, exports to a spreadsheet, memorizes and can be redesigned like every report (see <a href="manual.php?c=home-and-reports">Home, Finding Things and Working with Reports</a>), and ends with <strong>Prepared by</strong>, <strong>Reviewed by</strong> and <strong>Date</strong> lines and the note <em>Internal worksheet only, not a substitute for BIR filing forms</em>. File the official BIR forms (through eFPS or eBIRForms) from them, and check the current BIR issuances and form versions first.</p>
+<p>The <strong>Dates</strong> box of every report has <strong>This quarter</strong> and <strong>Last quarter</strong> among its choices. The reports open on this quarter, the Remittances on this year and the VAT Withholding Register on this month.</p>
+<h3 id="pg-rpt-bir_wht_summary">Summary of Taxes Withheld from Vendors/Suppliers<a class="man-hash" href="#pg-rpt-bir_wht_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What the company withheld from each supplier on the bills paid in the period, by supplier and tax: the summary asked for by the company, and the figures of the quarterly alphalist of payees attached to 1601-EQ.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Tax</strong> (income tax withheld or VAT withheld) and <strong>Withholding tax</strong> (one type of the table).</p>
+<p><strong>The columns:</strong> <strong>Supplier</strong> (click it to open its BIR Form 2307 for the quarter), <strong>TIN</strong>, <strong>ATC</strong>, <strong>Withholding tax</strong>, <strong>Rate</strong>, <strong>Income payment (tax base)</strong> and <strong>Tax withheld</strong>, with a total per supplier. <strong>Kind</strong> and <strong>Payments</strong> can be added. Under the report, the income tax withheld and the VAT withheld are given apart.</p>
+<h3 id="pg-rpt-bir_ewt_register">Expanded Withholding Tax Register (1% / 2%)<a class="man-hash" href="#pg-rpt-bir_ewt_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form E of the guide: every 1% / 2% income tax withheld, payment by payment.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong>, <strong>Vendor</strong>, <strong>Customer</strong> and <strong>Register of</strong>: <strong>Taxes withheld from suppliers</strong> (the payments the company withholds from; reconcile with 0619-E and 1601-EQ) or <strong>Taxes withheld by customers</strong> (the income-tax credits to support with the customers' 2307 forms).</p>
+<p><strong>The columns:</strong> <strong>Date paid</strong>, <strong>Payee (supplier)</strong> or <strong>Payor (customer)</strong>, <strong>TIN</strong>, <strong>Invoice / reference</strong> (click to open the bill or invoice), <strong>Goods / services</strong> (the tax), <strong>VAT-exclusive income base</strong>, <strong>EWT rate</strong>, <strong>Income tax withheld</strong>, <strong>2307 status</strong> (for suppliers: <strong>Printed</strong> and the date, or <strong>Not yet printed</strong>; for customers: ask the customer for it) and <strong>Remittance / return</strong> (0619-E due the 10th of the next month for months 1 and 2 of the quarter, 1601-EQ due the last day of the month after the quarter for month 3). <strong>ATC</strong> and <strong>Payment no.</strong> can be added.</p>
+<h3 id="pg-rpt-bir_remittance">Withholding Tax Remittances (0619-E, 1601-EQ, 1600-VT)<a class="man-hash" href="#pg-rpt-bir_remittance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>What the company withheld from its suppliers and must remit, return by return, with the due dates of the guide's filing table.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this fiscal year as delivered), <strong>From</strong> and <strong>To</strong>.</p>
+<p><strong>The columns:</strong> <strong>Return</strong>, <strong>Period</strong>, <strong>Due date</strong>, <strong>ATC</strong>, <strong>Withholding tax</strong>, <strong>Rate</strong>, <strong>Tax base</strong> and <strong>Tax withheld</strong>, with a total per return and period.</p>
+<ul>
+<li><strong>0619-E</strong>: the income tax withheld in months 1 and 2 of a quarter, monthly, by the 10th of the following month.</li>
+<li><strong>1601-EQ</strong>: the quarter's expanded withholding return, by the last day of the month after the quarter. It lists the income tax withheld in the third month, and the quarter's 0619-E remittances are shown as a credit under it.</li>
+<li><strong>1600-VT</strong>: the VAT withheld, monthly, by the 10th of the following month.</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>eFPS filers and taxpayers covered by special issuances can have other dates. Always check the BIR tax calendar before filing. The annual 1604-E and its alphalist are prepared from the Summary of Taxes Withheld over the year.</p></div>
+<h3 id="pg-rpt-bir_vat_withholding">VAT Withholding Register (1600-VT)<a class="man-hash" href="#pg-rpt-bir_vat_withholding" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form F of the guide: the 5% VAT withheld from suppliers, for 1600-VT and the certificates.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this month as delivered), <strong>From</strong>, <strong>To</strong> and <strong>Vendor</strong>.</p>
+<p><strong>The columns:</strong> <strong>Date paid</strong>, <strong>VAT-registered seller</strong>, <strong>TIN</strong>, <strong>Invoice reference</strong>, <strong>VAT-exclusive payment</strong>, <strong>VAT WHT rate</strong>, <strong>VAT withheld (1600-VT)</strong>, <strong>1600-VT due</strong>, <strong>Income EWT 1% / 2%</strong> (withheld on the same bill and payment; it goes on 0619-E / 1601-EQ) and <strong>BIR 2307 issued</strong>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>As the guide warns, this register is for the government 5% VAT withholding. Do not use it for an ordinary private buyer without an applicable special rule; for a registered business enterprise review the special 12% rules first.</p></div>
+<h3 id="pg-rpt-bir_sales_register">Output VAT / Sales Register<a class="man-hash" href="#pg-rpt-bir_sales_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form B of the guide: the taxable sales reported in full, even when customers withhold taxes from the payment.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong> and <strong>Customer</strong>. The <strong>Columns</strong> box picks the columns to show.</p>
+<p><strong>The columns:</strong> <strong>Date</strong>, <strong>VAT invoice no.</strong> (click to open it), <strong>Customer</strong>, <strong>TIN</strong>, <strong>Goods / services</strong>, <strong>Net taxable sales</strong>, <strong>Output VAT 12%</strong>, <strong>Invoice total (inc. VAT)</strong>, <strong>Income WHT 1% / 2%</strong>, <strong>VAT WHT 5%</strong> (the taxes the customers withheld on it) and <strong>Actual cash received</strong>. <strong>Type</strong>, <strong>Zero-rated sales</strong> and <strong>Exempt sales</strong> can be added.</p>
+<p>Invoices, sales receipts, statement charges and POS sales are listed; credit memos and POS returns are negatives. A line is VATable when its tax code has a rate (VAT12), zero-rated with the ZR code, and exempt otherwise. Reconcile <strong>Net taxable sales</strong> and <strong>Output VAT 12%</strong> to 2550Q Items 31A and 31B.</p>
+<h3 id="pg-rpt-bir_purchase_register">Input VAT / Purchases Register<a class="man-hash" href="#pg-rpt-bir_purchase_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form C of the guide: the purchases and their input VAT.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong> and <strong>Vendor</strong>. The <strong>Columns</strong> box picks the columns to show.</p>
+<p><strong>The columns:</strong> <strong>Date</strong>, <strong>VAT invoice no.</strong> (the supplier's reference), <strong>Supplier</strong>, <strong>TIN</strong>, <strong>Category</strong> (Goods, Services or Capital goods, from the lines), <strong>VAT-exclusive purchase</strong>, <strong>Input VAT</strong>, <strong>Exempt / non-VAT purchases</strong>, <strong>Total bill (inc. VAT)</strong>, <strong>Income WHT</strong>, <strong>Amount paid to supplier</strong> and <strong>VAT status</strong>. <strong>Type</strong>, <strong>Zero-rated purchases</strong> and <strong>VAT WHT</strong> can be added.</p>
+<p>Bills and checks are listed; supplier debit memos are negatives. Item receipts are not (the VAT is recorded when the bill is entered).</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Input VAT is claimable only where the company meets the invoicing and creditability requirements. A non-VAT supplier's invoice has no claimable input VAT. Identify noncreditable, exempt, import, capital-goods, unpaid-payable and adjustment amounts separately.</p></div>
+<h3 id="pg-rpt-bir_cvat_withheld">Creditable VAT Withheld Schedule (2550Q Schedule 3)<a class="man-hash" href="#pg-rpt-bir_cvat_withheld" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form D of the guide: the 5% VAT government customers withheld from the company, the VAT credit of 2550Q Part V Schedule 3 and Item 16.</p>
+<p><strong>The filters:</strong> <strong>Dates</strong>, <strong>From</strong>, <strong>To</strong> and <strong>Customer</strong>.</p>
+<p><strong>The columns:</strong> <strong>Payment date</strong>, <strong>Government withholding agent</strong>, <strong>TIN</strong>, <strong>VAT invoice reference</strong>, <strong>Withholding tax</strong>, <strong>VAT-exclusive tax base</strong>, <strong>VAT WHT rate</strong> and <strong>VAT amount withheld</strong>. <strong>Quarter</strong> and <strong>Payment no.</strong> can be added.</p>
+<p>Match each line to the government purchaser, the invoice, the proof of payment and the BIR Form 2307 received, and tick it off once the certificate is in hand. Government VAT withheld is not input VAT.</p>
+<h3 id="pg-rpt-bir_2550q">Quarterly VAT Return Worksheet (2550Q)<a class="man-hash" href="#pg-rpt-bir_2550q" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Form A of the guide, the quarterly VAT reconciliation, with the item numbers of BIR Form 2550Q (April 2024 edition).</p>
+<p><strong>The filters:</strong> <strong>Dates</strong> (this quarter as delivered), <strong>From</strong> and <strong>To</strong>. Run it for one quarter.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Item</th>
+<th>What it is</th>
+<th>Where it comes from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>31A, 31B</td>
+<td>VATable sales net of VAT, and their output VAT</td>
+<td>The Output VAT / Sales Register</td>
+</tr>
+<tr>
+<td>32, 33, 34A</td>
+<td>Zero-rated sales, exempt sales, total sales</td>
+<td>The same register</td>
+</tr>
+<tr>
+<td>37B</td>
+<td>Total adjusted output VAT</td>
+<td>31B, with no adjustments</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Input VAT carried over from the previous quarter</td>
+<td>The excess input VAT of the quarter before (when its allowable input VAT was more than its output VAT)</td>
+</tr>
+<tr>
+<td>44A, 44B</td>
+<td>Domestic purchases net of VAT, and their input tax</td>
+<td>The Input VAT / Purchases Register</td>
+</tr>
+<tr>
+<td>48A</td>
+<td>Domestic purchases with no input tax</td>
+<td>Zero-rated, exempt and non-VAT purchases</td>
+</tr>
+<tr>
+<td>50B, 51B, 60B</td>
+<td>Current, total available and total allowable input tax</td>
+<td>44B, plus 38</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Net VAT payable before payment credits</td>
+<td>37B less 60B</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Net VAT payable carried to the tax payable section</td>
+<td>61 when it is positive</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Creditable VAT withheld (Schedule 3)</td>
+<td>The Creditable VAT Withheld Schedule</td>
+</tr>
+<tr>
+<td>17, 20</td>
+<td>Advance VAT payments / other credits, total credits</td>
+<td>16 (no other credits are kept)</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Tax still payable, or the excess input VAT carried to the next quarter</td>
+<td>15 less 20</td>
+</tr>
+</tbody>
+</table></div>
+<p>The last line, under <strong>NOT VAT</strong>, gives the 1% / 2% income tax withheld by customers: an income-tax credit, kept apart because it never reduces the VAT due.</p>
+<div class="man-callout man-note"><p><strong>Example (the guide's sample quarter):</strong> VATable sales of ₱350,000.00 with output VAT ₱42,000.00 (Items 31A, 31B, 37B); purchases of ₱100,000.00 with input VAT ₱12,000.00 (44A, 44B, 50B, 51B, 60B); net VAT before credits ₱30,000.00 (61, 15); creditable VAT withheld by government buyers ₱10,000.00 (16, 20); VAT still payable ₱20,000.00 (21). The ₱5,000.00 of income tax withheld on the sales is shown apart and does not reduce the ₱20,000.00.</p></div>
+<p>2550Q is filed quarterly, generally within 25 days after the quarter closes. The official form has more items (uncollected receivables, capital goods, importations, special adjustments) than this worksheet: use the actual amounts and the latest BIR instructions.</p>
+<h2 id="s-filing-calendar">Filing calendar<a class="man-hash" href="#s-filing-calendar" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>From the guide's filing workflow:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Return / document</th>
+<th>Purpose</th>
+<th>General filing cycle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BIR Form 2550Q</td>
+<td>VAT-registered seller: output less allowable input VAT, less the qualifying VAT credits</td>
+<td>Quarterly; generally within 25 days after the quarter closes</td>
+</tr>
+<tr>
+<td>BIR Form 1600-VT</td>
+<td>The withholding agent remits the VAT withheld</td>
+<td>Monthly; generally by the 10th of the following month</td>
+</tr>
+<tr>
+<td>BIR Form 0619-E</td>
+<td>The withholding agent remits the expanded income tax withheld in months 1 and 2 of the quarter</td>
+<td>Monthly for the first two months; generally by the 10th of the following month</td>
+</tr>
+<tr>
+<td>BIR Form 1601-EQ</td>
+<td>Quarterly expanded withholding return (including the quarter-end month)</td>
+<td>Quarterly; generally by the last day of the month after the quarter closes</td>
+</tr>
+<tr>
+<td>BIR Form 2307</td>
+<td>Certificate of the creditable income tax and business tax withheld</td>
+<td>Issued and reconciled under the BIR's timing rules</td>
+</tr>
+<tr>
+<td>BIR Form 1604-E and alphalists</td>
+<td>Annual reconciliation of the expanded withholding</td>
+<td>Annual; check the updated tax calendar</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-a-companys-monthly-to-quarterly-routine">A company's monthly-to-quarterly routine<a class="man-hash" href="#s-a-companys-monthly-to-quarterly-routine" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Keep each supplier's and customer's tax profile current: VAT status, TIN, whether it is a government or top withholding agent, its usual withholding taxes.</li>
+<li>Enter the VAT invoices with the VATable, zero-rated and exempt amounts and the tax codes.</li>
+<li>Withhold the taxes as separate taxes in Pay Bills (and record what customers withheld in Receive Payments). Never net the 5% VAT withheld and the 1% / 2% against the same VAT account.</li>
+<li>Each month: run the <a href="#pg-rpt-bir_remittance">Withholding Tax Remittances</a> for 0619-E and 1600-VT.</li>
+<li>Each quarter: print the <a href="#pg-bir-form_2307">BIR Form 2307</a> certificates, run the <a href="#pg-rpt-bir_wht_summary">Summary of Taxes Withheld</a> for 1601-EQ, and the <a href="#pg-rpt-bir_2550q">2550Q worksheet</a> with its registers for the VAT return.</li>
+<li>Reconcile the registers with the general ledger: 2100 Output Tax, 1300 Input Tax, 2110, 2115, 1310 and 1315, and keep the acknowledgments of the returns filed.</li>
+</ol>

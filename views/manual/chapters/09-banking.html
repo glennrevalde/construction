@@ -1,0 +1,1208 @@
+<p>The Banking module records the money that goes into and out of your bank and cash accounts: checks, cash vouchers paid out of a petty cash or revolving fund, deposits, transfers between accounts, and the monthly bank reconciliation. It also keeps a register for each account, like a checkbook.</p>
+<p>In GSMaRT Construction System a bank or cash account is an account of type <strong>Bank</strong> in the <a href="manual.php?c=chart-of-accounts#pg-coa-accounts">Chart of Accounts</a>. In the demo company these are 1001 Cash on Hand - Store Registers, 1005 Petty Cash Fund, 1006 Revolving Fund, 1010 Cash in Bank - BDO Checking and 1020 Cash in Bank - BPI Savings.</p>
+<p>In the sidebar the module has two groups:</p>
+<ul>
+<li><strong>Transactions:</strong> Write Checks, Cash Voucher, Use Register, Make Deposits, Transfer Funds, Reconcile.</li>
+<li><strong>Reports:</strong> Reconciliation Summary, Reconciliation Detail, Reconciliation Discrepancy, Check Register.</li>
+</ul>
+<p>Many other pages also move money: <a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a> and <a href="manual.php?c=customers#pg-cust-sales_receipts">Enter Sales Receipts</a> bring money in, usually into Undeposited Funds until you deposit it; <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a> pays suppliers' bills by check; the <a href="manual.php?c=point-of-sale#pg-pos-register">POS Register</a> takes cash and card payments. All of them appear in the account registers and in the reconciliation.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The special permission <strong>Max check / bill payment / adjustment amount without approval</strong> limits the amount a user may pay out on a check or cash voucher on their own. Above it, a supervisor with the approve permission on that page must type their username and password in the <strong>Supervisor approval</strong> box of the form. <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a> also warns when one role can both enter bills and write checks, receive customer payments and reconcile the bank, or sell at the POS and deposit the cash, because these duties are best kept apart.</p></div>
+<h2 id="pg-bank-write_checks">Write Checks<a class="man-hash" href="#pg-bank-write_checks" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Write Checks records a payment made by check, or charged to a company credit card, that is not the payment of a bill already entered: rent paid on the spot, a purchase paid at once, a loan payment, a cash advance by check. To pay bills you have entered, use <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a> instead, so the bills are marked paid.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Write Checks opens the list of checks. The Home page quick action <strong>Write Checks</strong> opens a blank check. <a href="manual.php?c=vendors#pg-vend-receipts">Receipt Management</a> can also open this form filled from a scanned receipt.</p>
+<p>The list shows the checks of a date range (from 90 days back to 30 days ahead when it opens). Use <strong>From</strong>, <strong>To</strong>, <strong>Status</strong>, <strong>Class</strong> and <strong>Search</strong> (number, name or memo), then click <strong>Filter</strong>. A voided check is struck through. A check waiting to be printed has a <strong>to print</strong> tag in the <strong>Status</strong> column. Click a check number to open it.</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>The date of the check.</td>
+</tr>
+<tr>
+<td>No.</td>
+<td>The check number. Click it to open the check.</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>The payee.</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td>The reference, if any.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The memo of the check.</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the check (shown when classes are in use).</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>The amount of the check.</td>
+</tr>
+<tr>
+<td>Status</td>
+<td><strong>Open</strong> for a posted check, <strong>Void</strong> for a voided one, with <strong>to print</strong> when it is queued for printing.</td>
+</tr>
+<tr>
+<td>By</td>
+<td>The user who entered it.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bank / credit card account</td>
+<td>The account the check is drawn on: a Bank or Credit Card account. It starts at 1010 Cash in Bank - BDO Checking.</td>
+</tr>
+<tr>
+<td>Pay to the order of</td>
+<td>The payee: a supplier, customer, employee or other name. Type part of the name to search. Leave it at <strong>— other payee —</strong> to type a name below.</td>
+</tr>
+<tr>
+<td>Other payee name</td>
+<td>A payee who is on none of the lists, for a one-time payment. It is used only when <strong>Pay to the order of</strong> is blank.</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>The date of the check.</td>
+</tr>
+<tr>
+<td>Check no.</td>
+<td>Leave blank to get the next check number (the grey text shows it, for example 1011). Type the number printed on the check if it is different.</td>
+</tr>
+<tr>
+<td>Print later</td>
+<td>Tick to put the check on the <strong>Checks to print</strong> list instead of printing it now.</td>
+</tr>
+<tr>
+<td>Default site for items</td>
+<td>The inventory site where the items on the <strong>Items</strong> tab are received, unless a line names another site.</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the whole check.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>What the check is for. It prints on the check voucher.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The lines are on two tabs. Use <strong>Expenses</strong> for accounts and <strong>Items</strong> for items you buy with the check.</p>
+<p><strong>Expenses</strong> tab:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>The account to charge, for example 6010 Rent Expense.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>The amount before tax.</td>
+</tr>
+<tr>
+<td>Tax</td>
+<td>The tax code, for example VAT12. The tax is added to the total.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The description of the line.</td>
+</tr>
+<tr>
+<td>Customer:Job</td>
+<td>The customer or job the cost is for, if any.</td>
+</tr>
+<tr>
+<td>Billable</td>
+<td>Tick, with a Customer:Job, to bill the cost to that customer later.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Items</strong> tab:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Item</td>
+<td>The item bought. Its description and cost fill in.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Changes the description of the line if needed.</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td>The quantity (a <strong>U/M</strong> column appears when an item has several units).</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>The cost per unit.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>Qty times Cost.</td>
+</tr>
+<tr>
+<td>Tax</td>
+<td>The tax code of the line.</td>
+</tr>
+<tr>
+<td>Site</td>
+<td>The site that receives the item. <strong>Default</strong> uses the site at the top.</td>
+</tr>
+<tr>
+<td>Customer:Job and Billable</td>
+<td>As on the Expenses tab.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Subtotal</strong>, <strong>Tax</strong> and <strong>Total</strong> of both tabs are added up at the bottom right. <strong>Add line</strong> adds a row to a tab and the red X removes one.</p>
+<h4 id="s-step-by-step">Step by step<a class="man-hash" href="#s-step-by-step" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To write a check:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Write Checks</strong> and click <strong>New</strong>.</li>
+<li>Check the <strong>Bank / credit card account</strong>.</li>
+<li>Choose the payee in <strong>Pay to the order of</strong>, or type an <strong>Other payee name</strong>.</li>
+<li>Check the <strong>Date</strong> and the <strong>Check no.</strong></li>
+<li>Choose the <strong>Class</strong> and type a <strong>Memo</strong>.</li>
+<li>On the <strong>Expenses</strong> tab, choose the <strong>Account</strong>, type the <strong>Amount</strong> and choose the <strong>Tax</strong> code if the payment includes VAT.</li>
+<li>If you are buying items, click the <strong>Items</strong> tab and enter them.</li>
+<li>Check the <strong>Total</strong>.</li>
+<li>If the check is above your limit, open <strong>Supervisor approval</strong> and let the supervisor type their username and password.</li>
+<li>Click <strong>Save</strong>, or <strong>Save &amp; New</strong> to write another check.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>Check 1006 to Metro Property Leasing for ₱85,000.00, memo "Office and warehouse rent", with one expense line: 6010 Rent Expense, ₱85,000.00.</p></div>
+<p><strong>To print a check voucher:</strong></p>
+<ol>
+<li>Open the check.</li>
+<li>Click <strong>Print</strong>.</li>
+<li>Click <strong>Print</strong> above the page.</li>
+</ol>
+<p><strong>To print later:</strong></p>
+<ol>
+<li>Tick <strong>Print later</strong> when you write the check.</li>
+<li>When you are ready to print, open <strong>Banking &gt; Write Checks</strong> and click <strong>Checks to print</strong>. The list shows only the checks marked to be printed.</li>
+<li>Open each check and click <strong>Print</strong>. Once printed, it leaves the list.</li>
+</ol>
+<p><strong>To change a check:</strong> open it, click <strong>Edit</strong>, make the change and click <strong>Save</strong>.</p>
+<p><strong>To void or delete a check:</strong></p>
+<ol>
+<li>Open the check.</li>
+<li>Click <strong>Void</strong> (keeps the check with no effect on the ledger) or <strong>Delete</strong> (removes it; a full copy stays in the audit trail).</li>
+<li>Type the <strong>Reason</strong>. If the check is above your amount limit, a supervisor must approve in the same box.</li>
+<li>Confirm.</li>
+</ol>
+<p><strong>To memorize a check you write every month:</strong> open it and click <strong>Memorize</strong> (see <a href="manual.php?c=chart-of-accounts#pg-coa-memorized_txns">Memorized Transactions</a>).</p>
+<p>The saved check shows the date, number, status, payee, the account it was drawn on, the memo and who entered it, then its lines and, for a posted check, <strong>General ledger entries created automatically</strong>. A voided check has a grey <strong>VOID</strong> band with the reason and the time.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>New:</strong> a blank check.</li>
+<li><strong>Checks to print:</strong> the checks marked <strong>Print later</strong> that are not printed yet.</li>
+<li><strong>Export:</strong> the list as a spreadsheet file.</li>
+<li>On a saved check: <strong>Edit</strong>, <strong>Print</strong>, <strong>Email</strong> (when the payee is a supplier or customer; it opens your e-mail program with a link to the check), <strong>Memorize</strong>, <strong>Void</strong>, <strong>Delete</strong>, <strong>History</strong> (<a href="manual.php?c=administration#pg-admin-txn_history">Transaction History</a>) and <strong>Back to list</strong>.</li>
+</ul>
+<h4 id="s-the-check-voucher">The check voucher<a class="man-hash" href="#s-the-check-voucher" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A check prints as a <strong>CHECK VOUCHER</strong> with the company name, address and TIN (and the logo when it is switched on for checks in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>), the check number and the date. It shows <strong>Pay to</strong> with the supplier's or customer's address and TIN, the <strong>Amount</strong> in figures and in words (for example "Two thousand five hundred pesos and 00/100 only"), the memo, <strong>Paid from</strong>, the reference, site and class. The ledger entries follow in a table of <strong>Account</strong>, <strong>Memo</strong>, <strong>Class</strong>, <strong>Debit</strong> and <strong>Credit</strong>, debits first, with the totals, and the signature lines <strong>Prepared by</strong>, <strong>Checked by</strong>, <strong>Approved by</strong> and <strong>Received by</strong>. A voided check prints <strong>VOID</strong> and "No ledger entries (voided)."</p>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Each expense line's account (for example 6010 Rent Expense)</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>The inventory account of each stock item on the Items tab</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>1300 Input Tax (or the tax code's input tax account)</td>
+<td>Tax of the lines</td>
+<td></td>
+</tr>
+<tr>
+<td>The bank or credit card account of the check (for example 1010 Cash in Bank - BDO Checking)</td>
+<td></td>
+<td>Total of the check</td>
+</tr>
+</tbody>
+</table></div>
+<p>Stock items on the <strong>Items</strong> tab go into stock at their site at the cost on the line. The class of the check, and the payee, go on every ledger line.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>An expense line of ₱10,000.00 with VAT12 posts Dr 6040 Office Supplies Expense ₱10,000.00, Dr 1300 Input Tax ₱1,200.00, Cr 1010 Cash in Bank - BDO Checking ₱11,200.00.</p></div>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Choose a payee or type a payee name."</li>
+<li>"Choose the bank account."</li>
+<li>"Add at least one expense or item line."</li>
+<li>"Choose an account for every expense line." and "Choose an item for every line that has a description or amount."</li>
+<li>"Supervisor approval is required: check above your amount limit (85,000.00). Ask a supervisor to enter their username and password below." A user who has the approve permission on Write Checks approves their own checks. "You cannot approve your own transaction." appears when a user types their own name in the approval box.</li>
+<li>When an account on the check is marked <strong>With SL</strong>, the payee of the check counts as the name of every line, so a check always satisfies the rule when it has a payee from the lists. A typed <strong>Other payee name</strong> does not count.</li>
+<li>A check that debits 2000 Accounts Payable lowers the supplier's balance but does not mark any bill paid. Pay entered bills with <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a>.</li>
+<li>Expense lines marked <strong>Billable</strong> with a Customer:Job are offered as billable costs the next time you create an invoice for that customer (see <a href="manual.php?c=customers#pg-cust-invoices">Create Invoices</a>).</li>
+<li>Check numbers come from one series shared with the checks of Pay Bills and customer refunds. The program does not stop you from typing a number that was already used; the <a href="#pg-rpt-check_register">Check Register</a> highlights duplicates and gaps.</li>
+<li>A check that has been cleared in a bank reconciliation, or that is dated on or before the closing date, can only be changed by a user with the special permission <strong>Can change transactions on/before the closing date or already reconciled</strong>. Changes to a cleared check are listed on the <a href="#pg-rpt-recon_discrepancy">Reconciliation Discrepancy</a> report.</li>
+<li>When you save a check with no class and classes are in use, the program asks <strong>No class selected</strong> first. Click <strong>Choose a class</strong> or <strong>Continue saving</strong>.</li>
+</ul>
+<h2 id="pg-bank-cash_voucher">Cash Voucher<a class="man-hash" href="#pg-bank-cash_voucher" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A cash voucher records cash paid out of a cash fund, such as the petty cash fund or a revolving fund: delivery fares, small purchases, cash advances to employees, government fees. The voucher is entered like a journal entry (the accounts debited and credited), and the cash account is credited for the cash amount. The same page lists the vouchers already saved.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Cash Voucher. The <strong>Cash Voucher</strong> button on <a href="manual.php?c=chart-of-accounts#pg-coa-names">Employees &amp; Other Names</a> also opens it.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAV entry no.</td>
+<td>Leave blank to get the next number (the grey text shows it, for example CAV-00003). A number you type must not be used by another voucher.</td>
+</tr>
+<tr>
+<td>Paid to</td>
+<td>Who received the cash: an employee, customer, supplier or other name. Type part of the name to search.</td>
+</tr>
+<tr>
+<td>Cash account</td>
+<td>The cash fund the money comes out of, for example 1005 Petty Cash Fund. Only Bank accounts are listed.</td>
+</tr>
+<tr>
+<td>Transaction date</td>
+<td>The date of the payment.</td>
+</tr>
+<tr>
+<td>or a name that is not on the lists</td>
+<td>A payee who is on none of the lists. The box is locked while a <strong>Paid to</strong> name is chosen.</td>
+</tr>
+<tr>
+<td>Reference no.</td>
+<td>An outside reference, for example the receipt number.</td>
+</tr>
+<tr>
+<td>Particulars</td>
+<td>What the cash was for. It prints as the particulars of the voucher.</td>
+</tr>
+<tr>
+<td>Cash amount</td>
+<td>The cash paid out. Leave it blank and it adds up from the lines.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The lines:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>The account charged, for example 6100 Freight and Delivery. Type part of the account name to search.</td>
+</tr>
+<tr>
+<td>Debit</td>
+<td>The amount charged to the account.</td>
+</tr>
+<tr>
+<td>Credit</td>
+<td>Use only when part of the voucher reduces an account, for example a refund of an earlier advance.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The description of the line.</td>
+</tr>
+<tr>
+<td>SL</td>
+<td>The subsidiary ledger name of the line: an employee, customer, supplier or other name. Required on lines to Accounts Receivable (a customer) and Accounts Payable (a supplier). On an account marked With SL, the <strong>Paid to</strong> name counts when the line has none.</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the line. It follows the class at the bottom of the form.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Under the lines, <strong>Totals</strong> adds the debits and credits, <strong>Cash account credited</strong> shows the cash amount and <strong>Difference</strong> shows what is still out of balance. It turns green when the voucher balances.</p>
+<p>At the bottom of the form:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Class</td>
+<td>The class of the voucher. It fills the class of the lines and is the class of the cash line.</td>
+</tr>
+<tr>
+<td>Reason for the change</td>
+<td>Shown only when you edit a saved voucher. Recorded in the audit trail.</td>
+</tr>
+<tr>
+<td>Show print preview after saving</td>
+<td>Ticked, the printed voucher opens after <strong>Save</strong>. The program remembers your choice for the next voucher.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step_1">Step by step<a class="man-hash" href="#s-step-by-step_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To make a cash voucher:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Cash Voucher</strong>.</li>
+<li>Choose the payee in <strong>Paid to</strong>, or type the name in <strong>or a name that is not on the lists</strong>.</li>
+<li>Choose the <strong>Cash account</strong>, for example 1005 Petty Cash Fund.</li>
+<li>Check the <strong>Transaction date</strong>.</li>
+<li>Type the <strong>Reference no.</strong> and the <strong>Particulars</strong>.</li>
+<li>On the first line, choose the <strong>Account</strong> and type the <strong>Debit</strong>. Add a <strong>Memo</strong> and, where needed, the <strong>SL</strong> name.</li>
+<li>Add more lines if the cash was spent on several things.</li>
+<li>Leave <strong>Cash amount</strong> blank, or type the amount on the receipt and check that <strong>Difference</strong> is 0.00.</li>
+<li>Choose the <strong>Class</strong>.</li>
+<li>Click <strong>Save</strong>, or <strong>Save &amp; New</strong> to start another voucher. With <strong>Show print preview after saving</strong> ticked, <strong>Save</strong> opens the printed voucher.</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>CAV-00002 pays ₱480.00 of delivery fares out of 1005 Petty Cash Fund to "Jeepney and tricycle fares", with one line: 6100 Freight and Delivery, debit ₱480.00, class Makati Store.</p></div>
+<p><strong>To find a saved voucher:</strong></p>
+<ol>
+<li>In <strong>Cash voucher list</strong>, choose the <strong>Date range</strong> (<strong>Today</strong>, <strong>This week</strong>, <strong>This month</strong>, <strong>Last month</strong>, <strong>This quarter</strong>, <strong>This fiscal year</strong>, <strong>All dates</strong> or <strong>Custom</strong>). For <strong>Custom</strong>, type the <strong>From</strong> and <strong>To</strong> dates; clicking in them switches to Custom.</li>
+<li>Choose a <strong>Class</strong> if you want only one.</li>
+<li>Click <strong>Query</strong>.</li>
+</ol>
+<p><strong>To edit, void, delete or print a voucher from the list:</strong></p>
+<ol>
+<li>Click any line of the voucher in the list. The footer shows "Selected: CAV-00002".</li>
+<li>Click <strong>Edit</strong>, <strong>Void</strong>, <strong>Delete</strong> or <strong>Print</strong> under the list. <strong>Edit</strong> and <strong>Void</strong> are not available for a voided voucher.</li>
+<li>For <strong>Void</strong> or <strong>Delete</strong>, type the reason and confirm.</li>
+</ol>
+<p>Double-click a line, or click its <strong>Entry no</strong>, to open the voucher.</p>
+<p><strong>To clear the form without saving:</strong> click <strong>Clear</strong>.</p>
+<p>The saved voucher shows the date, number, status, <strong>Paid to</strong>, class, <strong>Cash account</strong>, memo and who entered it, the lines, and <strong>General ledger entries created automatically</strong>. Its buttons are <strong>Edit</strong>, <strong>Print</strong>, <strong>Memorize</strong>, <strong>Void</strong>, <strong>Delete</strong>, <strong>History</strong> and <strong>Back to list</strong>.</p>
+<h4 id="s-the-voucher-list">The voucher list<a class="man-hash" href="#s-the-voucher-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date, Entry no, Paid to</td>
+<td>Shown on the first line of each voucher.</td>
+</tr>
+<tr>
+<td>Account</td>
+<td>Each account line, then the cash account (greyed).</td>
+</tr>
+<tr>
+<td>Subsidiary ledger</td>
+<td>The SL name of the line; the payee on the cash line.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The memo of the line; the particulars on the cash line.</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the line.</td>
+</tr>
+<tr>
+<td>Debit/Credit (+/-)</td>
+<td>Debits as positive figures, credits (such as the cash line) in brackets.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The footer gives the number of vouchers and the cash paid out by the vouchers that are not void. <strong>Export list</strong> downloads the list shown as a spreadsheet file.</p>
+<h4 id="s-the-printed-voucher">The printed voucher<a class="man-hash" href="#s-the-printed-voucher" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The voucher prints as <strong>CASH VOUCHER</strong> with the company heading, the number and the date; <strong>Paid to</strong>, <strong>Cash account</strong>, the <strong>Amount</strong> in figures and in words, and the <strong>Particulars</strong>; the class; a table of <strong>Account</strong>, <strong>Description</strong>, <strong>Name</strong>, <strong>Class</strong>, <strong>Debit</strong> and <strong>Credit</strong> that includes the credit to the cash account, with the totals; and the signature lines <strong>Prepared by</strong>, <strong>Checked by</strong>, <strong>Approved by</strong> and <strong>Received by</strong>, so the payee signs for the cash.</p>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Each debit line's account (for example 6100 Freight and Delivery)</td>
+<td>Line amount</td>
+<td></td>
+</tr>
+<tr>
+<td>Each credit line's account</td>
+<td></td>
+<td>Line amount</td>
+</tr>
+<tr>
+<td>The cash account (for example 1005 Petty Cash Fund)</td>
+<td></td>
+<td>Cash amount</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each line carries its SL name and class to the ledger; the cash line carries the payee and the class of the voucher.</p>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Enter at least one account line."</li>
+<li>"Choose the cash account the voucher is paid from."</li>
+<li>"The cash account is credited automatically for the cash amount. Do not enter it again in the account lines."</li>
+<li>"Debits less credits (480.00) must equal the cash amount (500.00)." Correct the lines or the cash amount.</li>
+<li>"The cash amount must be more than zero."</li>
+<li>"Choose who the cash is paid to, or type the name."</li>
+<li>"Lines posted to Accounts Receivable need a customer in the SL column." and "Lines posted to Accounts Payable need a supplier in the SL column."</li>
+<li>"CAV entry no. CAV-00002 is already used. Leave the number blank to get the next one."</li>
+<li>A voucher above your amount limit needs supervisor approval: "Supervisor approval is required: cash voucher above your amount limit (5,000.00)."</li>
+<li>When you save with the <strong>Class</strong> empty and classes are in use, the program asks <strong>No class selected</strong> first, even when every line has its own class, because the class at the bottom is the class of the cash line.</li>
+<li>To replenish the fund, move money into it with <a href="#pg-bank-transfers">Transfer Funds</a> or a check payable to the custodian.</li>
+</ul>
+<h2 id="pg-bank-register">Use Register<a class="man-hash" href="#pg-bank-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The register shows every transaction that touched one account, with a running balance, like a checkbook. For a bank account it also lets you record a simple check, deposit or transfer without leaving the page.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Use Register. The <strong>Register</strong> link on the <a href="manual.php?c=chart-of-accounts#pg-coa-accounts">Chart of Accounts</a>, and the accounts under <strong>Cash and bank accounts</strong> on the Home page, open the register of that account.</p>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>The account to show. Bank, Accounts Receivable, Accounts Payable, Credit Card, Other Current Asset, Other Current Liability, Fixed Asset, Long Term Liability, Equity and Other Asset accounts can be chosen. The page reloads as soon as you choose.</td>
+</tr>
+<tr>
+<td>From</td>
+<td>The first date shown. It starts on the first day of the month two months back.</td>
+</tr>
+<tr>
+<td>To</td>
+<td>The last date shown. It starts 30 days after today.</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>A word in the number, memo or name.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Show</strong> after changing the dates or the search.</p>
+<h4 id="s-the-columns_1">The columns<a class="man-hash" href="#s-the-columns_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>The date of the transaction.</td>
+</tr>
+<tr>
+<td>Number</td>
+<td>The document number. Click it to open the transaction.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Check, Deposit, Bill Payment, Customer Payment, Transfer and so on.</td>
+</tr>
+<tr>
+<td>Payee / name</td>
+<td>The name on the transaction.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The memo.</td>
+</tr>
+<tr>
+<td>Payment / Deposit</td>
+<td>Money out and money in. For an account with a credit normal balance (a credit card or a liability) the columns are <strong>Decrease</strong> and <strong>Increase</strong>.</td>
+</tr>
+<tr>
+<td>✓</td>
+<td>A check mark when the transaction has been cleared in a bank reconciliation.</td>
+</tr>
+<tr>
+<td>Balance</td>
+<td>The running balance.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The first line is the <strong>Opening balance</strong> at the From date and the last line is the <strong>Ending balance</strong>.</p>
+<h4 id="s-step-by-step_2">Step by step<a class="man-hash" href="#s-step-by-step_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To look at an account's register:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Use Register</strong>.</li>
+<li>Choose the <strong>Account</strong>.</li>
+<li>Change <strong>From</strong> and <strong>To</strong> if needed and click <strong>Show</strong>.</li>
+</ol>
+<p><strong>To enter a simple transaction in the register</strong> (bank accounts only):</p>
+<ol>
+<li>In <strong>Enter a simple transaction in this register</strong>, choose the <strong>Type</strong>: <strong>Check / payment</strong>, <strong>Deposit</strong> or <strong>Transfer to another account</strong>. You see only the types you may create.</li>
+<li>Check the <strong>Date</strong>.</li>
+<li>Type the <strong>Number</strong>: the check number for a check (blank for the next number), or the deposit slip number for a deposit. A transfer does not use it.</li>
+<li>Type the <strong>Payee / received from</strong> name.</li>
+<li>Choose the <strong>Account (expense / income / transfer to)</strong>: the account charged by a check, the account credited by a deposit, or the account the money goes to in a transfer.</li>
+<li>Type the <strong>Amount</strong>, choose the <strong>Class</strong> and type a <strong>Memo</strong>.</li>
+<li>Click <strong>Record</strong>. The message "Entry recorded." appears and the entry is added to the register.</li>
+</ol>
+<p><strong>To export the register:</strong> click <strong>Export</strong>. The file holds the date, type, number, payee, memo, payment, deposit, cleared mark and balance of the lines shown.</p>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Export:</strong> the register as a spreadsheet file.</li>
+<li><strong>Reconcile:</strong> opens <a href="#pg-bank-reconcile">Reconcile</a> for this account.</li>
+</ul>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The register itself records nothing. A quick entry saves an ordinary transaction:</p>
+<ul>
+<li><strong>Check / payment:</strong> a check on <a href="#pg-bank-write_checks">Write Checks</a>: Dr the chosen account, Cr this bank account.</li>
+<li><strong>Deposit:</strong> a deposit on <a href="#pg-bank-deposits">Make Deposits</a>: Dr this bank account, Cr the chosen account.</li>
+<li><strong>Transfer to another account:</strong> a transfer on <a href="#pg-bank-transfers">Transfer Funds</a>: Dr the chosen account, Cr this bank account.</li>
+</ul>
+<p>You can open, print, edit or void them later on their own pages.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Enter the date, a positive amount and the other account."</li>
+<li>"Quick entry is available for bank and cash accounts only." The quick entry form appears only for Bank accounts.</li>
+<li>The quick check uses the typed payee name, has one expense line and no tax. For a check with several lines, VAT or a payee from the lists, use Write Checks.</li>
+<li>The quick entries do not check the <strong>With SL</strong> rule. For accounts that keep a subsidiary ledger, use Write Checks, Cash Voucher or Make Deposits so the name is recorded.</li>
+<li>A quick check above your amount limit needs supervisor approval, as on Write Checks.</li>
+<li>The register shows one line per transaction, even when the transaction posted several lines to the account.</li>
+</ul>
+<h2 id="pg-bank-deposits">Make Deposits<a class="man-hash" href="#pg-bank-deposits" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Make Deposits records money you put in the bank: customer payments and sales receipts waiting in Undeposited Funds, the cash of closed POS shifts, the settlement of card and e-wallet sales by the provider, and other money such as loan proceeds or an owner's contribution. One deposit matches one deposit slip.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Make Deposits opens a new deposit. The <strong>Deposits list</strong> button shows the saved deposits. <strong>Edit</strong> on a saved deposit opens it again to change it (see <a href="#sec-edit-deposit">Edit a deposit</a>).</p>
+<h4 id="s-fields_2">Fields<a class="man-hash" href="#s-fields_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deposit to</td>
+<td>The bank account the money goes into. It starts at 1010 Cash in Bank - BDO Checking.</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>The date of the deposit slip.</td>
+</tr>
+<tr>
+<td>Deposit slip no.</td>
+<td>The number of the bank's deposit slip.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>Starts as "Deposit".</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the deposit.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Payments waiting to be deposited (Undeposited Funds):</strong> the customer payments and sales receipts that were put in Undeposited Funds and are not in a deposit yet. Tick the ones on your deposit slip; the box in the heading ticks them all.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date, Type, No.</td>
+<td>The payment or sales receipt. Click the number to open it.</td>
+</tr>
+<tr>
+<td>Received from</td>
+<td>The customer.</td>
+</tr>
+<tr>
+<td>Method</td>
+<td>The payment method, for example Check.</td>
+</tr>
+<tr>
+<td>Ref.</td>
+<td>The check or reference number.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>The amount of the payment.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>POS cash from closed shifts</strong> (shown when there are some): the cash of each closed POS shift not deposited yet. <strong>To deposit</strong> is the <strong>Counted</strong> cash, less the opening float (<strong>Less float</strong>: it stays in the drawer for the next shift), plus the cash drops (<strong>Plus drops</strong>: cash taken out of the drawer during the shift). Tick the shifts you are depositing. The business date opens the shift, and a shift whose closing entries were corrected says so under its terminal; the figures are always the shift's figures as they are now.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>The cashier of POB1 Counter 2 opened with a float of ₱3,000.00 and closed the register with ₱9,170.48 counted, against ₱12,170.48 expected: a shortage of ₱3,000.00. The supervisor finds the drawer held ₱12,170.48 (the cashier had left out the float) and corrects <strong>Cash counted</strong> to 12,170.48. The shortage entry is voided, and Make Deposits now shows the shift with <strong>Counted</strong> 12,170.48, <strong>Less float</strong> 3,000.00 and <strong>To deposit</strong> 9,170.48: the cash sales of the day, while the ₱3,000.00 float stays in the drawer. Before the correction the shift showed 6,170.48 to deposit.</p></div>
+<p><strong>Card and e-wallet settlements:</strong> the provider pays out card and e-wallet sales in one amount, less its fee. The table has one row for each clearing account: the account of every card or e-wallet payment method (<a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a> &gt; Payment Methods, <strong>POS clearing account</strong>) and the module default accounts <strong>Card Clearing</strong> and <strong>E-wallet Clearing</strong>, used by a method that names no account. Each account is listed once, with the payment methods that use it under its name, so E-wallet Clearing shared by GCash and Maya is one row carrying the balance of both.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clearing account</td>
+<td>For example 1060 Card Clearing or 1065 E-wallet Clearing.</td>
+</tr>
+<tr>
+<td>Unsettled</td>
+<td>What the provider has not paid out yet: the balance of the clearing account in the General Ledger on the deposit <strong>Date</strong>, its debits (card and e-wallet sales and payments) less its credits (settlements and refunds). It is the same figure as the <a href="manual.php?c=chart-of-accounts#pg-rpt-trial_balance">Trial Balance</a> for that date. Changing the <strong>Date</strong> changes it. A credit balance, in red, means more was settled than was received.</td>
+</tr>
+<tr>
+<td>Details</td>
+<td>Opens the <strong>Card and e-wallet balance details</strong> of the account (see below): what the unsettled balance is made of.</td>
+</tr>
+<tr>
+<td>Gross settled</td>
+<td>The sales amount the provider is settling. It cannot be more than <strong>Unsettled</strong> on the deposit date.</td>
+</tr>
+<tr>
+<td>Fee deducted</td>
+<td>The provider's fee taken out of the settlement.</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td>The provider's settlement reference.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="sec-clearing-details">Card and e-wallet balance details<a class="man-hash" href="#sec-clearing-details" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Details</strong> beside an unsettled balance opens a window that explains it, as of the deposit date. <strong>Open as a page</strong> shows the same on a page of its own (Banking &gt; Make Deposits, <strong>Details</strong>), where you can choose another <strong>Clearing account</strong> or <strong>As of</strong> date and <strong>Print</strong> it.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The balance</td>
+<td>The unsettled amount, with the payment methods of the account, the total received (debits) and the total settled and refunded (credits). <strong>General Ledger</strong> and <strong>Trial Balance</strong> open those reports for the account and date.</td>
+</tr>
+<tr>
+<td>What the balance is made of</td>
+<td>The postings to the account by source: <strong>POS sales</strong>, <strong>POS returns refunded</strong>, <strong>Customer payments</strong>, <strong>Sales receipts</strong>, <strong>Settlements deposited to the bank</strong>, journal entries and others, each with the number of <strong>Documents</strong>, what was <strong>Received (debit)</strong>, what was <strong>Settled / refunded (credit)</strong> and the <strong>Net</strong>. The last line, <strong>Balance on</strong> the date, is the unsettled amount.</td>
+</tr>
+<tr>
+<td>Card and e-wallet sales by payment method</td>
+<td>For each payment method of the account (GCash and Maya on E-wallet Clearing): the <strong>POS sales</strong> paid with it, the <strong>POS refunds</strong>, the <strong>Payments and sales receipts</strong> and the <strong>Net received</strong>.</td>
+</tr>
+<tr>
+<td>Receipts not yet settled</td>
+<td>The sales the provider still owes. Settlements are taken against the oldest receipts first, so the list holds the latest receipts that make up the balance, newest first: <strong>Date</strong>, <strong>Document</strong> (click to open it), <strong>Customer / terminal</strong>, <strong>Method</strong>, <strong>Reference</strong> (the approval or reference number typed at the counter), <strong>Amount</strong> and <strong>Unsettled</strong>. The oldest one may be partly settled. The total equals the balance.</td>
+</tr>
+<tr>
+<td>Latest settlements and other credits</td>
+<td>The last 25 deposits and other entries that took money out of the account, with their description (the provider's reference). The General Ledger has all of them.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>E-wallet Clearing holds ₱16,113.44: a GCash sale of ₱1,564.64 and a Maya sale of ₱14,548.80. GCash and Maya settle ₱10,000.00. The balance becomes ₱6,113.44, and <strong>Receipts not yet settled</strong> shows the Maya sale of ₱14,548.80 with ₱6,113.44 unsettled: the ₱10,000.00 paid for the GCash sale and ₱8,435.36 of the Maya sale. The Trial Balance shows ₱6,113.44 on 1065 E-wallet Clearing too.</p></div>
+<p><strong>Other receipts (loan proceeds, owner contributions, interest…):</strong> three rows for money that did not come through a customer payment.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Received from</td>
+<td>Who gave the money.</td>
+</tr>
+<tr>
+<td>From account</td>
+<td>The account credited, for example a loan payable or 3000 Owner's Capital.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>The description.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>The amount.</td>
+</tr>
+</tbody>
+</table></div>
+<p>At the bottom:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cash back goes to</td>
+<td>The cash account that receives the cash you keep out of the deposit. It starts at 1005 Petty Cash Fund.</td>
+</tr>
+<tr>
+<td>Cash back amount</td>
+<td>The cash kept out of the deposit, if any.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Items selected</strong> adds up what you ticked and typed, and <strong>Deposit total</strong> is what reaches the bank: the items less the fees and the cash back. It should equal your deposit slip.</p>
+<h4 id="s-step-by-step_3">Step by step<a class="man-hash" href="#s-step-by-step_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To deposit customer payments:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Make Deposits</strong>.</li>
+<li>Check <strong>Deposit to</strong> and the <strong>Date</strong>.</li>
+<li>Type the <strong>Deposit slip no.</strong></li>
+<li>Tick the payments on the slip under <strong>Payments waiting to be deposited</strong>.</li>
+<li>Check that <strong>Deposit total</strong> equals the deposit slip.</li>
+<li>Click <strong>Save deposit</strong>, or <strong>Save deposit &amp; New</strong> to make another one.</li>
+</ol>
+<p><strong>To deposit POS cash:</strong> tick the shifts under <strong>POS cash from closed shifts</strong>, then save as above.</p>
+<p><strong>To record a card or e-wallet settlement:</strong></p>
+<ol>
+<li>Find the clearing account under <strong>Card and e-wallet settlements</strong>.</li>
+<li>Type the <strong>Gross settled</strong>, the <strong>Fee deducted</strong> and the provider's <strong>Reference</strong>.</li>
+<li>Save. The bank receives the gross less the fee.</li>
+</ol>
+<p><strong>To see what an unsettled balance is made of:</strong> click <strong>Details</strong> beside it. Compare <strong>Receipts not yet settled</strong> with the provider's statement to find the sales still to be paid out.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>GCash settles ₱16,113.44 of e-wallet sales and deducts a fee of ₱322.27. Type 16,113.44 in <strong>Gross settled</strong> and 322.27 in <strong>Fee deducted</strong> on 1065 E-wallet Clearing; the deposit total is ₱15,791.17.</p></div>
+<p><strong>To deposit other money:</strong> fill a row of <strong>Other receipts</strong> with <strong>Received from</strong>, <strong>From account</strong>, <strong>Memo</strong> and <strong>Amount</strong>, then save.</p>
+<p><strong>To keep some cash out of the deposit:</strong> type the <strong>Cash back amount</strong> and choose where it goes in <strong>Cash back goes to</strong>.</p>
+<p><strong>To find a saved deposit:</strong> click <strong>Deposits list</strong>. The list works like the other transaction lists: <strong>From</strong>, <strong>To</strong>, <strong>Status</strong> (<strong>Posted</strong> or <strong>Void</strong>), <strong>Class</strong> and <strong>Search</strong>, then <strong>Filter</strong>.</p>
+<p><strong>To correct a deposit:</strong> open it from the list and click <strong>Edit</strong> (see below). To cancel a whole deposit, click <strong>Void</strong>, type the reason and confirm: its payments and shifts go back to the waiting lists.</p>
+<h4 id="sec-edit-deposit">Edit a deposit<a class="man-hash" href="#sec-edit-deposit" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Edit</strong> on a saved deposit opens <strong>Edit Deposit</strong>: the same page as Make Deposits, with what the deposit holds already ticked (and shaded), next to the payments and shifts still waiting.</p>
+<ol>
+<li>Open the deposit (Banking &gt; Make Deposits &gt; <strong>Deposits list</strong>, then its number) and click <strong>Edit</strong>.</li>
+<li>Change what is wrong:
+   - untick a payment or a POS shift to take it off the deposit: it goes back to the waiting list, to be deposited another day;
+   - tick another payment or shift to add it;
+   - change the <strong>Deposit to</strong> account, the <strong>Date</strong>, the <strong>Deposit slip no.</strong>, the <strong>Memo</strong> or the <strong>Class</strong>;
+   - change, add or clear the <strong>Other receipts</strong> (settlements and fees already on the deposit are listed there too), and the <strong>Cash back</strong>.</li>
+<li>Type the <strong>Reason for the change</strong> and click <strong>Save changes</strong>.</li>
+</ol>
+<p>The deposit keeps its number and is posted again with the new lines; the change, with the reason and every figure before and after, is in the audit trail. A POS shift always comes in at its figures as they are now ("was ..." under <strong>To deposit</strong> shows the amount the deposit held for it before). When the closing entries of a deposited shift are corrected later, the deposit follows on its own (see <a href="manual.php?c=point-of-sale#sec-shift-correction">Correcting the closing entries</a>).</p>
+<ul>
+<li>Editing needs the <strong>Edit</strong> right on Make Deposits; a voided deposit cannot be edited.</li>
+<li>A deposit dated on or before the closing date, or one cleared in a bank reconciliation, is protected like every other transaction.</li>
+<li>"A deposit needs at least one line. To cancel the whole deposit, void it instead."</li>
+<li>"The cash back (...) is more than the items deposited (...)."</li>
+</ul>
+<h4 id="s-what-it-records_3">What it records<a class="man-hash" href="#s-what-it-records_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The <strong>Deposit to</strong> bank account</td>
+<td>Deposit total</td>
+<td></td>
+</tr>
+<tr>
+<td>The <strong>Cash back goes to</strong> account</td>
+<td>Cash back amount</td>
+<td></td>
+</tr>
+<tr>
+<td>6080 Bank and Merchant Charges</td>
+<td>Fees deducted</td>
+<td></td>
+</tr>
+<tr>
+<td>1050 Undeposited Funds</td>
+<td></td>
+<td>Each payment deposited</td>
+</tr>
+<tr>
+<td>The terminal's cash account (for example 1001 Cash on Hand - Store Registers)</td>
+<td></td>
+<td>Each POS shift deposited</td>
+</tr>
+<tr>
+<td>The clearing account (1060 Card Clearing, 1065 E-wallet Clearing)</td>
+<td></td>
+<td>Gross settled</td>
+</tr>
+<tr>
+<td>The <strong>From account</strong> of each other receipt</td>
+<td></td>
+<td>Its amount</td>
+</tr>
+</tbody>
+</table></div>
+<p>The deposit prints as a <strong>DEPOSIT</strong> voucher with the account deposited to, the amount in figures and in words, and the ledger entries with their totals.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Choose the bank account and deposit date."</li>
+<li>"Select the payments to deposit or enter other receipts." A deposit needs at least one item.</li>
+<li>"A selected payment was already deposited or changed. Refresh and try again." Someone else deposited it, or it was changed, while you had the page open.</li>
+<li>"A selected POS shift was already deposited."</li>
+<li>"Settlement for 1060 - Card Clearing (50,000.00) is more than its unsettled balance on 10/21/2026 (43,556.24)." The settlement is checked against the balance on the deposit date; click <strong>Details</strong> to see it.</li>
+<li>"The fee deducted for Card Clearing is more than the gross settled."</li>
+<li>"Enter the gross amount settled for E-wallet Clearing with its fee." A fee was typed without the gross amount.</li>
+<li>"Other receipts need both an account and an amount."</li>
+<li>A payment that is in a deposit cannot be voided or deleted: "It is included in deposit DEP-00001. Remove it from the deposit first." Take it off the deposit with <strong>Edit</strong>, or void the deposit.</li>
+<li>Payments that were deposited straight to a bank account on <a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a> or <a href="manual.php?c=customers#pg-cust-sales_receipts">Enter Sales Receipts</a> do not pass through Undeposited Funds and do not appear here.</li>
+</ul>
+<h2 id="pg-bank-transfers">Transfer Funds<a class="man-hash" href="#pg-bank-transfers" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Transfer Funds moves money from one account to another: from the checking account to the petty cash fund, from savings to checking, or a payment of the company credit card from the bank. A transfer does not affect income or expenses.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Transfer Funds opens a new transfer. The <strong>Transfers list</strong> button shows the saved transfers.</p>
+<h4 id="s-fields_3">Fields<a class="man-hash" href="#s-fields_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>The date of the transfer.</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td>The bank's reference, if any.</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>The class of the transfer.</td>
+</tr>
+<tr>
+<td>Transfer funds from</td>
+<td>The account the money leaves: a Bank, Credit Card or Other Current Asset account.</td>
+</tr>
+<tr>
+<td>Transfer funds to</td>
+<td>The account the money goes into, from the same kinds of account.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>The amount transferred.</td>
+</tr>
+<tr>
+<td>Memo</td>
+<td>Starts as "Funds transfer".</td>
+</tr>
+</tbody>
+</table></div>
+<p>Under the form, <strong>Current balances</strong> shows the balance of every account you can transfer between. It is shown to users who have the special permission <strong>View bank balances outside Banking</strong> or may open <a href="#pg-bank-register">Use Register</a>.</p>
+<h4 id="s-step-by-step_4">Step by step<a class="man-hash" href="#s-step-by-step_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To transfer funds:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Transfer Funds</strong>.</li>
+<li>Check the <strong>Date</strong> and type the <strong>Reference</strong>.</li>
+<li>Choose <strong>Transfer funds from</strong> and <strong>Transfer funds to</strong>.</li>
+<li>Type the <strong>Amount</strong> and change the <strong>Memo</strong> if needed.</li>
+<li>Click <strong>Save transfer</strong>, or <strong>Save transfer &amp; New</strong> to make another one. The message says "Transfer recorded. It appears in both registers and does not affect income or expenses."</li>
+</ol>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>TRF-00001 moves ₱10,000.00 from 1010 Cash in Bank - BDO Checking to 1005 Petty Cash Fund with the memo "Replenish petty cash".</p></div>
+<p><strong>To change a transfer:</strong> open it from <strong>Transfers list</strong>, click <strong>Edit</strong>, change it and click <strong>Save transfer</strong>.</p>
+<p><strong>To void or delete a transfer:</strong> open it, click <strong>Void</strong> or <strong>Delete</strong>, type the reason and confirm.</p>
+<h4 id="s-what-it-records_4">What it records<a class="man-hash" href="#s-what-it-records_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transfer funds to</strong> account</td>
+<td>Amount</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Transfer funds from</strong> account</td>
+<td></td>
+<td>Amount</td>
+</tr>
+</tbody>
+</table></div>
+<p>The transfer prints as a <strong>FUND TRANSFER</strong> voucher with <strong>From</strong>, <strong>To</strong>, the amount in figures and in words, and the two ledger lines.</p>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Choose two different accounts."</li>
+<li>"Enter an amount greater than zero."</li>
+<li>Other Current Asset accounts such as 1050 Undeposited Funds and the clearing accounts are listed too. Use <a href="#pg-bank-deposits">Make Deposits</a> for payments and settlements, so each payment is marked deposited.</li>
+</ul>
+<h2 id="pg-bank-reconcile">Reconcile<a class="man-hash" href="#pg-bank-reconcile" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Reconciling compares your records of a bank account with the bank statement. You tick the checks, payments and deposits that appear on the statement, add the bank's service charge and interest, and finish when the cleared balance equals the statement's ending balance. Reconcile every bank account every month.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Reconcile, or the <strong>Reconcile</strong> button on the account's register.</p>
+<h4 id="s-fields_4">Fields<a class="man-hash" href="#s-fields_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter / what it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>The bank account to reconcile. The page reloads when you choose.</td>
+</tr>
+<tr>
+<td>Statement date</td>
+<td>The ending date of the bank statement. It starts at the last day of last month. Only transactions dated on or before it are listed.</td>
+</tr>
+<tr>
+<td>Last reconciled</td>
+<td>The statement date and ending balance of the last completed reconciliation, or "never".</td>
+</tr>
+<tr>
+<td>Beginning balance</td>
+<td>The ending balance of the last completed reconciliation (0.00 the first time). You cannot change it.</td>
+</tr>
+<tr>
+<td>Ending balance (from statement)</td>
+<td>The ending balance printed on the bank statement.</td>
+</tr>
+<tr>
+<td>Service charge</td>
+<td>The bank's service charge on the statement, if any.</td>
+</tr>
+<tr>
+<td>Date and Account (service charge)</td>
+<td>The date of the charge and the expense account. The account starts at 6080 Bank and Merchant Charges.</td>
+</tr>
+<tr>
+<td>Class (service charge and interest)</td>
+<td>The class given to the service charge and interest entries.</td>
+</tr>
+<tr>
+<td>Interest earned</td>
+<td>The interest the bank paid, if any.</td>
+</tr>
+<tr>
+<td>Date and Account (interest)</td>
+<td>The date of the interest and the income account. The account starts at 4200 Interest Income.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Below are two lists of the uncleared transactions: <strong>Checks and payments</strong> (money out) and <strong>Deposits and other credits</strong> (money in), each with a <strong>Mark all</strong> box. Each line shows the ✓ box, <strong>Date</strong>, <strong>No.</strong> with the transaction type, <strong>Payee</strong> and <strong>Amount</strong>.</p>
+<p>At the bottom, <strong>Cleared balance</strong> is the beginning balance plus the ticked lines, less the service charge, plus the interest. <strong>Ending balance</strong> repeats the statement's figure and <strong>Difference</strong> is what is still unexplained: red until it reaches 0.00, then green.</p>
+<h4 id="s-step-by-step_5">Step by step<a class="man-hash" href="#s-step-by-step_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>To reconcile a bank account:</strong></p>
+<ol>
+<li>Open <strong>Banking &gt; Reconcile</strong>.</li>
+<li>Choose the <strong>Account</strong>.</li>
+<li>Set the <strong>Statement date</strong> to the date of the bank statement.</li>
+<li>Type the <strong>Ending balance (from statement)</strong>.</li>
+<li>Type the <strong>Service charge</strong> and the <strong>Interest earned</strong> shown on the statement, if any, and check their dates and accounts.</li>
+<li>Tick each check and payment that appears on the statement.</li>
+<li>Tick each deposit and credit that appears on the statement.</li>
+<li>Watch <strong>Difference</strong>. When it is 0.00, click <strong>Reconcile now</strong>. The message "Reconciliation complete." appears.</li>
+</ol>
+<p><strong>To stop and finish later:</strong> click <strong>Save for later</strong>. The ending balance, the ticks, and the service charge and interest with their dates, accounts and class are kept, and the message shows the difference. Nothing is posted yet. When you open Reconcile again for the account, they all come back.</p>
+<p><strong>To see the result:</strong> in <strong>Reconciliation history</strong>, click <strong>Summary</strong> or <strong>Detail</strong> on the line of the statement.</p>
+<p><strong>To undo the last reconciliation:</strong></p>
+<ol>
+<li>In <strong>Reconciliation history</strong>, type the <strong>Reason</strong>.</li>
+<li>Click <strong>Undo last</strong> and confirm "Undo the last reconciliation?".</li>
+<li>The message "The last reconciliation was undone. Its items are uncleared, its service charge and interest entries are voided, and it is open for editing." appears. The reconciliation opens with its ending balance, ticks, service charge and interest as they were. Correct what is wrong and click <strong>Reconcile now</strong>: the service charge and interest are posted again, once.</li>
+</ol>
+<p>If a service charge or interest entry falls in a closed period and you may not change such entries, nothing is undone and the message says why.</p>
+<h4 id="s-buttons_2">Buttons<a class="man-hash" href="#s-buttons_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Discrepancy report:</strong> opens the <a href="#pg-rpt-recon_discrepancy">Reconciliation Discrepancy</a> report for this account.</li>
+<li><strong>Save for later:</strong> keeps your work without finishing.</li>
+<li><strong>Reconcile now:</strong> finishes the reconciliation. It is enabled only when the difference is 0.00.</li>
+<li><strong>Undo last:</strong> reopens the most recent completed reconciliation. Needs the delete permission on this page.</li>
+</ul>
+<h4 id="s-reconciliation-history">Reconciliation history<a class="man-hash" href="#s-reconciliation-history" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The last twelve reconciliations of the account, with <strong>Statement date</strong>, <strong>Beginning</strong>, <strong>Ending</strong>, <strong>Status</strong> (<strong>Completed</strong> or <strong>In Progress</strong>), <strong>By</strong> and <strong>Reports</strong> (<strong>Summary</strong> and <strong>Detail</strong>).</p>
+<h4 id="s-what-it-records_5">What it records<a class="man-hash" href="#s-what-it-records_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When you click <strong>Reconcile now</strong>:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Entry</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service Charge (when a service charge is typed)</td>
+<td>The service charge account (6080 Bank and Merchant Charges)</td>
+<td>The bank account</td>
+</tr>
+<tr>
+<td>Interest Earned (when interest is typed)</td>
+<td>The bank account</td>
+<td>The interest account (4200 Interest Income)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both entries are dated on the dates you gave, numbered in the journal series (JE-) and marked cleared straight away. Every ticked transaction is marked cleared on this account: it shows a ✓ in the register and <strong>cleared</strong> in its ledger entries, and it no longer appears on the next reconciliation.</p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"The difference must be zero to finish. Current difference: 1,500.00." Look for a deposit or check on the statement that you have not ticked, an amount typed differently from the bank, or a transaction not yet entered in the books.</li>
+<li>"An item changed while you were reconciling. Refresh and try again." Someone changed or deleted a listed transaction while you had the page open.</li>
+<li>"Enter the statement date."</li>
+<li>The first reconciliation of an account starts from 0.00, so every transaction up to the statement date is listed, including the opening balance entry. Tick the opening balance too.</li>
+<li><strong>Save for later</strong> keeps the service charge and interest but posts nothing: they are posted only when you click <strong>Reconcile now</strong>.</li>
+<li><strong>Undo last</strong> voids the service charge and interest entries the reconciliation made (the voided entries stay in the books with the reason, for the audit trail) and keeps their figures on the reopened reconciliation, so finishing it again posts them once.</li>
+<li>Once cleared, a transaction can only be changed or voided by a user with the special permission <strong>Can change transactions on/before the closing date or already reconciled</strong>. If its amount on the bank account changes, or it is voided or deleted, the cleared mark is removed and the change is listed on the <a href="#pg-rpt-recon_discrepancy">Reconciliation Discrepancy</a> report.</li>
+<li>The program asks <strong>No class selected</strong> only when a service charge or interest is typed and <strong>Class (service charge and interest)</strong> is empty.</li>
+<li>Reconciling is best done by someone who does not also receive customer payments.</li>
+</ul>
+<h2 id="s-banking-reports">Banking reports<a class="man-hash" href="#s-banking-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Banking reports are listed under <strong>Banking &gt; Reports</strong> in the sidebar and in the Banking card of the <a href="manual.php?c=home-and-reports#pg-home-reports">Report Center</a>. The common report tools (<strong>Refresh</strong>, <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong>, <strong>Memorize</strong> and clicking a number to open the transaction) are explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>.</p>
+<h3 id="pg-rpt-recon_summary">Reconciliation Summary<a class="man-hash" href="#pg-rpt-recon_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A one-page summary of a completed reconciliation: what was cleared, what was still outstanding, and how the register balance compares with the statement. Print it and file it with the bank statement.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Reports &gt; Reconciliation Summary, or <strong>Summary</strong> in the reconciliation history on <a href="#pg-bank-reconcile">Reconcile</a>.</p>
+<p><strong>Filter:</strong> <strong>Reconciliation</strong> lists every reconciliation as account, statement date and status. Leave it at <strong>All</strong> to see the most recent completed reconciliation.</p>
+<p><strong>How to read it:</strong> the heading of the table names the account and the statement date. The lines are:</p>
+<ul>
+<li><strong>Beginning balance.</strong></li>
+<li><strong>Cleared transactions:</strong> <strong>Checks and payments</strong> and <strong>Deposits and credits</strong>, with the number of items and their total (payments as negative figures), then <strong>Total cleared transactions</strong> and <strong>Cleared balance</strong>.</li>
+<li><strong>Uncleared transactions (as of reconciliation):</strong> <strong>Outstanding checks and payments</strong> and <strong>Deposits in transit</strong>.</li>
+<li><strong>Register balance as of</strong> the statement date: the balance in the books on that date.</li>
+<li><strong>Statement ending balance.</strong></li>
+</ul>
+<p>The note above gives the status, when and by whom it was completed, and a <strong>Detail</strong> link.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>The register balance equals the statement ending balance plus the deposits in transit, less the outstanding checks. If it does not, a transaction dated on or before the statement date was entered or changed after the reconciliation.</p></div>
+<h3 id="pg-rpt-recon_detail">Reconciliation Detail<a class="man-hash" href="#pg-rpt-recon_detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists every transaction of a reconciliation, cleared and uncleared.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Reports &gt; Reconciliation Detail, or <strong>Detail</strong> in the reconciliation history.</p>
+<p><strong>Filter:</strong> <strong>Reconciliation</strong>, as on the summary.</p>
+<p><strong>The columns:</strong> <strong>Type</strong>, <strong>Date</strong>, <strong>Num</strong> (click it to open the transaction), <strong>Name</strong> and <strong>Amount</strong>, in four groups: <strong>Cleared checks and payments</strong>, <strong>Cleared deposits and credits</strong>, <strong>Uncleared checks and payments</strong> and <strong>Uncleared deposits and credits</strong>, each with a <strong>Total</strong>. The note gives the account, statement date and ending balance. A transaction deleted since the reconciliation shows the type "(deleted)".</p>
+<h3 id="pg-rpt-recon_discrepancy">Reconciliation Discrepancy<a class="man-hash" href="#pg-rpt-recon_discrepancy" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the cleared transactions that were changed, voided or deleted after they were reconciled. A clean report means the reconciled balances still stand.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Reports &gt; Reconciliation Discrepancy, or the <strong>Discrepancy report</strong> button on <a href="#pg-bank-reconcile">Reconcile</a>.</p>
+<p><strong>Filter:</strong> <strong>Account</strong> (a bank account, or blank for all).</p>
+<p><strong>The columns:</strong></p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Changed</td>
+<td>When the change was made.</td>
+</tr>
+<tr>
+<td>Account and Reconciled statement</td>
+<td>The bank account and the statement date of the reconciliation that cleared it.</td>
+</tr>
+<tr>
+<td>Transaction</td>
+<td>The transaction, for example "Check 1004". Click it to open it.</td>
+</tr>
+<tr>
+<td>Change</td>
+<td><strong>amount changed</strong>, <strong>voided</strong> or <strong>deleted</strong>.</td>
+</tr>
+<tr>
+<td>Cleared amount / New amount</td>
+<td>The amount on the account when it was cleared, and now.</td>
+</tr>
+<tr>
+<td>Effect</td>
+<td>New amount less cleared amount.</td>
+</tr>
+<tr>
+<td>Changed by</td>
+<td>The user who made the change.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>How to use it:</strong> check it before each reconciliation. Every line means the last reconciled balance no longer matches the books; ask the user who made the change why, and correct the entry or reconcile the difference.</p>
+<h3 id="pg-rpt-check_register">Check Register<a class="man-hash" href="#pg-rpt-check_register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Lists the checks, bill payments and customer refunds in check number order for each account, and highlights missing and duplicate numbers. Use it to account for every check in the checkbook.</p>
+<p><strong>Where to find it:</strong> Banking &gt; Reports &gt; Check Register</p>
+<p><strong>Filters:</strong> <strong>Dates</strong> (starts at <strong>This month</strong>), <strong>From</strong>, <strong>To</strong> and <strong>Account</strong> (a bank account, or blank for all).</p>
+<p>The report can also be narrowed by <strong>Vendor</strong> and <strong>Class</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<p><strong>The columns:</strong></p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check no.</td>
+<td>The number. Click it to open the check.</td>
+</tr>
+<tr>
+<td>Date, Account, Type</td>
+<td>The date, the account code, and Check, Bill Payment or Customer Refund.</td>
+</tr>
+<tr>
+<td>Payee and Memo</td>
+<td>The payee and the memo.</td>
+</tr>
+<tr>
+<td>Amount</td>
+<td>The amount.</td>
+</tr>
+<tr>
+<td>Status</td>
+<td><strong>VOID</strong>, <strong>to print</strong>, <strong>printed</strong>, or blank.</td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td><strong>duplicate number</strong>, or <strong>missing</strong> followed by the numbers skipped, for example "missing 1007–1009".</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>How to read it:</strong> lines with an exception are highlighted. A voided check still holds its number, so it is not a gap. A number used on a date outside the range also shows as missing: in the picture, checks 1007 to 1009 were written in August, so widen the dates to the whole year before you look for a lost check.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Checks made out to an employee or other name show a blank <strong>Payee</strong> on this report. Open the check to see the name.</p></div>

@@ -1,0 +1,1417 @@
+<p>The Home module is where your work starts: the Home Dashboard with the day's figures and reminders, the tools that look things up (Search and Find), and the pages that open and keep reports (the Report Center, Memorized Reports and Saved Report Layouts).</p>
+<p>This chapter also holds <strong>Working with reports</strong>, which explains the tools that every report in the program shares: the dates and filters, sorting, drilling down, printing and PDF, export to a spreadsheet, e-mailing a link, memorizing, scheduled e-mail, and designing the report's layout. The report sections of the other chapters describe only what is special to each report and refer back here.</p>
+<h2 id="pg-home-dashboard">Home Dashboard<a class="man-hash" href="#pg-home-dashboard" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Home Dashboard is the page that opens after you log in. It shows the key figures of the business, a button for every transaction you may enter, and the reminders that need your attention.</p>
+<p><strong>Where to find it:</strong> Home &gt; Home Dashboard. It also opens when you log in, and when you click <strong>GSMaRT Construction System</strong> at the top left of any page.</p>
+<p>The whole page, from the figures at the top to the open POS shifts at the bottom:</p>
+<h4 id="s-what-the-page-shows">What the page shows<a class="man-hash" href="#s-what-the-page-shows" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Welcome line</td>
+<td>Your name, today's date and, when a closing date is set, <strong>Books closed through</strong> that date.</td>
+</tr>
+<tr>
+<td><strong>Accounts Receivable</strong></td>
+<td>What customers owe: the balance of the accounts receivable account(s) in the general ledger.</td>
+</tr>
+<tr>
+<td><strong>overdue document(s)</strong></td>
+<td>Invoices, statement charges and finance charges past their due date and not paid in full.</td>
+</tr>
+<tr>
+<td><strong>Accounts Payable</strong></td>
+<td>What you owe suppliers: the balance of the accounts payable account(s).</td>
+</tr>
+<tr>
+<td><strong>bill(s) due within 7 days</strong></td>
+<td>Unpaid bills due within the next seven days, including those already overdue.</td>
+</tr>
+<tr>
+<td><strong>Sales this month (net of VAT)</strong></td>
+<td>Invoices, sales receipts and POS sales from the first of the month to today, before VAT.</td>
+</tr>
+<tr>
+<td><strong>pending sale(s)</strong></td>
+<td>Invoices and sales receipts saved as pending.</td>
+</tr>
+<tr>
+<td><strong>Items at or below reorder point</strong></td>
+<td>Active inventory parts and assemblies whose total quantity on hand is at or below their reorder point.</td>
+</tr>
+<tr>
+<td><strong>negative stock record(s)</strong></td>
+<td>Item and site combinations whose quantity on hand is below zero.</td>
+</tr>
+<tr>
+<td><strong>Quick actions</strong></td>
+<td>A button for every transaction page on which you may create, grouped by module.</td>
+</tr>
+<tr>
+<td><strong>Cash and bank accounts</strong></td>
+<td>Each active bank account and its balance.</td>
+</tr>
+<tr>
+<td><strong>Open POS shifts</strong></td>
+<td>The cashier shifts not yet closed: <strong>Terminal</strong>, <strong>Cashier</strong>, <strong>Opened</strong>, <strong>Float</strong>.</td>
+</tr>
+<tr>
+<td><strong>Memorized transactions due</strong></td>
+<td>Memorized transactions set to remind you, with their due date.</td>
+</tr>
+<tr>
+<td><strong>Asset maintenance due</strong></td>
+<td>Preventive maintenance tasks that are due or overdue.</td>
+</tr>
+<tr>
+<td><strong>To-do reminders</strong></td>
+<td>Notes marked as to-dos on customers and suppliers that are not done yet.</td>
+</tr>
+<tr>
+<td><strong>My recent activity</strong></td>
+<td>Your last ten actions from the audit trail, with the date and time.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Not everyone sees every part. Each one appears only for the users it concerns:</p>
+<ul>
+<li>The four figures at the top appear for users who may open the pages behind them: the receivables figure for users of the A/R Aging Summary or the Customer Center, the payables figure for users of the A/P Aging Summary or the Vendor Center, the sales figure for users of Sales by Item Summary, POS Daily Sales Summary or Create Invoices, and the reorder figure for users of the Inventory Center or Inventory Stock Status by Item.</li>
+<li><strong>Cash and bank accounts</strong> appears only with the special permission <strong>View bank balances outside Banking</strong>.</li>
+<li><strong>Open POS shifts</strong> appears for users who may open Shifts, Cash Drops &amp; Readings, and only while a shift is open.</li>
+<li><strong>Memorized transactions due</strong> appears for users who may open Memorized Transactions, and only when something is due.</li>
+<li><strong>Asset maintenance due</strong> appears for users who may open Preventive Maintenance, and only when a task is due.</li>
+<li>The <strong>Report Center</strong> button in the title bar appears for users who may open the Report Center.</li>
+</ul>
+<h4 id="s-step-by-step-start-a-transaction-from-the-home-page">Step by step: start a transaction from the Home page<a class="man-hash" href="#s-step-by-step-start-a-transaction-from-the-home-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Find the module in <strong>Quick actions</strong>, for example <strong>Customers</strong>.</li>
+<li>Click the button of the transaction, for example <strong>Create Invoices</strong>.</li>
+</ol>
+<p>For estimates, sales orders, invoices, sales receipts, statement charges, credit memos, bills, purchase orders, checks and journal entries, a blank form opens at once. The other buttons open the page itself.</p>
+<h4 id="s-step-by-step-see-the-detail-behind-a-figure">Step by step: see the detail behind a figure<a class="man-hash" href="#s-step-by-step-see-the-detail-behind-a-figure" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the blue line under the figure.</li>
+<li>The page behind it opens:
+   - under <strong>Accounts Receivable</strong>: the <a href="manual.php?c=customers#pg-rpt-ar_aging_summary">A/R Aging Summary</a>,
+   - under <strong>Accounts Payable</strong>: <a href="manual.php?c=vendors#pg-vend-pay_bills">Pay Bills</a>,
+   - under <strong>Sales this month (net of VAT)</strong>: <a href="manual.php?c=customers#pg-rpt-sales_item_summary">Sales by Item Summary</a> for this month,
+   - under <strong>Items at or below reorder point</strong>: <a href="manual.php?c=inventory#pg-rpt-stock_status_item">Inventory Stock Status by Item</a>.</li>
+</ol>
+<p>If you may not open that page, the line is plain text instead of a link.</p>
+<h4 id="s-step-by-step-deal-with-a-reminder">Step by step: deal with a reminder<a class="man-hash" href="#s-step-by-step-deal-with-a-reminder" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Memorized transactions due:</strong> click <strong>Open</strong> on the card. The <a href="manual.php?c=chart-of-accounts#pg-coa-memorized_txns">Memorized Transactions</a> list opens, where you enter each one. The card shows <strong>Due</strong> or <strong>Overdue</strong> beside each date.</li>
+<li><strong>Asset maintenance due:</strong> click <strong>Open</strong>. <a href="manual.php?c=fixed-assets#pg-fa-pm">Preventive Maintenance</a> opens on the tasks that are due. A task shows, for example, <strong>3 days overdue</strong> or <strong>Due in 20 days</strong>, and stays on the card until someone acknowledges that it is complete.</li>
+<li><strong>Cash and bank accounts:</strong> click an account to open its register in <a href="manual.php?c=banking#pg-bank-register">Use Register</a>.</li>
+</ul>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>The figures are worked out when the page opens. To bring them up to date, open the Home page again.</li>
+<li>The receivables and payables figures are ledger balances. They include opening balances, journal entries to those accounts, and transactions of every date, future-dated ones too.</li>
+<li>The sales figure leaves out voided, pending and suspended sales. Credit memos and POS returns are not taken off it; the sales reports show the net figure.</li>
+<li>To-do reminders are added as notes, with the <strong>To-do</strong> box ticked, in the <a href="manual.php?c=customers#pg-cust-center">Customer Center</a> and the <a href="manual.php?c=vendors#pg-vend-center">Vendor Center</a>. The card shows up to ten, the earliest due first; a due date that has passed is shown in red. When nothing is open it says <strong>No open reminders.</strong></li>
+<li>The bell in the top bar and the pop-up after log-in show the same maintenance tasks as the <strong>Asset maintenance due</strong> card.</li>
+</ul>
+<h2 id="pg-home-search">Search<a class="man-hash" href="#pg-home-search" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Search finds a customer, a supplier, an item or a document from any word or number you remember: part of a name, a document number, a reference or a barcode.</p>
+<p><strong>Where to find it:</strong> the search box in the top bar (type and press Enter). Also Home &gt; Find &gt; <strong>Search names and items</strong>. Search is not listed in the menu.</p>
+<p>The results are grouped by kind. Each line is a link.</p>
+<h4 id="s-what-search-looks-in">What Search looks in<a class="man-hash" href="#s-what-search-looks-in" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Group</th>
+<th>Looks in</th>
+<th>Opens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customers</strong></td>
+<td>Name, company name, e-mail, phone</td>
+<td>The customer in the Customer Center</td>
+</tr>
+<tr>
+<td><strong>Vendors</strong></td>
+<td>Name, company name, e-mail</td>
+<td>The supplier in the Vendor Center</td>
+</tr>
+<tr>
+<td><strong>Items</strong></td>
+<td>Item code, item name, or the whole barcode</td>
+<td>The item's form in the Item List</td>
+</tr>
+<tr>
+<td><strong>Transactions</strong></td>
+<td>Number, reference, memo, receipt number, payee</td>
+<td>The transaction</td>
+</tr>
+</tbody>
+</table></div>
+<p>Beside each result is a short description: the company name and phone of a customer or supplier, the type of an item, and the date, name and total of a transaction.</p>
+<h4 id="s-step-by-step-search">Step by step: search<a class="man-hash" href="#s-step-by-step-search" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the search box in the top bar.</li>
+<li>Type what you remember, for example <code>ABC</code>, <code>INV-00003</code> or a barcode.</li>
+<li>Press Enter. The Search page lists what matches.</li>
+<li>Click a result to open it.</li>
+</ol>
+<p>To search again, type in the box on the Search page and click <strong>Search</strong>.</p>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A word matches anywhere in the text: <code>ABC</code> finds ABC Trading Corp. and any document whose number, reference or memo contains ABC. A barcode must be typed in full.</li>
+<li>Each group shows up to 20 matches, and Transactions shows the 50 most recent. When nothing matches, the page says <strong>Nothing found for</strong> followed by your words.</li>
+<li>A group appears only if you may open the page it leads to, and only the kinds of transaction you may open are listed.</li>
+<li>A transaction is found by its own number, reference, memo or payee, not by the customer's or supplier's name. To list every transaction of a customer, use <a href="#pg-home-find">Find</a> with the customer's name.</li>
+</ul>
+<h2 id="pg-home-find">Find<a class="man-hash" href="#pg-home-find" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Find looks for transactions in every module at once: estimates, orders, invoices, sales receipts, payments, credit memos, bills, supplier debit memos, bill payments, checks, cash vouchers, deposits, transfers, journal entries, inventory adjustments and transfers, builds, processing orders, POS sales and returns, depreciation and disposals. You describe what you know about the transaction, and Find lists every transaction that fits. Use it when you know "something about" a document but not where it is: an amount, a date range, a supplier, an item, the person who entered it.</p>
+<p><strong>Where to find it:</strong> Home &gt; Find, or the <strong>Find</strong> button (funnel icon) in the top bar.</p>
+<p>Find has two tabs. <strong>Simple</strong> asks for the usual few things. <strong>Advanced</strong> offers more than forty filters that can be combined in any way. The <strong>Search names and items</strong> button in the title bar opens the <a href="#pg-home-search">Search</a> page.</p>
+<h3 id="s-the-simple-tab">The Simple tab<a class="man-hash" href="#s-the-simple-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The Simple tab looks for one kind of transaction by its name, dates, number and amount.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transaction type</strong></td>
+<td>The kind of transaction, for example <strong>Invoice</strong> or <strong>Bill</strong>. Only the kinds whose page you may open are listed.</td>
+</tr>
+<tr>
+<td>Name box</td>
+<td>The customer, supplier or other name, or <strong>Any name</strong>. Its label follows the type: <strong>Customer:Job</strong>, <strong>Supplier</strong>, <strong>Payee</strong>, <strong>Paid to</strong>, <strong>Customer</strong> or <strong>Name</strong>.</td>
+</tr>
+<tr>
+<td><strong>Date from</strong> / <strong>To</strong></td>
+<td>The dates to look between. Either one may be left empty.</td>
+</tr>
+<tr>
+<td>Number box</td>
+<td>Part of the document number. Its label follows the type, for example <strong>Invoice #</strong>, <strong>Bill #</strong>, <strong>Check #</strong>, <strong>P.O. #</strong> or <strong>Voucher #</strong>.</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The exact total of the transaction, or empty for <strong>Any amount</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The name box offers only the names that fit the type: customers for sales documents, suppliers for purchase documents, and every kind of name for checks, journal entries and the rest. A customer also finds the transactions of its jobs.</p>
+<h4 id="s-step-by-step-find-a-transaction-on-the-simple-tab">Step by step: find a transaction on the Simple tab<a class="man-hash" href="#s-step-by-step-find-a-transaction-on-the-simple-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose the <strong>Transaction type</strong>.</li>
+<li>Fill in what you know; leave the rest empty.</li>
+<li>Click <strong>Find</strong>. The results appear under the tab.</li>
+</ol>
+<p><strong>Reset</strong> clears the tab. The <strong>Advanced</strong> link beside the buttons, like the <strong>Advanced</strong> tab itself, opens the Advanced tab with the choices of your last search, so you can add more filters to them.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>To find the invoice of ₱89,577.60 for ABC Trading Corp., choose <strong>Invoice</strong>, type <code>abc</code> in <strong>Customer:Job</strong> and pick the customer, type <code>89577.60</code> in <strong>Amount</strong> and click <strong>Find</strong>.</p></div>
+<h3 id="s-the-advanced-tab">The Advanced tab<a class="man-hash" href="#s-the-advanced-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The Advanced tab combines any number of filters. A transaction is found only when it matches every filter you set.</p>
+<p>The tab has three parts:</p>
+<ul>
+<li><strong>Choose filter</strong> on the left lists every filter in alphabetical order. Type in <strong>Type to find a filter</strong> to shorten the list. A filter that is set is shown in bold with a green tick.</li>
+<li>The middle shows the filter you clicked, with a line saying what it finds, and the boxes to set it.</li>
+<li><strong>Current choices</strong> on the right lists every filter that is set, with what it is set to. Click a line to open that filter again; click the cross at its end to remove it. With nothing set, it says that Find lists every transaction you are allowed to open, newest first.</li>
+</ul>
+<h4 id="s-how-the-filters-are-set">How the filters are set<a class="man-hash" href="#s-how-the-filters-are-set" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Lists to tick</strong> (accounts, names, items, types and so on): tick any number of entries. A transaction is found if it matches any one of them. Type in <strong>Type to narrow the list</strong> to find an entry. The count under the list says how many are ticked, or <strong>None ticked: all of them</strong>. <strong>Clear</strong> unticks them all.</li>
+<li><strong>Short choices</strong> (for example <strong>Voided</strong> or <strong>Paid status</strong>): pick one. <strong>Either (no filter)</strong> leaves the filter off.</li>
+<li><strong>Dates</strong>: pick a period in <strong>Dates</strong> (<strong>Today</strong>, <strong>This week</strong>, <strong>This month</strong>, <strong>Last month</strong>, <strong>This quarter</strong>, <strong>This fiscal year</strong>, <strong>Fiscal year to date</strong>, <strong>Last fiscal year</strong>), or type <strong>From</strong> and <strong>To</strong> dates, which makes the period <strong>Custom</strong>. <strong>Any date</strong> leaves the filter off.</li>
+<li><strong>Figures</strong> (amount, days past due, quantity): pick <strong>=</strong>, <strong>at most</strong>, <strong>at least</strong> or <strong>between</strong> and type the figure (two figures for <strong>between</strong>). <strong>Any</strong> leaves the filter off. The sign of an amount does not matter.</li>
+<li><strong>Words</strong> (memo, number, reference, address and so on): pick <strong>contains</strong>, <strong>is exactly</strong> or <strong>starts with</strong>, and type the words. <strong>Number</strong> also offers <strong>from ... to</strong>, for a range of document numbers such as INV-00005 to INV-00010.</li>
+</ul>
+<h4 id="s-the-filters">The filters<a class="man-hash" href="#s-the-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it finds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Account</strong></td>
+<td>Transactions that post to, or are entered against, any of the accounts ticked. The list starts with whole groups such as <strong>All bank accounts</strong> and <strong>All expense accounts</strong>.</td>
+</tr>
+<tr>
+<td><strong>Aging (days past due)</strong></td>
+<td>Open invoices, statement charges, finance charges and bills this many days past their due date.</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The total of the transaction (a journal entry, adjustment or transfer counts its debits).</td>
+</tr>
+<tr>
+<td><strong>Approved by</strong></td>
+<td>Transactions a supervisor approved: discounts, price changes, amounts over a limit.</td>
+</tr>
+<tr>
+<td><strong>Billing status</strong></td>
+<td>Costs marked billable to a customer, and whether they were billed yet.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Transactions, or lines, carrying these classes. <strong>No class (unclassified)</strong> finds the unclassified.</td>
+</tr>
+<tr>
+<td><strong>Cleared (bank)</strong></td>
+<td>Whether the bank or credit-card lines were cleared in a reconciliation.</td>
+</tr>
+<tr>
+<td><strong>Customer type</strong></td>
+<td>Transactions of customers of these types.</td>
+</tr>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the transaction.</td>
+</tr>
+<tr>
+<td><strong>Detail level</strong></td>
+<td>One line for each transaction, or every line of each transaction.</td>
+</tr>
+<tr>
+<td><strong>Due date</strong></td>
+<td>When an invoice, charge or bill falls due.</td>
+</tr>
+<tr>
+<td><strong>Entered / modified</strong></td>
+<td>When the transaction was first entered, or last changed (choose <strong>First entered</strong> or <strong>Last modified</strong>).</td>
+</tr>
+<tr>
+<td><strong>Entered by</strong></td>
+<td>The user who entered the transaction (at the POS, the cashier).</td>
+</tr>
+<tr>
+<td><strong>Fixed asset</strong></td>
+<td>Depreciation, disposals and maintenance of these assets, and the purchases that brought them in.</td>
+</tr>
+<tr>
+<td><strong>Import batch</strong></td>
+<td>Transactions brought in by Import from CSV, by their batch reference.</td>
+</tr>
+<tr>
+<td><strong>Item</strong></td>
+<td>Transactions with a line for any of these items (inactive items included).</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>Words in the memo, the customer message, or the description of any line.</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>Transactions entered in these parts of the system.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The customer, supplier, employee or other name on the transaction or on any of its lines. The list starts with <strong>All customers</strong>, <strong>All suppliers</strong>, <strong>All employees</strong> and <strong>All other names</strong>.</td>
+</tr>
+<tr>
+<td><strong>Name account no. / notes</strong></td>
+<td>The supplier account number, or words in the notes, of the name on the transaction.</td>
+</tr>
+<tr>
+<td><strong>Name address</strong></td>
+<td>The street, city or province of the name (billing and shipping addresses too).</td>
+</tr>
+<tr>
+<td><strong>Name contact person / company</strong></td>
+<td>The contact person or company name of the customer or supplier.</td>
+</tr>
+<tr>
+<td><strong>Name e-mail</strong></td>
+<td>The e-mail address of the name on the transaction.</td>
+</tr>
+<tr>
+<td><strong>Name phone / mobile / fax</strong></td>
+<td>Any phone, mobile or fax number of the name.</td>
+</tr>
+<tr>
+<td><strong>Name TIN</strong></td>
+<td>The tax identification number of the name.</td>
+</tr>
+<tr>
+<td><strong>Number</strong></td>
+<td>The document number (or the POS receipt number).</td>
+</tr>
+<tr>
+<td><strong>Paid status</strong></td>
+<td>Invoices, charges and bills still open, or paid in full.</td>
+</tr>
+<tr>
+<td><strong>Payment method</strong></td>
+<td>Payments, receipts and POS sales paid by these methods.</td>
+</tr>
+<tr>
+<td><strong>POS terminal</strong></td>
+<td>Sales, returns and payments taken at these counters.</td>
+</tr>
+<tr>
+<td><strong>Posting status</strong></td>
+<td>Transactions that post to the books, or those that do not (estimates, orders, suspended sales).</td>
+</tr>
+<tr>
+<td><strong>Preferred supplier</strong></td>
+<td>Transactions with items whose preferred supplier is one of these.</td>
+</tr>
+<tr>
+<td><strong>Printed status</strong></td>
+<td>Documents printed, marked to be printed, or not printed.</td>
+</tr>
+<tr>
+<td><strong>Quantity</strong></td>
+<td>Transactions with a line of this quantity.</td>
+</tr>
+<tr>
+<td><strong>Received (purchase orders)</strong></td>
+<td>Purchase orders received in full, or still waiting for goods.</td>
+</tr>
+<tr>
+<td><strong>Reference / P.O. no.</strong></td>
+<td>The customer's P.O. number, the supplier's invoice number, the check reference.</td>
+</tr>
+<tr>
+<td><strong>Sales rep</strong></td>
+<td>Sales documents of these sales reps.</td>
+</tr>
+<tr>
+<td><strong>Ship date</strong></td>
+<td>The ship date of an invoice or order.</td>
+</tr>
+<tr>
+<td><strong>Site</strong></td>
+<td>Transactions at these sites (a transfer counts at both ends).</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>The status the document stands at: open, partly paid, paid, pending, accepted, closed, completed, suspended.</td>
+</tr>
+<tr>
+<td><strong>Tax code</strong></td>
+<td>Transactions with a line under any of these tax codes.</td>
+</tr>
+<tr>
+<td><strong>Terms</strong></td>
+<td>Invoices, bills and orders on these terms.</td>
+</tr>
+<tr>
+<td><strong>Transaction type</strong></td>
+<td>Any number of kinds of transaction at once.</td>
+</tr>
+<tr>
+<td><strong>Voided</strong></td>
+<td>Leave voided transactions out, or find only those.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-find-transactions-on-the-advanced-tab">Step by step: find transactions on the Advanced tab<a class="man-hash" href="#s-step-by-step-find-transactions-on-the-advanced-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Advanced</strong>.</li>
+<li>Click a filter in <strong>Choose filter</strong>, for example <strong>Name</strong>.</li>
+<li>Set it in the middle, for example tick <strong>Supplier: TechDistributors Inc.</strong> It appears under <strong>Current choices</strong> at once.</li>
+<li>Click the next filter, for example <strong>Date</strong>, and set it. Repeat for every filter you need.</li>
+<li>Click <strong>Find</strong>.</li>
+</ol>
+<p><strong>Reset</strong> clears every filter.</p>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>To list every check and bill payment above ₱50,000.00 made this quarter, set <strong>Transaction type</strong> to <strong>Check</strong> and <strong>Bill Payment</strong>, <strong>Amount</strong> to <strong>at least</strong> 50000, and <strong>Date</strong> to <strong>This quarter</strong>, then click <strong>Find</strong>.</p></div>
+<h3 id="s-the-results">The results<a class="man-hash" href="#s-the-results" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The results appear under the tabs, newest first.</p>
+<p>The header says how many transactions were found and what their amounts total, for example <strong>13 transactions found, amounts totalling 536,512.95</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the transaction.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>The kind of transaction. A voided one is greyed out and marked <strong>Void</strong>.</td>
+</tr>
+<tr>
+<td><strong>Num</strong></td>
+<td>The document number, or the POS receipt number.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The customer (with the job after a colon), supplier, other name or payee.</td>
+</tr>
+<tr>
+<td><strong>Account</strong></td>
+<td>The transaction's main account, for example 1100 - Accounts Receivable for an invoice or the bank account of a check.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>The memo of the transaction.</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The total, or the debits of an entry that has no total.</td>
+</tr>
+</tbody>
+</table></div>
+<p>With <strong>Detail level</strong> set to <strong>Every line of each transaction</strong>, each line of each transaction gets a row of its own: the header then counts lines, the <strong>Account / Item</strong> column shows the line's account or item, <strong>Memo</strong> its description, and <strong>Amount</strong> its amount.</p>
+<h4 id="s-step-by-step-open-a-transaction-found">Step by step: open a transaction found<a class="man-hash" href="#s-step-by-step-open-a-transaction-found" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Click its line. The transaction opens.</li>
+<li>Or hold Ctrl (Cmd on a Mac) and click, to open it in a new browser tab and keep the results.</li>
+<li>Or press Tab until a line is highlighted, move through the lines with the Up and Down arrow keys, and press Enter or click <strong>Go To</strong>. <strong>Go To</strong> opens the line that is picked (highlighted), which is the first line until you pick another.</li>
+</ul>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Go To</strong></td>
+<td>Opens the picked transaction.</td>
+</tr>
+<tr>
+<td><strong>Report</strong></td>
+<td>Opens the same results as the Find Results report, to print, memorize or design (see below).</td>
+</tr>
+<tr>
+<td><strong>Export</strong></td>
+<td>Downloads the results as a spreadsheet file (CSV) with the columns Date, Type, Num, Name, Account, Memo, Status and Amount.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Click a column heading to sort by it; click it again to reverse the order. The arrow beside the heading shows the order. On a phone the headings are folded away and a drop-down (<strong>Newest first</strong>, <strong>Oldest first</strong>, <strong>Largest amount first</strong> and so on) takes their place.</li>
+<li>The page shows 200 transactions at a time. Under the list, <strong>Showing 1 to 200 of</strong> the total and the buttons <strong>Newer</strong> and <strong>Older</strong> move between pages.</li>
+<li>Find only ever finds the kinds of transaction whose page you may open, at the sites you may see. Voided transactions are included unless you set the <strong>Voided</strong> filter.</li>
+<li>When nothing fits, the list says <strong>Nothing matches every one of these choices. Remove a filter, or widen the dates.</strong></li>
+<li>Your choices are kept in the page's address, so a search can be bookmarked in the browser and run again later.</li>
+<li><strong>Report</strong> needs access to the Find Results report, and <strong>Export</strong> needs the <strong>Print/Export</strong> right on it. Export takes up to 5,000 transactions and is recorded in the audit trail.</li>
+</ul>
+<h3 id="pg-rpt-find">Find Results<a class="man-hash" href="#pg-rpt-find" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Find Results shows what the Find page found as a report, so the list can be printed, saved as PDF, exported, designed and memorized like any other report. A memorized Find Results report runs the same search again each time it is opened.</p>
+<p><strong>Where to find it:</strong> the <strong>Report</strong> button above the results on the <a href="#pg-home-find">Find</a> page. It is also listed under <strong>Home</strong> in the Report Center; opened from there, with no choices, it lists every transaction you are allowed to open.</p>
+<p>The report has no filters of its own: the choices come from the Find page, and the line under the title spells them out, for example "Transaction type: Invoice; Date: This month (09/01/2026 to 09/30/2026)". To change the search, go back to Find.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date</strong></td>
+<td>The date of the transaction.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>The kind of transaction, with <strong>(void)</strong> after a voided one.</td>
+</tr>
+<tr>
+<td><strong>Num</strong></td>
+<td>The document number, as a link to the transaction.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The customer, supplier, other name or payee.</td>
+</tr>
+<tr>
+<td><strong>Account</strong></td>
+<td>The main account, or <strong>Account / Item</strong> when every line is listed.</td>
+</tr>
+<tr>
+<td><strong>Memo</strong></td>
+<td>The memo, or the line description.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>An extra column, left out until it is ticked on the Modify Report panel's Columns tab.</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>The total, or the line amount.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The total line counts the transactions (or lines) found in the <strong>Name</strong> column and totals the <strong>Amount</strong> column. The rows are in date order, oldest first; click a heading to sort them otherwise.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The report lists up to 5,000 transactions. When more were found, a note under the title says <strong>Only the first 5,000 of</strong> the total <strong>are listed here. Narrow the search on the Find page to see the rest.</strong> The tools of the report are explained in <a href="#sec-reports">Working with reports</a>.</p></div>
+<h2 id="pg-home-reports">Report Center<a class="man-hash" href="#pg-home-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The Report Center lists every report you may open, grouped by module, and your memorized reports. It is the quickest way to find a report when you are not sure which module it belongs to.</p>
+<p><strong>Where to find it:</strong> Home &gt; Report Center, or the <strong>Report Center</strong> button on the Home page and on the Memorized Reports page. Its <strong>Memorized Reports</strong> button opens the list of memorized reports.</p>
+<h4 id="s-what-the-page-shows_1">What the page shows<a class="man-hash" href="#s-what-the-page-shows_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A line reminding you that every report can be filtered, customized, drilled into, memorized, printed or saved as PDF, exported and e-mailed.</li>
+<li><strong>Find a report by name</strong>: type part of a name, for example "comparative" or "aging", and the cards keep only the reports whose names have every word you typed. The count under the box says how many are shown ("8 of 119 reports"). Clear the box to see them all again.</li>
+<li><strong>Memorized reports</strong>: each report you memorized and each report other users shared, under its group (for example <strong>Month-end</strong>), with the report it is based on under its name ("Income Statement, shared"). The card appears once there is at least one.</li>
+<li>A card for each module, listing its reports: <strong>Home</strong>, <strong>Financial Reports</strong> (the reports of the <strong>Financial Set-up &amp; Reports</strong> menu: the trial balances, balance sheets, income statements, the comparative statements, cash flow, ledgers and journal), <strong>Fixed Assets</strong>, <strong>Customers</strong>, <strong>Vendors</strong>, <strong>Inventory</strong>, <strong>Point of Sale</strong>, <strong>Banking</strong>, <strong>BIR Reports</strong> and <strong>System Administration</strong>. Large modules divide them under headings such as <strong>CUSTOMER AND RECEIVABLES REPORTS</strong> and <strong>SALES REPORTS</strong>.</li>
+</ul>
+<h4 id="s-step-by-step-open-a-report">Step by step: open a report<a class="man-hash" href="#s-step-by-step-open-a-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Home &gt; Report Center</strong>.</li>
+<li>Click the name of the report. It opens with its usual dates and filters.</li>
+</ol>
+<p>To open a memorized report, click its button under <strong>Memorized reports</strong>. It opens with the dates, filters and layout that were memorized.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Only the reports your role allows are listed, so a module card may be short or missing.</li>
+<li>The same reports are listed in the menu, under <strong>REPORTS</strong> in each module.</li>
+<li>A shared memorized report is listed only if you may open the report it is based on.</li>
+</ul>
+<h2 id="sec-reports">Working with reports<a class="man-hash" href="#sec-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every report in GSMaRT Construction System works the same way. This section explains the tools once; the report sections of the other chapters describe only what is special to each report.</p>
+<h3 id="s-the-parts-of-a-report-page">The parts of a report page<a class="man-hash" href="#s-the-parts-of-a-report-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title bar</td>
+<td>The report's name and its buttons: <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong> (or <strong>Layouts</strong>), <strong>Memorize</strong> and <strong>Help</strong>.</td>
+</tr>
+<tr>
+<td>Filter bar</td>
+<td>The dates and the other choices of the report, and the <strong>Refresh</strong> button.</td>
+</tr>
+<tr>
+<td>Heading</td>
+<td>The company name, the report title and the line with the dates and filters, for example 01/01/2026 through 09/27/2026.</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>The columns and rows, with group headings, subtotals and the grand total. Blue words are links.</td>
+</tr>
+<tr>
+<td>Foot</td>
+<td>The <strong>Printed</strong> line with the date, time and your name, and any footer text or signature lines of the layout.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The buttons appear according to your rights: <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong> and <strong>Email link</strong> need the <strong>Print/Export</strong> right on the report, <strong>Modify Report</strong> needs the special permission <strong>Can design report layouts</strong>, and <strong>Memorize</strong> needs access to the Memorized Reports page.</p>
+<h3 id="s-opening-a-report">Opening a report<a class="man-hash" href="#s-opening-a-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>From the Report Center:</strong> Home &gt; Report Center, then click the report.</li>
+<li><strong>From the menu:</strong> open the module, unfold <strong>REPORTS</strong>, and click the report.</li>
+<li><strong>From a memorized report:</strong> Home &gt; Memorized Reports, or the <strong>Memorized reports</strong> buttons of the Report Center.</li>
+<li><strong>From other pages:</strong> many pages link to their reports, for example the figures on the Home page, and blue names and numbers inside other reports.</li>
+</ul>
+<h3 id="s-choosing-the-dates-and-filters">Choosing the dates and filters<a class="man-hash" href="#s-choosing-the-dates-and-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The filter bar shows only the choices that make sense for the report. Each report opens on the dates that suit it; for example the Income Statement opens on <strong>Fiscal year to date</strong> and the aging reports on today's date.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>As of</strong></td>
+<td>The single date a balance or aging report is worked out on.</td>
+</tr>
+<tr>
+<td><strong>Dates</strong></td>
+<td>A ready-made period (see the table below). Choosing one runs the report at once.</td>
+</tr>
+<tr>
+<td><strong>From</strong> / <strong>To</strong></td>
+<td>The first and last day of the period.</td>
+</tr>
+<tr>
+<td><strong>From date and time</strong> / <strong>To date and time</strong></td>
+<td>On the inventory movement reports, the sales report through inventory movement and Ending Inventory - POS Cashier: a time after each date, to see one shift of a day (see <a href="manual.php?c=inventory#sec-inv-movement-times">Dates with times, cashier and shift</a>). Empty times mean the whole days.</td>
+</tr>
+<tr>
+<td>Drop-downs such as <strong>Customer</strong>, <strong>Vendor</strong>, <strong>Item</strong>, <strong>Site</strong>, <strong>Account</strong>, <strong>Sales rep</strong></td>
+<td>Limit the report to one of them. <strong>All</strong> means no limit.</td>
+</tr>
+<tr>
+<td><strong>Category</strong>, <strong>Item type</strong>, <strong>Preferred supplier</strong>, <strong>Customer type</strong></td>
+<td>Limit the report by a field of the item or the customer it is about (see <a href="#sec-related-filters">Filters on related records</a>).</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>One class, or <strong>(Unclassified)</strong> for transactions without a class.</td>
+</tr>
+<tr>
+<td><strong>Columns</strong></td>
+<td>On the Income Statement and some sales summaries: <strong>Total only</strong>, or a column for each <strong>Month</strong>, <strong>Quarter</strong> or <strong>Year</strong> of the period.</td>
+</tr>
+<tr>
+<td>Tick boxes</td>
+<td>Report-specific choices, for example <strong>Include estimates and sales orders</strong>, <strong>Exclude zero sales</strong> or <strong>Exclude inventory with zero balance</strong>. Ticking one runs the report at once.</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Words to look for, on the reports that have it.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Dates choice</th>
+<th>Period</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Today</strong></td>
+<td>Today only.</td>
+</tr>
+<tr>
+<td><strong>This week</strong></td>
+<td>Monday to Sunday of the current week.</td>
+</tr>
+<tr>
+<td><strong>This month</strong></td>
+<td>The first to the last day of the current month.</td>
+</tr>
+<tr>
+<td><strong>Last month</strong></td>
+<td>The whole of the previous month.</td>
+</tr>
+<tr>
+<td><strong>This quarter</strong></td>
+<td>The calendar quarter that contains today.</td>
+</tr>
+<tr>
+<td><strong>Last quarter</strong></td>
+<td>The whole of the calendar quarter before this one (the quarter of the BIR returns being prepared).</td>
+</tr>
+<tr>
+<td><strong>This fiscal year</strong></td>
+<td>The whole fiscal year that contains today.</td>
+</tr>
+<tr>
+<td><strong>Fiscal year to date</strong></td>
+<td>The first day of the fiscal year to today.</td>
+</tr>
+<tr>
+<td><strong>Last fiscal year</strong></td>
+<td>The whole previous fiscal year.</td>
+</tr>
+<tr>
+<td><strong>All dates</strong></td>
+<td>Everything, from 01/01/2000 to one year from today.</td>
+</tr>
+<tr>
+<td><strong>Custom</strong></td>
+<td>Starts from this month's dates; type your own in <strong>From</strong> and <strong>To</strong> and click <strong>Refresh</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The fiscal year starts in the month set in <strong>Fiscal year starts (month 1-12)</strong> on <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</p>
+<h4 id="s-step-by-step-run-a-report-for-dates-of-your-own">Step by step: run a report for dates of your own<a class="man-hash" href="#s-step-by-step-run-a-report-for-dates-of-your-own" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Type the first day in <strong>From</strong> and the last day in <strong>To</strong>, or pick them with the calendar button.</li>
+<li>Set the other filters.</li>
+<li>Click <strong>Refresh</strong>.</li>
+</ol>
+<p>The dates in <strong>From</strong> and <strong>To</strong> are the ones used, even if the <strong>Dates</strong> list still shows an earlier choice. The line under the report's title always shows the dates actually used.</p>
+<h4 id="s-step-by-step-change-the-other-filters">Step by step: change the other filters<a class="man-hash" href="#s-step-by-step-change-the-other-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Choose the customer, account, class or other filter.</li>
+<li>Click <strong>Refresh</strong>.</li>
+</ol>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>When the report shows nothing, it says <strong>No data for these settings.</strong> Widen the dates, or set a filter back to <strong>All</strong>.</p></div>
+<h3 id="sec-related-filters">Filters on related records<a class="man-hash" href="#sec-related-filters" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Besides its own filters, a report can be narrowed by the fields of the records it is made from: the items it lists or sold, and the customers it is about. Every report where they apply has them in its filter bar:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>On the reports about</th>
+<th>What it keeps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Category</strong></td>
+<td>items: inventory, sales by item, POS sales by item and category, processing</td>
+<td>The items of one category of the <a href="manual.php?c=inventory#pg-inv-categories">Category List</a>.</td>
+</tr>
+<tr>
+<td><strong>Item type</strong></td>
+<td>items</td>
+<td>One kind of item: <strong>Inventory part</strong>, <strong>Inventory assembly</strong>, <strong>Non-inventory part</strong>, <strong>Service</strong>, <strong>Other charge</strong> and so on. Only the kinds that are in use are offered.</td>
+</tr>
+<tr>
+<td><strong>Preferred supplier</strong></td>
+<td>items</td>
+<td>The items whose preferred supplier (on the item's form) is the one chosen. Only suppliers that are the preferred supplier of an item are offered.</td>
+</tr>
+<tr>
+<td><strong>Customer type</strong></td>
+<td>customers: receivables, collections, sales, income by customer, open sales orders</td>
+<td>The customers of one customer type, with their jobs.</td>
+</tr>
+<tr>
+<td><strong>Site</strong></td>
+<td>inventory and sales</td>
+<td>One inventory site. On <a href="manual.php?c=inventory#pg-rpt-qoh_by_site">Quantity on Hand by Site</a> it keeps that site's column only.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The filters work together: <strong>Category</strong> Accessories with <strong>Preferred supplier</strong> TechDistributors Inc. keeps the accessories bought from that supplier. The totals, subtotals and percentages are those of what is shown. The line under the report's title names every filter chosen, for example "As of 10/04/2026, Makati Store, Category Accessories", so a printout says what it covers. A report narrowed by customer type leaves out its agreement with the ledger (the ledger is the total of every customer).</p>
+<h3 id="s-sorting">Sorting<a class="man-hash" href="#s-sorting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>On most reports the column headings are links. Click a heading to sort by it; a small triangle shows the order (up for ascending, down for descending). Click the same heading again to reverse the order. Reports divided into groups with subtotals, such as the financial statements, and a few others whose order matters (the check register and the audit reports, for example) keep their own order, and their headings are plain text.</p>
+<p><strong>Sort by</strong> (with <strong>Increasing</strong> or <strong>Decreasing</strong> beside it) is in the filter bar of the sales and income reports: <a href="manual.php?c=customers#pg-rpt-income_customer_summary">Income by Customer Summary</a> (Qty sold, Sales, Cost of sales, Income / (loss), Margin %), <a href="manual.php?c=customers#pg-rpt-sales_item_summary">Sales by Item Summary</a> (Qty, Amount, % of sales, COGS, Gross margin, Margin %), <a href="manual.php?c=customers#pg-rpt-inventory_sales_site">Inventory Sales by Site</a> (Qty sold, Sales, Cost of sales), <a href="manual.php?c=customers#pg-rpt-sales_item_group">Sales by Item Group</a> and <a href="manual.php?c=point-of-sale#pg-rpt-pos_sales_item_group">POS Sales by Item Group</a> (Qty, Total). Choosing a column or an order refreshes the report at once, and the heading line says "Sorted by Amount, decreasing". On a report divided into groups, the groups and their totals keep their places and the lines are sorted inside each group; lines without a figure (no cost on a service item, for example) come last whichever the order. <strong>Default order</strong> puts the report back in its own order. The sort is kept when the report is memorized, and the column headings of these reports sort the same way.</p>
+<p>Cost columns are offered in <strong>Sort by</strong> only to users who may view costs.</p>
+<h3 id="s-drilling-down-to-the-detail">Drilling down to the detail<a class="man-hash" href="#s-drilling-down-to-the-detail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Words and numbers in blue are links to the detail behind them:</p>
+<ul>
+<li>a document number opens the transaction,</li>
+<li>an account on a financial statement opens the <a href="manual.php?c=chart-of-accounts#pg-rpt-general_ledger">General Ledger</a> of that account for the same period,</li>
+<li>a customer, supplier or item name opens a more detailed report or record,</li>
+<li>on some charts, a figure opens the report behind it.</li>
+</ul>
+<p>A link appears only when you may open the page it leads to; otherwise the text is plain.</p>
+<h3 id="s-charts">Charts<a class="man-hash" href="#s-charts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A few reports draw charts above their table: the <a href="manual.php?c=customers#pg-rpt-ar_graph">Accounts Receivable Graph</a> (receivables by aging period and each customer's share), <a href="manual.php?c=point-of-sale#pg-rpt-pos_sales_hour">POS Sales by Hour</a> (net sales by hour) and the <a href="manual.php?c=inventory#pg-rpt-coproduct_costs">Co-product &amp; By-product Cost Allocation</a> (allocated cost by output item, for users who may view costs). The charts print with the report.</p>
+<h3 id="s-print-pdf">Print / PDF<a class="man-hash" href="#s-print-pdf" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ol>
+<li>Set the dates and filters, and click <strong>Refresh</strong>.</li>
+<li>Click <strong>Print / PDF</strong>. The report opens on a plain page, without menus or filters, with the buttons <strong>Print / Save as PDF</strong> and <strong>Back</strong> at the top.</li>
+<li>Click <strong>Print / Save as PDF</strong>. The browser's print window opens.</li>
+<li>Choose a printer, or choose to save as PDF.</li>
+<li>Click <strong>Back</strong> to return to the report.</li>
+</ol>
+<p>The printed page follows the <strong>Page</strong> settings of the report's layout: paper size, upright or sideways, margins, page numbers and the title at the top of each page (see "Modifying a report" below). Every printout is recorded in the audit trail.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Page numbers ("Page 1 of 3") and the title repeated on every page are printed by the browser in the page margins. Chrome and Edge do this; other browsers leave them off.</p></div>
+<h3 id="s-export-to-spreadsheet">Export to spreadsheet<a class="man-hash" href="#s-export-to-spreadsheet" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ol>
+<li>Set the dates and filters, and click <strong>Refresh</strong>.</li>
+<li>Click <strong>Export to spreadsheet</strong>. The browser downloads a CSV file named after the report, for example <code>income_statement.csv</code>.</li>
+<li>Open it in Excel or any spreadsheet program.</li>
+</ol>
+<p>The file holds the columns shown on the screen, in their order and with their headings, the rows shown on the screen, and the grand total. Amounts are plain numbers with two decimals, without commas, so they can be added up in the spreadsheet; dates are written year-month-day. Every export is recorded in the audit trail.</p>
+<h3 id="s-email-link">Email link<a class="man-hash" href="#s-email-link" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p><strong>Email link</strong> opens your e-mail program with a new message. The subject is the report's title and the body is the address of the report, exactly as it is on your screen: the same dates, filters and layout.</p>
+<p>The person who receives it needs their own log-in and access to the report. If they are not logged in, the address takes them to the log-in page and then to the Home page; once logged in, they click the address again and see the report run afresh with the latest figures. Nothing is attached: to send the figures themselves, save the report as PDF or export it, and attach the file.</p>
+<h3 id="s-columns-for-users-who-design-reports">Columns (for users who design reports)<a class="man-hash" href="#s-columns-for-users-who-design-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Users who may design reports see a <strong>Columns</strong> button beside <strong>Refresh</strong> on reports with more than two columns. It is a quick way to leave columns out:</p>
+<ol>
+<li>Click <strong>Columns</strong>.</li>
+<li>Tick <strong>Hide</strong> beside each column to leave out, or untick it to show it again.</li>
+<li>Click <strong>Refresh</strong>.</li>
+</ol>
+<p>The <strong>Columns</strong> tab of the Modify Report panel does the same and more (order, headings, widths, and fields from the related records).</p>
+<h3 id="s-layouts-for-users-who-do-not-design-reports">Layouts (for users who do not design reports)<a class="man-hash" href="#s-layouts-for-users-who-do-not-design-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Users without the design permission see the report the way its default layout sets it. When other users have shared layouts for the report, a <strong>Layouts</strong> button appears in the title bar. Click it and choose a layout, or <strong>Standard</strong> for the report without any layout. While a layout is in use, the button shows its name.</p>
+<h3 id="s-memorize">Memorize<a class="man-hash" href="#s-memorize" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Memorizing saves a report exactly as it is on the screen (the dates choice, the filters, the sort order, the columns and the layout) under a name of your own, so you can open it again with one click, share it, and have it e-mailed on a schedule.</p>
+<h4 id="s-fields_1">Fields<a class="man-hash" href="#s-fields_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>The name of the memorized report. It starts as the report's title.</td>
+</tr>
+<tr>
+<td><strong>Group</strong></td>
+<td>A group to file it under, for example Month-end or Weekly. Groups sort the list.</td>
+</tr>
+<tr>
+<td><strong>Share with other users</strong></td>
+<td>Tick it to list the report for everyone. Each user can open it only if they may open the report itself.</td>
+</tr>
+<tr>
+<td><strong>Send automatically</strong></td>
+<td><strong>No</strong>, <strong>Daily</strong>, <strong>Weekly</strong> or <strong>Monthly</strong>.</td>
+</tr>
+<tr>
+<td><strong>Email to</strong></td>
+<td>The e-mail address the scheduled report goes to.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-memorize-a-report">Step by step: memorize a report<a class="man-hash" href="#s-step-by-step-memorize-a-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Set the report up: filters, sorting, columns and layout.</li>
+<li>Choose the period in <strong>Dates</strong> as the last step (see the tip below).</li>
+<li>Click <strong>Memorize</strong>.</li>
+<li>Change the <strong>Name</strong> if you wish and type a <strong>Group</strong>.</li>
+<li>Tick <strong>Share with other users</strong> if others should have it.</li>
+<li>To have it e-mailed, choose <strong>Daily</strong>, <strong>Weekly</strong> or <strong>Monthly</strong> in <strong>Send automatically</strong> and type the address in <strong>Email to</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>The program says <strong>Report memorized.</strong> and shows the report again. It is now in <a href="#pg-home-memorized">Memorized Reports</a> and in the Report Center.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>A period chosen from the <strong>Dates</strong> list moves with the calendar: a report memorized on <strong>This month</strong> always shows the current month. Dates in <strong>From</strong> and <strong>To</strong> are remembered as they are. After you press <strong>Refresh</strong>, the From and To dates on the screen are sent with the report and stay fixed. To memorize a moving period, choose it from <strong>Dates</strong> after setting the other filters, and click <strong>Memorize</strong> without pressing <strong>Refresh</strong> again.</p></div>
+<h4 id="s-scheduled-e-mail">Scheduled e-mail<a class="man-hash" href="#s-scheduled-e-mail" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A memorized report with <strong>Send automatically</strong> set is e-mailed as a spreadsheet file (CSV) attached to a message whose subject is its name and the company name. The e-mails are sent by a program on the server, <code>tools/send_scheduled_reports.php</code>, which your administrator runs once a day (for example with Windows Task Scheduler). On each run:</p>
+<ul>
+<li>a daily report goes out once a day, a weekly report when a week has passed since the last sending, and a monthly report when a month has passed;</li>
+<li>a new scheduled report goes out at the next run;</li>
+<li>the report runs with the access of the user who memorized it, and is skipped if that user's account is no longer active or has lost access to the report;</li>
+<li>the time of the last sending is shown in the <strong>Schedule</strong> column of Memorized Reports, and each sending (or failure) is recorded in the audit trail.</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Nothing is sent when <strong>Email to</strong> is empty, or when the administrator has not set the sender up on the server. The attached file has the report's standard columns and all its rows, whatever layout was used on the screen.</p></div>
+<h3 id="sec-modify-report">Modifying a report<a class="man-hash" href="#sec-modify-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The <strong>Modify Report</strong> panel, which works like the Modify Report window of QuickBooks, changes how a report looks and what it prints: which columns (the report's own and fields from the records behind each row), which rows, the heading and the foot, the fonts, how the figures are written, and the printed page. It is on every report. It needs the special permission <strong>Can design report layouts</strong> (Administrators always have it). A modified report can be used just for now, or saved as a layout, shared with the other users and made the one the report opens with.</p>
+<p>Click <strong>Modify Report</strong> in the title bar of any report. The panel opens between the filter bar and the report. Click <strong>Modify Report</strong> again to close it. While a saved layout is in use, the button reads <strong>Modify Report:</strong> followed by the layout's name.</p>
+<p>The panel has eight tabs: <strong>Columns</strong>, <strong>Rows</strong>, <strong>Heading</strong>, <strong>Fonts &amp; look</strong>, <strong>Figures</strong>, <strong>Footer</strong>, <strong>Page</strong> and <strong>Layouts</strong>. Two kinds of change work differently:</p>
+<ul>
+<li>Fonts, sizes, colours, shading, lines, the words of the heading and the foot, and which heading lines show, change on the report as you pick them. So do showing or hiding a column, its width, its alignment and its heading, for the columns already on the report.</li>
+<li>Changes to what is printed (moving columns, the rows, the figures, the page) wait. The note <strong>Some changes show once you press "Show it this way".</strong> appears; click <strong>Show it this way</strong> to see them.</li>
+</ul>
+<p>The buttons at the foot of the panel:</p>
+<ul>
+<li><strong>Show it this way</strong> redraws the report with every choice on the panel. Nothing is saved yet, but the report as shown can be printed, exported, e-mailed and memorized.</li>
+<li><strong>Back to the plain report</strong> opens the report without any layout, keeping its dates and filters.</li>
+</ul>
+<h4 id="s-the-columns-tab">The Columns tab<a class="man-hash" href="#s-the-columns-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The tab lists every column the report can print: first the report's own columns, then the <strong>related fields</strong>, the fields of the records its rows come from. A row of the Sales by Customer Detail report, for example, comes from a transaction and from a customer, so the memo, the class, the site or the status of the transaction, and the phone, the e-mail, the terms or the credit limit of the customer, can all be added to the report with a tick. The field says which record it comes from: <strong>Memo</strong> <em>from the transaction</em>, <strong>Phone</strong> <em>from the customer</em>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Handle</td>
+<td>Drag the dotted handle at the start of a row to move the column.</td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Tick to print the column, untick to leave it out.</td>
+</tr>
+<tr>
+<td><strong>Column</strong></td>
+<td>The column's standard name. <strong>(extra)</strong> marks a column the report offers but prints only when ticked; <em>from the transaction</em>, <em>from the customer</em>, <em>from the supplier</em>, <em>from the item</em>, <em>from the account</em> or <em>from the fixed asset</em> marks a related field.</td>
+</tr>
+<tr>
+<td><strong>Heading printed</strong></td>
+<td>Type the words to print over the column. Empty keeps the standard heading.</td>
+</tr>
+<tr>
+<td><strong>Width</strong></td>
+<td><strong>Auto</strong> (fits the text), <strong>Narrow</strong>, <strong>Medium</strong> or <strong>Wide</strong>.</td>
+</tr>
+<tr>
+<td><strong>Lines up</strong></td>
+<td><strong>Auto</strong>, <strong>Left</strong>, <strong>Middle</strong> or <strong>Right</strong>.</td>
+</tr>
+<tr>
+<td><strong>Move</strong></td>
+<td>To the start, up one, down one, to the end.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Above the list, <strong>Find a column or field</strong> narrows the list as you type (for example "phone"), and a link per kind of record, such as <strong>Transaction fields (16)</strong> or <strong>Customer fields (14)</strong>, scrolls to that group. Under the list, <strong>Print all its own columns</strong> ticks every column of the report itself, <strong>Back to the standard columns</strong> undoes every change on this tab, and <strong>Take out the added fields</strong> unticks every related field at once. The line beside the buttons counts the columns that print and how many of them are added fields. Any column can be moved, the Date or the Name column included, and an added field can be dragged among the report's own columns, renamed, widened and lined up like any other.</p>
+<p>The related fields on offer:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Record</th>
+<th>Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transaction</td>
+<td>Transaction type, date and number, Name (customer, supplier or payee), Reference number, Memo, Class, Site, Terms, Due date, Ship date, Status, Transaction total, Entered by, Entered on, Approved by.</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Customer name, Company name, Contact person, Phone, Mobile, Email, Billing address, TIN, Terms, Customer type, Sales rep, Price level, Credit limit, Balance owed today.</td>
+</tr>
+<tr>
+<td>Supplier</td>
+<td>Supplier name, Company name, Contact person, Phone, Fax, Email, Address, TIN, Terms, Our account number with them, Credit limit, Balance owed today.</td>
+</tr>
+<tr>
+<td>Item</td>
+<td>Item code, Item name, Barcode, Sales description, Purchase description, Category, Item type, Unit, Tax code, Item status, Cost, Average cost, Sales price, Reorder point, Maximum stock, Preferred supplier, On hand today (all sites), Asset value today, Retail value today, Gross profit per unit (price less average cost), Gross profit % per unit, Markup % on average cost. The cost and profit fields are offered only to users who may view costs. A report that everybody can shape column by column is the <a href="manual.php?c=inventory#pg-rpt-inv_custom">Customized Inventory Report</a>.</td>
+</tr>
+<tr>
+<td>Account</td>
+<td>Account number, Account name, Account type, Category, Parent account, Description, Bank account number.</td>
+</tr>
+<tr>
+<td>Fixed asset</td>
+<td>Asset number, Asset, Category, Location, Serial number, Date acquired, Cost, Status.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Which records a report offers depends on what its rows point at: a report whose numbers open a transaction offers the transaction's fields and those of its customer or supplier; a report whose names open a customer, a supplier, an item or an account offers that record's fields; the asset reports offer the asset's. Group headings, subtotals and totals have no record behind them, so their cells in an added column stay empty.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The fields are looked up only when they print, and only for the rows on the report, so a report without added fields is as fast as it was. <strong>Cost</strong> and <strong>Average cost</strong> appear only for users with <strong>View costs and margins</strong>, and <strong>Bank account number</strong> only for users who may see bank balances. Added fields go into the spreadsheet export, into the scheduled e-mail of a memorized report, and into a saved layout, and the report can be sorted by them like by any column.</p>
+<p><strong>Tip:</strong> To make a collections list from the Open Invoices report, add <strong>Phone</strong> and <strong>Email</strong> <em>from the customer</em> and <strong>Memo</strong> <em>from the transaction</em>, drag them next to the customer's name, and save the result as a layout called "Collections list".</p></div>
+<h4 id="s-the-rows-tab">The Rows tab<a class="man-hash" href="#s-the-rows-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Which rows</strong></td>
+<td><strong>Every row</strong>, or <strong>Only the group headings, subtotals and totals</strong> for a summary. A report without groups says so under the box.</td>
+</tr>
+<tr>
+<td><strong>Rows whose figures are all zero</strong></td>
+<td><strong>Show them</strong> or <strong>Leave them out</strong>.</td>
+</tr>
+<tr>
+<td><strong>Only rows containing</strong></td>
+<td>Prints only the detail rows that contain the text typed, in any column. Capitals do not matter.</td>
+</tr>
+<tr>
+<td><strong>At most this many rows (0 = all of them)</strong></td>
+<td>Stops after that many detail rows.</td>
+</tr>
+<tr>
+<td><strong>Subtotal rows</strong></td>
+<td>Untick to leave the subtotals out.</td>
+</tr>
+<tr>
+<td><strong>Grand total row</strong></td>
+<td>Untick to leave the grand total out.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Rows taken out one by one:</strong> while the panel is open, a small button with a crossed-out eye appears at the start of each row of the report. Click it to take that row out; the row is greyed out until you click <strong>Show it this way</strong>. The taken-out rows are listed on the right, each with <strong>Put back</strong>; <strong>Put them all back</strong> returns them all. When none is taken out, the list says <strong>None taken out.</strong> A row is recognised by the words in its first columns, so it stays out whenever the report is run.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Leaving rows out changes what prints, not the figures: every total is still the total of the whole report. A line above the report (not printed) says how many rows are taken out or left out.</p></div>
+<h4 id="s-the-heading-tab">The Heading tab<a class="man-hash" href="#s-the-heading-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Report title</strong></td>
+<td>A title of your own. Empty keeps the report's name.</td>
+</tr>
+<tr>
+<td><strong>Line under the title</strong></td>
+<td>One line under the title, for example "For the board meeting".</td>
+</tr>
+<tr>
+<td><strong>More lines under the title</strong></td>
+<td>Extra lines, one per line of the box, up to eight.</td>
+</tr>
+<tr>
+<td><strong>The heading sits</strong></td>
+<td><strong>On the left</strong>, <strong>In the middle</strong> or <strong>On the right</strong>.</td>
+</tr>
+<tr>
+<td><strong>Title in capital letters</strong></td>
+<td>Prints the title in capitals.</td>
+</tr>
+<tr>
+<td><strong>Company name</strong></td>
+<td>Shows the company name.</td>
+</tr>
+<tr>
+<td><strong>Company address</strong></td>
+<td>Shows the address from the company settings.</td>
+</tr>
+<tr>
+<td><strong>Company TIN</strong></td>
+<td>Shows the TIN from the company settings.</td>
+</tr>
+<tr>
+<td><strong>Company logo</strong></td>
+<td>Shows the company logo.</td>
+</tr>
+<tr>
+<td><strong>Dates and filters line</strong></td>
+<td>The line with the dates and filters under the title.</td>
+</tr>
+<tr>
+<td><strong>"Prepared on ..." line under the heading</strong></td>
+<td>A line with the date, the time and the name of the person running the report, under the dates line. Off as delivered.</td>
+</tr>
+<tr>
+<td><strong>A line under the heading</strong></td>
+<td>A rule between the heading and the table.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A note under a box says when it cannot show anything yet: <strong>No address in the company settings yet</strong>, <strong>No TIN in the company settings yet</strong>, <strong>No logo uploaded yet</strong>, or <strong>Not ticked for this report under Company, Security &amp; Closing Date</strong>. The company details and the logo, and the reports the logo prints on, are set in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>.</p>
+<h4 id="s-the-fonts-look-tab">The Fonts &amp; look tab<a class="man-hash" href="#s-the-fonts-look-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>THE HEADING</strong></p>
+<ul>
+<li><strong>Font</strong>: one of Standard (Segoe UI), Arial, Calibri, Tahoma, Verdana, Century Gothic, Times New Roman, Georgia, Cambria, Garamond, Bookman Old Style, Courier New or Consolas. Nothing is downloaded: if a computer does not have the font, the browser uses a similar one.</li>
+<li><strong>Title size</strong>: <strong>Small</strong>, <strong>Normal</strong>, <strong>Large</strong> or <strong>Extra large</strong>. <strong>Company name size</strong>: <strong>Small</strong>, <strong>Normal</strong> or <strong>Large</strong>.</li>
+<li><strong>Colour</strong>: <strong>Black</strong>, <strong>Dark grey</strong>, <strong>Blue</strong> or <strong>Green</strong>.</li>
+</ul>
+<p><strong>THE COLUMN HEADINGS</strong></p>
+<ul>
+<li><strong>Font</strong> and <strong>Size</strong> (<strong>Small</strong>, <strong>Normal</strong>, <strong>Large</strong>).</li>
+<li><strong>Shading</strong>: <strong>None</strong>, <strong>Light grey</strong>, <strong>Dark, white letters</strong> or <strong>Blue, white letters</strong>.</li>
+<li><strong>Line up</strong>: <strong>Over their figures (text left, amounts right)</strong>, <strong>All on the left</strong> or <strong>All in the middle</strong>.</li>
+<li><strong>In bold</strong>, <strong>In capital letters</strong>, and <strong>Long headings may take two lines</strong>.</li>
+</ul>
+<p><strong>THE ROWS</strong></p>
+<ul>
+<li><strong>Font</strong> and <strong>Size</strong> (<strong>Small</strong>, <strong>Normal</strong>, <strong>Large</strong>).</li>
+<li><strong>Row height</strong>: <strong>Normal</strong>, <strong>Tight (more rows to a page)</strong> or <strong>Roomy</strong>.</li>
+<li><strong>The grand total</strong>: <strong>Line above, double line below</strong>, <strong>A line above</strong>, <strong>In bold only</strong> or <strong>Shaded band</strong>.</li>
+<li><strong>Shade every other row</strong>, <strong>Lines between the columns</strong>, <strong>A border round the table</strong> and <strong>Shade the group headings</strong>.</li>
+</ul>
+<h4 id="s-the-figures-tab">The Figures tab<a class="man-hash" href="#s-the-figures-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>Choices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Negative figures</strong></td>
+<td><strong>With a minus sign -1,234.00</strong>, <strong>In brackets (1,234.00)</strong>, <strong>In red -1,234.00</strong> or <strong>In red brackets (1,234.00)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Zero figures</strong></td>
+<td><strong>Show 0.00</strong>, <strong>Leave the cell empty</strong> or <strong>Show a dash</strong>.</td>
+</tr>
+<tr>
+<td><strong>Decimal places on money</strong></td>
+<td><strong>Two (1,234.56)</strong> or <strong>None (1,235)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Show the money figures</strong></td>
+<td><strong>As they are (1,234,567.00)</strong>, <strong>In thousands (1,235)</strong> or <strong>In millions (1.2)</strong>. The heading then says "amounts in thousands" or "amounts in millions".</td>
+</tr>
+<tr>
+<td><strong>Currency sign</strong></td>
+<td><strong>None</strong>, <strong>On the totals</strong> or <strong>On every amount</strong>. The sign is ₱, from the system settings.</td>
+</tr>
+<tr>
+<td><strong>Thousands separator (1,234)</strong></td>
+<td>Untick to print 1234 instead of 1,234.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-footer-tab">The Footer tab<a class="man-hash" href="#s-the-footer-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text at the foot of the report</strong></td>
+<td>Your own text, for example "Confidential: for internal use only". Up to eight lines.</td>
+</tr>
+<tr>
+<td><strong>The foot text sits</strong></td>
+<td><strong>On the left</strong>, <strong>In the middle</strong> or <strong>On the right</strong>.</td>
+</tr>
+<tr>
+<td><strong>A line above the foot</strong></td>
+<td>A rule between the table (or the signature lines) and the foot text.</td>
+</tr>
+<tr>
+<td><strong>"Printed on ... by ..." line</strong></td>
+<td>The line with the date, time and name of the person who printed the report.</td>
+</tr>
+<tr>
+<td><strong>Page numbers on the printed pages</strong></td>
+<td>"Page 1 of 3" at the foot of each page (Chrome and Edge).</td>
+</tr>
+<tr>
+<td><strong>Signature lines at the foot</strong></td>
+<td>Prints signature lines under the report.</td>
+</tr>
+<tr>
+<td><strong>Caption under each signature line</strong></td>
+<td>One caption per line, up to four. As delivered: Prepared by, Checked by, Approved by.</td>
+</tr>
+<tr>
+<td><strong>Names printed above the captions</strong></td>
+<td>The names to print above the lines, in the same order as the captions.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>For a trial balance to be signed, tick <strong>Signature lines at the foot</strong>, keep the three captions, and type the names of the bookkeeper, the chief accountant and the owner, one per line, in <strong>Names printed above the captions</strong>.</p></div>
+<h4 id="s-the-page-tab">The Page tab<a class="man-hash" href="#s-the-page-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>Choices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Paper</strong></td>
+<td><strong>The printer's own</strong>, <strong>A4 (210 x 297 mm)</strong>, <strong>Letter (8.5 x 11 in)</strong>, <strong>Long / Folio (8.5 x 13 in)</strong> or <strong>Legal (8.5 x 14 in)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Printed page</strong></td>
+<td><strong>Upright (portrait)</strong> or <strong>Sideways (landscape)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Margins</strong></td>
+<td><strong>Narrow (6 mm)</strong>, <strong>Normal (12 mm)</strong> or <strong>Wide (20 mm)</strong>.</td>
+</tr>
+<tr>
+<td><strong>Report title at the top of every printed page</strong></td>
+<td>From the second printed page on, in the top margin (Chrome and Edge).</td>
+</tr>
+</tbody>
+</table></div>
+<p>These settings are for the printed page only. Click <strong>Print / PDF</strong> above the report to see them.</p>
+<h4 id="s-the-layouts-tab">The Layouts tab<a class="man-hash" href="#s-the-layouts-tab" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Open a saved layout</strong> lists <strong>Standard (no layout)</strong> and every layout of this report that is yours or shared, marked <strong>(opens by default)</strong> and <strong>shared</strong> where they apply. Choosing one opens the report in it. When there is none, the tab says <strong>No layout saved for this report yet.</strong></li>
+<li><strong>Save this layout</strong> opens the window described below.</li>
+<li><strong>Delete</strong> followed by the layout's name deletes the layout that is open. It appears for the layout's owner and for administrators.</li>
+<li><strong>Every saved layout</strong> opens <a href="#pg-home-report_layouts">Saved Report Layouts</a>.</li>
+</ul>
+<h3 id="s-saving-sharing-and-deleting-a-layout">Saving, sharing and deleting a layout<a class="man-hash" href="#s-saving-sharing-and-deleting-a-layout" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A layout keeps everything set on the Modify Report panel's tabs, the added fields included, so the report can be opened the same way again, by you or by everyone.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>The layout's name, for example "Trial Balance for the bank".</td>
+</tr>
+<tr>
+<td><strong>Replace</strong> "..." <strong>instead of adding another</strong></td>
+<td>Shown when the layout that is open is yours, and ticked: saving updates it. Untick to save a new layout.</td>
+</tr>
+<tr>
+<td><strong>Open this report with this layout from now on</strong></td>
+<td>Makes it the layout the report opens with.</td>
+</tr>
+<tr>
+<td><strong>Let the other users use it too</strong></td>
+<td>Shares it. Users who cannot design reports can then choose it from their <strong>Layouts</strong> button.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-save-a-layout">Step by step: save a layout<a class="man-hash" href="#s-step-by-step-save-a-layout" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the report and click <strong>Modify Report</strong>.</li>
+<li>Make your changes on the tabs. There is no need to click <strong>Show it this way</strong> first: everything on the panel is saved, including changes not shown yet.</li>
+<li>Open the <strong>Layouts</strong> tab and click <strong>Save this layout</strong>.</li>
+<li>Type a <strong>Name</strong>.</li>
+<li>Tick <strong>Open this report with this layout from now on</strong> and <strong>Let the other users use it too</strong> as needed.</li>
+<li>Click <strong>Save the layout</strong>.</li>
+</ol>
+<p>The report opens in the new layout, with the message <strong>Layout "Trial Balance for the bank" saved. It is on the Modify Report panel of that report.</strong></p>
+<h4 id="s-default-and-shared-layouts">Default and shared layouts<a class="man-hash" href="#s-default-and-shared-layouts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>A layout marked as the default opens whenever the report is opened by someone who can see it: only you for a private layout, everyone for a shared one.</li>
+<li>A report has one default at a time. Making a layout the default takes the mark off the report's other layouts that you can see.</li>
+<li>To see the report without its default layout, click <strong>Back to the plain report</strong> on the Modify Report panel, choose <strong>Standard</strong> under <strong>Layouts</strong>, or choose <strong>Standard (no layout)</strong> on the Layouts tab.</li>
+<li>A layout can be changed only by its owner, and deleted by its owner or an administrator. To adapt someone else's layout, open it, change it and save it under a new name.</li>
+</ul>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Making one of your private layouts the default also takes the mark off a shared layout that was the default for everyone, and nobody else sees your private layout. Everyone else then gets the plain report. Keep the default on a shared layout when others rely on it.</p></div>
+<h4 id="s-step-by-step-delete-a-layout">Step by step: delete a layout<a class="man-hash" href="#s-step-by-step-delete-a-layout" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the report in the layout (Layouts tab &gt; <strong>Open a saved layout</strong>).</li>
+<li>Click <strong>Delete</strong> followed by the layout's name.</li>
+<li>Click <strong>Delete it</strong> to confirm. The report itself is not changed.</li>
+</ol>
+<p>The program says <strong>Layout deleted.</strong> Layouts can also be deleted on the <a href="#pg-home-report_layouts">Saved Report Layouts</a> page.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Give the layout a name.</td>
+<td>The <strong>Name</strong> box is empty.</td>
+</tr>
+<tr>
+<td>That layout belongs to another user, so it cannot be changed here. Save it under a new name instead.</td>
+<td>Untick <strong>Replace</strong> and save a new layout.</td>
+</tr>
+<tr>
+<td>Saving a report layout needs the "Can design report layouts" permission. An administrator can give it to your role.</td>
+<td>Your role lacks the permission.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="s-good-to-know-about-reports">Good to know about reports<a class="man-hash" href="#s-good-to-know-about-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>Columns with costs and margins appear only for users with the special permission <strong>View costs and margins</strong>.</li>
+<li>Reports based on sites show only the sites you may see.</li>
+<li>Some reports print a note under the title, for example the Accounts Receivable Graph's "A few customers owing a large share of the total indicates concentration risk."</li>
+<li>Saving a layout also needs access to the Saved Report Layouts page, and memorizing needs access to the Memorized Reports page. Ask your administrator if the buttons are missing.</li>
+</ul>
+<h2 id="pg-home-memorized">Memorized Reports<a class="man-hash" href="#pg-home-memorized" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Memorized Reports lists the reports you memorized and those other users shared, with their schedules. Use it to open them, check when a scheduled report was last sent, and remove the ones no longer needed.</p>
+<p><strong>Where to find it:</strong> Home &gt; Memorized Reports.</p>
+<h4 id="s-the-columns">The columns<a class="man-hash" href="#s-the-columns" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group</strong></td>
+<td>The group given when memorizing. The list is sorted by group, then name.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The memorized report's name. Click it to open the report. If you may not open the report, the name is not a link and <strong>no access</strong> is shown beside it.</td>
+</tr>
+<tr>
+<td><strong>Report</strong></td>
+<td>The report it is based on, for example Income Statement.</td>
+</tr>
+<tr>
+<td><strong>Shared</strong></td>
+<td><strong>Yes</strong> when it is shared with the other users.</td>
+</tr>
+<tr>
+<td><strong>Schedule</strong></td>
+<td>For a scheduled report: how often, the address and the time it was last sent.</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>The username of the person who memorized it.</td>
+</tr>
+<tr>
+<td><strong>Remove</strong></td>
+<td>Deletes the memorized report. Shown to its owner and to administrators.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-open-a-memorized-report">Step by step: open a memorized report<a class="man-hash" href="#s-step-by-step-open-a-memorized-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Home &gt; Memorized Reports</strong>.</li>
+<li>Click the report's <strong>Name</strong>. It opens with its memorized dates, filters and layout.</li>
+</ol>
+<h4 id="s-step-by-step-remove-a-memorized-report">Step by step: remove a memorized report<a class="man-hash" href="#s-step-by-step-remove-a-memorized-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Remove</strong> on its line.</li>
+<li>Click <strong>OK</strong> to confirm <strong>Remove this memorized report?</strong></li>
+</ol>
+<p>The program says <strong>Memorized report removed.</strong> The removal is recorded in the audit trail.</p>
+<h4 id="s-step-by-step-change-a-memorized-report">Step by step: change a memorized report<a class="man-hash" href="#s-step-by-step-change-a-memorized-report" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A memorized report cannot be edited in place. To change it:</p>
+<ol>
+<li>Open it from the list.</li>
+<li>Change the dates, filters or layout.</li>
+<li>Memorize it again, under the same name if you wish.</li>
+<li>Remove the old one.</li>
+</ol>
+<h4 id="s-good-to-know_4">Good to know<a class="man-hash" href="#s-good-to-know_4" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>To memorize a report, open the report and click <strong>Memorize</strong> (see <a href="#sec-reports">Working with reports</a>).</li>
+<li>Scheduled reports are e-mailed by <code>tools/send_scheduled_reports.php</code>, which your administrator runs daily; the page says so above the list. When the list is empty it says <strong>No memorized reports yet.</strong></li>
+</ul>
+<h2 id="pg-home-report_layouts">Saved Report Layouts<a class="man-hash" href="#pg-home-report_layouts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Saved Report Layouts lists every report layout that is yours or shared with you, for all reports at once, so they can be kept tidy: opened, made the default, or deleted. Layouts are made on the report itself, with the <strong>Modify Report</strong> button.</p>
+<p><strong>Where to find it:</strong> Home &gt; Saved Report Layouts, or <strong>Every saved layout</strong> on the Layouts tab of the Modify Report panel.</p>
+<h4 id="s-the-columns_1">The columns<a class="man-hash" href="#s-the-columns_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Report</strong></td>
+<td>The report the layout belongs to. Click it to open the report in this layout.</td>
+</tr>
+<tr>
+<td><strong>Layout</strong></td>
+<td>The layout's name, with its own report title under it when it has one.</td>
+</tr>
+<tr>
+<td><strong>Columns</strong></td>
+<td>How many of the report's columns it prints, for example <strong>4 of 4 shown</strong>, or <strong>standard</strong>.</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Who saved it, marked <strong>shared</strong> when others may use it.</td>
+</tr>
+<tr>
+<td>(default)</td>
+<td><strong>opens by default</strong> when the report opens with this layout.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-buttons_1">Buttons<a class="man-hash" href="#s-buttons_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Make default</strong></td>
+<td>Makes this layout the one its report opens with. Shown to users who may design reports, on layouts that are not the default yet.</td>
+</tr>
+<tr>
+<td>Delete (bin icon)</td>
+<td>Deletes the layout after you confirm. Shown to its owner and to administrators.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-make-a-layout-the-default">Step by step: make a layout the default<a class="man-hash" href="#s-step-by-step-make-a-layout-the-default" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click <strong>Make default</strong> on its line.</li>
+</ol>
+<p>The program says, for example, <strong>"Trial Balance for the bank" now opens by default.</strong> Any other default layout of that report that you can see loses its mark.</p>
+<h4 id="s-step-by-step-delete-a-layout_1">Step by step: delete a layout<a class="man-hash" href="#s-step-by-step-delete-a-layout_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Click the bin button on its line.</li>
+<li>Click <strong>OK</strong> to confirm <strong>Delete the layout</strong> followed by its name.</li>
+</ol>
+<p>The program says <strong>Layout deleted.</strong> The report itself is not changed. When no layout is saved, the list says <strong>No layouts saved yet. Open a report and press Modify Report.</strong></p>
+<h4 id="s-good-to-know_5">Good to know<a class="man-hash" href="#s-good-to-know_5" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>To change a layout, open it from the <strong>Report</strong> column, click <strong>Modify Report</strong>, make the changes and save it with <strong>Replace</strong> ticked (see <a href="#sec-reports">Working with reports</a>).</li>
+<li>There is no button to take the default mark off without choosing another default; to stop a layout opening by default, make another layout the default, or delete it.</li>
+</ul>

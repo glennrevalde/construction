@@ -1,0 +1,941 @@
+<p>The Point of Sale module (POS) is for selling over the counter. The cashier scans or types the items, takes cash, card, e-wallet or other payments, and gives the customer a receipt, printed on paper or on a small Bluetooth roll printer. Each sale is posted to the books and takes the goods out of the store's stock the moment it is completed. Around the register, the module keeps the cashier's shift: the opening cash float, cash taken out of the drawer during the day, the X-reading (a mid-shift summary), and the Z-reading that closes the register, counts the drawer and posts any cash over or short.</p>
+<p>The register is made for touch screens and phones as well as for a computer with a barcode scanner: the entry boxes are large, the list of matching items drops down under the finger, and the page rearranges itself on a small screen.</p>
+<h2 id="s-how-the-point-of-sale-works">How the Point of Sale works<a class="man-hash" href="#s-how-the-point-of-sale-works" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A few ideas explain the whole module.</p>
+<ul>
+<li><strong>A terminal is a counter.</strong> Each POS terminal (for example POS-01 Makati Counter 1) sells from one inventory site, keeps its cash in one cash account, and numbers its own receipts (MK1-00000001, MK1-00000002 ...). Terminals are set up in <a href="#pg-pos-terminals">POS Terminals</a>.</li>
+<li><strong>A shift belongs to a terminal.</strong> Nothing can be sold until someone opens a shift on the terminal with the opening cash float. Every sale, return and payment taken at the terminal is counted in that shift until the register is closed with the Z-reading. Anyone allowed to use the terminal sells on its open shift.</li>
+<li><strong>Every sale posts at once.</strong> When the cashier completes a sale, it is recorded as a <em>POS Sale</em> dated that day, posted to the ledger and taken out of the site's stock. There is no end-of-day posting to wait for.</li>
+<li><strong>The payment decides the account.</strong> Cash goes to the terminal's cash account. Every other payment goes to the account of its payment method: for cards and e-wallets a clearing account, which is emptied when the provider's settlement is recorded in <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>.</li>
+<li><strong>Sensitive actions need a supervisor.</strong> Voids, returns and refunds, X- and Z-readings, and discounts or price changes beyond the cashier's limits need a second person: a supervisor types their own username and password on the same screen. A user who has the <strong>Approve</strong> permission on the page approves their own action.</li>
+</ul>
+<h3 id="s-a-day-at-the-counter">A day at the counter<a class="man-hash" href="#s-a-day-at-the-counter" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ol>
+<li>The cashier opens a shift on the terminal with the opening cash float (<a href="#pg-pos-shifts">Shifts, Cash Drops &amp; Readings</a>).</li>
+<li>The cashier sells on the <a href="#pg-pos-register">POS Register</a> and prints the receipts.</li>
+<li>When the drawer holds too much cash, the cashier records a cash drop.</li>
+<li>A supervisor may run an X-reading at any time to see the sales so far.</li>
+<li>Returns, refunds, reprints and voids are done in <a href="#pg-pos-receipts">POS Receipts, Returns &amp; Voids</a>.</li>
+<li>At the end of the day the cashier counts the drawer and closes the register with the Z-reading. Any difference is posted to Cash Over and Short.</li>
+<li>The bookkeeper deposits the day's cash and records the card and e-wallet settlements in <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>.</li>
+</ol>
+<h3 id="s-before-you-start-selling">Before you start selling<a class="man-hash" href="#s-before-you-start-selling" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Set these up once, in this order:</p>
+<ol>
+<li><strong>Sites and items.</strong> The store's site in the <a href="manual.php?c=inventory#pg-inv-sites">Inventory Site List</a>, and the items with their sales price, tax code and barcode in the <a href="manual.php?c=inventory#pg-inv-items">Item List</a>. Prices are entered before VAT; the register adds the VAT of each item's tax code.</li>
+<li><strong>Payment methods.</strong> Under <strong>Financial Set-up &amp; Reports &gt; Terms, Tax Codes &amp; Other Lists</strong>, tab <strong>Payment methods</strong> (see <a href="manual.php?c=chart-of-accounts#pg-coa-lists">Terms, Tax Codes &amp; Other Lists</a>), each method has a <strong>Type</strong>, a <strong>POS clearing account</strong>, and the tick <strong>POS payment option</strong>, which puts it on the register. The demo methods are in the table after this list.</li>
+<li><strong>Terminals.</strong> One per counter in <a href="#pg-pos-terminals">POS Terminals</a>, with the users who work it.</li>
+<li><strong>Access.</strong> Give cashiers page access to <strong>POS Register</strong> (Create), <strong>Shifts, Cash Drops &amp; Readings</strong> (Create) and <strong>POS Receipts, Returns &amp; Voids</strong> (Create and Print/Export). Give supervisors the <strong>Approve</strong> permission on those pages. Voiding a sale needs <strong>Delete/Void</strong> on POS Receipts for the user who clicks <strong>Void</strong>, and a supervisor's approval as well. See <a href="manual.php?c=administration#pg-admin-page_access">Page Access Configuration</a>.</li>
+<li><strong>Limits.</strong> In <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a>, the special permissions <strong>Max discount % without approval</strong> and <strong>Max price change % without approval</strong> set how far a cashier may go alone, and <strong>Can exceed customer credit limits</strong> allows charges beyond a customer's limit.</li>
+<li><strong>Company settings.</strong> In <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>: the <strong>POS receipt wording</strong>, the <strong>Bluetooth receipt printer</strong>, and <strong>Default site &amp; class for POS transactions</strong>, which lets a cashier's register open on their own store's counter with their class already chosen.</li>
+<li><strong>Account customers.</strong> A customer who may buy on credit at the counter needs the tick <strong>Approved account customer at the POS</strong> and a <strong>Credit limit (0 = none)</strong> in the <a href="manual.php?c=customers#pg-cust-center">Customer Center</a>. A customer's <strong>Price level</strong> gives them their prices at the register too.</li>
+</ol>
+<p>The payment methods of the demo company, and the account each one debits when a sale is paid with it:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Payment method</th>
+<th>Type</th>
+<th>Account debited on a sale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cash</td>
+<td>Cash</td>
+<td>The terminal's cash account (1001 Cash on Hand - Store Registers)</td>
+</tr>
+<tr>
+<td>Credit/Debit Card</td>
+<td>Card</td>
+<td>1060 Card Clearing</td>
+</tr>
+<tr>
+<td>GCash, Maya</td>
+<td>E-wallet</td>
+<td>1065 E-wallet Clearing</td>
+</tr>
+<tr>
+<td>Gift Voucher</td>
+<td>Gift voucher</td>
+<td>2120 Gift Vouchers Outstanding</td>
+</tr>
+<tr>
+<td>P.O. Card</td>
+<td>Card</td>
+<td>1070 P.O. Card Clearing</td>
+</tr>
+<tr>
+<td>Bank</td>
+<td>Bank transfer</td>
+<td>1010 Cash in Bank - BDO Checking</td>
+</tr>
+</tbody>
+</table></div>
+<p>A method without a POS clearing account uses a module default: <strong>E-wallet Clearing</strong> for e-wallets, <strong>Card Clearing</strong> for the others. <a href="manual.php?c=chart-of-accounts#pg-coa-default_accounts">Module Default Accounts</a> also holds <strong>Cash on Hand (Register)</strong>, the account a new terminal starts with, and <strong>Cash Over and Short</strong>. Check and Bank Transfer are not POS payment options in the demo.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Selling at the POS and depositing the cash are duties that should be kept apart. When a role or user gets both <strong>POS Register</strong> and <strong>Make Deposits</strong> with create or edit rights, the program warns and asks you to tick a box to save anyway.</p></div>
+<p>The sidebar menu <strong>Point of Sale</strong> has <strong>Transactions</strong> (POS Register; Shifts, Cash Drops &amp; Readings; POS Receipts, Returns &amp; Voids), <strong>Setup</strong> (POS Terminals) and <strong>Reports</strong>. The transaction pages you may create are also on the <strong>Quick actions</strong> box of the Home dashboard.</p>
+<h2 id="pg-pos-register">POS Register<a class="man-hash" href="#pg-pos-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The POS Register is the selling screen. The cashier puts the items in the cart, chooses the customer, takes the payment and completes the sale; the receipt opens at once. From the same screen the cashier can suspend a sale and recall it, charge an approved account customer, and take a payment on a customer's account balance.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; POS Register. Also the <strong>Go to register</strong> button of the shifts page, the <strong>Register</strong> button of POS Receipts, and the Home dashboard <strong>Quick actions</strong>.</p>
+<p>If no terminal is available to you, the page says "No POS terminal is assigned to you. Ask an administrator to set up a terminal and assign it to your account." If the terminal has no open shift, it says "No shift is open on ..." with an <strong>Open a shift</strong> button (see <a href="#pg-pos-shifts">Shifts, Cash Drops &amp; Readings</a>).</p>
+<h4 id="s-the-top-bar">The top bar<a class="man-hash" href="#s-the-top-bar" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li><strong>Site:</strong> the site the counter sells from. When you may use counters at several sites, it is a drop-down: choosing a site moves you to the first counter you may use there.</li>
+<li>The terminal drop-down, for example <strong>POS-01 - Makati Counter 1</strong>: choose another counter you may use.</li>
+<li><strong>Shift &amp; readings</strong> opens the shifts page; <strong>Receipts / returns</strong> opens POS Receipts, Returns &amp; Voids.</li>
+</ul>
+<p>The register opens on the counter you chose last. When you have not chosen one since you logged in, it opens on a counter at your default site (set by the administrator), or else on the first counter you may use.</p>
+<h4 id="s-fields-entering-items">Fields: entering items<a class="man-hash" href="#s-fields-entering-items" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quantity</strong></td>
+<td>How many of the next item. It starts at 1 and is selected, so typing replaces it.</td>
+</tr>
+<tr>
+<td><strong>Item code / name</strong></td>
+<td>Scan the barcode, or type any part of the item name or code.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The line under the boxes names the terminal, the site, when the shift was opened and by whom, and your discount limit (for example "your discount limit 5.00%").</p>
+<p>When you tap or click in <strong>Item code / name</strong>, a list of items drops down under it: the name, the code, the stock at this site and the price for the customer on the sale. It narrows with every letter; words can be typed in any order ("usb 32" finds USB Flash Drive 32GB). Tap a line to put that item in the cart with the quantity you typed. With a keyboard, the arrow keys move along the list, Enter takes the highlighted line and Escape closes the list. After each item, the cursor goes back to <strong>Quantity</strong>, set to 1 again.</p>
+<p>A barcode scanned while the cursor is still in <strong>Quantity</strong> sells one of that item.</p>
+<p>The register sells services, inventory parts, non-inventory parts, assemblies and other charges. Groups, discount, subtotal and payment items are not offered.</p>
+<h4 id="s-the-cart">The cart<a class="man-hash" href="#s-the-cart" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows or takes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>The name, the code and the stock at this site.</td>
+</tr>
+<tr>
+<td><strong>Qty</strong></td>
+<td>The quantity. Type another; 0 removes the line.</td>
+</tr>
+<tr>
+<td><strong>U/M</strong></td>
+<td>For an item with several units of measure: the unit sold. The price follows the unit.</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td>The unit price before VAT. You may type another price.</td>
+</tr>
+<tr>
+<td><strong>Discount</strong></td>
+<td>A discount on the line: type a figure and choose <strong>%</strong> (a percentage of the line) or <strong>Amt</strong> (an amount off the line).</td>
+</tr>
+<tr>
+<td><strong>Amount</strong></td>
+<td>Quantity × price, less the discount.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The red cross removes a line. Scanning the same item again at the same price, with no discount, adds to its quantity instead of making a new line.</p>
+<h4 id="s-fields-the-sale-panel">Fields: the sale panel<a class="man-hash" href="#s-fields-the-sale-panel" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer</strong></td>
+<td>Leave it empty for a walk-in customer, or pick the customer. A customer with a price level shows "Price level: ..." under the box, and the items still at list price are re-priced at once; prices you typed stay.</td>
+</tr>
+<tr>
+<td>Customer name on the receipt</td>
+<td>Shown for walk-in customers only: a name to print on the receipt (optional).</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Shown when classes are set up: the class of the sale. It starts on your default class, else the class of the last sale on this terminal, else the terminal's default class.</td>
+</tr>
+<tr>
+<td><strong>Subtotal (net of VAT)</strong>, <strong>Discounts</strong>, <strong>VAT</strong>, <strong>TOTAL</strong></td>
+<td>Worked out as the cart changes.</td>
+</tr>
+<tr>
+<td>Payment boxes</td>
+<td>One box for each POS payment option (<strong>Cash</strong>, <strong>Credit/Debit Card</strong>, <strong>GCash</strong>, <strong>Maya</strong>, <strong>Gift Voucher</strong>, <strong>P.O. Card</strong>, <strong>Bank</strong> in the demo). Type the amount paid with each.</td>
+</tr>
+<tr>
+<td><strong>Ref / approval no.</strong></td>
+<td>Beside each non-cash box: the card approval code, e-wallet reference or voucher number. It is printed on the receipt.</td>
+</tr>
+<tr>
+<td><strong>Change</strong></td>
+<td>Cash handed over less the cash needed.</td>
+</tr>
+<tr>
+<td><strong>Balance due</strong></td>
+<td>What is still to be paid.</td>
+</tr>
+<tr>
+<td><strong>Note (optional)</strong></td>
+<td>A note kept on the sale.</td>
+</tr>
+<tr>
+<td><strong>Supervisor approval</strong></td>
+<td>Opens when a supervisor must approve; see below.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tapping an empty <strong>Cash</strong> box fills in the total, selected, so you can type the amount the customer hands over straight away.</p>
+<h4 id="s-buttons">Buttons<a class="man-hash" href="#s-buttons" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complete sale</strong></td>
+<td>Records the sale with its payments and opens the receipt. When the cart holds more of an item than the site has, it asks first (see below).</td>
+</tr>
+<tr>
+<td><strong>Suspend</strong></td>
+<td>Puts the sale aside unpaid, to recall later.</td>
+</tr>
+<tr>
+<td><strong>Charge to account</strong></td>
+<td>Records the sale as a charge invoice to an approved account customer. Shown only when such customers exist.</td>
+</tr>
+<tr>
+<td><strong>Clear</strong></td>
+<td>Empties the cart after "Clear the cart?".</td>
+</tr>
+<tr>
+<td><strong>Cancel suspended sale</strong></td>
+<td>On a recalled sale: deletes it.</td>
+</tr>
+<tr>
+<td><strong>Recall</strong></td>
+<td>In the <strong>Suspended sales</strong> list under the cart: brings a suspended sale back.</td>
+</tr>
+<tr>
+<td><strong>Receive</strong></td>
+<td>In <strong>Customer paying an account balance</strong>: records a payment on account.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-sell-to-a-walk-in-customer-for-cash">Step by step: sell to a walk-in customer for cash<a class="man-hash" href="#s-step-by-step-sell-to-a-walk-in-customer-for-cash" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Check that the top bar shows your counter and that the shift is open.</li>
+<li>Type the quantity, press Enter (or tap <strong>Item code / name</strong>), then scan or type the item and press Enter (or tap it in the list). Repeat for each item.</li>
+<li>Correct a quantity, price or discount on its cart line if needed.</li>
+<li>Leave <strong>Customer</strong> empty. Type the customer's name in the box under it if it should be on the receipt.</li>
+<li>Tap the <strong>Cash</strong> box: the total is filled in. Type the amount handed over, for example <code>50000</code> for ₱50,000.00. <strong>Change</strong> shows what to give back.</li>
+<li>Tap <strong>Complete sale</strong>. The message "Sale completed. Change: ₱..." appears and the receipt opens.</li>
+<li>Tap <strong>Print</strong> (or <strong>Bluetooth printer</strong>), give the receipt and the change, then tap <strong>New sale</strong>.</li>
+</ol>
+<p>If the cart holds more of an item than the site has in stock (for example 11 when the cart line says "stock 9"), tapping <strong>Complete sale</strong> first shows <strong>Stock will go below zero</strong>: "Saving the transaction will lead the inventory to a negative balance." with the item, the stock and what would be left, and "Do you want to continue?". Tap <strong>Yes</strong> to complete the sale, or <strong>No</strong> to go back to the cart and change or cancel the sale. Nothing is recorded until you tap Yes.</p>
+<h4 id="s-step-by-step-take-a-card-e-wallet-or-split-payment">Step by step: take a card, e-wallet or split payment<a class="man-hash" href="#s-step-by-step-take-a-card-e-wallet-or-split-payment" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Put the items in the cart.</li>
+<li>Type the amount paid by card, GCash, Maya, voucher, P.O. card or bank in its box, and the reference or approval number beside it.</li>
+<li>If the customer pays the rest in cash, type the cash handed over in <strong>Cash</strong>.</li>
+<li>Check that <strong>Balance due</strong> is 0.00 and tap <strong>Complete sale</strong>.</li>
+</ol>
+<p>The non-cash amounts may not be more than the total; any change is given from the cash.</p>
+<h4 id="s-step-by-step-sell-at-a-customers-price-level">Step by step: sell at a customer's price level<a class="man-hash" href="#s-step-by-step-sell-at-a-customers-price-level" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Pick the customer in <strong>Customer</strong>, before or after scanning the items. For example Metro School Supplies has the <strong>Wholesale</strong> level (−5%).</li>
+<li>The line "Price level: Wholesale (-5% on items without a custom price)" appears and the list-priced lines are re-priced: an item's fixed price for the level if it has one, otherwise the level's percentage.</li>
+<li>Complete the sale as usual. The next sale starts with the same customer and class; change <strong>Customer</strong> back to empty for the next walk-in buyer.</li>
+</ol>
+<h4 id="s-step-by-step-give-a-discount">Step by step: give a discount<a class="man-hash" href="#s-step-by-step-give-a-discount" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>On the cart line, type the discount in <strong>Discount</strong> and choose <strong>%</strong> or <strong>Amt</strong>.</li>
+<li>Tap <strong>Complete sale</strong>.</li>
+<li>If the discount is more than your limit, the sale is not recorded and the message "Supervisor approval is required: ... Ask a supervisor to enter their username and password below, or type a one-time approval code." appears. The <strong>Supervisor approval</strong> box opens, marked <strong>required</strong>.</li>
+<li>On the <strong>Supervisor is here</strong> tab, the supervisor types their username and password in the two boxes. If the supervisor is not at the counter, tap the <strong>Approval code</strong> tab instead and type the one-time code they generated on <a href="#pg-pos-approval_codes">Approval Codes</a> and read out to you. Tap <strong>Complete sale</strong> again.</li>
+</ol>
+<p>The same approval is asked when a typed price differs from the customer's price by more than your <strong>Max price change % without approval</strong>. The supervisor must have the <strong>Approve</strong> permission on the POS Register ("... is not allowed to approve on this page." otherwise) and cannot be the cashier ("You cannot approve your own transaction."); a wrong password gives "Approval failed: the supervisor username or password is wrong." A code is refused with "The approval code is not valid", "That approval code was already used", "... has expired", "... was cancelled" or "... was issued for another user" (see <a href="manual.php?c=getting-started">Supervisor approval</a>). Every approval is kept in the audit trail, and every discounted line appears in the <a href="#pg-rpt-pos_discount_log">POS Discount Log</a>.</p>
+<h4 id="s-step-by-step-suspend-a-sale-and-recall-it">Step by step: suspend a sale and recall it<a class="man-hash" href="#s-step-by-step-suspend-a-sale-and-recall-it" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>With the items in the cart, tap <strong>Suspend</strong>. The message "Sale suspended. Recall it from the list when the customer is ready." appears and the cart is empty for the next customer.</li>
+<li>The sale waits in the <strong>Suspended sales</strong> list under the cart (time, user, customer, total). It posts nothing and does not move stock.</li>
+<li>When the customer is back, tap <strong>Recall</strong>. The cart is filled again and "Recalled suspended sale #..." is shown.</li>
+<li>Take the payment and tap <strong>Complete sale</strong>, or tap <strong>Cancel suspended sale</strong> to drop it.</li>
+</ol>
+<p>Suspended sales are kept per terminal.</p>
+<h4 id="s-step-by-step-charge-an-account-customer">Step by step: charge an account customer<a class="man-hash" href="#s-step-by-step-charge-an-account-customer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Put the items in the cart and pick the customer in <strong>Customer</strong>.</li>
+<li>Tap <strong>Charge to account</strong>. The message "Charged to ..." appears. The sale is recorded as an invoice to the customer, due by the customer's terms, and the receipt opens with the title <strong>CHARGE INVOICE</strong>.</li>
+<li>The invoice appears in the customer's balance and is paid later through <a href="manual.php?c=customers#pg-cust-payments">Receive Payments</a> or at the counter.</li>
+</ol>
+<p>The program refuses with "Choose the account customer to charge." when no customer is chosen, "... is not an approved account customer for charges at the counter." when the customer is not ticked <strong>Approved account customer at the POS</strong>, and "This charge would exceed the customer's credit limit of ₱...." unless you have <strong>Can exceed customer credit limits</strong>.</p>
+<h4 id="s-step-by-step-take-a-payment-on-an-account-balance">Step by step: take a payment on an account balance<a class="man-hash" href="#s-step-by-step-take-a-payment-on-an-account-balance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>In the box <strong>Customer paying an account balance</strong>, pick the customer.</li>
+<li>Type the <strong>Amount</strong>, choose the payment method and type the <strong>Reference</strong>.</li>
+<li>Tap <strong>Receive</strong>. The message "Payment of ₱... recorded." appears and a receipt titled <strong>ACKNOWLEDGEMENT RECEIPT</strong> opens.</li>
+</ol>
+<p>The payment is applied to the customer's open invoices, earliest due date first. Any amount left over stays on the customer's account as an unapplied credit. Cash taken this way counts in the shift's expected cash.</p>
+<h4 id="s-selling-an-item-group">Selling an item group<a class="man-hash" href="#s-selling-an-item-group" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Item groups (for example GRP-WFH Work-from-Home Bundle) are offered on the register like any item: type part of the group's code or name and pick it. The group goes into the cart on one line at its <strong>Group price</strong> (the customer's price level applies), or at the sum of the prices of its items when <strong>Adopt the Group Price in the Item Group</strong> is cleared or the group has no group price. Change the quantity or give a discount on the line as usual. When the sale is completed, the group's items leave the store's stock and are recorded at their own prices, and the difference from the group price goes to the group's price variance account, as on an invoice (see <a href="manual.php?c=customers#sec-item-group-sales">Item groups on sales documents</a>).</p>
+<p>A suspended sale with a group comes back with the group on one line.</p>
+<h4 id="s-using-the-register-on-a-phone">Using the register on a phone<a class="man-hash" href="#s-using-the-register-on-a-phone" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>On a phone the register stacks the parts one under the other: the top bar, the entry boxes, the cart, then the customer, totals and payment boxes. The <strong>U/M</strong> column appears only when an item in the cart is sold by the unit. When the phone's keyboard opens, the list of items is placed in the part of the screen the keyboard leaves free; with the phone on its side, the entry row moves to the top so the list has the whole space. One tap on a line sells the item.</p>
+<h3 id="s-the-receipt">The receipt<a class="man-hash" href="#s-the-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>After a sale, charge, payment or return, the receipt opens. It shows the company name, address, VAT REG TIN and terminal name; the title; the receipt number, date and time, the customer (or "Walk-in customer") and the cashier; each line with its quantity, price, discount and amount; <strong>VATable sales</strong>, <strong>VAT</strong> and <strong>TOTAL</strong>; each payment with its reference; <strong>Amount tendered</strong> and <strong>Change</strong>; and the footer text. A voided sale prints "<strong><em> VOID </em></strong>". The company logo is printed when it is switched on for POS receipts.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Print</strong></td>
+<td>Prints the receipt on the computer's printer.</td>
+</tr>
+<tr>
+<td><strong>Bluetooth printer</strong></td>
+<td>Sends the receipt to a Bluetooth roll printer. Shown when Bluetooth printing is switched on.</td>
+</tr>
+<tr>
+<td><strong>New sale</strong></td>
+<td>Goes back to an empty register.</td>
+</tr>
+<tr>
+<td><strong>View by item group</strong> / <strong>View item details</strong></td>
+<td>On a sale with item groups: the group on one line (as the receipt is printed by default), or the items in it with the price variance.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The wording is set in <strong>System Administration &gt; Company, Security &amp; Closing Date &gt; POS receipt wording</strong>: the titles for sales (<strong>OFFICIAL RECEIPT</strong> by default), returns (<strong>RETURN / REFUND</strong>), charges (<strong>CHARGE INVOICE</strong>) and payments on account (<strong>ACKNOWLEDGEMENT RECEIPT</strong>), the footer lines, and whether "Walk-in customer" is printed when the sale has no name.</p>
+<h4 id="s-printing-on-a-bluetooth-roll-printer">Printing on a Bluetooth roll printer<a class="man-hash" href="#s-printing-on-a-bluetooth-roll-printer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A receipt can go straight from the browser to a 58 mm or 80 mm Bluetooth thermal printer (such as the Officom OC-PT210), with nothing installed on the phone or till.</p>
+<ol>
+<li>The administrator ticks <strong>Offer a Bluetooth printer on every receipt</strong> under <strong>Bluetooth receipt printer</strong> in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a> and chooses the <strong>Paper width</strong> (<strong>58 mm roll (32 characters per line)</strong>, <strong>80 mm roll, small type (42 characters per line)</strong> or <strong>80 mm roll (48 characters per line)</strong>). The <strong>Test print</strong> button there prints a short sample.</li>
+<li>On the first receipt, tap <strong>Bluetooth printer</strong>, pick the printer in the list the browser shows, and allow it. The printer is remembered for the next sales.</li>
+<li>On the next receipts, tap <strong>Bluetooth printer</strong>. The message "Sent to ..." confirms it.</li>
+</ol>
+<p>Other settings: <strong>Only offer printers whose name starts with</strong> (to hide other devices), <strong>Blank lines fed after each receipt</strong>, <strong>Cut the paper at the end</strong> (printers with a cutter), and <strong>Print as soon as a receipt opens, when the printer is already connected</strong>.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Bluetooth printing works only in Chrome, Edge, Opera or Samsung Internet on Android, or Chrome or Edge on a computer, and only when the program is opened on an <strong>https://</strong> address (or <strong>http://localhost/</strong> on the computer running it). Firefox, iPhones and iPads, and the browsers inside Facebook and Messenger cannot do it. When the browser cannot, the receipt says so and explains why.</p></div>
+<p>If "No printer was picked, so nothing was printed." appears, tap the button again and choose the printer. "The printer could not be reached: ..." means the printer is off, out of range or connected to another phone.</p>
+<h4 id="s-what-it-records">What it records<a class="man-hash" href="#s-what-it-records" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A completed sale is a <strong>POS Sale</strong>, numbered POS-000001 and so on, with the terminal's receipt number. It posts:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payment accounts (cash, clearing)</td>
+<td>Sale total, by payment</td>
+<td></td>
+</tr>
+<tr>
+<td>4000 Sales (item's income account)</td>
+<td></td>
+<td>Amount net of VAT</td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td></td>
+<td>VAT</td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td>Cost of stocked items</td>
+<td></td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td></td>
+<td>Cost of stocked items</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>POS-000008, one SET-OFFICE Office Monitor Set paid with Maya: debit 1065 E-wallet Clearing ₱14,548.80; credit 4000 Sales ₱12,990.00 and 2100 Output Tax ₱1,558.80; debit 5000 Cost of Goods Sold and credit 1200 Inventory ₱7,706.66, the average cost of the set.</p></div>
+<p>Line discounts reduce the sales amount; they are not posted to a separate discount account. The stock goes out of the terminal's site at average cost. When the site has less than is sold, the setting <strong>Allow selling or moving stock below zero (with warning)</strong> decides: switched on, <strong>Complete sale</strong> (and <strong>Charge to account</strong>) first shows the window <strong>Stock will go below zero</strong>: "Saving the transaction will lead the inventory to a negative balance.", the items with the stock at the site and what would be left, and "Do you want to continue?". <strong>Yes</strong> completes the sale and a yellow message names the items now below zero; <strong>No</strong> closes the window and leaves the sale on the screen, to change the quantity, take the item off or cancel the sale; switched off, the sale is not completed and the register shows "Not enough stock: …" so the cashier can take the item off the cart (see "Stock below zero" in <a href="manual.php?c=inventory">Inventory</a>). An item (or an item of a group) with no unit cost and no average unit cost cannot be sold: <strong>Complete sale</strong> shows "This item has no unit cost and no average unit cost, …" and the sale stays on the screen (see <a href="manual.php?c=customers#sec-no-cost-sales">Items with no unit cost</a>). A charge sale is an <strong>Invoice</strong> that debits 1100 Accounts Receivable instead of the payment accounts. A payment on account is a <strong>Customer Payment</strong> that debits the terminal's cash account (cash), the clearing account of the method (a card or e-wallet method without one uses 1060 Card Clearing or 1065 E-wallet Clearing, like a sale paid that way), or 1050 Undeposited Funds for the other methods, and credits 1100 Accounts Receivable. A suspended sale posts nothing.</p>
+<h4 id="s-good-to-know">Good to know<a class="man-hash" href="#s-good-to-know" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Open a shift for this terminal first."</li>
+<li>"The cart is empty."</li>
+<li>"Payment is short by ₱...." Enter more cash or another payment.</li>
+<li>"Card, bank, e-wallet and voucher amounts are more than the total." Non-cash payments cannot give change.</li>
+<li>"Choose the customer, amount and payment method." (payment on account).</li>
+<li>Selling needs the Create permission on the POS Register.</li>
+<li>The date of a sale is the day it is completed, not the business date of the shift.</li>
+<li>The stock shown in the item list and cart is the site's stock when the page was opened.</li>
+</ul>
+<h2 id="pg-pos-shifts">Shifts, Cash Drops &amp; Readings<a class="man-hash" href="#pg-pos-shifts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page opens and closes the cashier's shift on the current terminal, records cash taken out of the drawer, and prints the X- and Z-readings.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Shifts, Cash Drops &amp; Readings. Also the <strong>Shift &amp; readings</strong> button of the register, and the Home dashboard <strong>Quick actions</strong>. The Home dashboard also lists the shifts that are open.</p>
+<h4 id="s-fields-open-a-shift">Fields: Open a shift<a class="man-hash" href="#s-fields-open-a-shift" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Shown when the current terminal has no open shift.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Terminal</strong></td>
+<td>The counter you are opening. Only the terminals you may use are listed.</td>
+</tr>
+<tr>
+<td><strong>Business date</strong></td>
+<td>The trading day the shift belongs to. Today by default.</td>
+</tr>
+<tr>
+<td><strong>Opening cash float</strong></td>
+<td>The change fund placed in the drawer. 2000.00 by default.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-the-current-shift">The current shift<a class="man-hash" href="#s-the-current-shift" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The card <strong>Current shift</strong> shows who opened it, when, and the <strong>opening cash float</strong> the cashier entered, then the running figures:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Line</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sales</strong></td>
+<td>The number of sales and the first and last receipt numbers.</td>
+</tr>
+<tr>
+<td><strong>Gross sales</strong></td>
+<td>The sales before discounts, net of VAT.</td>
+</tr>
+<tr>
+<td><strong>Discounts</strong></td>
+<td>The line discounts given.</td>
+</tr>
+<tr>
+<td><strong>Returns</strong></td>
+<td>Refunds given, VAT included.</td>
+</tr>
+<tr>
+<td><strong>Voids</strong></td>
+<td>Sales voided in the shift, with their number, VAT included.</td>
+</tr>
+<tr>
+<td><strong>Net sales + VAT</strong></td>
+<td>Sales less returns, VAT included.</td>
+</tr>
+<tr>
+<td><strong>Opening cash float</strong></td>
+<td>The change fund the cashier put in the drawer when the shift was opened. It is part of the cash expected in the drawer.</td>
+</tr>
+<tr>
+<td>Payment lines</td>
+<td>The amount taken by each payment method (returns deducted); also <strong>Cash (account payments)</strong> and <strong>Charged to accounts</strong> when there are any.</td>
+</tr>
+<tr>
+<td><strong>Cash drops</strong></td>
+<td>Cash taken out of the drawer.</td>
+</tr>
+<tr>
+<td><strong>Expected cash in drawer</strong></td>
+<td>Opening float + cash sales − cash refunds + cash account payments − cash drops.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-open-a-shift">Step by step: open a shift<a class="man-hash" href="#s-step-by-step-open-a-shift" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Point of Sale &gt; Shifts, Cash Drops &amp; Readings</strong>.</li>
+<li>Choose the <strong>Terminal</strong>, check the <strong>Business date</strong> and type the <strong>Opening cash float</strong>.</li>
+<li>Click <strong>Open shift</strong>. The message "Shift opened. You can start selling." appears and the register opens.</li>
+</ol>
+<h4 id="s-step-by-step-record-a-cash-drop">Step by step: record a cash drop<a class="man-hash" href="#s-step-by-step-record-a-cash-drop" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Take the cash out of the drawer and count it.</li>
+<li>In the <strong>Cash drop</strong> box, type the <strong>Amount removed</strong> and the reason, for example <code>Excess cash to safe</code>.</li>
+<li>Click <strong>Record drop</strong>. The message "Cash drop of ₱... recorded." appears and the drop is listed under the box.</li>
+</ol>
+<p>A cash drop posts nothing: the money is still the store's cash. It lowers the expected cash in the drawer, and it is added back to the cash to deposit when the shift is deposited.</p>
+<h4 id="s-step-by-step-run-an-x-reading">Step by step: run an X-reading<a class="man-hash" href="#s-step-by-step-run-an-x-reading" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>In the <strong>X-reading (mid-shift)</strong> box, a supervisor types their username and password (the boxes are not shown to a user who may approve on this page).</li>
+<li>Click <strong>Run X-reading</strong>. The reading opens, ready to print. It "Prints a sales summary without closing the register."</li>
+<li>Earlier X-readings of the shift are listed under the button; click one to print it again.</li>
+</ol>
+<h4 id="s-step-by-step-close-the-register">Step by step: close the register<a class="man-hash" href="#s-step-by-step-close-the-register" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Count the cash in the drawer, including the float.</li>
+<li>Type the total in <strong>Cash counted in drawer</strong>.</li>
+<li>A supervisor types their username and password under it.</li>
+<li>Click <strong>Close register and print Z-reading</strong> and confirm "Close the register now?".</li>
+<li>The message "Register closed. Over/(short): ₱..." appears and the Z-reading opens. Print it and keep it with the cash.</li>
+</ol>
+<h4 id="s-the-reading">The reading<a class="man-hash" href="#s-the-reading" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>An X-reading or Z-reading shows the company, TIN and terminal; <strong>X-READING</strong> or <strong>Z-READING #n</strong> (Z numbers run per terminal); the <strong>Business date</strong>, when it was <strong>Printed</strong> and <strong>By</strong> whom; <strong>First receipt</strong>, <strong>Last receipt</strong>, <strong>Sales count</strong>, <strong>Gross sales</strong>, <strong>Discounts</strong>, <strong>Returns</strong>, <strong>Voids</strong>, <strong>Net sales (net of VAT)</strong> and <strong>VAT</strong>; <strong>Opening cash float</strong>, the amount of each payment method, <strong>Cash drops</strong> and <strong>Expected cash in drawer</strong>. A Z-reading adds <strong>Counted cash</strong> and <strong>Over / (short)</strong>, and ends with "End of day - counters reset"; an X-reading ends with "Mid-shift reading - register not closed". <strong>Print</strong> prints it and <strong>Back</strong> returns to the shifts page. All readings are listed in the <a href="#pg-rpt-pos_readings">X- and Z-Reading Summary</a>.</p>
+<h4 id="s-recent-shifts-and-earlier-ones">Recent shifts, and earlier ones<a class="man-hash" href="#s-recent-shifts-and-earlier-ones" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The table on the right lists the latest 30 shifts: <strong>Date</strong>, <strong>Terminal</strong>, <strong>Cashier</strong> (who opened it), <strong>Status</strong> (with "corrected" under it when the closing entries were corrected), <strong>Float</strong> (the opening cash float), <strong>Expected</strong>, <strong>Counted</strong> and <strong>Over/short</strong>. <strong>Correct</strong> (or <strong>Details</strong>) opens the shift, <strong>Z</strong> opens its Z-reading, and <strong>deposited</strong> opens the deposit that took its cash to the bank.</p>
+<p>To see the shifts of earlier days, use the boxes above the table:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Box</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Business dates</strong></td>
+<td><strong>Latest shifts</strong> (the 30 most recent), <strong>Today</strong>, <strong>Yesterday</strong>, <strong>This week</strong>, <strong>Last week</strong>, <strong>This month</strong>, <strong>Last month</strong> or <strong>Custom dates</strong>. Choosing one fills <strong>From</strong> and <strong>To</strong>.</td>
+</tr>
+<tr>
+<td><strong>From</strong>, <strong>To</strong></td>
+<td>The first and last business date. Typing a date makes the choice <strong>Custom dates</strong>.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Open</strong>, <strong>Closed</strong>, <strong>Closed, not deposited</strong>, <strong>Deposited</strong> or <strong>Corrected</strong>.</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong>, <strong>Cashier</strong></td>
+<td>One counter, or one cashier.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Show</strong>. The heading says how many shifts were found for the dates, and a line under the table totals their floats, expected and counted cash and over/short. With more than 100 shifts, <strong>Earlier</strong> and <strong>Newer</strong> under the table move between the pages. <strong>Clear</strong> goes back to the latest shifts.</p>
+<h4 id="s-a-shift-and-its-figures">A shift and its figures<a class="man-hash" href="#s-a-shift-and-its-figures" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Details</strong> on a line of the recent shifts opens the shift: its <strong>Terminal</strong>, <strong>Cashier</strong>, <strong>Business date</strong>, <strong>Opening cash float</strong>, when it was <strong>Opened</strong> and <strong>Closed</strong> and by whom, when it was <strong>Last corrected</strong>, the <strong>Cash to deposit</strong> (counted cash less the float plus the drops), and links to its <strong>Cash over/short entry</strong> and the deposit. <strong>The figures of the shift</strong> are the same lines as the current shift's, with the <strong>Cash counted</strong> and the <strong>Over / (short)</strong> of a closed shift, and the list of its cash drops. <strong>Z-reading</strong> at the top prints the reading again.</p>
+<h4 id="sec-shift-correction">Correcting the closing entries<a class="man-hash" href="#sec-shift-correction" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When the cashier entered a wrong figure (a float of 1,000 typed as 2,000, a cash drop not recorded or recorded twice, a count of 5,717 typed instead of 5,771), the closing entries of the shift can be corrected afterwards, and the journal entry follows them. It needs the <strong>Edit</strong> right on this page: administrators and POS supervisors have it, cashiers do not, and they see <strong>Details</strong> instead of <strong>Correct</strong>.</p>
+<ol>
+<li>In <strong>Recent shifts</strong>, click <strong>Correct</strong> on the shift.</li>
+<li>Change what was wrong: <strong>Opening cash float</strong>, the amount of a <strong>Cash drop</strong> (0 takes it out), <strong>A cash drop not recorded</strong> with <strong>Its reason</strong>, or <strong>Cash counted</strong>. <strong>Expected cash</strong>, <strong>Over / (short)</strong> and <strong>Cash to deposit</strong> under the boxes change as you type.</li>
+<li>Type <strong>Why the entries are corrected (required)</strong>, for example <code>cashier typed 5,717 instead of 5,771</code>.</li>
+<li>If you may not approve on this page, a supervisor approves in the <strong>Supervisor approval</strong> box (or with a one-time approval code).</li>
+<li>Click <strong>Save the correction</strong> and confirm. The message gives the new expected cash and over/short, says what happened to the journal entry, and gives the cash Make Deposits now takes from the shift (or how the deposit was changed).</li>
+</ol>
+<p>What the correction does:</p>
+<ul>
+<li>The expected cash and the over/short are worked out again from the sales of the shift, the float and the drops.</li>
+<li>The <strong>Cash Over/Short</strong> entry is changed to the new difference; it is made when there was none and now there is a difference, and it is voided when the drawer now agrees ("The Cash Over/Short entry was voided: the drawer now agrees.").</li>
+<li>The Z-reading keeps its number and prints the corrected figures, with the line "Closing entries corrected ... by ...".</li>
+<li>The shift shows <strong>Last corrected</strong>, and every correction is listed under <strong>Corrections</strong> on the shift page (when, who, why, and each figure before and after) and kept in the audit trail.</li>
+<li>The cash to deposit follows: <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a> takes the shift at the corrected figures (counted cash less the float plus the drops).</li>
+<li>When the cash of the shift is already on a deposit, the deposit follows too: its line for the shift becomes the new cash to deposit, its total and its ledger entry change with it, and the change is in the deposit's audit trail ("POS shift #... corrected: its cash to deposit is now ..."). The message names the deposit and the amount before and after, and the correction appears under <strong>Corrections</strong> as "Cash deposited".</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>POB1 Counter 2 closed with a float of ₱3,000.00, ₱12,170.48 expected and ₱9,170.48 counted: short ₱3,000.00, because the cashier counted the drawer without the float. Correct <strong>Cash counted</strong> to 12,170.48: the over/short becomes 0.00, the Cash Over/Short entry is voided, and the cash to deposit becomes ₱9,170.48 (12,170.48 less the 3,000.00 float that stays in the drawer). If the shift was already on deposit DEP-00004 for ₱6,170.48, that deposit becomes ₱9,170.48 at the same time.</p>
+<p><strong>Important:</strong> A correction that would leave nothing to deposit from a shift that is on a deposit is refused: take the shift off the deposit first (<strong>Edit</strong> on the deposit), then correct it. A shift dated on or before the closing date cannot be corrected, like any other entry in a closed period, and neither can a deposit cleared in a bank reconciliation be changed without the permission for it.</p></div>
+<h4 id="s-what-it-records_1">What it records<a class="man-hash" href="#s-what-it-records_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Opening a shift, cash drops and X-readings post nothing; they are recorded in the audit trail. Closing the register posts the difference between the counted and expected cash as a <strong>Cash Over/Short</strong> entry dated the business date. For the shortage of ₱20.00 above:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6200 Cash Over and Short</td>
+<td>₱20.00</td>
+<td></td>
+</tr>
+<tr>
+<td>1001 Cash on Hand - Store Registers</td>
+<td></td>
+<td>₱20.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>When the drawer has more than expected, the entry is reversed: a debit to the cash account and a credit to Cash Over and Short. No entry is made when the count agrees.</p>
+<p>The cash of a closed shift is then taken to the bank with <a href="manual.php?c=banking#pg-bank-deposits">Make Deposits</a>, which lists the closed shifts not yet deposited, each for the counted cash less the opening float (which stays in the drawer) plus the cash drops.</p>
+<h4 id="s-good-to-know_1">Good to know<a class="man-hash" href="#s-good-to-know_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"A shift is already open on this terminal." Only one shift at a time per terminal.</li>
+<li>"Choose a terminal assigned to you."</li>
+<li>"There is no open shift on this terminal."</li>
+<li>"Enter the amount removed from the drawer." and "Count the drawer and enter the cash counted."</li>
+<li>"Supervisor approval is required: X-reading." and "... closing the register (Z-reading)." Every X- and Z-reading needs a supervisor.</li>
+<li>"Nothing was changed: the figures are already the ones entered at closing." and "Say why the closing entries are corrected (it is kept in the audit trail)." when correcting a shift.</li>
+<li>"After this correction nothing is left to deposit from the shift (counted cash less the float plus the drops), but deposit DEP-... holds ... for it. Take the shift off the deposit first (Edit on the deposit), then correct the shift."</li>
+<li>The page works on the terminal chosen on the register. To work on another counter, choose it in the register's terminal drop-down first.</li>
+</ul>
+<h2 id="pg-pos-receipts">POS Receipts, Returns &amp; Voids<a class="man-hash" href="#pg-pos-receipts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>This page lists the POS sales and returns. From it you reprint a receipt, take goods back and refund the customer, or open a sale to void it.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; POS Receipts, Returns &amp; Voids. Also the <strong>Receipts / returns</strong> button of the register, and the Home dashboard <strong>Quick actions</strong>.</p>
+<h4 id="s-the-list">The list<a class="man-hash" href="#s-the-list" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong>, <strong>To</strong></td>
+<td>The dates to list. Both start on today.</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong></td>
+<td><strong>All</strong> or one terminal.</td>
+</tr>
+<tr>
+<td><strong>Time</strong>, <strong>Receipt</strong></td>
+<td>When it was recorded, and the receipt number; click it to open the sale.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td><strong>POS Sale</strong> or <strong>POS Return</strong>.</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong>, <strong>Cashier</strong>, <strong>Customer</strong></td>
+<td>Where, by whom (user name) and for which customer.</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td>The total, negative for returns.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Completed</strong> or <strong>Void</strong>. Voided lines are struck through.</td>
+</tr>
+<tr>
+<td><strong>Reprint</strong></td>
+<td>Prints the receipt again.</td>
+</tr>
+<tr>
+<td><strong>Return</strong></td>
+<td>Takes goods back from the sale (sales only).</td>
+</tr>
+</tbody>
+</table></div>
+<p>Suspended sales are not listed; they are on the register.</p>
+<h4 id="s-the-sale">The sale<a class="man-hash" href="#s-the-sale" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click a receipt number to open the sale: its date, number, status, class, site and receipt number; the items with quantity, rate, discount, amount, tax and cost; the <strong>Tenders</strong> with their references and the amount tendered and change; and, for users who may view costs, the <strong>General ledger entries created automatically</strong>. The buttons are <strong>Print</strong> (the receipt again), <strong>Void</strong>, <strong>History</strong> and <strong>Back to list</strong>. POS sales cannot be edited or deleted.</p>
+<h4 id="s-step-by-step-reprint-a-receipt">Step by step: reprint a receipt<a class="man-hash" href="#s-step-by-step-reprint-a-receipt" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Find the sale on the list (change <strong>From</strong> and <strong>To</strong> for an older one).</li>
+<li>Click <strong>Reprint</strong>. The receipt opens; click <strong>Print</strong> or <strong>Bluetooth printer</strong>.</li>
+</ol>
+<p>Reprinting needs the Print/Export permission on this page, and every reprint is recorded in the audit trail.</p>
+<h4 id="s-step-by-step-take-goods-back-and-refund">Step by step: take goods back and refund<a class="man-hash" href="#s-step-by-step-take-goods-back-and-refund" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Make sure a shift is open on your terminal.</li>
+<li>Click <strong>Return</strong> on the sale.</li>
+<li>On the page <strong>Return items from ...</strong>, type the quantity coming back in <strong>Return qty</strong> on each line. <strong>Sold</strong> and <strong>Already returned</strong> show what can still be returned.</li>
+<li>Type the <strong>Reason</strong>, for example <code>Defective mouse</code>.</li>
+<li>Choose the <strong>Refund method</strong>: how the money goes back to the customer (Cash by default).</li>
+<li>Leave <strong>Goods can be resold (back to store stock)</strong> ticked if the goods go back on the shelf; untick it for goods that cannot be sold.</li>
+<li>A supervisor types their username and password.</li>
+<li>Click <strong>Process return and refund</strong>. The message "Return processed. Refund: ₱..." appears and a receipt titled <strong>RETURN / REFUND</strong> opens. Give it to the customer with the refund.</li>
+</ol>
+<p>The refund is worked out at the price and discount of the original line, plus its VAT. The return is recorded on your terminal and shift, with a new receipt number.</p>
+<p>An item group is returned as a group: its line shows the group, how many were sold and already returned, its group price and the items it holds. The quantity typed is a number of groups; its items come back to stock and the refund is the group price, the items at their prices and the price variance in the same share.</p>
+<h4 id="s-step-by-step-void-a-sale">Step by step: void a sale<a class="man-hash" href="#s-step-by-step-void-a-sale" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Void a sale that should not have been recorded, for example one entered twice or cancelled before the customer left the counter.</p>
+<ol>
+<li>Click the receipt number to open the sale.</li>
+<li>Click <strong>Void</strong>.</li>
+<li>Type the <strong>Reason (required, recorded in the audit trail)</strong>.</li>
+<li>A supervisor types their username and password in <strong>Supervisor approval</strong>.</li>
+<li>Click <strong>Void transaction</strong>. The sale is kept, marked VOID, its entries are removed from the ledger and the goods go back to stock.</li>
+</ol>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Void sales before the shift is closed, so the Z-reading and the drawer count include the void.</p></div>
+<h4 id="s-what-it-records_2">What it records<a class="man-hash" href="#s-what-it-records_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>A return is a <strong>POS Return</strong>. With goods that can be resold, returning one MOU-001 Wireless Mouse (₱599.00 plus ₱71.88 VAT, refunded in cash):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Account</th>
+<th>Debit</th>
+<th>Credit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4050 Sales Returns and Allowances</td>
+<td>₱599.00</td>
+<td></td>
+</tr>
+<tr>
+<td>2100 Output Tax</td>
+<td>₱71.88</td>
+<td></td>
+</tr>
+<tr>
+<td>1001 Cash on Hand - Store Registers</td>
+<td></td>
+<td>₱670.88</td>
+</tr>
+<tr>
+<td>1200 Inventory</td>
+<td>₱350.00</td>
+<td></td>
+</tr>
+<tr>
+<td>5000 Cost of Goods Sold</td>
+<td></td>
+<td>₱350.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>The goods come back at the item's current average cost: to the terminal's site when they can be resold, or to the first active site of the type <strong>Damaged goods</strong> (Damaged Goods in the demo) when they cannot. With no damaged-goods site, goods that cannot be resold are not put back in stock and cost of goods sold is not reversed. A refund by card or e-wallet credits that method's clearing account instead of cash. A cash refund lowers the shift's expected cash.</p>
+<p>Voiding a sale or a return removes everything it posted. Every void and refund appears in the <a href="#pg-rpt-pos_void_log">POS Void and Refund Log</a>.</p>
+<h4 id="s-good-to-know_2">Good to know<a class="man-hash" href="#s-good-to-know_2" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Open a shift on your terminal before processing returns."</li>
+<li>"Choose a completed sale to return." Voided and suspended sales cannot be returned.</li>
+<li>"You cannot return more than was sold of ...".</li>
+<li>"Enter the quantities being returned." and "Enter the reason for the return."</li>
+<li>Every return and every void needs a supervisor, even for small amounts.</li>
+<li>Returning needs the Create permission on this page; voiding needs Delete/Void.</li>
+<li>For an account customer you can also give a credit memo in the Customers module (see <a href="manual.php?c=customers#pg-cust-credit_memos">Create Credit Memos/Refunds</a>).</li>
+</ul>
+<h2 id="pg-pos-approval_codes">Approval Codes<a class="man-hash" href="#pg-pos-approval_codes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Approval Codes lets a supervisor approve from anywhere. Instead of walking to the counter and typing their password, the supervisor generates a one-time code here (on their own phone or computer, logged in as themselves), reads it out to the cashier or clerk, and the cashier types it in the <strong>Approval code</strong> tab of the <strong>Supervisor approval</strong> box. The code stands for the supervisor's username and password: the approval is recorded under the supervisor's name, the code works once, and an unused code expires on its own. The page also keeps the list of every code and what became of it.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Approval Codes. The page is given to the roles that may approve at the POS Register (and to administrators); the <strong>Create</strong> right on it is what allows generating codes.</p>
+<h4 id="s-generate-an-approval-code">Generate an approval code<a class="man-hash" href="#s-generate-an-approval-code" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What it is for (optional)</strong></td>
+<td>A note kept with the code and shown in the list, for example "Price override for a bulk buyer".</td>
+</tr>
+<tr>
+<td><strong>For which user</strong></td>
+<td><strong>Any user</strong>, or one user: then only that user can use the code.</td>
+</tr>
+<tr>
+<td><strong>On which page</strong></td>
+<td><strong>Any page where I may approve</strong>, or one page (POS Register as delivered): then the code works only on that page. The list offers the pages that show a Supervisor approval box: the register, receipts and shifts, invoices, sales receipts, estimates, sales orders, credit memos, batch invoices, checks, cash vouchers, pay bills, inventory adjustments, physical counts, processing orders and asset maintenance.</td>
+</tr>
+<tr>
+<td><strong>Valid for</strong></td>
+<td><strong>1 hour</strong>, <strong>4 hours</strong>, <strong>12 hours</strong>, <strong>1 day</strong> (as delivered), <strong>3 days</strong> or <strong>7 days</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Click <strong>Generate code</strong>. The message <strong>Approval code XXXX-XXXX generated. It can be used once, until (date and time).</strong> appears, and the code is shown large in a card at the top left, with who and what it is for and <strong>Copy</strong>, which puts it on the clipboard for a message to the cashier. A code has eight letters and digits in two groups of four, such as AC7K-9MXT, made only of characters that are not mistaken for one another (no 0 and O, 1 and I, 5 and S, 8 and B, 2 and Z), so it can be read out over the phone.</p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Give the code only to the person who needs it. Whoever types it gets your approval, under your name, for one transaction on the page you chose. Limit a code to one user and one page when you can, and keep <strong>Valid for</strong> short.</p></div>
+<h4 id="s-the-list_1">The list<a class="man-hash" href="#s-the-list_1" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The four counters, <strong>Open</strong>, <strong>Used</strong>, <strong>Expired</strong> and <strong>Cancelled</strong>, show how many codes are in each state; click one to show only those, and again to show all. The filters <strong>Generated from</strong> / <strong>To</strong> (the last 30 days as delivered) and <strong>My codes only</strong> narrow the list, and <strong>Show</strong> applies them. Each line shows:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Column</th>
+<th>What it shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Code</strong></td>
+<td>The code. A code another user generated and already used is shown with its second half hidden.</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td><strong>Open</strong> (usable, with "until" and its expiry), <strong>Used</strong>, <strong>Expired</strong> or <strong>Cancelled</strong>.</td>
+</tr>
+<tr>
+<td><strong>Generated</strong></td>
+<td>When, and by whom.</td>
+</tr>
+<tr>
+<td><strong>For</strong></td>
+<td>The user it was limited to (or "any user") and the page (or "any page").</td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>The note typed when it was generated.</td>
+</tr>
+<tr>
+<td><strong>Used</strong></td>
+<td>For a used code: when, by whom, on what (for example "15.00% discount on LAP-001") and a link to the transaction it approved. A cancelled code shows when it was cancelled; an expired one says "never used".</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Cancel</strong> on an open code's line (for its issuer, and for users with the Edit or Delete right on the page) asks "Cancel this code? It can no longer be used." and then says <strong>The code was cancelled. It can no longer be used.</strong></p>
+<h4 id="s-how-a-code-is-checked">How a code is checked<a class="man-hash" href="#s-how-a-code-is-checked" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When a code is typed in a Supervisor approval box, the program checks, in this order, that the code exists, that it is still open (not used, expired or cancelled), that it was not limited to another user or another page, that the person using it is not the supervisor who generated it, that the supervisor is still an active user, and that the supervisor's role may <strong>Approve</strong> on that page. Then the code is marked used and the transaction is saved with the supervisor as <strong>Approved by</strong>. If the save fails for another reason (a missing field, say), the code is handed back and stays open for the next try. Every code generated, used, refused or cancelled is in the <a href="manual.php?c=administration#pg-admin-audit_trail">Audit Trail</a>, with the audit actions <strong>Approval code issued</strong>, <strong>Approval code used</strong>, <strong>Approval failed</strong> and <strong>Approval code cancelled</strong>.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>Users who may open the page but have no <strong>Create</strong> right on it see the list and the note <strong>You can see the codes but not generate them</strong>. A code can never be used by the supervisor who generated it ("You cannot approve your own transaction with a code you generated."), and a supervisor who loses the <strong>Approve</strong> right makes their open codes useless ("... is not allowed to approve on this page, so their code cannot be used here.").</p></div>
+<h2 id="pg-pos-terminals">POS Terminals<a class="man-hash" href="#pg-pos-terminals" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A terminal is one selling counter. Set up one for each counter, phone or tablet that sells, with the site it sells from, the cash account of its drawer, its receipt numbering, its default class and the users who work it.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; POS Terminals.</p>
+<p>The table lists the terminals: <strong>Code</strong>, <strong>Name</strong>, <strong>Site</strong>, <strong>Cash account</strong>, <strong>Class</strong>, <strong>Next receipt</strong> (the number the next sale will get), <strong>Users</strong> ("any user with POS access" when nobody is assigned) and an <strong>Edit</strong> link. Inactive terminals are shown in grey.</p>
+<h4 id="s-fields">Fields<a class="man-hash" href="#s-fields" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Code</strong></td>
+<td>A short code, up to 20 characters, for example POS-01. Saved in capitals, unique.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>The counter's name, for example Makati Counter 1. It is printed on the receipts and readings.</td>
+</tr>
+<tr>
+<td><strong>Inventory site (stock is sold from here)</strong></td>
+<td>The site whose stock the counter sells.</td>
+</tr>
+<tr>
+<td><strong>Cash on hand account</strong></td>
+<td>The cash account of the drawer: cash sales are debited to it, and over and short are posted to it. Default 1001 Cash on Hand - Store Registers.</td>
+</tr>
+<tr>
+<td><strong>Receipt prefix</strong></td>
+<td>The start of the receipt numbers, for example MK1-. Default OR-.</td>
+</tr>
+<tr>
+<td><strong>Default class of sales</strong></td>
+<td>The class the counter's sales start with.</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Untick it to stop the counter being used.</td>
+</tr>
+<tr>
+<td><strong>Users assigned to this terminal</strong></td>
+<td>The users who work the counter. Hold Ctrl (Cmd on a Mac) to pick several.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-step-by-step-set-up-a-counter">Step by step: set up a counter<a class="man-hash" href="#s-step-by-step-set-up-a-counter" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open <strong>Point of Sale &gt; POS Terminals</strong>.</li>
+<li>Type the <strong>Code</strong> and <strong>Name</strong>, choose the <strong>Inventory site</strong> and the <strong>Cash on hand account</strong>.</li>
+<li>Type the <strong>Receipt prefix</strong> and choose the <strong>Default class of sales</strong>.</li>
+<li>Pick the cashiers and supervisors in <strong>Users assigned to this terminal</strong>.</li>
+<li>Click <strong>Save terminal</strong> (or <strong>Save terminal &amp; New</strong>). The message "Terminal saved." appears.</li>
+</ol>
+<p>To change a terminal, click <strong>Edit</strong> on its row.</p>
+<h4 id="s-good-to-know_3">Good to know<a class="man-hash" href="#s-good-to-know_3" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>"Enter the code, name, site and cash account." and "Another terminal uses this code."</li>
+<li>Receipt numbers are the prefix followed by an eight-digit number, one sequence per terminal: MK1-00000001, MK1-00000002 .... "Receipt numbers are sequential per terminal and cannot be reset here." Charges, returns and payments on account take the next number too.</li>
+<li>Someone assigned to one or more terminals can use only those terminals. Someone not assigned to any terminal can use every active terminal at the sites they may use, including terminals that list other users. The Administrator can use every terminal.</li>
+<li>A user limited to some sites (see <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>) sees only the terminals at those sites.</li>
+<li>Terminals cannot be deleted; untick <strong>Active</strong> instead.</li>
+</ul>
+<h2 id="s-point-of-sale-reports">Point of Sale reports<a class="man-hash" href="#s-point-of-sale-reports" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The POS reports are under <strong>Point of Sale &gt; Reports</strong>. They use the common report tools (<strong>Refresh</strong>, <strong>Columns</strong>, <strong>Print / PDF</strong>, <strong>Export to spreadsheet</strong>, <strong>Email link</strong>, <strong>Modify Report</strong>, <strong>Memorize</strong>, and clicking a figure to see its detail), explained in <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>. Most of them can be narrowed to a <strong>Site</strong>, <strong>Terminal</strong> and <strong>Cashier</strong>. Unless a report says otherwise, voided and suspended sales are left out and returns are deducted. Cost and margin columns are shown only to users who may view costs.</p>
+<h3 id="pg-rpt-pos_sales_txn">POS Sales by Transaction No. (detail)<a class="man-hash" href="#pg-rpt-pos_sales_txn" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every receipt with the items sold on it: one heading line per receipt, then one line per item. Use it to check a day's receipts one by one.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Transaction No. (detail).</p>
+<p>Filters: <strong>Dates</strong> (default <strong>Today</strong>), <strong>Site</strong>, <strong>Terminal</strong> and <strong>Cashier</strong>. The receipt line shows the <strong>Transaction no. / item</strong> (the receipt number; click it to open the sale), <strong>Time</strong>, <strong>Cashier</strong>, <strong>Terminal</strong>, <strong>Customer</strong> (<strong>Walk-in</strong> when none), <strong>Payment</strong> (the payment methods used), <strong>Discount</strong>, <strong>Net sales</strong>, <strong>VAT</strong>, <strong>Receipt total</strong>, <strong>Cost</strong> and <strong>Margin</strong>. Each item line shows its <strong>Qty</strong>, <strong>U/M</strong>, <strong>Price</strong>, <strong>Discount</strong>, <strong>Net sales</strong>, <strong>Cost</strong> and <strong>Margin</strong>. Returns are marked "(return)" and shown as negatives.</p>
+<h3 id="pg-rpt-pos_sales_item">POS Sales by Item<a class="man-hash" href="#pg-rpt-pos_sales_item" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Counter sales less returns, net of VAT, for each item.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Item.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>Today</strong>), <strong>Site</strong>, <strong>Terminal</strong> and <strong>Cashier</strong>. Columns: <strong>Item</strong>, <strong>Receipts</strong> (how many receipts sold it), <strong>Qty</strong>, <strong>Discounts</strong>, <strong>Net sales</strong>, <strong>Cost</strong> and <strong>Margin</strong> (net sales less cost).</p>
+<p>The report can also be narrowed by <strong>Item</strong>, <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-pos_sales_category">POS Sales by Category<a class="man-hash" href="#pg-rpt-pos_sales_category" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The same figures for each item category; items without a category are under <strong>(uncategorized)</strong>.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Category.</p>
+<p>The report can also be narrowed by <strong>Category</strong>, <strong>Item type</strong> and <strong>Preferred supplier</strong> (see <a href="manual.php?c=home-and-reports#sec-related-filters">Filters on related records</a>).</p>
+<h3 id="pg-rpt-pos_sales_cashier">POS Sales by Cashier &amp; Payment Method<a class="man-hash" href="#pg-rpt-pos_sales_cashier" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>One report for two questions: how much each cashier sold, and how the money came in. Each cashier has a heading line with their sales figures, and under it one line per payment method they took, so a cashier's cash, card, GCash and Maya totals can be matched with the drawer and the providers' reports.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Cashier &amp; Payment Method.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>Today</strong>), <strong>Site</strong>, <strong>Terminal</strong> and <strong>Cashier</strong>. The cashier's line shows <strong>Receipts</strong>, <strong>Qty</strong>, <strong>Discounts</strong>, <strong>Net sales (ex VAT)</strong>, <strong>Cost</strong>, <strong>Margin</strong>, <strong>Voids</strong> (how many of their sales were voided in the period) and <strong>Tendered (incl. VAT)</strong>, the money they took in. Each payment line under it shows the method's name, its <strong>Type</strong> (Cash, Card, E-wallet, Bank transfer, Gift voucher, Check or Other), the number of <strong>Receipts</strong> it was used on and the amount <strong>Tendered (incl. VAT)</strong>. Sales charged to a customer's account are on the line <strong>Charged to customer accounts</strong> (type <strong>On account</strong>). Refunds are deducted from the method chosen for the refund. When more than one cashier sold, a last group, <strong>All cashiers, by payment method</strong>, adds the same payment lines up for the whole counter, and the <strong>TOTAL</strong> line closes the report.</p>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>Compare a cashier's voids with the others'. Many voids from one cashier are worth a look in the <a href="#pg-rpt-pos_void_log">POS Void and Refund Log</a>. To match a till, read the <strong>Tendered</strong> figure of the cashier's Cash line against the cash counted at the Z-reading.</p></div>
+<h3 id="pg-rpt-pos_sales_hour">POS Sales by Hour<a class="man-hash" href="#pg-rpt-pos_sales_hour" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Net sales for each hour of the day, with a bar chart. Use it to plan staff for the busy hours.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Hour.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>Site</strong>, <strong>Terminal</strong> and <strong>Cashier</strong>. Columns: <strong>Hour</strong> (for example 14:00–14:59), <strong>Transactions</strong>, <strong>Net sales</strong> (net of VAT, returns deducted) and <strong>Average sale</strong>.</p>
+<h3 id="pg-rpt-pos_daily_summary">POS Daily Sales Summary<a class="man-hash" href="#pg-rpt-pos_daily_summary" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>One line per day and terminal.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Daily Sales Summary.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>Terminal</strong>, <strong>Cashier</strong> and <strong>Class</strong>. <strong>Class</strong> keeps the sales of one class (the class of the terminal, or the one the cashier chose on the sale); <strong>Unclassified</strong> keeps the sales without a class. Columns: <strong>Date</strong>, <strong>Terminal</strong>, <strong>Sales</strong> (number of sales), <strong>Returns</strong> and <strong>Voids</strong> (totals, VAT included), <strong>Net sales</strong>, <strong>VAT</strong> and <strong>Total</strong> (sales less returns).</p>
+<h3 id="pg-rpt-pos_readings">X- and Z-Reading Summary<a class="man-hash" href="#pg-rpt-pos_readings" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every X- and Z-reading taken in a period, with its figures.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; X- and Z-Reading Summary.</p>
+<p>Filters: <strong>Dates</strong> (the business date; default <strong>This month</strong>) and <strong>Terminal</strong>. Columns: <strong>Date</strong>, <strong>Reading</strong> (X, or Z with its number; click it to print the reading again), <strong>Terminal</strong>, <strong>Receipts</strong> (first to last), <strong>Gross</strong>, <strong>Discounts</strong>, <strong>Returns</strong>, <strong>Voids</strong>, <strong>Net</strong>, <strong>VAT</strong>, <strong>Expected cash</strong>, <strong>Counted</strong>, <strong>Over/(short)</strong> and <strong>By</strong>. Use it to check that every business day has its Z-reading and to follow the cash differences.</p>
+<h3 id="pg-rpt-pos_discount_log">POS Discount Log<a class="man-hash" href="#pg-rpt-pos_discount_log" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every discounted line sold at a counter, with who gave it and who approved it.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Discount Log.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>Terminal</strong> and <strong>User</strong>. Columns: <strong>Time</strong>, <strong>Receipt</strong> (click to open), <strong>Terminal</strong>, <strong>Cashier</strong>, <strong>Item</strong>, <strong>Qty</strong>, <strong>Price</strong>, <strong>Disc %</strong>, <strong>Discount</strong> and <strong>Approved by</strong> (empty when the discount was within the cashier's limit). Charge sales made at a counter are included.</p>
+<h3 id="pg-rpt-pos_void_log">POS Void and Refund Log<a class="man-hash" href="#pg-rpt-pos_void_log" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every void, delete and refund done in the Point of Sale, taken from the audit trail.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Void and Refund Log.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>This month</strong>), <strong>Terminal</strong> and <strong>User</strong>. Columns: <strong>Time</strong>, <strong>Action</strong> (<strong>Void</strong>, <strong>Delete</strong> or <strong>Refund</strong>), <strong>Receipt</strong> (click to open), <strong>Terminal</strong>, <strong>Cashier</strong> (the user who did it), <strong>Amount</strong>, <strong>Reason</strong> and <strong>Approved by</strong>. As the note says, every void and refund requires a supervisor.</p>
+<h3 id="pg-rpt-pos_sales_item_group">POS Sales by Item Group<a class="man-hash" href="#pg-rpt-pos_sales_item_group" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The item groups sold at the POS, counted as groups: how many of each group were sold, at what group price, and for how much. POS returns are taken off.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; POS Sales by Item Group. It is given to the roles that may open POS Sales by Item.</p>
+<p>Filters: <strong>Dates</strong> (default <strong>Today</strong>), <strong>Terminal</strong>, <strong>Site</strong>, <strong>Cashier</strong> and <strong>Item group</strong>. Columns: <strong>Item group name</strong>, <strong>Qty</strong> (groups sold), <strong>Group price</strong> and <strong>Total</strong> (before VAT), with a <strong>Totals</strong> line. Tick <strong>Show the individual item details</strong> to list under each group its items, with their quantities, prices and amounts, and the price variance; <strong>Show the transactions</strong> lists the receipts. Click a total to see its receipts. <strong>Sort by</strong> orders the groups by <strong>Qty</strong> or <strong>Total</strong>, <strong>Increasing</strong> or <strong>Decreasing</strong> (see <a href="manual.php?c=home-and-reports#s-sorting">Sorting</a>).</p>
+<h3 id="pg-rpt-pos_ending_inventory">Ending Inventory - POS Cashier<a class="man-hash" href="#pg-rpt-pos_ending_inventory" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The quantity on hand of every item at a cashier's outlet at the end of the cashier's shift, to be counted and signed when the stock is turned over to the next cashier. It prints on the POS roll printer as well as on a page.</p>
+<p><strong>Where to find it:</strong> Point of Sale &gt; Reports &gt; Ending Inventory - POS Cashier. Also the <strong>Ending inventory</strong> button of a shift in <a href="#pg-pos-shifts">Shifts, Cash Drops &amp; Readings</a> (and the box icon on each line of the shift list), which opens it for that shift. It is given to the roles that may open the X- and Z-Reading Summary, and to the cashiers, who print their own.</p>
+<p>Filters: <strong>Dates</strong> with a <strong>From date and time</strong> and a <strong>To date and time</strong>, <strong>Item</strong>, <strong>Site</strong>, <strong>Class</strong>, <strong>Category</strong>, <strong>Cashier</strong>, <strong>Shift</strong>, <strong>Report type</strong> and <strong>Exclude inventory with zero balance</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Shift</strong></td>
+<td>Places the times automatically: the From is the moment the cashier opened the shift, the To (the cut-off) the moment it was closed, or now for a shift still open. The cashier and the site of the shift's terminal are filled in.</td>
+</tr>
+<tr>
+<td><strong>To date and time</strong></td>
+<td>The cut-off: the quantities are those on hand at that moment. Every sale, return, delivery, transfer and adjustment up to it counts; a POS sale at the moment it was rung up. For shifts of a 24-hour business, type the times (for example 2:00 PM for the 8:01 AM - 2:00 PM shift).</td>
+</tr>
+<tr>
+<td><strong>Cashier</strong></td>
+<td>The site becomes the outlet the cashier worked at. A cashier sees only their own name and shifts, and the report opens on their latest shift.</td>
+</tr>
+<tr>
+<td><strong>Report type</strong></td>
+<td><strong>A. Item code &amp; balance</strong> (the item code and the total, in item-code order) or <strong>B. Item description &amp; balance</strong> (the description and the total, in description order).</td>
+</tr>
+<tr>
+<td><strong>Exclude inventory with zero balance</strong></td>
+<td>Leaves out the items with nothing on hand. Without it, every stocked item is listed, zeros included.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The heading reads <strong>Quantity on hand by cashier, by item code</strong> (or <strong>by item description</strong>), with the <strong>Cut-off</strong>, the <strong>Site</strong> and the <strong>Cashier</strong>. The <strong>TOTAL</strong> line adds up the quantities. At the foot are two signature lines, <strong>Inventory Turnovered by:</strong> and <strong>Inventory Received by:</strong>. Click a total to see the transactions that make it up. <strong>Beg.</strong>, <strong>In</strong>, <strong>Sold</strong> and <strong>Other out</strong> (from the From date and time) and the other description of the item can be added as columns with <strong>Modify Report</strong>.</p>
+<h4 id="s-printing-on-the-pos-printer">Printing on the POS printer<a class="man-hash" href="#s-printing-on-the-pos-printer" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Click <strong>Print to POS printer</strong>. The slip shows the company name, <strong>QUANTITY ON HAND BY CASHIER</strong>, <strong>By Item Code</strong> or <strong>By Item Description</strong>, <strong>Cut-off: To:</strong> with the date and time, <strong>Site:</strong>, <strong>Cashier:</strong>, the items with their totals, <strong>TOTAL</strong>, and the signature lines. Above it, choose the <strong>Report type to print</strong>: <strong>A. Item code &amp; balance</strong> or <strong>B. Item description &amp; balance</strong>, then click <strong>Print</strong>. The slip is sized to the roll paper set for the Bluetooth receipt printer (58 mm or 80 mm, System Administration &gt; Company, Security &amp; Closing Date). When Bluetooth printing is on, a <strong>Bluetooth printer</strong> button sends it straight to the printer.</p>
+<p>The signature captions, the names above them and the foot text are customizable: in <strong>Modify Report</strong>, the heading and footer settings hold <strong>Caption under each signature line</strong> (Inventory Turnovered by: and Inventory Received by: as delivered), <strong>Names printed above the captions</strong> and <strong>Text at the foot of the report</strong>. Save the layout as the default and every user prints them, on the page and on the slip.</p>
+<h5 id="s-step-by-step-the-ending-inventory-of-a-shift">Step by step: the ending inventory of a shift</h5>
+<ol>
+<li>At the end of the shift, go to <strong>Point of Sale &gt; Shifts, Cash Drops &amp; Readings</strong>, open the shift and click <strong>Ending inventory</strong> (or open the report and choose the <strong>Shift</strong>).</li>
+<li>Choose the <strong>Report type</strong>, A or B, and tick <strong>Exclude inventory with zero balance</strong> if the zeros are not to be counted.</li>
+<li>Click <strong>Print to POS printer</strong>, then <strong>Print</strong>.</li>
+<li>The outgoing cashier and the incoming cashier count the stock against the slip and sign it.</li>
+</ol>

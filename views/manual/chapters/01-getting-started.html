@@ -1,0 +1,803 @@
+<p>GSMaRT Construction System is a web accounting system. It runs on a server in your office or on the internet, and you use it in a web browser on a computer, a tablet or a phone. Nothing has to be installed on your own device.</p>
+<p>This chapter is for everyone who uses the program. It shows how to log in and look after your password, how every page is laid out, and the rules that apply in every module: how forms, lists and printouts work, supervisor approval, pending transactions, voiding and deleting, the closing date, classes and access rights. Read it once before you turn to the chapter for your own work.</p>
+<h2 id="s-about-this-manual">About this manual<a class="man-hash" href="#s-about-this-manual" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The manual has one chapter for each module of the program, in the order the modules appear in the menu, and one section for each page. Each page section tells you what the page is for, where to find it, what every box means, how to do each task step by step, what the program records in the books, and the messages you may meet.</p>
+<h4 id="s-opening-the-manual-from-the-program">Opening the manual from the program<a class="man-hash" href="#s-opening-the-manual-from-the-program" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Every page has a <strong>Help</strong> button with a question-mark icon at the right end of its title bar. It opens this manual at the section for that page.</li>
+<li>The whole manual is also in the user menu: click your name at the top right of the screen, then <strong>User's Manual</strong>.</li>
+<li>The log-in page has a <strong>User's Manual</strong> link, so you can read the manual before you log in.</li>
+</ul>
+<h4 id="s-how-the-manual-is-written">How the manual is written<a class="man-hash" href="#s-how-the-manual-is-written" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>Words you see on the screen are in bold, exactly as the program shows them: <strong>Save &amp; New</strong>, <strong>Customer:Job</strong>, <strong>Receive Payments</strong>.</li>
+<li>A menu path such as <strong>Customers &gt; Create Invoices</strong> means: click <strong>Customers</strong> in the menu on the left, then click <strong>Create Invoices</strong>.</li>
+<li>Boxes marked <strong>Note</strong>, <strong>Tip</strong>, <strong>Important</strong> and <strong>Example</strong> give extra information, shortcuts, warnings and worked examples.</li>
+<li>The construction chapter uses the sample contractor, Sample Builders &amp; Development Corp., and its projects. The accounting chapters (the modules under Accounting in the menu) describe each page with examples of a trading business, such as the customer ABC Trading Corp. and the item LAP-001 Laptop; the pages work the same way for a contractor, with projects as classes. Amounts are in pesos, for example ₱12,500.00.</li>
+<li>What you see depends on the access your role gives you (see "Access: what you can open and do" later in this chapter).</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>If the manual describes a button or a menu entry that you do not see, your role does not allow that action. Ask your administrator if you need it.</p></div>
+<h2 id="s-before-you-start">Before you start<a class="man-hash" href="#s-before-you-start" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>You need:</p>
+<ul>
+<li>A computer, tablet or phone with a current web browser, such as Chrome, Edge, Firefox or Safari.</li>
+<li>The address of your company's GSMaRT Construction System, for example <code>http://server/accounting-system/</code>. Your administrator gives it to you. Save it as a bookmark.</li>
+<li>A username and a password. Your administrator creates your account in <strong>System Administration &gt; User Accounts</strong>. If your company works with a Company Code, you can also create your own account from the log-in page and wait for approval (see <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>).</li>
+</ul>
+<h2 id="sec-login">Logging in<a class="man-hash" href="#sec-login" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The log-in page is the first page you see. It shows the program's name and, under it, the name of your company.</p>
+<h4 id="s-step-by-step-log-in">Step by step: log in<a class="man-hash" href="#s-step-by-step-log-in" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the address of GSMaRT Construction System in your browser.</li>
+<li>Type your <strong>Username</strong>.</li>
+<li>Type your <strong>Password</strong>. The letters are hidden as you type.</li>
+<li>Click <strong>Log in</strong>, or press Enter.</li>
+</ol>
+<p>The Home page opens (see <a href="manual.php?c=home-and-reports#pg-home-dashboard">Home Dashboard</a>). If you log in with a temporary password, or your password has expired, the <strong>Change password</strong> page opens first (see "Your password" below).</p>
+<p>Right after you log in you may also see:</p>
+<ul>
+<li>A pop-up headed <strong>Maintenance due</strong> that lists the preventive maintenance tasks that are due, if you may open Preventive Maintenance. Click <strong>Later</strong> to close it, or <strong>Open Preventive Maintenance</strong> to deal with them. It comes back after each log-in, when a new day starts, and when the list of due tasks changes.</li>
+<li>A blue message saying that a memorized transaction was entered automatically, for example <strong>Memorized transaction "Office rent" was entered automatically for 09/27/2026.</strong> Memorized transactions set to be entered automatically are recorded on their due date, the first time anyone opens the program that day.</li>
+</ul>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>As the log-in page says, every log-in, every failed attempt and every action is recorded in the audit trail, with the user's name, the time and the computer's network address.</p></div>
+<h4 id="s-messages-on-the-log-in-page">Messages on the log-in page<a class="man-hash" href="#s-messages-on-the-log-in-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invalid username or password.</td>
+<td>Check the spelling and that Caps Lock is off, then try again.</td>
+</tr>
+<tr>
+<td>Invalid username or password. 3 attempt(s) left before the account is locked.</td>
+<td>The password was wrong. Type carefully: the account locks after the last attempt.</td>
+</tr>
+<tr>
+<td>Too many failed attempts. The account is now locked.</td>
+<td>Ask an administrator to unlock your account.</td>
+</tr>
+<tr>
+<td>This account is locked. Only an administrator can unlock it.</td>
+<td>Ask an administrator to unlock your account in User Accounts.</td>
+</tr>
+<tr>
+<td>This account is inactive. Contact your administrator.</td>
+<td>Your account was switched off. Ask your administrator.</td>
+</tr>
+<tr>
+<td>Your registration is waiting for approval by your Company Owner. You can log in once it is approved.</td>
+<td>You joined with the Company Code. Wait for the Company Owner to approve you.</td>
+</tr>
+<tr>
+<td>Your registration was not approved. Please contact your Company Owner.</td>
+<td>Your request to join was rejected. Speak to the Company Owner.</td>
+</tr>
+<tr>
+<td>Your company's access is currently suspended. Please contact your Company Owner.</td>
+<td>The whole company was switched off on the platform.</td>
+</tr>
+<tr>
+<td>Too many failed log-in attempts from this computer. Please wait 15 minutes and try again.</td>
+<td>Too many unknown usernames were tried from your computer. Wait 15 minutes.</td>
+</tr>
+<tr>
+<td>You were logged out after a period of inactivity.</td>
+<td>Your session timed out. Log in again.</td>
+</tr>
+<tr>
+<td>You have been logged out.</td>
+<td>You used <strong>Log out</strong>.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-when-the-program-runs-several-companies">When the program runs several companies<a class="man-hash" href="#s-when-the-program-runs-several-companies" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>When several companies are kept in GSMaRT Construction System, the log-in page says <strong>Log in to your company</strong> instead of showing a company name. You still type only your own username and password: the program finds your company from your username, and you can never reach another company's records. A <strong>New employee? Join your company with its Company Code</strong> link appears under the form; it is explained in <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>. The Super Admin, who manages the companies, logs in on the same page and lands on the platform pages (see <a href="manual.php?c=super-admin">Super Admin: Managing Several Companies</a>).</p>
+<h2 id="sec-password">Your password<a class="man-hash" href="#sec-password" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Your password protects your work and your name in the audit trail. Never tell it to anyone, and never let another person work under your log-in: every entry you save carries your name.</p>
+<h4 id="s-password-rules">Password rules<a class="man-hash" href="#s-password-rules" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>Your administrator sets the rules in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>. The <strong>Change password</strong> page always shows the rules in force. As delivered, a password must have:</p>
+<ul>
+<li>at least 8 characters,</li>
+<li>upper-case and lower-case letters,</li>
+<li>a number,</li>
+<li>a symbol, such as @ # ! or %,</li>
+<li>and it must not contain your username.</li>
+</ul>
+<p>As delivered, a password expires after 90 days, and a new password must be different from the current one.</p>
+<h4 id="s-changing-your-password">Changing your password<a class="man-hash" href="#s-changing-your-password" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p><strong>Where to find it:</strong> click your name at the top right &gt; <strong>Change password</strong>.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Field</th>
+<th>What to enter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Current password</strong></td>
+<td>The password you logged in with.</td>
+</tr>
+<tr>
+<td><strong>New password</strong></td>
+<td>Your new password, following the rules under the boxes.</td>
+</tr>
+<tr>
+<td><strong>Confirm new password</strong></td>
+<td>The new password again, to rule out a typing mistake.</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Click your name at the top right, then <strong>Change password</strong>.</li>
+<li>Type your <strong>Current password</strong>.</li>
+<li>Type the <strong>New password</strong>.</li>
+<li>Type it again in <strong>Confirm new password</strong>.</li>
+<li>Click <strong>Change password</strong>.</li>
+</ol>
+<p>The program says <strong>Your password has been changed.</strong> and opens the Home page. Use the new password from your next log-in.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Your current password is incorrect.</td>
+<td>The first box does not match your password.</td>
+</tr>
+<tr>
+<td>The new passwords do not match.</td>
+<td>The second and third boxes differ. Type both again.</td>
+</tr>
+<tr>
+<td>Choose a password different from your current one.</td>
+<td>The new password is the same as the old one.</td>
+</tr>
+<tr>
+<td>The new password must have at least 8 characters, a number.</td>
+<td>The message lists the rules the new password breaks.</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="s-temporary-passwords-and-expired-passwords">Temporary passwords and expired passwords<a class="man-hash" href="#s-temporary-passwords-and-expired-passwords" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ul>
+<li>When an administrator creates your account or resets your password, you get a temporary password. At your first log-in the <strong>Change password</strong> page opens with the message <strong>Please replace your temporary password before continuing.</strong> Until you change it, every other page brings you back here. Only <strong>Log out</strong> still works.</li>
+<li>When your password is older than the number of days set by the administrator, the program shows <strong>Your password has expired. Please choose a new one.</strong> and opens the same page.</li>
+</ul>
+<h4 id="s-forgotten-password-and-locked-account">Forgotten password and locked account<a class="man-hash" href="#s-forgotten-password-and-locked-account" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<p>The program does not send passwords by e-mail. If you forget your password, or your account is locked after too many wrong passwords (5 as delivered), ask an administrator. In <a href="manual.php?c=administration#pg-admin-users">User Accounts</a> they can unlock your account and give you a temporary password, which you then change as described above. A successful log-in sets the count of wrong attempts back to zero.</p>
+<h2 id="s-logging-out-and-the-automatic-time-out">Logging out and the automatic time-out<a class="man-hash" href="#s-logging-out-and-the-automatic-time-out" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>To log out, click your name at the top right, then <strong>Log out</strong>. Always log out when you leave a shared computer.</p>
+<p>The program also logs you out by itself when you have not opened or saved a page for a while (30 minutes as delivered; the administrator sets the time). The next time you click, the log-in page opens with <strong>You were logged out after a period of inactivity.</strong></p>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>Typing in a form does not count as activity. Only opening a page or saving does. If you spend a long time on one form, save it before the time-out runs out, or what you typed is lost when you finally press <strong>Save</strong>.</p></div>
+<h2 id="sec-main-screen">The main screen<a class="man-hash" href="#sec-main-screen" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>After you log in, every page has the same frame: a dark bar across the top, the menu of modules on the left, and the page itself on the right, with its title bar at the top.</p>
+<h3 id="s-the-top-bar">The top bar<a class="man-hash" href="#s-the-top-bar" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GSMaRT Construction System</strong></td>
+<td>Click the name at the top left to go back to the Home page from anywhere.</td>
+</tr>
+<tr>
+<td>Company name</td>
+<td>The company you are working in, beside the program's name.</td>
+</tr>
+<tr>
+<td>Search box</td>
+<td>Type a name, document number, reference or barcode and press Enter. The <a href="manual.php?c=home-and-reports#pg-home-search">Search</a> page lists what matches.</td>
+</tr>
+<tr>
+<td><strong>Find</strong></td>
+<td>Opens the <a href="manual.php?c=home-and-reports#pg-home-find">Find</a> page, which looks for transactions in every module with any combination of filters.</td>
+</tr>
+<tr>
+<td>Bell</td>
+<td>Shows how many preventive maintenance tasks are due, in a red circle. Click it to open <a href="manual.php?c=fixed-assets#pg-fa-pm">Preventive Maintenance</a>.</td>
+</tr>
+<tr>
+<td>Your name</td>
+<td>Opens the user menu.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The search box, <strong>Find</strong> and the bell appear only for users who may open the pages behind them. When no maintenance task is due, the bell is an outline without a number.</p>
+<p>The user menu shows your role (for example <strong>Administrator</strong>) and the entries <strong>Change password</strong>, <strong>User's Manual</strong> and <strong>Log out</strong>. A Company Owner sees <strong>Company Owner</strong> before the role names.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>When the Super Admin works inside a company, a yellow strip under the top bar says so, and the user menu has <strong>Back to the platform</strong> instead of <strong>Change password</strong>.</p></div>
+<h3 id="s-the-menu-of-modules">The menu of modules<a class="man-hash" href="#s-the-menu-of-modules" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The menu on the left lists the modules: <strong>Home</strong>, <strong>Financial Set-up &amp; Reports</strong> (called Chart of Accounts before version 29), <strong>Fixed Assets</strong>, <strong>Customers</strong>, <strong>Vendors</strong>, <strong>Inventory</strong>, <strong>Point of Sale</strong>, <strong>Banking</strong>, <strong>BIR Reports</strong>, <strong>System Administration</strong> and <strong>Company</strong>. Click a module to open its list of pages; click it again to close it. Opening one module closes the one that was open. The module of the page you are on opens by itself, and the page you are on is highlighted.</p>
+<p>Inside a module, the pages are grouped under small headings such as <strong>TRANSACTIONS</strong>, <strong>LISTS</strong> and <strong>SETUP</strong>. The reports of a module are folded away under <strong>REPORTS</strong> with their number in brackets.</p>
+<p>Click <strong>REPORTS</strong> to unfold the list of reports. Large modules divide their reports under grey sub-headings, such as <strong>Customer and Receivables Reports</strong> and <strong>Sales Reports</strong>. Click <strong>REPORTS</strong> again to fold the list away.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The menu shows only the pages you may open. Two users with different roles therefore see different menus. A module you have no page in does not appear at all.</p></div>
+<h3 id="s-the-title-bar-of-a-page">The title bar of a page<a class="man-hash" href="#s-the-title-bar-of-a-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Under the top bar, every page starts with a title bar. On the left is the page's name, for example <strong>Home</strong>, <strong>New Invoice</strong> or <strong>Invoice INV-00001</strong>. On the right are the page's own buttons, such as <strong>New</strong>, <strong>Export</strong>, <strong>Edit</strong>, <strong>Print</strong> or <strong>Report Center</strong>. At the right end is the <strong>Help</strong> button, which opens this manual at the section for the page.</p>
+<h3 id="s-messages-at-the-top-of-the-page">Messages at the top of the page<a class="man-hash" href="#s-messages-at-the-top-of-the-page" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>After you save, void, delete or change something, a coloured message appears above the title bar:</p>
+<ul>
+<li>green for success, for example <strong>Your password has been changed.</strong></li>
+<li>blue for information, for example a memorized transaction that was entered automatically,</li>
+<li>yellow for a warning, for example <strong>You were logged out after a period of inactivity.</strong></li>
+<li>red for a problem that stopped the action.</li>
+</ul>
+<p>Click the small cross at the right of a message to close it. The message goes away by itself when you open another page.</p>
+<p>When a form cannot be saved, a red box with a warning sign appears above the form and says why, for example <strong>Choose an item for every line that has a description or amount.</strong> Everything you typed stays on the form. Correct what the message asks and save again.</p>
+<h2 id="s-the-modules-at-a-glance">The modules at a glance<a class="man-hash" href="#s-the-modules-at-a-glance" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p><strong>Home.</strong> Where you start. The Home Dashboard shows your key figures, reminders and a button for every transaction you may enter. The Report Center lists every report you may open. Memorized Reports and Saved Report Layouts keep reports set up the way you like them, and Find looks for transactions in every module at once. See <a href="manual.php?c=home-and-reports">Home, Finding Things and Working with Reports</a>.</p>
+<p><strong>Financial Set-up &amp; Reports.</strong> The general ledger: the list of accounts, the Class List, Employees &amp; Other Names, Memorized Transactions, Set Up Budgets, Make Journal Entries (including opening balances), Module Default Accounts (the accounts each module posts to) and Terms, Tax Codes &amp; Other Lists. Its reports are the financial statements and the ledgers: Trial Balance, Balance Sheet, Income Statement, Statement of Cash Flows, General Ledger, Journal, Subsidiary Ledger, Schedule of Accounts, the budget comparisons, the statements by class, and the comparative income statements and balance sheets by month, quarter, year and your own ranges or dates. See <a href="manual.php?c=chart-of-accounts">Financial Set-up &amp; Reports: Chart of Accounts and the General Ledger</a>.</p>
+<p><strong>Fixed Assets.</strong> The Fixed Asset Register, Run Depreciation, Dispose of Assets, Asset Maintenance (repairs paid through a bill, a check or a cash voucher), Preventive Maintenance (tasks that fall due by date or by meter and remind you through the bell), Asset Categories and Asset Locations, with reports on depreciation, additions and disposals, and maintenance. See <a href="manual.php?c=fixed-assets">Fixed Assets</a>.</p>
+<p><strong>Customers.</strong> Everything you sell and collect: the Customer Center, estimates, sales orders, invoices and batch invoices, sales receipts, statement charges and statements, finance charges, the sales forecast, customer payments, and credit memos and refunds. Its reports cover receivables (aging, balances, open invoices, collections) and sales (by customer, item, sales rep and site). See <a href="manual.php?c=customers">Customers and Receivables</a>.</p>
+<p><strong>Vendors.</strong> Everything you buy and pay: the Vendor Center and Bill Tracker, purchase orders, receiving, bills, supplier debit memos, Pay Bills, and Receipt Management, which turns photos and e-mails of receipts into bills. Its reports cover payables (aging, balances, unpaid bills) and suppliers. See <a href="manual.php?c=vendors">Vendors and Payables</a>.</p>
+<p><strong>Inventory.</strong> Items and stock: the Inventory Center, the Item List, sites, units of measure, processing formulas, transfers between sites, quantity and value adjustments, assembly builds, disassembly and processing, physical counts, and item prices and price levels. For convenience the Inventory menu also shows <strong>Create Purchase Orders</strong> and <strong>Receive Items</strong>. Its reports cover quantities, valuation, stock status and processing. See <a href="manual.php?c=inventory">Inventory</a>.</p>
+<p><strong>Point of Sale.</strong> The counter: the POS Register, cashier shifts with cash drops and X and Z readings, POS receipts, returns and voids, and the POS terminals, with sales reports by item, category, cashier, payment method and hour. See <a href="manual.php?c=point-of-sale">Point of Sale</a>.</p>
+<p><strong>Banking.</strong> Write Checks, Cash Voucher (petty cash and revolving fund payments), Use Register, Make Deposits, Transfer Funds and Reconcile, with the reconciliation reports and the Check Register. See <a href="manual.php?c=banking">Banking</a>.</p>
+<p><strong>System Administration.</strong> For administrators: user accounts, roles, page access, effective access, the company details, security settings and closing date, data utilities, imports from CSV files, backups, and the one-time Multi-Company Setup. Its Audit Reports include the Audit Trail, Transaction History, voided and deleted transactions, user activity, log-in history and access changes. See <a href="manual.php?c=administration">System Administration</a>.</p>
+<p><strong>Company.</strong> Company Profile &amp; Code, Employees &amp; Users and Join Requests: where the Company Owner hands out the Company Code and approves the employees who join with it. While the program runs a single company, Company Profile &amp; Code only says that there is no Company Code yet. See <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>.</p>
+<p>The Super Admin's platform pages, which create and manage the companies, are not in this menu; they are described in <a href="manual.php?c=super-admin">Super Admin: Managing Several Companies</a>. The <a href="manual.php?c=appendices">Appendices</a> at the end of the manual hold reference material.</p>
+<h2 id="s-working-with-forms">Working with forms<a class="man-hash" href="#s-working-with-forms" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every transaction in the program (an invoice, a bill, a check, a journal entry, an inventory adjustment) is entered on a form. The forms work the same way everywhere. The picture shows a new invoice as an example.</p>
+<h3 id="s-opening-a-form">Opening a form<a class="man-hash" href="#s-opening-a-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li>From the menu: most document pages, such as <strong>Customers &gt; Create Invoices</strong>, open on the list of that kind of transaction; click <strong>New</strong> in the title bar for a blank form. Some pages, such as <strong>Customers &gt; Receive Payments</strong>, open on the form itself.</li>
+<li>From the Home page: the <strong>Quick actions</strong> buttons open the page, and for the common documents (estimates, sales orders, invoices, sales receipts, statement charges, credit memos, bills, purchase orders, checks and journal entries) they open a blank form directly.</li>
+<li>To change a saved transaction, open it and click <strong>Edit</strong>.</li>
+</ul>
+<h3 id="s-typing-in-the-boxes">Typing in the boxes<a class="man-hash" href="#s-typing-in-the-boxes" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<ul>
+<li><strong>Dates</strong> are shown as month/day/year, for example 09/27/2026. Type the date or click the calendar button in the box to pick it. A new form starts with today's date.</li>
+<li><strong>Amounts</strong> are typed without the peso sign. You may type commas (12,500.00) or leave them out (12500). The program keeps two decimals.</li>
+<li><strong>Number</strong> boxes that show a greyed-out number with <strong>(auto)</strong>, such as <strong>INV-00014 (auto)</strong>, fill themselves in when you save. Leave them empty unless you need a number of your own.</li>
+<li>Boxes whose label says what happens when they are left blank, such as <strong>Due date (blank = from terms)</strong>, can be left empty.</li>
+</ul>
+<h3 id="s-drop-downs-you-can-type-in">Drop-downs you can type in<a class="man-hash" href="#s-drop-downs-you-can-type-in" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Any drop-down with more than four choices (customers, suppliers, items, accounts, classes, terms and so on) is a box you can type in. It shows <strong>Type to search</strong> until something is chosen.</p>
+<ol>
+<li>Click the box, or move into it with the Tab key. The list of choices opens under it, with the current choice highlighted.</li>
+<li>Type any part of what you are looking for. The list narrows with every letter. Several words may be typed in any order: every word must appear somewhere in the choice. Choices that begin with what you typed come first, and the matching letters are marked.</li>
+<li>Click the choice you want, or move to it with the Up and Down arrow keys and press Enter.</li>
+</ol>
+<p>Good to know:</p>
+<ul>
+<li>After you have typed, leaving the box with the Tab key takes the highlighted choice.</li>
+<li>Esc closes the list and keeps what was chosen before.</li>
+<li>To empty a box, delete the text and leave the box, or open the list and click the first entry (for example <strong>Clear this box</strong>), which appears when something is chosen.</li>
+<li>If nothing matches, the list says <strong>Nothing matches</strong> followed by what you typed.</li>
+<li>The part in brackets at the end of a choice, such as an account code or the kind of name, is shown in lighter letters.</li>
+<li>Short lists, such as a status or a yes-or-no choice, stay ordinary drop-downs.</li>
+</ul>
+<div class="man-callout man-example"><div class="man-callout-t"><i class="bi bi-journal-text"></i>Example</div><p>On the invoice, click <strong>Customer:Job</strong> and type <code>abc</code>. The list shrinks to ABC Trading Corp. and its jobs, such as ABC Trading Corp.:Office Renovation Project. Press Enter to take the first one.</p></div>
+<h3 id="s-the-lines-of-a-transaction">The lines of a transaction<a class="man-hash" href="#s-the-lines-of-a-transaction" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The middle of most forms is a grid of lines, one for each item, service or account.</p>
+<ul>
+<li>Choose the <strong>Item</strong> (or the account). The program fills in the description, the unit, the price (the cost on purchase forms) and the tax code from the item, and a quantity of 1.</li>
+<li><strong>Amount</strong> is worked out as <strong>Qty</strong> times <strong>Rate</strong>, less the <strong>Discount</strong>. The discount is either a percentage (<strong>%</strong>) or an amount off the line (<strong>Amt</strong>): choose which in the small drop-down beside the discount box.</li>
+<li>If you type the <strong>Amount</strong> yourself, the <strong>Rate</strong> is worked out from it.</li>
+<li>The tax of each line comes from its tax code. Prices on sales and purchase forms are VAT-exclusive: the VAT is added on top.</li>
+<li>Click <strong>Add line</strong> for another line, or <strong>Add 5 lines</strong> or <strong>Add 10 lines</strong> to add that many empty lines in one click. The new lines are lit up for a moment.</li>
+<li>To put a line in between two others, click the small square plus button at the end of the line that should come after it: an empty line is inserted just above that line, and the lines keep that order when the form is saved.</li>
+<li>Click the red cross at the end of a line to remove it.</li>
+<li>On forms with a site at the top (<strong>Default site for items</strong> on bills, item receipts and purchase orders, <strong>Inventory site</strong> on sales forms), the site chosen there is copied onto every line, including the lines added later, so you do not have to choose it on each line. A line can still be given another site. Changing the site at the top afterwards moves every line that still had the old one, and leaves alone the lines you changed yourself.</li>
+<li>There is no set limit to the number of lines: a bill or an invoice of several hundred lines is saved whole, and editing it later keeps every line. Long forms are sent to the server in one package for this reason.</li>
+</ul>
+<p>The <strong>Subtotal</strong>, <strong>Tax</strong> and <strong>Total</strong> under the grid add up as you type. A negative total is shown in brackets, for example (1,250.00).</p>
+<h3 id="s-saving">Saving<a class="man-hash" href="#s-saving" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>The buttons at the foot of the form stay in view while you scroll:</p>
+<ul>
+<li><strong>Save</strong> records the transaction and shows it as saved.</li>
+<li><strong>Save &amp; New</strong> records it and opens a blank form, so you can enter the next one straight away. It appears only if you may create transactions on the page.</li>
+<li><strong>Cancel</strong> leaves without saving.</li>
+</ul>
+<p>If something is missing or wrong, nothing is saved and a red box above the form tells you what to correct.</p>
+<p>If a very long form shows the message "This form has more fields than the server accepts at once (...), so nothing was saved", the page was opened before the program was updated: press Ctrl+F5 to load it again, enter the lines and save. Nothing was saved by the attempt.</p>
+<h3 id="sec-negative-stock">Stock below zero: the Yes / No question<a class="man-hash" href="#sec-negative-stock" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>When <strong>Allow selling or moving stock below zero (with warning)</strong> is switched on (see "Stock below zero" in <a href="manual.php?c=inventory">Inventory</a>), saving a sales invoice, a sales receipt, a batch of invoices, a POS sale, an inventory adjustment or an inventory transfer that would leave an item below zero at a site is not done straight away. A window headed <strong>Stock will go below zero</strong> says "Saving the transaction will lead the inventory to a negative balance." It lists each item with its site, the quantity <strong>On hand</strong> and the quantity <strong>After saving</strong>, and asks <strong>Do you want to continue?</strong></p>
+<ul>
+<li>Click <strong>Yes</strong> to save the transaction. The same button you pressed is used again, so <strong>Save &amp; New</strong> still opens a blank form afterwards.</li>
+<li>Click <strong>No</strong> to go back to the form. Nothing has been saved; change the quantities, or cancel the transaction.</li>
+</ul>
+<p>A yellow box above the form repeats the items while you decide. When the setting is switched off, there is no question: the transaction is refused with "Not enough stock: ...".</p>
+<h3 id="sec-memorize-form">Memorize Transaction and Load Memorized Transaction<a class="man-hash" href="#sec-memorize-form" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A transaction you enter again and again (a monthly retainer invoice, the rent check, an accrual journal entry, the regular order from a supplier) can be kept as a pro-forma and loaded into a new form whenever it is needed. The forms that have it: Create Estimates, Create Sales Orders, Create Invoices, Create Batch Invoices, Enter Sales Receipts, Enter Statement Charges, Create Credit Memos, Enter Bills, Supplier Debit Memos, Create Purchase Orders, Receive Items, Receive Items and Enter Bills, Write Checks, Cash Voucher, Make Journal Entries and Adjust Quantity/Value on Hand.</p>
+<p><strong>To memorize what is on the form:</strong></p>
+<ol>
+<li>Fill in the form as if you were going to save it.</li>
+<li>Click <strong>Memorize Transaction</strong> at the right of the save buttons.</li>
+<li>In the box, type a name in <strong>Name it</strong>, a <strong>Group</strong> if you use groups, and choose the <strong>Reminder</strong>: <strong>Don't remind me</strong> keeps it on the list until you load it; <strong>Remind me when it is due</strong> (or <strong>Enter it automatically</strong>) asks for <strong>Every</strong>, <strong>Next due</strong> and <strong>Remind (days before)</strong>.</li>
+<li>Click <strong>Memorize Transaction</strong> in the box. The form is checked as for saving; the message "Memorized as "...". It is on the Memorized Transactions list ... This invoice itself was not saved." appears and the form stays filled, so you can still save it.</li>
+</ol>
+<p><strong>To fill a new form from it:</strong></p>
+<ol>
+<li>Open the form for a new transaction and click <strong>Load Memorized Transaction</strong> in the title bar (it shows how many there are for this form).</li>
+<li>Type part of the name to find it, and click <strong>Load</strong>. If you had already typed something on the form, you are asked "Replace what is on the form with the memorized transaction?".</li>
+<li>The form opens with the names, items, accounts, amounts, site, class and memo that were memorized, under the note "Loaded from the memorized transaction ...". The date and the document number are today's and the next ones. Change what differs and save.</li>
+</ol>
+<p>Memorizing records nothing in the books, and no supervisor approval is asked for it; the approval is asked when the transaction is saved. The memorized transactions are on <a href="manual.php?c=chart-of-accounts#pg-coa-memorized_txns">Memorized Transactions</a>, where they can also be entered, rescheduled or taken off.</p>
+<h3 id="s-the-class-box-and-the-no-class-selected-question">The Class box and the "No class selected" question<a class="man-hash" href="#s-the-class-box-and-the-no-class-selected-question" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Every transaction form has a <strong>Class</strong> box. Classes are your own way of dividing the books: branches, departments, projects or product lines. They are kept in the <a href="manual.php?c=chart-of-accounts#pg-coa-classes">Class List</a>. The class you choose is copied to every ledger line the transaction posts, so each financial report can be filtered by class, and the "by Class" statements show one column per class. Journal entries and cash vouchers can also carry a different class on each line.</p>
+<p>When classes have been set up and you save a transaction without one, the program asks first. A window headed <strong>No class selected</strong> says: "This transaction has no class. It will be saved as Unclassified and will not appear under any class on the class reports."</p>
+<ul>
+<li>Click <strong>Choose a class</strong> to go back; the Class box is marked so you find it quickly.</li>
+<li>Click <strong>Continue saving</strong> to save it without a class.</li>
+</ul>
+<p>On reports, transactions without a class are grouped as <strong>(Unclassified)</strong>. When no class has been set up yet, the Class box says <strong>No classes yet (Class List)</strong> and the question is not asked.</p>
+<h3 id="s-supervisor-approval">Supervisor approval<a class="man-hash" href="#s-supervisor-approval" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Some actions go beyond what your role allows on its own, so a second person must approve them. The program then shows <strong>Supervisor approval is required:</strong> followed by the reason, for example "15.00% discount on LAP-001". It happens when:</p>
+<ul>
+<li>a discount on a line is larger than your <strong>Max discount % without approval</strong>,</li>
+<li>a price is changed from the standard price by more than your <strong>Max price change % without approval</strong>,</li>
+<li>a check, bill payment, cash voucher, refund, inventory adjustment, count adjustment or processing order is larger than your <strong>Max check / bill payment / adjustment amount without approval</strong>,</li>
+<li>a check, bill payment or refund above that limit is voided or deleted,</li>
+<li>at the counter: discounts and price changes beyond the cashier's limits, returns and refunds, voids of POS sales, X readings and closing the register (Z reading).</li>
+</ul>
+<p>The <strong>Supervisor approval</strong> section has two tabs. <strong>Supervisor is here</strong> is for a supervisor standing beside you, who types their own username and password. <strong>Approval code</strong> is for a supervisor who is somewhere else: they generate a one-time code on <a href="manual.php?c=point-of-sale#pg-pos-approval_codes">Approval Codes</a> and read it out to you, and you type it instead of their password.</p>
+<h4 id="s-step-by-step-get-an-approval">Step by step: get an approval<a class="man-hash" href="#s-step-by-step-get-an-approval" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Save as usual. The form comes back with the reason and the <strong>Supervisor approval</strong> section open, marked <strong>required</strong>.</li>
+<li>Either ask a supervisor to type their username in <strong>Supervisor username</strong> and their password in <strong>Password</strong> (the password is hidden as it is typed), or open the <strong>Approval code</strong> tab and type the eight-letter code the supervisor gave you, for example AC7K-9MXT. The dash is put in for you, and small letters are read as capitals.</li>
+<li>Click <strong>Save</strong> again.</li>
+</ol>
+<p>The approver's name is recorded on the transaction (<strong>Approved by</strong>) and in the audit trail, whichever way the approval was given: a code stands for the supervisor who generated it. A code works once: the moment the transaction is saved with it, it is spent, and if the save fails for another reason the code is given back so you can try again with it.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approval failed: the supervisor username or password is wrong.</td>
+<td>Try again. Failed approvals are recorded in the audit trail.</td>
+</tr>
+<tr>
+<td>You cannot approve your own transaction.</td>
+<td>Another person must approve it.</td>
+</tr>
+<tr>
+<td>(username) is not allowed to approve on this page.</td>
+<td>That supervisor's role has no <strong>Approve</strong> right on this page.</td>
+</tr>
+<tr>
+<td>The approval code is not valid. Ask the supervisor for a new code.</td>
+<td>No such code exists. Check the letters, or ask for a new one.</td>
+</tr>
+<tr>
+<td>That approval code was already used. Each code works once: ask the supervisor for a new one.</td>
+<td>The code was spent on an earlier save.</td>
+</tr>
+<tr>
+<td>That approval code has expired. / ... was cancelled.</td>
+<td>The code ran out of time, or the supervisor cancelled it.</td>
+</tr>
+<tr>
+<td>That approval code was issued for another user.</td>
+<td>The supervisor made the code for a different username.</td>
+</tr>
+<tr>
+<td>That approval code is for (page), not for this page.</td>
+<td>The supervisor limited the code to one page.</td>
+</tr>
+<tr>
+<td>You cannot approve your own transaction with a code you generated.</td>
+<td>A supervisor cannot use their own code.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>A user whose role has the <strong>Approve</strong> right on the page approves their own actions: the program does not ask them for a second person. On forms that may need approval, the <strong>Supervisor approval</strong> link under the lines can also be opened before you save, so the supervisor can type their details in advance.</p></div>
+<h3 id="s-pending-transactions">Pending transactions<a class="man-hash" href="#s-pending-transactions" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Invoices and sales receipts have a tick box <strong>Pending (non-posting until marked final)</strong>. A pending sale is saved as a document but does not post to the books or take items out of stock. Use it, for example, while a customer's purchase order is being approved.</p>
+<ul>
+<li>A pending transaction shows the yellow note "This transaction is <strong>pending</strong>. It does not affect the books or inventory until it is marked final." Lists show it with the status <strong>Pending</strong>.</li>
+<li>To make it final, open it and click <strong>Mark as final</strong>. The form opens with <strong>Pending</strong> unticked and the note <strong>Pending is unticked — saving posts this sale.</strong> Click <strong>Save</strong>.</li>
+<li>The credit limit of the customer is checked when the invoice becomes final, not while it is pending.</li>
+<li>The Home page counts the pending sales, and the <a href="manual.php?c=customers#pg-rpt-pending_sales">Pending Sales</a> report lists them.</li>
+</ul>
+<p>Assembly builds and processing orders can also be saved as pending when components are short; see <a href="manual.php?c=inventory#pg-inv-build">Build Assemblies</a> and <a href="manual.php?c=inventory#pg-inv-process">Disassemble / Process Items</a>.</p>
+<p>Estimates, sales orders and purchase orders never post: they record a commitment only, and their page says "Non-posting document: it records a commitment and does not affect the ledger." Suspended POS sales do not post either until they are recalled and completed.</p>
+<h3 id="s-questions-before-an-action">Questions before an action<a class="man-hash" href="#s-questions-before-an-action" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Some buttons ask before they act, in a small window of the browser, for example <strong>Close this document? Remaining quantities will no longer be expected.</strong> Click <strong>OK</strong> to go on or <strong>Cancel</strong> to stop.</p>
+<h2 id="s-lists-saved-transactions-and-printouts">Lists, saved transactions and printouts<a class="man-hash" href="#s-lists-saved-transactions-and-printouts" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<h3 id="s-transaction-lists">Transaction lists<a class="man-hash" href="#s-transaction-lists" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>Most document pages open on the list of their transactions, newest first, for example the <strong>Invoices</strong> list under <strong>Customers &gt; Create Invoices</strong>. The transaction lists of invoices, sales receipts, estimates, orders, bills, checks, payments, deposits, transfers, journal entries, adjustments and builds all work as described here.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>From</strong> / <strong>To</strong></td>
+<td>The dates listed. The list opens on the last 90 days and the next 30 days.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>For example Open, Partially paid, Paid, Pending or Void. <strong>All</strong> lists every status.</td>
+</tr>
+<tr>
+<td><strong>Class</strong></td>
+<td>Appears once classes are set up.</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Part of a number, name or memo.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Set the filters and click <strong>Filter</strong>. The columns are <strong>Date</strong>, <strong>No.</strong>, <strong>Name</strong>, <strong>Reference</strong>, <strong>Memo</strong>, <strong>Class</strong> (once classes are set up), <strong>Total</strong>, <strong>Open</strong> (the amount still unpaid or unapplied, on invoices, bills and credits), <strong>Status</strong> and <strong>By</strong> (who entered it). A list that holds several kinds of transaction also has a <strong>Type</strong> column. Voided transactions are struck through. The list shows up to 500 transactions; narrow the dates to see older ones.</p>
+<ul>
+<li>Click the number of a transaction to open it.</li>
+<li>Click <strong>New</strong> in the title bar for a blank form.</li>
+<li>Click <strong>Export</strong> to download the list, as filtered, as a spreadsheet file (CSV) that opens in Excel.</li>
+</ul>
+<h3 id="s-a-saved-transaction">A saved transaction<a class="man-hash" href="#s-a-saved-transaction" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p>A saved transaction opens as a page titled with its type and number, for example <strong>Invoice INV-00001</strong>. It shows the details (date, number, status, customer or supplier, class, terms, who entered it and when, who approved it), the lines, the totals with the <strong>Open balance</strong>, the <strong>Related documents</strong> (what it was created from, what it was converted to, the payments applied), and, for users allowed to see them, the <strong>General ledger entries created automatically</strong>.</p>
+<p>The buttons in the title bar depend on the transaction and on your rights:</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the form to change it.</td>
+</tr>
+<tr>
+<td><strong>Mark as final</strong></td>
+<td>Posts a pending invoice or sales receipt.</td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Opens the printout.</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Opens your e-mail program with a new message to the customer or supplier.</td>
+</tr>
+<tr>
+<td><strong>Memorize</strong></td>
+<td>Saves it as a memorized transaction to enter again later.</td>
+</tr>
+<tr>
+<td><strong>Void</strong> / <strong>Delete</strong></td>
+<td>See "Voiding and deleting" below.</td>
+</tr>
+<tr>
+<td><strong>History</strong></td>
+<td>Opens its <a href="manual.php?c=administration#pg-admin-txn_history">Transaction History</a>: every change, by whom and when.</td>
+</tr>
+<tr>
+<td><strong>Back to list</strong></td>
+<td>Returns to the list.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Other buttons carry the document to its next step, such as <strong>Create Invoice</strong> on a sales order, <strong>Receive Payment</strong> on an invoice, <strong>Pay Bill</strong> on a bill, or <strong>Close</strong> and <strong>Reopen</strong> on estimates and orders. They are explained in the chapter for each page.</p>
+<div class="man-callout man-note"><div class="man-callout-t"><i class="bi bi-info-circle"></i>Note</div><p>The message that <strong>Email</strong> prepares holds a link to the printout. Only someone who can log in to GSMaRT Construction System can open that link. To send a document to a customer, print it to PDF (see below) and attach the file to the message.</p></div>
+<h3 id="s-printing-and-saving-as-pdf">Printing and saving as PDF<a class="man-hash" href="#s-printing-and-saving-as-pdf" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h3>
+<p><strong>Print</strong> on a saved transaction opens its printout on a plain page, without the menus, with two buttons at the top: <strong>Print</strong> and <strong>Back</strong>.</p>
+<ol>
+<li>Click <strong>Print</strong> on the saved transaction.</li>
+<li>Click <strong>Print</strong> at the top of the printout. The browser's print window opens.</li>
+<li>Choose your printer, or choose <strong>Save as PDF</strong> (the name differs slightly between browsers) to make a PDF file.</li>
+<li>Click <strong>Back</strong> to return to the transaction.</li>
+</ol>
+<p>The buttons at the top do not appear on paper. Opening the printout of a check, bill payment or refund marks it as printed, and every printout is recorded in the audit trail. Reports print the same way; see <a href="manual.php?c=home-and-reports#sec-reports">Working with reports</a>.</p>
+<h2 id="s-voiding-and-deleting">Voiding and deleting<a class="man-hash" href="#s-voiding-and-deleting" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>A saved transaction that is wrong can be corrected with <strong>Edit</strong>. When it should not exist at all, you void it or delete it.</p>
+<ul>
+<li><strong>Void</strong> keeps the document, with its number, but removes its effect on the ledger and on inventory. It stays in the lists, struck through, with the status <strong>Void</strong>, and its page shows <strong>VOID</strong> with the reason and the time. A voided transaction cannot be edited. Use it when the document was issued, for example a spoiled check.</li>
+<li><strong>Delete</strong> removes the document completely. Its full content is kept in the audit trail. Use it for an entry made by mistake that was never issued.</li>
+</ul>
+<p>Estimates, sales orders and purchase orders do not post, so they cannot be voided; delete them or close them. POS sales cannot be deleted, only voided.</p>
+<h4 id="s-step-by-step-void-or-delete-a-transaction">Step by step: void or delete a transaction<a class="man-hash" href="#s-step-by-step-void-or-delete-a-transaction" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<ol>
+<li>Open the transaction.</li>
+<li>Click <strong>Void</strong> (or <strong>Delete</strong>).</li>
+<li>Type the reason in <strong>Reason (required, recorded in the audit trail)</strong>.</li>
+<li>If the action needs approval, let a supervisor type their username and password under <strong>Supervisor approval</strong>, or type the one-time approval code they gave you.</li>
+<li>Click <strong>Void transaction</strong> (or <strong>Delete transaction</strong>).</li>
+</ol>
+<p>The program says, for example, <strong>Invoice INV-00005 was voided.</strong> or <strong>Invoice INV-00005 was deleted. A full copy is kept in the audit trail.</strong></p>
+<h4 id="s-when-voiding-or-deleting-is-refused">When voiding or deleting is refused<a class="man-hash" href="#s-when-voiding-or-deleting-is-refused" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h4>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payments or credits have been applied to it. Remove them first (edit the payment or credit).</td>
+<td>Take the invoice or bill off the payment or credit first.</td>
+</tr>
+<tr>
+<td>It is included in deposit DEP-00001. Remove it from the deposit first.</td>
+<td>Edit the deposit and take the payment out of it.</td>
+</tr>
+<tr>
+<td>It has been refunded (…). Void the refund first.</td>
+<td>Void the refund check, then the credit.</td>
+</tr>
+<tr>
+<td>It has already been converted or received in part. Close it instead.</td>
+<td>Use <strong>Close</strong> on the order or estimate.</td>
+</tr>
+<tr>
+<td>This transaction is already void.</td>
+<td>Nothing to do.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>Void</strong> and <strong>Delete</strong> buttons appear only if your role has the <strong>Delete/Void</strong> right on the page. The <a href="manual.php?c=administration#pg-rpt-voided_deleted_summary">Voided and Deleted Transactions Summary</a> report lists every void and deletion, so they can be reviewed.</p>
+<h2 id="s-the-closing-date">The closing date<a class="man-hash" href="#s-the-closing-date" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>When a period's books are final, the administrator sets a <em>closing date</em> in <a href="manual.php?c=administration#pg-admin-settings">Company, Security &amp; Closing Date</a>. The Home page then says, for example, <strong>Books closed through 07/09/2026.</strong></p>
+<p>From then on, transactions dated on or before the closing date can no longer be entered, edited, voided or deleted, except by users whose role has the special permission <strong>Can change transactions on/before the closing date or already reconciled</strong>. The same protection covers transactions already cleared in a bank reconciliation.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Message</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The books are closed through 07/09/2026. You do not have permission to record transactions dated on or before the closing date.</td>
+<td>Use a date after the closing date, or ask an authorised user.</td>
+</tr>
+<tr>
+<td>This transaction is dated on or before the closing date (07/09/2026) and cannot be changed.</td>
+<td>The transaction belongs to a closed period.</td>
+</tr>
+<tr>
+<td>This transaction has been cleared in a bank reconciliation. You do not have permission to change it.</td>
+<td>It was ticked as cleared in <a href="manual.php?c=banking#pg-bank-reconcile">Reconcile</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="man-callout man-tip"><div class="man-callout-t"><i class="bi bi-lightbulb"></i>Tip</div><p>A mistake found in a closed period is usually corrected with an entry dated in the open period, for example a journal entry, so that the figures already reported for the closed period stay as they were.</p></div>
+<h2 id="sec-access">Access: what you can open and do<a class="man-hash" href="#sec-access" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every user has one or more roles, and the roles decide what the user may do. The administrator manages them in <a href="manual.php?c=administration#pg-admin-roles">User Role Configuration</a> and <a href="manual.php?c=administration#pg-admin-page_access">Page Access Configuration</a>.</p>
+<ul>
+<li><strong>Opening a page (View).</strong> A page appears in your menu, and can be opened, only if one of your roles allows it. A user override set by the administrator can allow or deny a single page for you alone; an override always wins over the roles.</li>
+<li><strong>Actions on a page.</strong> For each page a role allows <strong>Create</strong>, <strong>Edit</strong>, <strong>Delete/Void</strong>, <strong>Print/Export</strong> and <strong>Approve</strong> separately. A button whose action you may not take does not appear: without <strong>Print/Export</strong> you see no <strong>Print</strong> or <strong>Export</strong> buttons, without <strong>Delete/Void</strong> no <strong>Void</strong> or <strong>Delete</strong> buttons.</li>
+<li><strong>Special permissions.</strong> Some rights are set per role, apart from the pages:</li>
+</ul>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Special permission</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View costs and margins</td>
+<td>Cost and margin columns on forms and reports.</td>
+</tr>
+<tr>
+<td>View bank balances outside Banking</td>
+<td>Bank balances on the Home page, the Chart of Accounts and Transfer Funds.</td>
+</tr>
+<tr>
+<td>Max discount % without approval</td>
+<td>Larger discounts need supervisor approval.</td>
+</tr>
+<tr>
+<td>Max price change % without approval</td>
+<td>Larger price changes need supervisor approval.</td>
+</tr>
+<tr>
+<td>Max check / bill payment / adjustment amount without approval</td>
+<td>Larger amounts need supervisor approval. Blank means no limit.</td>
+</tr>
+<tr>
+<td>Can exceed customer credit limits</td>
+<td>Saving an invoice over the credit limit, with a reason.</td>
+</tr>
+<tr>
+<td>Can change the Chart of Accounts and default accounts</td>
+<td>Changes to accounts and module default accounts.</td>
+</tr>
+<tr>
+<td>Can change transactions on/before the closing date or already reconciled</td>
+<td>Work in closed periods and on reconciled lines.</td>
+</tr>
+<tr>
+<td>Can design report layouts (fonts, headings and footers, columns and rows) and save or share them</td>
+<td>The <strong>Modify Report</strong> button on reports.</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Sites and POS terminals.</strong> A user or a role can be limited to some inventory sites and POS terminals. Such users can only record transactions for their sites, and lists, site choices and site-based reports show only their sites.</li>
+<li><strong>Administrators</strong> can open everything. In a company with a Company Owner, the owner can always open every page of the company, whatever the roles say.</li>
+</ul>
+<p>When you try to open a page you may not use, the <strong>Access denied</strong> page says "You do not have permission to open" followed by the page's name. The attempt is recorded in the audit trail. Click <strong>Go to Home</strong> or <strong>Go back</strong>, and ask your administrator if you need the access. Administrators can check exactly what a user may do, and why, in <a href="manual.php?c=administration#pg-admin-effective_access">Effective Access (View as User)</a>.</p>
+<h2 id="s-who-does-what">Who does what<a class="man-hash" href="#s-who-does-what" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>The program comes with standard roles. Your administrator can change them or add roles of their own, so your company's roles may differ.</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Role</th>
+<th>What it is for</th>
+<th>Demo user</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Administrator</td>
+<td>Everything, including users, roles, page access, the closing date and the audit trail.</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>Accountant</td>
+<td>Financial Set-up &amp; Reports, Fixed Assets, Banking, all reports; designs report layouts.</td>
+<td>accountant</td>
+</tr>
+<tr>
+<td>A/R Clerk</td>
+<td>Customer transactions and the receivables reports.</td>
+<td>arclerk</td>
+</tr>
+<tr>
+<td>A/P Clerk</td>
+<td>Supplier transactions, Pay Bills and the payables reports.</td>
+<td>apclerk</td>
+</tr>
+<tr>
+<td>Inventory Clerk</td>
+<td>Items, sites, receiving, adjustments, builds, processing and counts.</td>
+<td>invclerk</td>
+</tr>
+<tr>
+<td>Sales Representative</td>
+<td>Estimates, sales orders, invoices and the Sales reports.</td>
+<td>salesrep</td>
+</tr>
+<tr>
+<td>Cashier</td>
+<td>POS sales, returns and cash drops at the assigned terminal.</td>
+<td>cashier1</td>
+</tr>
+<tr>
+<td>POS Supervisor</td>
+<td>A cashier's work, plus approvals and X and Z readings.</td>
+<td>supervisor</td>
+</tr>
+<tr>
+<td>Auditor</td>
+<td>Views all transactions, reports and the audit trail; changes nothing.</td>
+<td>auditor</td>
+</tr>
+</tbody>
+</table></div>
+<p>The POS Supervisor approves voids, refunds, price overrides and large discounts at the counter. The Auditor cannot open the set-up pages of System Administration, the Company pages, the POS Register or the shifts page. The Cashier and the POS Supervisor of the demo company work at Makati Counter 1.</p>
+<p>The limits the standard roles start with (see the special permissions above):</p>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>Role</th>
+<th>Discount %</th>
+<th>Price change %</th>
+<th>Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accountant</td>
+<td>0</td>
+<td>0</td>
+<td>no limit</td>
+</tr>
+<tr>
+<td>A/R Clerk</td>
+<td>10</td>
+<td>5</td>
+<td>₱50,000.00</td>
+</tr>
+<tr>
+<td>A/P Clerk</td>
+<td>0</td>
+<td>0</td>
+<td>₱100,000.00</td>
+</tr>
+<tr>
+<td>Inventory Clerk</td>
+<td>0</td>
+<td>0</td>
+<td>₱20,000.00</td>
+</tr>
+<tr>
+<td>Sales Representative</td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Cashier</td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>POS Supervisor</td>
+<td>30</td>
+<td>20</td>
+<td>₱20,000.00</td>
+</tr>
+</tbody>
+</table></div>
+<p>A limit of 0 means that every discount, price change or amount of that kind needs a supervisor's approval. The Administrator has no limits. Of the other special permissions, the Accountant may view costs and bank balances, change the Chart of Accounts and design report layouts; the A/P Clerk and the Auditor may view costs; the Auditor may view bank balances.</p>
+<p>Two more roles exist when the program runs several companies:</p>
+<ul>
+<li>The <strong>Company Owner</strong> of each company manages its users: approving employees who join with the Company Code, giving them roles, resetting passwords. See <a href="manual.php?c=company-owner">Your Company: Company Owner and Employees</a>.</li>
+<li>The <strong>Super Admin</strong> belongs to no company. They create and manage the companies and can open any of them to work inside it. See <a href="manual.php?c=super-admin">Super Admin: Managing Several Companies</a>.</li>
+</ul>
+<div class="man-callout man-important"><div class="man-callout-t"><i class="bi bi-exclamation-triangle"></i>Important</div><p>The demo users of the sample database are for training. Before real use, the administrator changes their passwords or switches them off in <a href="manual.php?c=administration#pg-admin-users">User Accounts</a>.</p></div>
+<h2 id="sec-phone">Using GSMaRT Construction System on a phone or tablet<a class="man-hash" href="#sec-phone" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<p>Every page is laid out for small screens as well. On a phone the top bar holds the menu button (three lines) at the left, the program's name, the <strong>Find</strong> button (funnel icon), the bell and your name. The search box is left out for lack of room; use <strong>Find</strong>, whose page has a <strong>Search names and items</strong> button. The title bar of the page stacks its buttons full width, and cards such as the Home figures sit one under the other.</p>
+<p>Tap the menu button to open the menu. It slides in as a panel headed <strong>Menu</strong>, with the same modules as on a computer. Tap a page to open it, or tap the cross at the top right to close the panel.</p>
+<p>Forms put their boxes one under the other, and the <strong>Save</strong>, <strong>Save &amp; New</strong> and <strong>Cancel</strong> buttons stay at the foot of the screen.</p>
+<p>Good to know on small screens:</p>
+<ul>
+<li>A table wider than the screen scrolls sideways inside its own box: swipe the table, not the page. A soft shadow on the right edge shows that more columns are out of sight. Report lines stay on one line so they can be followed across; only long memos and descriptions wrap.</li>
+<li>Boxes and buttons are large enough to tap, and text boxes are sized so the phone does not zoom in when you tap one.</li>
+<li>The list of a type-to-search box is drawn in the part of the screen the keyboard leaves free, with the phone held upright or on its side.</li>
+<li>On the Find page, each transaction found is shown as a small block, and a drop-down replaces the sortable column headings.</li>
+<li>The POS Register has its own phone layout; see <a href="manual.php?c=point-of-sale">Point of Sale</a>.</li>
+</ul>
+<h2 id="s-if-something-goes-wrong">If something goes wrong<a class="man-hash" href="#s-if-something-goes-wrong" aria-label="Link to this section"><i class="bi bi-link-45deg"></i></a></h2>
+<div class="table-responsive man-table"><table class="table table-sm">
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access denied</td>
+<td>Your role does not allow the page or the action. Ask your administrator.</td>
+</tr>
+<tr>
+<td>Your session expired or the form was already submitted. Go back, refresh the page and try again.</td>
+<td>The form was sent twice, or your session changed (for example you logged in again in another tab). Go back, reload the page, enter the data again and save.</td>
+</tr>
+<tr>
+<td>Page not found</td>
+<td>The address is wrong. Use the menu.</td>
+</tr>
+<tr>
+<td>Database update needed</td>
+<td>The program was updated and the database needs the matching update. Nothing is lost. Ask your administrator (with several companies, the Super Admin) to run it, then click <strong>Reload</strong>.</td>
+</tr>
+<tr>
+<td>A red box above a form</td>
+<td>The form was not saved. Correct what the box says and save again.</td>
+</tr>
+<tr>
+<td>You were logged out after a period of inactivity.</td>
+<td>Log in again. Save long forms before the time-out.</td>
+</tr>
+</tbody>
+</table></div>
+<p>For anything else, click the <strong>Help</strong> button of the page you are on, or ask your administrator.</p>
